@@ -1,8 +1,8 @@
 
 <!--
-    ê°€ì…í•˜ê¸°ëŠ” ê¸°ë³¸ì ì¸ í¼ë§Œ ì œê³µë©ë‹ˆë‹¤
-    ê¸°ëŠ¥ëª…ì„¸ì— ë”°ë¼ ê°œë°œì„ ì§„í–‰í•˜ì„¸ìš”.
-    Sub PJT Iì—ì„œëŠ” UX, ë””ìì¸ ë“±ì„ í¬í•¨í•˜ì—¬ ë°±ì—”ë“œë¥¼ ì œì™¸í•˜ì—¬ ê°œë°œí•©ë‹ˆë‹¤.
+    °¡ÀÔÇÏ±â´Â ±âº»ÀûÀÎ Æû¸¸ Á¦°øµË´Ï´Ù
+    ±â´É¸í¼¼¿¡ µû¶ó °³¹ßÀ» ÁøÇàÇÏ¼¼¿ä.
+    Sub PJT I¿¡¼­´Â UX, µğÀÚÀÎ µîÀ» Æ÷ÇÔÇÏ¿© ¹é¿£µå¸¦ Á¦¿ÜÇÏ¿© °³¹ßÇÕ´Ï´Ù.
  -->
 <template>
   <v-container>
@@ -11,14 +11,14 @@
     <!-- id -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="nickname">ë‹‰ë„¤ì„</label>
+        <label for="nickname">´Ğ³×ÀÓ</label>
         <v-text-field 
           hide-details=true
           class="my-3"
           v-model="nickName" 
           id="nickname" 
           outlined
-          placeholder="ë‹‰ë„¤ì„ì„ ì…ë ¥í•˜ì„¸ìš”." 
+          placeholder="´Ğ³×ÀÓÀ» ÀÔ·ÂÇÏ¼¼¿ä." 
           type="text" 
         />
         <small class="d-block" v-if="error.nickName">{{ error.nickName }}</small>
@@ -28,13 +28,14 @@
 
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
-        <label for="uertype">ì£¼ ì‚¬ìš©ì ìœ í˜•</label>
+        <label for="usertype">ÁÖ »ç¿ëÀÚ À¯Çü</label>
         <v-select
+          hide-details=true
           :items="userTypes"
           id="usertype"
-          placeholder="ì£¼ ì‚¬ìš©ì ìœ í˜•ì„ ì…ë ¥í•˜ì„¸ìš”."
+          placeholder="ÁÖ »ç¿ëÀÚ À¯ÇüÀ» ÀÔ·ÂÇÏ¼¼¿ä."
           v-model="usertype"
-          solo
+          outlined
         ></v-select>
       </v-col>
     </v-row>
@@ -45,14 +46,14 @@
     <!-- email -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="email">ì´ë©”ì¼</label>
+        <label for="email">ÀÌ¸ŞÀÏ</label>
         <v-text-field
          class="my-3"
          hide-details=true
          v-model="email" 
          id="email" 
          outlined
-         placeholder="ì´ë©”ì¼ì„ ì…ë ¥í•˜ì„¸ìš”.(ì²« ê¸€ìëŠ” ì†Œë¬¸ìì…ë‹ˆë‹¤)" 
+         placeholder="ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇÏ¼¼¿ä.(Ã¹ ±ÛÀÚ´Â ¼Ò¹®ÀÚÀÔ´Ï´Ù)" 
          type="text" 
         />
         <small class="d-block" v-if="error.email">{{ error.email }}</small>
@@ -62,7 +63,7 @@
     <!-- password -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="password">ë¹„ë°€ë²ˆí˜¸</label>
+        <label for="password">ºñ¹Ğ¹øÈ£</label>
         <v-text-field
          class="my-3"
          hide-details=true
@@ -71,7 +72,7 @@
          id="password" 
          outlined
          :type="showPw ? 'text' : 'password'" 
-         placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”." 
+         placeholder="ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä." 
          @click:append="showPw = !showPw"
         />
       <small class="d-block" v-if="error.password">{{ error.password }}</small>
@@ -80,7 +81,7 @@
     <!-- password confirmation -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="password-confirm">ë¹„ë°€ë²ˆí˜¸ í™•ì¸</label>
+        <label for="password-confirm">ºñ¹Ğ¹øÈ£ È®ÀÎ</label>
         <v-text-field
           class="my-3"
           hide-details=true
@@ -89,60 +90,95 @@
           :type="showPwc ? 'text' : 'password'"
           outlined
           id="password-confirm"
-          placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ ë‹¤ì‹œí•œë²ˆ ì…ë ¥í•˜ì„¸ìš”."
+          placeholder="ºñ¹Ğ¹øÈ£¸¦ ´Ù½ÃÇÑ¹ø ÀÔ·ÂÇÏ¼¼¿ä."
           @click:append="showPwc = !showPwc"
         />
       <small class="d-block" v-if="error.passwordConfirm">{{ error.passwordConfirm }}</small>
       </v-col>
     </v-row>
 
+
+   <!-- ÀüÈ­¹øÈ£ -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm=6>
+        <label for="phonenumber">ÈŞ´ëÆù ¹øÈ£</label>
+        <v-text-field 
+          hide-details=true
+          class="my-3"
+          v-model="phonenumber" 
+          id="phonenumber" 
+          outlined
+          placeholder="ÈŞ´ëÆù ¹øÈ£¸¦ '-' ¾øÀÌ ÀÔ·ÂÇØÁÖ¼¼¿ä" 
+          type="number" 
+        />
+        <small class="d-block" v-if="error.phonenumber">{{ error.phonenumber }}</small>
+      </v-col>
+    </v-row>
+
+    <!-- address -->
     <v-row
       ref="searchWindow"
       :style="searchWindow"
       style="border:1px solid;width:100%;margin:5px 0;position:relative"
     >
+    <v-col class="py-0" sm=6>
       <img
+        
         src="//t1.daumcdn.net/postcode/resource/images/close.png"
         id="btnFoldWrap"
         style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1"
         @click="searchWindow.display = 'none'"
         alt="close"
       >
+    </v-col>
     </v-row>
   
   <v-row class= 'justify-center'>
         <v-col
-          cols="6"
-          md="4"
-        >
+          class="py-0 mt-3" sm=3>
+          <label for="postcode">ÁÖ¼Ò</label>
           <v-text-field
             v-model="postcode"
-            :counter="10"
-            label="postcode"
+            outlined
+            hide-details=true
+            id="postcode"
+            placeholder="¿ìÆí ¹øÈ£"
             required
           ></v-text-field>
+          
+        </v-col>
+        <v-col class="my-2" sm=3>
+            <v-btn @click="execDaumPostcode" dark>¿ìÆí¹øÈ£ Ã£±â</v-btn>
         </v-col>
 
+
+  </v-row>
+  <v-row class="justify-center">
         <v-col
-          cols="12"
-          md="12"
-        >
+          class="py-0" sm=6>
+          <label for="address">ÀÔ·Â ÁÖ¼Ò</label>
           <v-text-field
             type='text'
             v-model="address"
-            label="address"
+            outlined
+            hide-details=true
+            id="address"
+            placeholder="ÀÚµ¿À¸·Î ÀÔ·ÂµË´Ï´Ù."
             required
           ></v-text-field>
         </v-col>
-        <input type="button" value="ìš°í¸ë²ˆí˜¸ ì°¾ê¸°" @click="execDaumPostcode">
+  </v-row>
+  <v-row class="justify-center">
         <v-col
-          cols="12"
-          md="12"
-        >
+          class="py-0" sm=6>
+          <label for="extraAddress">»ó¼¼ÁÖ¼Ò</label>
           <v-text-field
             v-model="extraAddress"
-            label="ìƒì„¸ì£¼ì†Œ"
+            id="extraAddress"
+            placeholder="»ó¼¼ÁÖ¼Ò¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"
             type="text"
+            hide-details=true
+            outlined
             required
           ></v-text-field>
         </v-col>
@@ -165,32 +201,70 @@
       @click:append="showPwc = !showPwc"
     ></v-text-field> -->
 
-    <!-- terms and conditions, signup btn -->
+    <!-- bank account -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm=2>
+        <label for="bankname">ÀºÇà</label>
+        <v-select
+          class="my-3"
+          hide-details=true
+          :items="banks"
+          id="bankname"
+          v-model="bank"
+          outlined
+        ></v-select>
+      </v-col>
+      <v-col class="py-0" sm=4>
+        <label for="accountnumber">°èÁÂ¹øÈ£</label>
+        <v-text-field 
+          hide-details=true
+          class="my-3"
+          v-model="accountnumber" 
+          id="accountnumber" 
+          outlined
+          placeholder="°èÁÂ¹øÈ£¸¦ '-' ¾øÀÌ ÀÔ·ÂÇØÁÖ¼¼¿ä" 
+          type="number" 
+        />
+        <small class="d-block" v-if="error.accountnumber">{{ error.accountnumber }}</small>
+      </v-col>
+    </v-row>
+    
+    <!-- term -->
     <v-row class="justify-center">
       <v-col sm=6>
         <v-row class="justify-space-between">
           <v-col class="py-0">
-            <label>
-              <input 
-                v-model="isTerm" 
-                type="checkbox" 
-                id="term" 
-              />
-              <!-- <v-checkbox></v-checkbox> -->
-              <span class="ml-2">ì•½ê´€ì„ ë™ì˜í•©ë‹ˆë‹¤.</span>
-            </label>
-            <v-btn text @click="termPopup=true">ì•½ê´€ë³´ê¸°</v-btn>
+         <v-switch class="ml-2" v-model="isTerm" label="¾à°ü¿¡ µ¿ÀÇÇÕ´Ï´Ù."></v-switch>
+    <v-dialog v-model="dialog" persistent max-width="290">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+         text
+          v-bind="attrs"
+          v-on="on"
+        >
+          ¾à°üº¸±â 
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title class="headline">IndieAndBob ÀÌ¿ë¾à°ü</v-card-title>
+        <v-card-text>°ÔÀÓÀ» ¸¸µéÀÚ ¸¸µéÀÚ¤¿¤¿</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="dialog = false">´İ±â</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
           </v-col>
 
           <v-col class="text-right py-0">
             <v-btn           
-              @click="SignUp({email: email, password: password, nickname: nickName, usertype: usertype, })"
+              @click="SignUp({email: email, password: password, nickname: nickName, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, address:postcode+address+extraAddress})"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
               depressed
               large
-              color="primary">ê°€ì…í•˜ê¸°</v-btn>
+              color="primary">°¡ÀÔÇÏ±â</v-btn>
           </v-col>
         </v-row>
       </v-col>
@@ -234,6 +308,12 @@ export default {
     },
     passwordConfirm: function() {
       this.checkForm();
+    },
+    phonenumber: function() {
+      this.checkForm();
+    },
+    isTerm: function() {
+      this.checkform();
     }
   },
   methods: {
@@ -241,25 +321,35 @@ export default {
 
     checkForm() {
       if (this.nickName.length <= 0)
-        this.error.nickName = "ì™œ ì§€ì› ì–´ìš”? ë‹¤ì‹œ ì“°ì„¸ìš”";
+        this.error.nickName = "¿Ö Áö¿ü¾î¿ä? ´Ù½Ã ¾²¼¼¿ä";
       else this.error.nickName = false;
 
       if (this.email.length >= 0 && !EmailValidator.validate(this.email))
-        this.error.email = "ì´ë©”ì¼ í˜•ì‹ì´ ì•„ë‹™ë‹ˆë‹¤.";
+        this.error.email = "ÀÌ¸ŞÀÏ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù.";
       else this.error.email = false;
 
       if (
         this.password.length >= 0 &&
         !this.passwordSchema.validate(this.password)
       )
-        this.error.password = "ì˜ë¬¸,ìˆ«ì í¬í•¨ 8 ìë¦¬ì´ìƒì´ì–´ì•¼ í•©ë‹ˆë‹¤.";
+        this.error.password = "¿µ¹®,¼ıÀÚ Æ÷ÇÔ 8 ÀÚ¸®ÀÌ»óÀÌ¾î¾ß ÇÕ´Ï´Ù.";
       else this.error.password = false;
 
       if (
         this.passwordConfirm != this.password
       )
-       this.error.passwordConfirm = "ë¹„ë°€ë²ˆí˜¸ì™€ ë¹„ë°€ë²ˆí˜¸ í™•ì¸ì´ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤."
+       this.error.passwordConfirm = "ºñ¹Ğ¹øÈ£¿Í ºñ¹Ğ¹øÈ£ È®ÀÎÀÌ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù."
       else this.error.passwordConfirm = false;
+     if (
+       (this.phonenumber + '').length != 11 
+     )
+      this.error.phonenumber = "ÈŞ´ë¹øÈ£ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù.";
+    else this.error.phonenumber = false;
+    
+    if (
+      this.isTerm    
+    ) this.error.isTerm = false;
+    else this.error.isTerm = true;
 
       let isSubmit = true;
       Object.values(this.error).map(v => {
@@ -281,7 +371,7 @@ export default {
             this.address = data.jibunAddress;
           }
           if (data.userSelectedType === 'R') {
-            if (data.bname !== '' && /[ë™|ë¡œ|ê°€]$/g.test(data.bname)) {
+            if (data.bname !== '' && /[µ¿|·Î|°¡]$/g.test(data.bname)) {
               this.extraAddress += data.bname;
             }
             if (data.buildingName !== '' && data.apartment === 'Y') {
@@ -317,17 +407,23 @@ export default {
       email: "",
       password: "",
       passwordConfirm: "",
+      phonenumber: "",
       nickName: "",
       usertype: "",
-      userTypes: ['ê°œë°œì', 'ì¼ë°˜ ì‚¬ìš©ì'], 
+      userTypes: ['°³¹ßÀÚ', 'ÀÏ¹İ »ç¿ëÀÚ'], 
+      banks: ['¿ì¸®ÀºÇà', 'ÇÏ³ªÀºÇà', '±¹¹ÎÀºÇà'],
+      bankname: '',
+      accountnumber: '',
       isTerm: false,
       isLoading: false,
       error: {
         email: false,
         password: false,
-        nickName: "í•„ìˆ˜ í•­ëª© ì…ë‹ˆë‹¤.",
+        phonenumber: false,
+        nickName: "ÇÊ¼ö Ç×¸ñ ÀÔ´Ï´Ù.",
         passwordConfirm: false,
-        term: false
+        accountnumber: false,
+        isTerm: false
       },
       isSubmit: false,
       passwordType: "password",
@@ -335,6 +431,7 @@ export default {
       termPopup: false,
       passwordSchema: new PV(),
       showPw: false,
+      dialog: false,
       showPwc: false,
       searchWindow: {
         display: 'none',
