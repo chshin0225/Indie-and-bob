@@ -50,6 +50,8 @@ CREATE TABLE `user`(
     `account` varchar(20),
     `is_developer` boolean NOT NULL,
     `phone_number` varchar(20),
+    `profile` varchar(50),
+    `introduction` varchar(100),
     primary key(`email`)
 );
 
