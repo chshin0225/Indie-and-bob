@@ -46,6 +46,7 @@ export default new Vuex.Store({
   },
 
   actions: {
+    // user
     LogIn({ commit }, loginData) {
       commit('setEmail', loginData.email)
       commit('setPassword', loginData.password)
@@ -115,7 +116,12 @@ export default new Vuex.Store({
           commit('setUser', res.data)
         })
         .catch(err => console.error(err))
-    }
+    },
+
+    // 기타
+    goBack() {
+      router.go('-1')
+    },
   },
   modules: {
   }
