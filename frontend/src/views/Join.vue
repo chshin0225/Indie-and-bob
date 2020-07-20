@@ -1,0 +1,230 @@
+
+<!--
+    가입하기는 기본적인 폼만 제공됩니다
+    기능명세에 따라 개발을 진행하세요.
+    Sub PJT I에서는 UX, 디자인 등을 포함하여 백엔드를 제외하여 개발합니다.
+ -->
+<template>
+  <v-container>
+    <h1 class="text-center">Signup</h1>
+
+    <!-- id -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm=6>
+        <label for="nickname">닉네임</label>
+        <v-text-field 
+          hide-details=true
+          class="my-3"
+          v-model="nickName" 
+          id="nickname" 
+          outlined
+          placeholder="닉네임을 입력하세요." 
+          type="text" 
+        />
+        <small class="d-block" v-if="error.nickName">{{ error.nickName }}</small>
+      </v-col>
+    </v-row>
+
+    <!-- email -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm=6>
+        <label for="email">이메일</label>
+        <v-text-field
+         class="my-3"
+         hide-details=true
+         v-model="email" 
+         id="email" 
+         outlined
+         placeholder="이메일을 입력하세요.(첫 글자는 소문자입니다)" 
+         type="text" 
+        />
+        <small class="d-block" v-if="error.email">{{ error.email }}</small>
+      </v-col>
+    </v-row>
+
+    <!-- password -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm=6>
+        <label for="password">비밀번호</label>
+        <v-text-field
+         class="my-3"
+         hide-details=true
+         v-model="password" 
+         :append-icon="showPw ? 'mdi-eye' : 'mdi-eye-off'"
+         id="password" 
+         outlined
+         :type="showPw ? 'text' : 'password'" 
+         placeholder="비밀번호를 입력하세요." 
+         @click:append="showPw = !showPw"
+        />
+      <small class="d-block" v-if="error.password">{{ error.password }}</small>
+      </v-col>
+    </v-row>
+
+    <!-- password confirmation -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm=6>
+        <label for="password-confirm">비밀번호 확인</label>
+        <v-text-field
+          class="my-3"
+          hide-details=true
+          v-model="passwordConfirm"
+          :append-icon="showPwc ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="showPwc ? 'text' : 'password'"
+          outlined
+          id="password-confirm"
+          placeholder="비밀번호를 다시한번 입력하세요."
+          @click:append="showPwc = !showPwc"
+        />
+      <small class="d-block" v-if="error.passwordConfirm">{{ error.passwordConfirm }}</small>
+      </v-col>
+    </v-row>
+
+    <!-- <v-text-field
+      v-model="passwordConfirm"
+      :append-icon="showPwc ? 'mdi-eye' : 'mdi-eye-off'"
+      :rules="[rules.required, rules.min]"
+      :type="showPwc ? 'text' : 'password'"
+      name="input-10-1"
+      label="Password Confirmation"
+      hint="It must match the password."
+      counter
+      @click:append="showPwc = !showPwc"
+    ></v-text-field> -->
+
+    <!-- terms and conditions, signup btn -->
+    <v-row class="justify-center">
+      <v-col sm=6>
+        <v-row class="justify-space-between">
+          <v-col class="py-0">
+            <label>
+              <input 
+                v-model="isTerm" 
+                type="checkbox" 
+                id="term" 
+              />
+              <!-- <v-checkbox></v-checkbox> -->
+              <span class="ml-2">약관을 동의합니다.</span>
+            </label>
+            <v-btn text @click="termPopup=true">약관보기</v-btn>
+          </v-col>
+
+          <v-col class="text-right py-0">
+            <v-btn           
+              @click="SignUp({email: email, password: password, nickname: nickName})"
+              :disabled="!isSubmit"
+              class="d-inline-block"
+              :class="{disabled : !isSubmit}"
+              depressed
+              large
+              color="primary">가입하기</v-btn>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
+  </v-container>
+</template>
+
+<script>
+import PV from "password-validator";
+import * as EmailValidator from "email-validator";
+import { mapActions } from 'vuex'
+
+export default {
+  created() {
+    this.component = this;
+    this.passwordSchema
+      .is()
+      .min(8)
+      .is()
+      .max(100)
+      .has()
+
+      .digits()
+      .has()
+      .letters();
+  }, 
+
+  watch: {
+    password: function() {
+      this.checkForm();
+    },
+    nickName: function() {
+      this.checkForm();
+    },
+    email: function() {
+      this.checkForm();
+      if (this.email.length>0 && this.email.charAt(0)>='A' && this.email.charAt(0) <='Z') {
+            this.email = this.email.substring(0,1).toLowerCase() + this.email.substring(1)
+        }
+    },
+    passwordConfirm: function() {
+      this.checkForm();
+    }
+  },
+
+  methods: {
+    ...mapActions([ 'SignUp' ]),
+
+    checkForm() {
+      if (this.nickName.length <= 0)
+        this.error.nickName = "왜 지웠어요? 다시 쓰세요";
+      else this.error.nickName = false;
+
+      if (this.email.length >= 0 && !EmailValidator.validate(this.email))
+        this.error.email = "이메일 형식이 아닙니다.";
+      else this.error.email = false;
+
+      if (
+        this.password.length >= 0 &&
+        !this.passwordSchema.validate(this.password)
+      )
+        this.error.password = "영문,숫자 포함 8 자리이상이어야 합니다.";
+      else this.error.password = false;
+
+      if (
+        this.passwordConfirm != this.password
+      )
+       this.error.passwordConfirm = "비밀번호와 비밀번호 확인이 일치하지 않습니다."
+      else this.error.passwordConfirm = false;
+
+      let isSubmit = true;
+      Object.values(this.error).map(v => {
+        if (v) isSubmit = false;
+      });
+      this.isSubmit = isSubmit;
+    },
+  },
+
+  data() {
+    return {
+      email: "",
+      password: "",
+      passwordConfirm: "",
+      nickName: "",
+      isTerm: false,
+      isLoading: false,
+      error: {
+        email: false,
+        password: false,
+        nickName: "필수 항목 입니다.",
+        passwordConfirm: false,
+        term: false
+      },
+      isSubmit: false,
+      passwordType: "password",
+      passwordConfirmType: "password",
+      termPopup: false,
+      passwordSchema: new PV(),
+      showPw: false,
+      showPwc: false,
+      // rules: {
+      //   required: value => !!value || 'Required.',
+      //   min: v => v.length >= 8 || 'Min 8 characters',
+      // }
+    }
+  }
+}
+</script>
+

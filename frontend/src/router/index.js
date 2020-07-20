@@ -1,23 +1,48 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
+import Login from '../views/Login.vue'
+import Join from '../views/Join.vue'
+import PasswordChange from '../views/PasswordChange.vue'
+
+import FeedMain from '../views/IndexFeed.vue'
+
+import PageNotFound from '../views/PageNotFound.vue'
+import ErrorPage from '../views/ErrorPage.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Login',
+    component: Login
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/user/join',
+    name: 'Join',
+    component: Join
+  },
+  {
+    path: '/feed/main',
+    name: 'FeedMain',
+    component: FeedMain
+  },
+  {
+    path: '/user/password',
+    name: 'PasswordChange',
+    component: PasswordChange
+  },
+  {
+    path: '/404',
+    name: 'PageNotFound',
+    component: PageNotFound
+  },
+  {
+    path: '/error',
+    name: 'ErrorPage',
+    component: ErrorPage
+  },
 ]
 
 const router = new VueRouter({
