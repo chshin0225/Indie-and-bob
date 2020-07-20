@@ -25,6 +25,23 @@
       </v-col>
     </v-row>
 
+
+    <v-row class="justify-center">
+      <v-col class="py-0" sm="6">
+        <label for="uertype">주 사용자 유형</label>
+        <v-select
+          :items="userTypes"
+          id="usertype"
+          placeholder="주 사용자 유형을 입력하세요."
+          v-model="usertype"
+          solo
+        ></v-select>
+      </v-col>
+    </v-row>
+
+    
+
+
     <!-- email -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
@@ -60,7 +77,6 @@
       <small class="d-block" v-if="error.password">{{ error.password }}</small>
       </v-col>
     </v-row>
-
     <!-- password confirmation -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
@@ -79,6 +95,63 @@
       <small class="d-block" v-if="error.passwordConfirm">{{ error.passwordConfirm }}</small>
       </v-col>
     </v-row>
+
+    <v-row
+      ref="searchWindow"
+      :style="searchWindow"
+      style="border:1px solid;width:100%;margin:5px 0;position:relative"
+    >
+      <img
+        src="//t1.daumcdn.net/postcode/resource/images/close.png"
+        id="btnFoldWrap"
+        style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1"
+        @click="searchWindow.display = 'none'"
+        alt="close"
+      >
+    </v-row>
+  
+  <v-row class= 'justify-center'>
+        <v-col
+          cols="6"
+          md="4"
+        >
+          <v-text-field
+            v-model="postcode"
+            :counter="10"
+            label="postcode"
+            required
+          ></v-text-field>
+        </v-col>
+
+        <v-col
+          cols="12"
+          md="12"
+        >
+          <v-text-field
+            type='text'
+            v-model="address"
+            label="address"
+            required
+          ></v-text-field>
+        </v-col>
+        <input type="button" value="우편번호 찾기" @click="execDaumPostcode">
+        <v-col
+          cols="12"
+          md="12"
+        >
+          <v-text-field
+            v-model="extraAddress"
+            label="상세주소"
+            type="text"
+            required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+
+
+
+
+
 
     <!-- <v-text-field
       v-model="passwordConfirm"
@@ -111,7 +184,7 @@
 
           <v-col class="text-right py-0">
             <v-btn           
-              @click="SignUp({email: email, password: password, nickname: nickName})"
+              @click="SignUp({email: email, password: password, nickname: nickName, usertype: usertype, })"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
@@ -163,7 +236,6 @@ export default {
       this.checkForm();
     }
   },
-
   methods: {
     ...mapActions([ 'SignUp' ]),
 
@@ -195,6 +267,49 @@ export default {
       });
       this.isSubmit = isSubmit;
     },
+    execDaumPostcode() {
+      const currentScroll = Math.max(
+        document.body.scrollTop,
+        document.documentElement.scrollTop,
+      );
+      // eslint-disable-next-line
+      new daum.Postcode({
+        onComplete: (data) => {
+          if (data.userSelectedType === 'R') {
+            this.address = data.roadAddress;
+          } else {
+            this.address = data.jibunAddress;
+          }
+          if (data.userSelectedType === 'R') {
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+              this.extraAddress += data.bname;
+            }
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+              this.extraAddress +=
+                this.extraAddress !== ''
+                  ? `, ${data.buildingName}`
+                  : data.buildingName;
+            }
+            if (this.extraAddress !== '') {
+              this.extraAddress = ` (${this.extraAddress})`;
+            }
+          } else {
+            this.extraAddress = '';
+          }
+          this.postcode = data.zonecode;
+          this.$refs.extraAddress.focus();
+          this.searchWindow.display = 'none';
+          document.body.scrollTop = currentScroll;
+        },
+        onResize: (size) => {
+          this.searchWindow.height = `${size.height}px`;
+        },
+        width: '100%',
+        height: '100%',
+      }).embed(this.$refs.searchWindow);
+      this.searchWindow.display = 'block';
+    },
+
   },
 
   data() {
@@ -203,6 +318,8 @@ export default {
       password: "",
       passwordConfirm: "",
       nickName: "",
+      usertype: "",
+      userTypes: ['개발자', '일반 사용자'], 
       isTerm: false,
       isLoading: false,
       error: {
@@ -219,6 +336,13 @@ export default {
       passwordSchema: new PV(),
       showPw: false,
       showPwc: false,
+      searchWindow: {
+        display: 'none',
+        height: '300px',
+      },
+      postcode: '',
+      address: '',
+      extraAddress: '',
       // rules: {
       //   required: value => !!value || 'Required.',
       //   min: v => v.length >= 8 || 'Min 8 characters',
