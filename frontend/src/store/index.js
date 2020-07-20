@@ -15,6 +15,7 @@ export default new Vuex.Store({
     oriEmail: "",
     oriPassword: "",
     errorDetail: null,
+    user: null,
   },
 
   mutations: {
@@ -37,10 +38,15 @@ export default new Vuex.Store({
     setErrorDetail(state, val) {
       state.errorDetail = val
       console.log(state.errorDetail)
+    },
+    setUser(state, val) {
+      state.user = val
+      console.log(state.user)
     }
   },
 
   actions: {
+    // user
     LogIn({ commit }, loginData) {
       commit('setEmail', loginData.email)
       commit('setPassword', loginData.password)
@@ -104,6 +110,18 @@ export default new Vuex.Store({
         })
     },
 
+    getUserInfo({ commit }) {
+      axios.유저정보가져오기()
+        .then(res => {
+          commit('setUser', res.data)
+        })
+        .catch(err => console.error(err))
+    },
+
+    // 기타
+    goBack() {
+      router.go('-1')
+    },
   },
   modules: {
   }
