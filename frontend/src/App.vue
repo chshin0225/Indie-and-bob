@@ -37,7 +37,7 @@
           </v-list>
         </v-menu> -->
 
-        <v-btn @click="goBack">
+        <v-btn @click="goBack" color="secondary" class="black--text" depressed>
           go back
         </v-btn>
 
