@@ -11,12 +11,12 @@ public class User {
 	private String email;
     private String name;
     private String password;
-    private String postcode;
+    private int postcode;
     private String address;
     private String extraAddress;
     private String bankName;
     private String bankAccount;
-    private String isDeveloper;
+    private boolean isDeveloper;
     private String phoneNumber;
     private String profile;
     private String introduction;
