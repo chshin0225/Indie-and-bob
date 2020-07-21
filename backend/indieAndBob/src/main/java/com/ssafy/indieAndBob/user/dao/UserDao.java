@@ -6,4 +6,5 @@ public interface UserDao {
 	User selectByEmailAndPassword(User user);
 	User selectByEmail(String email);
 	int registerUser(User user);
+	int changeUserInfo(User user);
 }

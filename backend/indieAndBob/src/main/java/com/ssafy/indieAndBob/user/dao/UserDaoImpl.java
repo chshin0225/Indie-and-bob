@@ -30,4 +30,10 @@ public class UserDaoImpl implements UserDao {
 		return temp.insert(ns + "registerUser", user);
 	}
 
+	@Override
+	public int changeUserInfo(User user) {
+		// TODO Auto-generated method stub
+		return temp.update(ns + "changeUserInfo", user);
+	}
+
 }
