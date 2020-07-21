@@ -18,4 +18,16 @@ public class UserDaoImpl implements UserDao {
 		return temp.selectOne(ns + "selectByEmailAndPassword",user);
 	}
 
+	@Override
+	public User selectByEmail(String email) {
+		
+		return temp.selectOne(ns+"selectByEmail" , email);
+	}
+
+	@Override
+	public int registerUser(User user) {
+		
+		return temp.insert(ns + "registerUser", user);
+	}
+
 }
