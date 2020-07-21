@@ -118,6 +118,14 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
+    // community
+    // createArticle(context, articleData) {
+    //   axios.post(게시글작성)
+    //     .then(res => console.log(res.data))
+    //     .catch(err => console.error(err))
+    //   router.push({ name: 'CommunityMain' })
+    // },
+
     // 기타
     goBack() {
       router.go('-1')
