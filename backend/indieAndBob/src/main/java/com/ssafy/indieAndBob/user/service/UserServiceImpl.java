@@ -17,4 +17,14 @@ public class UserServiceImpl implements UserService {
 		return userDao.selectByEmailAndPassword(user);
 	}
 
+	@Override
+	public User selectByEmail(User user) {
+		return userDao.selectByEmail(user);
+	}
+
+	@Override
+	public int registerUser(User user) {
+		return userDao.registerUser(user);
+	}
+
 }
