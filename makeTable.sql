@@ -70,15 +70,17 @@ CREATE TABLE `funding`(
 
 DROP TABLE IF EXISTS `game`;
 CREATE TABLE `game`(
-	`game_id` varchar(10) NOT NULL,
+    `game_id` varchar(10) NOT NULL,
     `name` varchar(30) NOT NULL,
     `deadline` datetime NOT NULL,
     `aim` int,
     `left_price` int,
     `is_end` boolean,
+    `is_approve` boolena default false,
     `email` varchar(50) NOT NULL,
     `thumbnail` varchar(100) NOT NULL,
     `created_at` datetime default now(),
     `updated_at` datetime default now(),
+    `started_at` datetime,
     primary key(`game_id`)
 );
