@@ -7,4 +7,13 @@
    <select id="selectByEmailAndPassword" parameterType="user" resultType="user">
       select * from user where email=#{email} and password=#{password}
    </select>
+   <select id="selectByEmail" parameterType="String" resultType="user">
+   	  select * from user where email=#{email}
+   </select>
+   <insert id="registerUser" parameterType="user">
+      insert into user (email, name, password, postcode,address,extra_address,bank_name,bank_account,
+      is_developer,phone_number,profile,introduction) 
+      values (#{email}, #{name}, #{password}, #{postcode},#{address},#{extraAddress},#{bankName},#{bankAccount},
+      #{isDeveloper},#{phoneNumber},#{profile},#{introduction})
+   </insert>
 </mapper>
