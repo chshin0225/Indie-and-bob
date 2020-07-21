@@ -17,6 +17,7 @@ import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 // community
 import CommunityMain from '../views/community/CommunityMain.vue'
 import CommunityForm from '../views/community/CommunityForm.vue'
+import CommunityArticle from '../views/community/CommunityArticle.vue'
 
 // error
 import PageNotFound from '../views/error/PageNotFound.vue'
@@ -64,6 +65,11 @@ const routes = [
     path: '/community/new',
     name: 'CommunityForm',
     component: CommunityForm,
+  },
+  {
+    path: '/community/:articleId',
+    name: 'CommunityArticle',
+    component: CommunityArticle,
   },
 
   // error
