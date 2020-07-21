@@ -1,5 +1,6 @@
 <template>
-  <v-card>
+  <div>
+     <v-card>
     <v-toolbar flat color="primary" dark>
       <v-toolbar-title>My Page</v-toolbar-title>
     </v-toolbar>
@@ -127,6 +128,10 @@
       </v-tab-item>
     </v-tabs>
   </v-card>
+  <router-link to="/project/new">새 프로젝트 만들기</router-link>
+  </div>
+ 
+  
 </template>
 
 <script>
