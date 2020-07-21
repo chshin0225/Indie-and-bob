@@ -2,8 +2,7 @@
   <v-container>
       <v-row class="justify-center">
           <v-col cols=12>
-              <h1 class="text-center"> {{ errorDetail }} Error ! ! 
-                  <br> use another {{ errorDetail }}</h1>
+              <h1 class="text-center">Page Not Found 404 Error</h1>
           </v-col>
           <v-col class="justify-center" cols=auto>
               <v-btn @click="goBack" color="primary">back</v-btn>
@@ -13,17 +12,12 @@
 </template>
 
 <script>
-import router from "../router"
-import { mapState } from 'vuex'
-
+import router from "../../router"
 export default {
     methods: {
         goBack () {
             router.go('-1')
         }
-    },
-    computed: {
-        ...mapState([ 'errorDetail' ])
     }
 }
 </script>
