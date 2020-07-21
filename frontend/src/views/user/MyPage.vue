@@ -121,6 +121,7 @@
               Cras sagittis. Phasellus nec sem in justo pellentesque facilisis. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nam at tortor in tellus interdum sagittis.
             </p>
             <router-link to="/user/edit">회원정보 수정</router-link>
+            <br>
             <router-link to="/user/password">비밀번호 변경</router-link>
           </v-card-text>
         </v-card>

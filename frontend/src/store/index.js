@@ -122,6 +122,14 @@ export default new Vuex.Store({
     goBack() {
       router.go('-1')
     },
+
+    changeUserInfo(context, changedData) {
+      axios.POST(회원정보변경URL, changedData)
+        .then(res => {
+          context.commit('setUser', res.data)
+        })
+        .catch(err => console.error(err))
+    }
   },
   modules: {
   }
