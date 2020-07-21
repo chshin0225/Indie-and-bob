@@ -7,7 +7,12 @@ import Join from '../views/user/Join.vue'
 import PasswordChange from '../views/user/PasswordChange.vue'
 import MyPage from '../views/user/MyPage.vue'
 
+
 import FeedMain from '../views/IndexFeed.vue'
+
+import CreateProject from '../views/project/CreateProject.vue'
+import CreateReward from '../views/project/CreateReward.vue'
+import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 
 // community
 import CommunityMain from '../views/community/CommunityMain.vue'
@@ -72,6 +77,26 @@ const routes = [
     name: 'ErrorPage',
     component: ErrorPage
   },
+  {
+    path: '/user/mypage',
+    name: 'MyPage',
+    component: MyPage
+  },
+  {
+    path : '/project/new',
+    name : 'CreateProject',
+    component: CreateProject
+  },
+  {
+    path: '/project/rewards',
+    name: 'CreateReward',
+    component: CreateReward
+  },
+  {
+    path: '/project/done',
+    name: 'CreateProjectDone',
+    component: CreateProjectDone
+  }
 ]
 
 const router = new VueRouter({
