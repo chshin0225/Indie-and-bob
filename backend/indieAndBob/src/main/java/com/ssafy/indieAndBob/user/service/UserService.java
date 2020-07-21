@@ -6,4 +6,5 @@ public interface UserService {
 	User selectByEmailAndPassword(User user);
 	User selectByEmail(String user);
 	int registerUser(User user);
+	int changeUserInfo(User user);
 }
