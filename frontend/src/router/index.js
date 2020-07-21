@@ -6,6 +6,7 @@ import Join from '../views/user/Join.vue'
 import PasswordChange from '../views/user/PasswordChange.vue'
 import MyPage from '../views/user/MyPage.vue'
 
+import CreateProject from '../views/project/CreateProject.vue'
 import FeedMain from '../views/IndexFeed.vue'
 
 import PageNotFound from '../views/error/PageNotFound.vue'
@@ -49,6 +50,11 @@ const routes = [
     name: 'MyPage',
     component: MyPage
   },
+  {
+    path : '/project/new',
+    name : 'CreateProject',
+    component: CreateProject
+  }
 ]
 
 const router = new VueRouter({
