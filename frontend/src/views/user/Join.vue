@@ -315,11 +315,11 @@ export default {
 
     checkForm() {
       if (this.nickName.length <= 0)
-        this.error.nickName = "�� �������? �ٽ� ������";
+        this.error.nickName = "왜 지웠어요? 다시 쓰세요";
       else this.error.nickName = false;
 
       if (this.email.length >= 0 && !EmailValidator.validate(this.email))
-        this.error.email = "�̸��� ������ �ƴմϴ�.";
+        this.error.email = "올바른 email 구조가 아닙니다.";
       else this.error.email = false;
 
       if (
@@ -332,12 +332,12 @@ export default {
       if (
         this.passwordConfirm != this.password
       )
-       this.error.passwordConfirm = "��й�ȣ�� ��й�ȣ Ȯ���� ��ġ���� �ʽ��ϴ�."
+       this.error.passwordConfirm = "비밀번호가 일치하지 않습니다."
       else this.error.passwordConfirm = false;
      if (
        (this.phonenumber + '').length != 11 
      )
-      this.error.phonenumber = "�޴��ȣ ������ �ƴմϴ�.";
+      this.error.phonenumber = "올바른 휴대폰번호 형식이ㅣ 아닙니다.";
     else this.error.phonenumber = false;
     
     if (
@@ -365,7 +365,7 @@ export default {
             this.address = data.jibunAddress;
           }
           if (data.userSelectedType === 'R') {
-            if (data.bname !== '' && /[��|��|��]$/g.test(data.bname)) {
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
               this.extraAddress += data.bname;
             }
             if (data.buildingName !== '' && data.apartment === 'Y') {
@@ -414,7 +414,7 @@ export default {
         email: false,
         password: false,
         phonenumber: false,
-        nickName: "�ʼ� �׸� �Դϴ�.",
+        nickName: "",
         passwordConfirm: false,
         accountnumber: false,
         isTerm: false
