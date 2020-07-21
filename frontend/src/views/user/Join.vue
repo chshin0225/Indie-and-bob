@@ -40,7 +40,7 @@
     <!-- email -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="email">아메일</label>
+        <label for="email">이메일</label>
         <v-text-field
          class="my-3"
          hide-details=true
@@ -252,7 +252,7 @@
 
           <v-col class="text-right py-0">
             <v-btn           
-              @click="SignUp({email: email, password: password, nickname: nickName, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, address:postcode+address+extraAddress})"
+              @click="SignUp({email: email, password: password, nickname: nickName, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, postcode: postcode, address: address, extraAddress: extraAddress})"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
