@@ -1,9 +1,3 @@
-
-<!--
-    °¡ÀÔÇÏ±â´Â ±âº»ÀûÀÎ Æû¸¸ Á¦°øµË´Ï´Ù
-    ±â´É¸í¼¼¿¡ µû¶ó °³¹ßÀ» ÁøÇàÇÏ¼¼¿ä.
-    Sub PJT I¿¡¼­´Â UX, µğÀÚÀÎ µîÀ» Æ÷ÇÔÇÏ¿© ¹é¿£µå¸¦ Á¦¿ÜÇÏ¿© °³¹ßÇÕ´Ï´Ù.
- -->
 <template>
   <v-container>
     <h1 class="text-center">Signup</h1>
@@ -11,14 +5,14 @@
     <!-- id -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="nickname">´Ğ³×ÀÓ</label>
+        <label for="nickname">ë‹‰ë„¤ì„</label>
         <v-text-field 
           hide-details=true
           class="my-3"
           v-model="nickName" 
           id="nickname" 
           outlined
-          placeholder="´Ğ³×ÀÓÀ» ÀÔ·ÂÇÏ¼¼¿ä." 
+          placeholder="ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš”...ì”¨...." 
           type="text" 
         />
         <small class="d-block" v-if="error.nickName">{{ error.nickName }}</small>
@@ -28,12 +22,12 @@
 
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
-        <label for="usertype">ÁÖ »ç¿ëÀÚ À¯Çü</label>
+        <label for="usertype">ì£¼ ì‚¬ìš©ì ìœ í˜•</label>
         <v-select
           hide-details=true
           :items="userTypes"
           id="usertype"
-          placeholder="ÁÖ »ç¿ëÀÚ À¯ÇüÀ» ÀÔ·ÂÇÏ¼¼¿ä."
+          placeholder="ì£¼ ì‚¬ìš©ì ìœ í˜•ì„ ì…ë ¥í•´ì£¼ì„¸ìš”..ì”¨..."
           v-model="usertype"
           outlined
         ></v-select>
@@ -46,14 +40,14 @@
     <!-- email -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="email">ÀÌ¸ŞÀÏ</label>
+        <label for="email">ì•„ë©”ì¼</label>
         <v-text-field
          class="my-3"
          hide-details=true
          v-model="email" 
          id="email" 
          outlined
-         placeholder="ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇÏ¼¼¿ä.(Ã¹ ±ÛÀÚ´Â ¼Ò¹®ÀÚÀÔ´Ï´Ù)" 
+         placeholder="ì´ë©”ì¼ í˜•ì‹ì„ ì§€ì¼œì£¼ì„¸ìš”(ì²«ìë¦¬ëŠ” ì†Œë¬¸ìì…ë‹ˆë‹¤)" 
          type="text" 
         />
         <small class="d-block" v-if="error.email">{{ error.email }}</small>
@@ -63,7 +57,7 @@
     <!-- password -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="password">ºñ¹Ğ¹øÈ£</label>
+        <label for="password">ë¹„ë°€ë²ˆí˜¸</label>
         <v-text-field
          class="my-3"
          hide-details=true
@@ -72,7 +66,7 @@
          id="password" 
          outlined
          :type="showPw ? 'text' : 'password'" 
-         placeholder="ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä." 
+         placeholder="ì˜ì†Œë¬¸ìì™€ ìˆ«ìë¥¼ í•©ì³ 8ê¸€ì ì´ìƒ ê°€ëŠ¥í•©ë‹ˆë‹¤." 
          @click:append="showPw = !showPw"
         />
       <small class="d-block" v-if="error.password">{{ error.password }}</small>
@@ -81,7 +75,7 @@
     <!-- password confirmation -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="password-confirm">ºñ¹Ğ¹øÈ£ È®ÀÎ</label>
+        <label for="password-confirm">ë¹„ë°€ë²ˆí˜¸ í™•ì¸</label>
         <v-text-field
           class="my-3"
           hide-details=true
@@ -90,7 +84,7 @@
           :type="showPwc ? 'text' : 'password'"
           outlined
           id="password-confirm"
-          placeholder="ºñ¹Ğ¹øÈ£¸¦ ´Ù½ÃÇÑ¹ø ÀÔ·ÂÇÏ¼¼¿ä."
+          placeholder="ë¹„ë°€ë²ˆí˜¸ì™€ ì¼ì¹˜í•´ì•¼í•©ë‹ˆë‹¤."
           @click:append="showPwc = !showPwc"
         />
       <small class="d-block" v-if="error.passwordConfirm">{{ error.passwordConfirm }}</small>
@@ -98,17 +92,17 @@
     </v-row>
 
 
-   <!-- ÀüÈ­¹øÈ£ -->
+   <!-- phone number -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="phonenumber">ÈŞ´ëÆù ¹øÈ£</label>
+        <label for="phonenumber">í•¸ë“œí° ë²ˆí˜¸('-' ì œì™¸)</label>
         <v-text-field 
           hide-details=true
           class="my-3"
           v-model="phonenumber" 
           id="phonenumber" 
           outlined
-          placeholder="ÈŞ´ëÆù ¹øÈ£¸¦ '-' ¾øÀÌ ÀÔ·ÂÇØÁÖ¼¼¿ä" 
+          placeholder="íœ´ëŒ€í° ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”" 
           type="number" 
         />
         <small class="d-block" v-if="error.phonenumber">{{ error.phonenumber }}</small>
@@ -136,19 +130,19 @@
   <v-row class= 'justify-center'>
         <v-col
           class="py-0 mt-3" sm=3>
-          <label for="postcode">ÁÖ¼Ò</label>
+          <label for="postcode">ìš°í¸ë²ˆí˜¸</label>
           <v-text-field
             v-model="postcode"
             outlined
             hide-details=true
             id="postcode"
-            placeholder="¿ìÆí ¹øÈ£"
+            placeholder="ìë™ìœ¼ë¡œ ì…ë ¥ë©ë‹ˆë‹¤."
             required
           ></v-text-field>
           
         </v-col>
         <v-col class="my-2" sm=3>
-            <v-btn @click="execDaumPostcode" dark>¿ìÆí¹øÈ£ Ã£±â</v-btn>
+            <v-btn @click="execDaumPostcode" dark>ìš°í¸ë²ˆí˜¸ ì°¾ê¸°</v-btn>
         </v-col>
 
 
@@ -156,14 +150,14 @@
   <v-row class="justify-center">
         <v-col
           class="py-0" sm=6>
-          <label for="address">ÀÔ·Â ÁÖ¼Ò</label>
+          <label for="address">ì£¼ì†Œ</label>
           <v-text-field
             type='text'
             v-model="address"
             outlined
             hide-details=true
             id="address"
-            placeholder="ÀÚµ¿À¸·Î ÀÔ·ÂµË´Ï´Ù."
+            placeholder="ìë™ìœ¼ë¡œ ì…ë ¥ë©ë‹ˆë‹¤"
             required
           ></v-text-field>
         </v-col>
@@ -171,11 +165,11 @@
   <v-row class="justify-center">
         <v-col
           class="py-0" sm=6>
-          <label for="extraAddress">»ó¼¼ÁÖ¼Ò</label>
+          <label for="extraAddress">ìƒì„¸ì£¼ì†Œ</label>
           <v-text-field
             v-model="extraAddress"
             id="extraAddress"
-            placeholder="»ó¼¼ÁÖ¼Ò¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"
+            placeholder="ìƒì„¸ì£¼ì†Œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”"
             type="text"
             hide-details=true
             outlined
@@ -204,7 +198,7 @@
     <!-- bank account -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=2>
-        <label for="bankname">ÀºÇà</label>
+        <label for="bankname">ì€í–‰ëª…</label>
         <v-select
           class="my-3"
           hide-details=true
@@ -215,14 +209,14 @@
         ></v-select>
       </v-col>
       <v-col class="py-0" sm=4>
-        <label for="accountnumber">°èÁÂ¹øÈ£</label>
+        <label for="accountnumber">ê³„ì¢Œë²ˆí˜¸</label>
         <v-text-field 
           hide-details=true
           class="my-3"
           v-model="accountnumber" 
           id="accountnumber" 
           outlined
-          placeholder="°èÁÂ¹øÈ£¸¦ '-' ¾øÀÌ ÀÔ·ÂÇØÁÖ¼¼¿ä" 
+          placeholder="(-)ë¥¼ ì œì™¸í•œ ìˆ«ìë§Œ ì…ë ¥í•´ì£¼ì„¸ìš”" 
           type="number" 
         />
         <small class="d-block" v-if="error.accountnumber">{{ error.accountnumber }}</small>
@@ -234,7 +228,7 @@
       <v-col sm=6>
         <v-row class="justify-space-between">
           <v-col class="py-0">
-         <v-switch class="ml-2" v-model="isTerm" label="¾à°ü¿¡ µ¿ÀÇÇÕ´Ï´Ù."></v-switch>
+         <v-switch class="ml-2" v-model="isTerm" label="ì•½ê´€ì— ë™ì˜í•©ë‹ˆë‹¤."></v-switch>
     <v-dialog v-model="dialog" persistent max-width="290">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -242,15 +236,15 @@
           v-bind="attrs"
           v-on="on"
         >
-          ¾à°üº¸±â 
+          ì•½ê´€ë³´ê¸°
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">IndieAndBob ÀÌ¿ë¾à°ü</v-card-title>
-        <v-card-text>°ÔÀÓÀ» ¸¸µéÀÚ ¸¸µéÀÚ¤¿¤¿</v-card-text>
+        <v-card-title class="headline">IndieAndBob ì•½ê´€</v-card-title>
+        <v-card-text>ê²Œì„ì„ ê²Œì„ã…ê²Œì„ ë°¥ì•Œì„ ë°¥ì•Œë°”ì•Œ</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">´İ±â</v-btn>
+          <v-btn color="green darken-1" text @click="dialog = false">ë‹«ê¸°</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -264,7 +258,7 @@
               :class="{disabled : !isSubmit}"
               depressed
               large
-              color="primary">°¡ÀÔÇÏ±â</v-btn>
+              color="primary">íšŒì›ê°€ì…</v-btn>
           </v-col>
         </v-row>
       </v-col>
@@ -321,29 +315,29 @@ export default {
 
     checkForm() {
       if (this.nickName.length <= 0)
-        this.error.nickName = "¿Ö Áö¿ü¾î¿ä? ´Ù½Ã ¾²¼¼¿ä";
+        this.error.nickName = "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½? ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
       else this.error.nickName = false;
 
       if (this.email.length >= 0 && !EmailValidator.validate(this.email))
-        this.error.email = "ÀÌ¸ŞÀÏ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù.";
+        this.error.email = "ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Õ´Ï´ï¿½.";
       else this.error.email = false;
 
       if (
         this.password.length >= 0 &&
         !this.passwordSchema.validate(this.password)
       )
-        this.error.password = "¿µ¹®,¼ıÀÚ Æ÷ÇÔ 8 ÀÚ¸®ÀÌ»óÀÌ¾î¾ß ÇÕ´Ï´Ù.";
+        this.error.password = "";
       else this.error.password = false;
 
       if (
         this.passwordConfirm != this.password
       )
-       this.error.passwordConfirm = "ºñ¹Ğ¹øÈ£¿Í ºñ¹Ğ¹øÈ£ È®ÀÎÀÌ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù."
+       this.error.passwordConfirm = "ï¿½ï¿½Ğ¹ï¿½È£ï¿½ï¿½ ï¿½ï¿½Ğ¹ï¿½È£ È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½."
       else this.error.passwordConfirm = false;
      if (
        (this.phonenumber + '').length != 11 
      )
-      this.error.phonenumber = "ÈŞ´ë¹øÈ£ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù.";
+      this.error.phonenumber = "ï¿½Ş´ï¿½ï¿½È£ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Õ´Ï´ï¿½.";
     else this.error.phonenumber = false;
     
     if (
@@ -371,7 +365,7 @@ export default {
             this.address = data.jibunAddress;
           }
           if (data.userSelectedType === 'R') {
-            if (data.bname !== '' && /[µ¿|·Î|°¡]$/g.test(data.bname)) {
+            if (data.bname !== '' && /[ï¿½ï¿½|ï¿½ï¿½|ï¿½ï¿½]$/g.test(data.bname)) {
               this.extraAddress += data.bname;
             }
             if (data.buildingName !== '' && data.apartment === 'Y') {
@@ -410,8 +404,8 @@ export default {
       phonenumber: "",
       nickName: "",
       usertype: "",
-      userTypes: ['°³¹ßÀÚ', 'ÀÏ¹İ »ç¿ëÀÚ'], 
-      banks: ['¿ì¸®ÀºÇà', 'ÇÏ³ªÀºÇà', '±¹¹ÎÀºÇà'],
+      userTypes: ['ì¼ë°˜ ì‚¬ìš©ì', 'ê°œë°œì'], 
+      banks: ['í•˜ë‚˜ì€í–‰', 'ìš°ë¦¬ì€í–‰','êµ­ë¯¼ì€í–‰'],
       bankname: '',
       accountnumber: '',
       isTerm: false,
@@ -420,7 +414,7 @@ export default {
         email: false,
         password: false,
         phonenumber: false,
-        nickName: "ÇÊ¼ö Ç×¸ñ ÀÔ´Ï´Ù.",
+        nickName: "ï¿½Ê¼ï¿½ ï¿½×¸ï¿½ ï¿½Ô´Ï´ï¿½.",
         passwordConfirm: false,
         accountnumber: false,
         isTerm: false
