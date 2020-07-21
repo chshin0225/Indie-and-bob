@@ -4,4 +4,6 @@ import com.ssafy.indieAndBob.user.dto.User;
 
 public interface UserService {
 	User selectByEmailAndPassword(User user);
+	User selectByEmail(User user);
+	int registerUser(User user);
 }
