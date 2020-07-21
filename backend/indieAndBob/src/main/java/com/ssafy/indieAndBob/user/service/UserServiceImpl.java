@@ -18,13 +18,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User selectByEmail(User user) {
+	public User selectByEmail(String user) {
 		return userDao.selectByEmail(user);
 	}
 
 	@Override
 	public int registerUser(User user) {
 		return userDao.registerUser(user);
+	}
+
+	@Override
+	public int changeUserInfo(User user) {
+		// TODO Auto-generated method stub
+		return userDao.changeUserInfo(user);
 	}
 
 }
