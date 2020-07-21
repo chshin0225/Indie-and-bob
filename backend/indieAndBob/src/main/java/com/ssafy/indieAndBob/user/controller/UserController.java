@@ -45,7 +45,7 @@ public class UserController {
         // 이메일, 닉네임 중복처리 필수
         // 회원가입단을 생성해 보세요.
        ResponseEntity response = null;
-       if(userService.selectByEmail(request) != null) {
+       if(userService.selectByEmail(request.getEmail()) != null) {
     	   if(userService.registerUser(request) == 1) {
     		   	final BasicResponse result = new BasicResponse();
            		result.status = true;
