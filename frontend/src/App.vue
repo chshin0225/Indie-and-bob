@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div>
-      <v-app-bar color="secondary" dense flat>
+      <v-app-bar color="primary" dense flat>
         <!-- 모바일 화면에서만 햄버거 메뉴 사용 가능-->
         <v-app-bar-nav-icon class="d-md-none white--text"></v-app-bar-nav-icon>
 
@@ -37,7 +37,7 @@
           </v-list>
         </v-menu> -->
 
-        <v-btn @click="goBack">
+        <v-btn @click="goBack" color="secondary" class="black--text" depressed>
           go back
         </v-btn>
 

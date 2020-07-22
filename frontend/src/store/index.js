@@ -16,6 +16,9 @@ export default new Vuex.Store({
     oriPassword: "",
     errorDetail: null,
     user: null,
+
+    // community
+    articleList: [],
   },
 
   mutations: {
@@ -42,7 +45,12 @@ export default new Vuex.Store({
     setUser(state, val) {
       state.user = val
       console.log(state.user)
-    }
+    },
+
+    // community
+    setArticleList(state, val) {
+      state.articleList = val
+    },
   },
 
   actions: {
@@ -118,10 +126,34 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
+    // community
+    // fetchArticles({ commit }) {
+    //   axios.get(게시글들 가져오기)
+    //     .then(res => {
+    //       commit('setArticleList', res.data)
+    //     })
+    //     .catch(err => console.error(err))
+    // },
+
+    // createArticle(context, articleData) {
+    //   axios.post(새 게시글 작성)
+    //     .then(res => console.log(res.data))
+    //     .catch(err => console.error(err))
+    //   router.push({ name: 'CommunityMain' })
+    // },
+
     // 기타
     goBack() {
       router.go('-1')
     },
+
+    // changeUserInfo(context, changedData) {
+    //   axios.POST(회원정보변경URL, changedData)
+    //     .then(res => {
+    //       context.commit('setUser', res.data)
+    //     })
+    //     .catch(err => console.error(err))
+    // },
   },
   modules: {
   }

@@ -40,7 +40,7 @@
     <!-- email -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
-        <label for="email">아메일</label>
+        <label for="email">이메일</label>
         <v-text-field
          class="my-3"
          hide-details=true
@@ -252,7 +252,17 @@
 
           <v-col class="text-right py-0">
             <v-btn           
-              @click="SignUp({email: email, password: password, nickname: nickName, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, address:postcode+address+extraAddress})"
+              @click="SignUp(
+                {email: email, 
+                password: password, 
+                nickname: nickName, 
+                is_developer: is_developer, 
+                phonenumber: phonenumber, 
+                bankname: bankname,
+                accountnumber: accountnumber, 
+                postcode: postcode, 
+                address: address, 
+                extraAddress: extraAddress})"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
@@ -293,6 +303,13 @@ export default {
     },
     nickName: function() {
       this.checkForm();
+    },
+    usertype: function() {
+      if (this.usertype === '개발자'){
+        this.is_developer=true
+      } else { 
+        this.is_developer=false
+      }
     },
     email: function() {
       this.checkForm();
@@ -404,6 +421,8 @@ export default {
       phonenumber: "",
       nickName: "",
       usertype: "",
+      is_developer: false,
+      is_admin: false,
       userTypes: ['일반 사용자', '개발자'], 
       banks: ['하나은행', '우리은행','국민은행'],
       bankname: '',

@@ -1,5 +1,6 @@
 <template>
-  <v-card>
+  <div>
+     <v-card>
     <v-toolbar flat color="primary" dark>
       <v-toolbar-title>My Page</v-toolbar-title>
     </v-toolbar>
@@ -121,12 +122,17 @@
               Cras sagittis. Phasellus nec sem in justo pellentesque facilisis. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nam at tortor in tellus interdum sagittis.
             </p>
             <router-link to="/user/edit">회원정보 수정</router-link>
+            <br>
             <router-link to="/user/password">비밀번호 변경</router-link>
           </v-card-text>
         </v-card>
       </v-tab-item>
     </v-tabs>
   </v-card>
+  <router-link to="/project/new">새 프로젝트 만들기</router-link>
+  </div>
+ 
+  
 </template>
 
 <script>
