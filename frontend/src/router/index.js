@@ -13,6 +13,7 @@ import FeedMain from '../views/IndexFeed.vue'
 import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
+import ProjectMain from '../views/project/ProjectMain.vue'
 
 // community
 import CommunityMain from '../views/community/CommunityMain.vue'
@@ -104,7 +105,12 @@ const routes = [
     path: '/project/done',
     name: 'CreateProjectDone',
     component: CreateProjectDone
-  }
+  },
+  {
+    path: '/project/all',
+    name: 'ProjectMain',
+    component: ProjectMain,
+  },
 ]
 
 const router = new VueRouter({
