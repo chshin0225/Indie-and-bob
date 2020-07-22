@@ -16,6 +16,7 @@ export default new Vuex.Store({
     oriPassword: "",
     errorDetail: null,
     user: null,
+    project: null,
 
     // community
     articleList: [],
@@ -70,6 +71,17 @@ export default new Vuex.Store({
           } else {
             console.error(err)
           }
+        })
+    },
+
+    login({ commit }, signupData) {
+      axios.post(SERVER.BASE + SERVER.LOGIN, signupData)
+        .then(res => {
+          console.log(res)
+          commit('setLoggedIn', true)
+          // local storage에 받은 jwt 저장
+          localStorage.setItem('user')
+          router.push('/feed/main')
         })
     },
 
@@ -154,6 +166,18 @@ export default new Vuex.Store({
     //     })
     //     .catch(err => console.error(err))
     // },
+
+
+    // 프로젝트 받기
+    // getProject(id) {
+    //   axios.get(프로젝트getURL+'/'+id)
+    //   .then(res => {
+    //     this.commit('project', res.data)
+
+    //   })
+    //   .catch(err => console.error(err))
+
+    // }
   },
   modules: {
   }
