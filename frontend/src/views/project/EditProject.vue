@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="my-5 text-center">프로젝트 개요를 입력해주세요!</h1>
+    <h1 class="my-5 text-center">Step 1/3. 프로젝트 개요를 입력해주세요!</h1>
     <v-row class="justify-center">
       <v-col class="py-0" sm="10">
         <label for="title">제목</label>
@@ -57,16 +57,15 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row class='mt-5 justify-center'>
- <v-btn @click="onButtonClick" class="deep-purple accent-4">프로젝트 생성</v-btn>
-    </v-row>
-   
+    <v-btn @click="onButtonClick" class="deep-purple accent-4"></v-btn>
   </v-container>
 </template>
+
 
 <script>
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import axios from 'axios'l
 
 import { Editor } from "@toast-ui/vue-editor";
 
@@ -74,6 +73,18 @@ export default {
   components: {
     editor: Editor
   },
+  created() {
+      this.id = this.$route.params.id
+      axios.get('프로젝트'+id)
+      .then(
+          this.text = res.data.content,
+          this.today = res.data.created_at.toISOString().substr(0, 10),
+          this.date = res.data.date
+
+      )
+      .catch(err => console.error(err))
+          
+      },
   data() {
     return {
       text: "",
