@@ -11,8 +11,8 @@ import MyPage from '../views/user/MyPage.vue'
 import FeedMain from '../views/IndexFeed.vue'
 
 import CreateProject from '../views/project/CreateProject.vue'
-import CreateReward from '../views/project/CreateReward.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
+import ProjectDetail from '../views/project/ProjectDetail.vue'
 
 // community
 import CommunityMain from '../views/community/CommunityMain.vue'
@@ -88,15 +88,17 @@ const routes = [
     name: 'MyPage',
     component: MyPage
   },
+
+  //project 관련
   {
     path : '/project/new',
     name : 'CreateProject',
     component: CreateProject
   },
   {
-    path: '/project/rewards',
-    name: 'CreateReward',
-    component: CreateReward
+    path: '/project',
+    name: 'ProjectDetail',
+    component: ProjectDetail 
   },
   {
     path: '/project/done',
