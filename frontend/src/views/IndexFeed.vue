@@ -2,10 +2,12 @@
   <v-container>
     <div>
       <router-link to="/user/mypage">마이페이지</router-link>
-      <br />
+      <br>
       <router-link to="/community">커뮤니티</router-link>
-      <h1>뉴스피드</h1>
+      <br>
       <router-link to="/project/new">새 프로젝트 만들기</router-link>
+      <br>
+      <router-link to="/project/all">모든 프로젝트</router-link>
     </div>
   </v-container>
 </template>
@@ -13,4 +15,3 @@
 <script>
 export default {};
 </script>
-
