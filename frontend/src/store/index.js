@@ -16,6 +16,7 @@ export default new Vuex.Store({
     oriPassword: "",
     errorDetail: null,
     user: null,
+    project: null,
 
     // community
     articleList: [],
@@ -154,6 +155,18 @@ export default new Vuex.Store({
     //     })
     //     .catch(err => console.error(err))
     // },
+
+
+    // 프로젝트 받기
+    // getProject(id) {
+    //   axios.get(프로젝트getURL+'/'+id)
+    //   .then(res => {
+    //     this.commit('project', res.data)
+
+    //   })
+    //   .catch(err => console.error(err))
+
+    // }
   },
   modules: {
   }
