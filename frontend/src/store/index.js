@@ -59,7 +59,7 @@ export default new Vuex.Store({
     LogIn({ commit }, loginData) {
       commit('setEmail', loginData.email)
       commit('setPassword', loginData.password)
-      axios.get(SERVER.BASE + "" + SERVER.LOGIN + "?email=" + loginData.email + "&password=" + loginData.password)
+      axios.post(SERVER.BASE + "" + SERVER.LOGIN, loginData)
         .then(res => {
           console.log(res)
           commit('setLoggedIn', true)
@@ -71,6 +71,17 @@ export default new Vuex.Store({
           } else {
             console.error(err)
           }
+        })
+    },
+
+    login({ commit }, signupData) {
+      axios.post(SERVER.BASE + SERVER.LOGIN, signupData)
+        .then(res => {
+          console.log(res)
+          commit('setLoggedIn', true)
+          // local storage에 받은 jwt 저장
+          localStorage.setItem('user')
+          router.push('/feed/main')
         })
     },
 
