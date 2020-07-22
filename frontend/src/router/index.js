@@ -14,6 +14,7 @@ import FeedMain from '../views/IndexFeed.vue'
 import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
+import ProjectMain from '../views/project/ProjectMain.vue'
 
 //project + funding
 import CreateFund from '../views/fund/CreateFund.vue'
@@ -121,7 +122,12 @@ const routes = [
     path: '/fund/:id',
     name: 'CreateFund',
     component: CreateFund
-  }
+  },
+  {
+    path: '/project/all',
+    name: 'ProjectMain',
+    component: ProjectMain,
+  },
 ]
 
 const router = new VueRouter({

@@ -74,6 +74,17 @@ export default new Vuex.Store({
         })
     },
 
+    login({ commit }, signupData) {
+      axios.post(SERVER.BASE + SERVER.LOGIN, signupData)
+        .then(res => {
+          console.log(res)
+          commit('setLoggedIn', true)
+          // local storage에 받은 jwt 저장
+          localStorage.setItem('user')
+          router.push('/feed/main')
+        })
+    },
+
     SignUp({ commit }, signupData) {
       if (signupData.email.charAt(0) >= 'A' && signupData.email.charAt(0) <= 'Z') {
         signupData.email = signupData.email.substring(0, 1).toLowerCase() + signupData.email.substring(1)
