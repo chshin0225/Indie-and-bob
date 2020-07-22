@@ -59,7 +59,7 @@ export default new Vuex.Store({
     LogIn({ commit }, loginData) {
       commit('setEmail', loginData.email)
       commit('setPassword', loginData.password)
-      axios.get(SERVER.BASE + "" + SERVER.LOGIN + "?email=" + loginData.email + "&password=" + loginData.password)
+      axios.post(SERVER.BASE + "" + SERVER.LOGIN, loginData)
         .then(res => {
           console.log(res)
           commit('setLoggedIn', true)
