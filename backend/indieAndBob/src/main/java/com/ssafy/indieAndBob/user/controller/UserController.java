@@ -41,10 +41,8 @@ public class UserController {
 	@ApiOperation(value = "가입하기")
 	public Object signup(@RequestBody User request) {
 		ResponseEntity response = null;
-
 		User u = userService.selectByEmail(request.getEmail());
-		System.out.println(u);
-		if (u != null) {
+		if (u == null) {
 			if (userService.registerUser(request) == 1) {
 				final BasicResponse result = new BasicResponse();
 				result.status = true;
