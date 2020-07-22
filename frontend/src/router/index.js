@@ -10,10 +10,15 @@ import MyPage from '../views/user/MyPage.vue'
 
 import FeedMain from '../views/IndexFeed.vue'
 
+//project making
 import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
 import ProjectMain from '../views/project/ProjectMain.vue'
+
+//project + funding
+import CreateFund from '../views/fund/CreateFund.vue'
+import GameDetail from '../views/fund/GameDetail.vue'
 
 // community
 import CommunityMain from '../views/community/CommunityMain.vue'
@@ -90,14 +95,14 @@ const routes = [
     component: MyPage
   },
 
-  //project 관련
+  //project(개발자 사이드) 관련
   {
     path : '/project/new',
     name : 'CreateProject',
     component: CreateProject
   },
   {
-    path: '/project',
+    path: '/project/:id',
     name: 'ProjectDetail',
     component: ProjectDetail 
   },
@@ -105,6 +110,18 @@ const routes = [
     path: '/project/done',
     name: 'CreateProjectDone',
     component: CreateProjectDone
+  },
+
+  //game(고객 사이드) 관련
+  {
+    path: '/game/:id',
+    name: 'GameDetail',
+    component: GameDetail
+  },
+  {
+    path: '/fund/:id',
+    name: 'CreateFund',
+    component: CreateFund
   },
   {
     path: '/project/all',
