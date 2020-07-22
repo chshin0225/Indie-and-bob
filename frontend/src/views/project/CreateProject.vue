@@ -67,7 +67,8 @@
 <script>
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
-
+import axios from 'axios';
+import router from '../../router'
 import { Editor } from "@toast-ui/vue-editor";
 
 export default {
@@ -84,11 +85,24 @@ export default {
       editorOptions: {
         hideModeSwitch: true
       },
-      content: ""
+      content: "",
+      aim: 0,
     };
   },
   methods: {
     onButtonClick() {
+
+      let PARAMS = {
+        'content' :this.$refs.toastuiEditor.invoke("getMarkdown"),
+        'title' : this.title,
+        'date' : this.date,
+        'aim' : this.aim,
+      }
+      axios.post('프로젝트만들기', PARAMS)
+      .then(res => {
+        router.push("/project/"+res.data.id);
+      })
+      .catch(err => console.error(err))
 
     }
   }

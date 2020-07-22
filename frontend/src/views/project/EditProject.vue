@@ -65,7 +65,7 @@
 <script>
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import axios from 'axios'l
+import axios from 'axios'
 
 import { Editor } from "@toast-ui/vue-editor";
 
@@ -75,27 +75,25 @@ export default {
   },
   created() {
       this.id = this.$route.params.id
-      axios.get('프로젝트'+id)
-      .then(
-          this.text = res.data.content,
-          this.today = res.data.created_at.toISOString().substr(0, 10),
+      axios.get('프로젝트'+this.id)
+      .then(res => {
+          this.content = res.data.content
+          this.today = res.data.created_at.toISOString().substr(0, 10)
           this.date = res.data.date
+          this.title = res.data.title
 
-      )
+     })
       .catch(err => console.error(err))
           
       },
   data() {
     return {
-      text: "",
-      today: new Date().toISOString().substr(0, 10),
-      date: new Date().toISOString().substr(0, 10),
-      title: "",
+      text: '',
+
       menu2: false,
       editorOptions: {
         hideModeSwitch: true
       },
-      content: ""
     };
   },
   methods: {

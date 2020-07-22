@@ -1,15 +1,145 @@
 <template>
-  <v-container>
-      <h1 class='my-5 text-center'>Step 2/3. 프로젝트에 리워드를 추가해주세요!</h1>
-  </v-container>
+  <v-row justify="center">
+    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn color="info" dark v-bind="attrs" v-on="on">리워드 추가</v-btn>
+      </template>
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Settings</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dark text @click="dialog = false">Save</v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-container>
+          <v-row class="justify-center">
+            <v-col class="py-0 mt-5" sm="6">
+              <label for="title">리워드 제목</label>
+              <v-text-field
+                v-model="title"
+                id="title"
+                placeholder="리워드 이름"
+                type="text"
+                hide-details="true"
+                outlined
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="justify-center">
+            <v-col class="py-0 mt-5" sm="6">
+              <label for="thumbnail">썸네일</label>
+                <v-file-input 
+                id="thumbnail"
+                @change="uploadImgPreview"
+                accept="image/*" 
+                label="썸네일 이미지를 입력해주세요"
+                prepend-icon="mdi-camera"
+                ></v-file-input>
+            </v-col>
+          </v-row>
+          <v-row class="justify-center">
+            <v-col class="py-0 mt-5" sm="6">
+              <label for="content">내용</label>
+              <v-text-field
+                v-model="content"
+                id="content"
+                placeholder="제품 설명"
+                type="text"
+                hide-details="true"
+                outlined
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="justify-center">
+            <v-col class="py-0 mt-5" sm="6">
+              <label for="price">가격(단위:원)</label>
+              <v-text-field
+                v-model="price"
+                id="price"
+                placeholder="희망 판매가격 "
+                type="number"
+                hide-details="true"
+                outlined
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="justify-center">
+            <v-col class="py-0 mt-5" sm="6">
+              <label for="left">판매 가능 수량</label>
+              <v-text-field
+                v-model="left"
+                id="left"
+                placeholder="판매 가능한 수량을 입력해주세요."
+                type="number"
+                hide-details="true"
+                outlined
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
 export default {
+  name: "CreateReward",
+  data() {
+    return {
+      dialog: false,
+      notifications: false,
+      sound: true,
+      widgets: false,
+      r_thumbnailUrl: '',
+      r_left: 0,
+      r_price: 0,
+      r_title: '',
+      r_content: '',
 
-}
+      
+    };
+  },
+  methods : {
+    uploadImgPreview() {
+			let fileInfo = document.getElementById("thumbnail").files[0];
+			let reader = new FileReader();
+			reader.onload = function () {
+				this.thumbnailUrl = reader.result;
+			};
+			if (fileInfo) {
+				reader.readAsDataURL(fileInfo);
+			}
+
+
+			}
+
+		}
+
+
+
+    	if( fileList ) {
+
+
+
+                // @details readAndPreview() 함수를 forEach문을통한 반복 수행
+
+		[].forEach.call( fileList, readAndPreview );
+
+        }
+
+    }
+  }
+};
 </script>
 
 <style>
-
 </style>
