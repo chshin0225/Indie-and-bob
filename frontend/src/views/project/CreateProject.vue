@@ -44,7 +44,7 @@
       </v-col>
     </v-row>
 
-    <ToastViewer />
+    <v-btn @click="onButtonClick" class="deep-purple accent-4"></v-btn>
   </v-container>
 </template>
 
@@ -70,6 +70,11 @@ export default {
       },
       content: ""
     };
+  },
+  methods: {
+    onButtonClick() {
+
+    }
   }
 };
 </script>
