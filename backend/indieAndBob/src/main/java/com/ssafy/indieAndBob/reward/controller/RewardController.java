@@ -15,7 +15,7 @@ import com.ssafy.indieAndBob.reward.service.RewardService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://i3a105.p.ssafy.io:3000" })
 @RestController
 public class RewardController {
 
@@ -25,12 +25,18 @@ public class RewardController {
 	@GetMapping("/reward/{rewardId}")
 	@ApiOperation(value = "리워드아이디로 리워드찾기")
 	public Object selectRewardById(@PathVariable String rewardId) {
-		ResponseEntity<Reward> response = null;
+		ResponseEntity response = null;
 		Reward reward = rservice.selectRewardById(rewardId);
 		if(!reward.equals(null)) {
-			return new ResponseEntity<Reward> (reward, HttpStatus.OK);
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = reward;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Reward> (reward, HttpStatus.NO_CONTENT);
+		return response;
 	}
 
 
