@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.game.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,23 @@ public class GameController {
 
 	@Autowired
 	GameService gservice;
+	
+	@GetMapping("/game")
+	@ApiOperation(value="모든게임리스트")
+	public Object selectAllGame() {
+		ResponseEntity response = null;
+		List<Game> gamelist = gservice.selectAllGame();
+		if(gamelist.size()>0) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = gamelist;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return response;
+	}
 	
 	@GetMapping("/game/{gameId}")
 	@ApiOperation(value = "게임아이디로 게임찾기")
@@ -56,4 +75,6 @@ public class GameController {
 		}
 		return response;
 	}
+	
+	
 }
