@@ -8,9 +8,9 @@
    	  select * from game where game_id=#{gameId}
    </select>
    <insert id="registerGame" parameterType="game">
-      insert into user (email, name, password, postcode,address,extra_address,bank_name,bank_account,
-      is_developer,phone_number,profile,introduction) 
-      values (#{email}, #{name}, #{password}, #{postcode},#{address},#{extraAddress},#{bankName},#{bankAccount},
-      #{isDeveloper},#{phoneNumber},#{profile},#{introduction})
+      insert into game (game_id, name, deadline, aim,left_price, is_end, is_approve, email,
+      thumbnail ,created_at ,updated_at ,started_at) 
+      values (#{gameId}, #{name}, #{deadline}, #{aim},#{leftPrice},#{isEnd},#{isApprove},#{email},
+      #{thumbnail},#{createdAt},#{updatedAt},#{startedAt})
    </insert>
 </mapper>

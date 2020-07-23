@@ -5,12 +5,10 @@
 <mapper namespace="com.ssafy.indieAndBob.mapper.reward">
 
    <select id="selectRewardById" parameterType="String" resultType="reward">
-   	  select * from user where reward_id=#{rewardId}
+   	  select * from reward where reward_id=#{rewardId}
    </select>
    <insert id="registerReward" parameterType="reward">
-      insert into user (email, name, password, postcode,address,extra_address,bank_name,bank_account,
-      is_developer,phone_number,profile,introduction) 
-      values (#{email}, #{name}, #{password}, #{postcode},#{address},#{extraAddress},#{bankName},#{bankAccount},
-      #{isDeveloper},#{phoneNumber},#{profile},#{introduction})
+      insert into reward (reward_id, game_id, reward_name, r_img,left_price,price,content) 
+      values (#{rewardId}, #{gameId}, #{rewardName}, #{rImg},#{leftPrice},#{price},#{content})
    </insert>
 </mapper>

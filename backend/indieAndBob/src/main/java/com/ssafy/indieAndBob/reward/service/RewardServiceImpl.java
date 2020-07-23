@@ -18,5 +18,11 @@ public class RewardServiceImpl implements RewardService{
 		return rewarddao.registerReward(reward);
 	}
 
+	@Override
+	public Reward selectRewardById(String rewardId) {
+		// TODO Auto-generated method stub
+		return rewarddao.selectRewardById(rewardId);
+	}
+
 	
 }
