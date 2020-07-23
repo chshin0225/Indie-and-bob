@@ -307,7 +307,7 @@ export default {
       this.checkForm();
     },
     isTerm: function() {
-      this.checkform();
+      this.checkForm();
     }
   },
   methods: {
