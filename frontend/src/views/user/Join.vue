@@ -155,6 +155,7 @@
       <v-col class="py-0" sm="6">
         <label for="extraAddress">상세주소</label>
         <v-text-field
+          ref="extraAddress"
           v-model="extraAddress"
           id="extraAddress"
           placeholder="상세주소를 입력해주세요"
@@ -306,7 +307,7 @@ export default {
       this.checkForm();
     },
     isTerm: function() {
-      this.checkform();
+      this.checkForm();
     }
   },
   methods: {
@@ -374,8 +375,8 @@ export default {
             this.extraAddress = "";
           }
           this.postcode = data.zonecode;
-          this.$refs.extraAddress.focus();
           this.searchWindow.display = "none";
+          document.getElementById('extraAddress')[0].focus()
           document.body.scrollTop = currentScroll;
         },
         onResize: size => {
@@ -410,7 +411,6 @@ export default {
         phonenumber: false,
         nickName: "",
         passwordConfirm: false,
-        accountnumber: false,
         isTerm: false
       },
       isSubmit: false,
