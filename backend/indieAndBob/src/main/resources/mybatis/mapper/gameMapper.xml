@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.indieAndBob.mapper.game">
+
+   <select id="selectGameById" parameterType="String" resultType="game">
+   	  select * from game where game_id=#{gameId}
+   </select>
+   <insert id="registerGame" parameterType="game">
+      insert into user (email, name, password, postcode,address,extra_address,bank_name,bank_account,
+      is_developer,phone_number,profile,introduction) 
+      values (#{email}, #{name}, #{password}, #{postcode},#{address},#{extraAddress},#{bankName},#{bankAccount},
+      #{isDeveloper},#{phoneNumber},#{profile},#{introduction})
+   </insert>
+</mapper>
