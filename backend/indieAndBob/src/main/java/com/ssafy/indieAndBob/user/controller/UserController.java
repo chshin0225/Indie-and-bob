@@ -20,7 +20,7 @@ import com.ssafy.indieAndBob.user.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://i3a105.p.ssafy.io:3000" })
 @RestController
 public class UserController {
 	

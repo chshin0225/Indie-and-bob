@@ -15,7 +15,7 @@ import com.ssafy.indieAndBob.reward.service.RewardService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://i3a105.p.ssafy.io:3000" })
 @RestController
 public class RewardController {
 
