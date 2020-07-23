@@ -17,7 +17,7 @@
         </template>
         <v-card>
           <v-toolbar dark color="primary">
-            <v-btn icon dark @click="dialog = false">
+            <v-btn icon dark @click="dialog = false; onRewardSave()">
               <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-toolbar-title>Settings</v-toolbar-title>
@@ -95,6 +95,8 @@
                 ></v-text-field>
               </v-col>
             </v-row>
+            <v-row justify=center>
+            </v-row>
           </v-container>
         </v-card>
       </v-dialog>
@@ -103,13 +105,15 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
+import SERVER from '../../api/base';
+
 
 export default {
   created() {
     this.id = this.$route.params.id;
     axios
-      .get("getProject/" + this.id)
+      .get(SERVER.BASE + SERVER.GAMEDETAIL + this.id)
       .then(res => {
         this.project = res.data;
         if (this.project.rewards) {
@@ -119,6 +123,7 @@ export default {
         }
       })
       .catch(err => console.error(err));
+    axios.get(SERVER.BASE + SERVER.REWARDS+ this.id )
   },
   data() {
     return {
@@ -143,6 +148,9 @@ export default {
       if (fileInfo) {
         reader.readAsDataURL(fileInfo);
       }
+    },
+    onRewardSave() {
+
     }
   }
 };

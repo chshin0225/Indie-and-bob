@@ -58,6 +58,18 @@
       </v-col>
     </v-row>
     <v-row class='mt-5 justify-center'>
+                 <v-row class="justify-center">
+              <v-col class="py-0 mt-5" sm="6">
+                <label for="thumbnail">썸네일</label>
+                <v-file-input
+                  id="thumbnail"
+                  @change="uploadImgPreview"
+                  accept="image/*"
+                  label="썸네일 이미지를 입력해주세요"
+                  prepend-icon="mdi-camera"
+                ></v-file-input>
+              </v-col>
+            </v-row>
  <v-btn @click="onButtonClick" class="deep-purple accent-4">프로젝트 생성</v-btn>
     </v-row>
    
@@ -70,7 +82,7 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import axios from 'axios';
 import router from '../../router'
 import { Editor } from "@toast-ui/vue-editor";
-
+import SERVER from '../../api/base'
 export default {
   components: {
     editor: Editor
@@ -87,6 +99,7 @@ export default {
       },
       content: "",
       aim: 0,
+      thumbnailUrl: '',
     };
   },
   methods: {
@@ -94,17 +107,28 @@ export default {
 
       let PARAMS = {
         'content' :this.$refs.toastuiEditor.invoke("getMarkdown"),
-        'title' : this.title,
-        'date' : this.date,
+        'name' : this.title,
+        'deadline' : this.date,
         'aim' : this.aim,
+        'thumbnail' : this.thumbnailUrl
       }
-      axios.post('프로젝트만들기', PARAMS)
+      axios.post(SERVER.BASE+ '/game/registergame', PARAMS)
       .then(res => {
         router.push("/project/"+res.data.id);
       })
       .catch(err => console.error(err))
 
-    }
+    },
+        uploadImgPreview() {
+      let fileInfo = document.getElementById("thumbnail").files[0];
+      let reader = new FileReader();
+      reader.onload = function() {
+        this.thumbnailUrl = reader.result;
+      };
+      if (fileInfo) {
+        reader.readAsDataURL(fileInfo);
+      }
+    },
   }
 };
 </script>

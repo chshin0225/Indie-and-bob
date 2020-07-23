@@ -9,8 +9,8 @@
         <v-text-field
           hide-details="true"
           class="my-3"
-          v-model="name"
-          id="name"
+          v-model="nickName"
+          id="nickname"
           outlined
           placeholder="닉네임을 입력해주세요...씨...."
           type="text"
@@ -233,7 +233,7 @@
               @click="SignUp(
                 {email: email, 
                 password: password, 
-                nickname: nickName, 
+                name: nickName, 
                 is_developer: is_developer, 
                 phonenumber: phonenumber, 
                 bankname: bankname,
