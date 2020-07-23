@@ -85,7 +85,6 @@ export default {
       .is()
       .max(100)
       .has()
-
       .digits()
       .has()
       .letters();

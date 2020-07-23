@@ -3,9 +3,12 @@
     <!-- header -->
     <div class="header">
       <v-container>
-        <h1>Username</h1>
-        <p class="mb-0">follow: 0</p>
-        <p class="mb-0 pb-3">followers: 0</p>
+        <v-row>
+          <h1>Username</h1>
+          <v-btn outlined small color="primary" class="align-self-center ml-3">follow</v-btn>
+        </v-row>
+        <p class="mb-0">following: 0</p>
+        <p class="mb-0 pb-3">followers: 0</p>  
       </v-container>
     </div>
     <v-divider></v-divider>

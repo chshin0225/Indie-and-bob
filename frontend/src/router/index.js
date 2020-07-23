@@ -88,11 +88,6 @@ const routes = [
     name: 'ErrorPage',
     component: ErrorPage
   },
-  {
-    path: '/user/mypage',
-    name: 'MyPage',
-    component: MyPage
-  },
 
   //project(개발자 사이드) 관련
   {
