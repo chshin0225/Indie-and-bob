@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import axios from "axios";
 
 export default {
@@ -68,7 +68,8 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getUserInfo"]),
+    // ...mapActions(["getUserInfo"]),
+
     execDaumPostcode() {
       const currentScroll = Math.max(
         document.body.scrollTop,
