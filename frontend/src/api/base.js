@@ -5,6 +5,7 @@ export default {
     'PWCHANGE': "/account/pwchange",
     'USERINFO' : "/account/userinfo",
     'GAMEDETAIL': "/game",
+    'GAMEREGISTER' : "/game/registergame",
     'REWARDDETAIL': "/reward",
     'REWARDREGISTER':"/reward/registerreward",
     'REWARDS' :"/reward/bygameid"
