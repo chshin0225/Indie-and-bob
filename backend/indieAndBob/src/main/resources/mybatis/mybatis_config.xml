@@ -11,12 +11,16 @@
 		<!-- 사용할 DTO들을 예약어로 등록 -->
 		<!-- typeAlias type="com.example.core.dto.Board" alias="board" /-->
 		<typeAlias type="com.ssafy.indieAndBob.user.dto.User" alias="user"/>
+		<typeAlias type="com.ssafy.indieAndBob.game.dto.Game" alias="game"/>
+		<typeAlias type="com.ssafy.indieAndBob.reward.dto.Reward" alias="reward"/>
 		
 	</typeAliases>
 
 	<mappers>
 		<!-- 사용할 mapper 등록 -->
 		<mapper resource="mybatis/mapper/userMapper.xml" />
+		<mapper resource="mybatis/mapper/gameMapper.xml" />
+		<mapper resource="mybatis/mapper/rewardMapper.xml" />
 		
 	</mappers>
 </configuration>
