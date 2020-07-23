@@ -7,16 +7,15 @@ import Join from '../views/user/Join.vue'
 import PasswordChange from '../views/user/PasswordChange.vue'
 import MyPage from '../views/user/MyPage.vue'
 
-
 import FeedMain from '../views/IndexFeed.vue'
 
 //project making
 import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
-import ProjectMain from '../views/project/ProjectMain.vue'
 
 //project + funding
+import GameMain from '../views/fund/GameMain.vue'
 import CreateFund from '../views/fund/CreateFund.vue'
 import GameDetail from '../views/fund/GameDetail.vue'
 
@@ -102,7 +101,7 @@ const routes = [
     component: CreateProject
   },
   {
-    path: '/project/:id',
+    path: '/project/detail/:id',
     name: 'ProjectDetail',
     component: ProjectDetail 
   },
@@ -125,8 +124,8 @@ const routes = [
   },
   {
     path: '/project/all',
-    name: 'ProjectMain',
-    component: ProjectMain,
+    name: 'GameMain',
+    component: GameMain,
   },
 ]
 

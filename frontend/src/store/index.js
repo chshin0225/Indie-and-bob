@@ -66,22 +66,19 @@ export default new Vuex.Store({
           router.push("/feed/main");
         })
         .catch(err => {
+          // if (err.response.status === 404) {
+          //   router.push({ name: "PageNotFound" })
+          // } else {
+          //   console.error(err)
+          // }
+          console.error(err)
+        })
+        .catch(err => {
           if (err.response.status === 404) {
             router.push({ name: "PageNotFound" })
           } else {
             console.error(err)
           }
-        })
-    },
-
-    login({ commit }, signupData) {
-      axios.post(SERVER.BASE + SERVER.LOGIN, signupData)
-        .then(res => {
-          console.log(res)
-          commit('setLoggedIn', true)
-          // local storage에 받은 jwt 저장
-          localStorage.setItem('user')
-          router.push('/feed/main')
         })
     },
 
