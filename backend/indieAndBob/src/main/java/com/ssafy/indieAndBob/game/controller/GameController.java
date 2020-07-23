@@ -26,12 +26,19 @@ public class GameController {
 	@GetMapping("/game/{gameId}")
 	@ApiOperation(value = "게임아이디로 게임찾기")
 	public Object selectGameById(@PathVariable String gameId) {
-		ResponseEntity<Game> response = null;
+		ResponseEntity response = null;
 		Game game = gservice.selectGameById(gameId);
 		if(!game.equals(null)) {
-			return new ResponseEntity<Game> (game, HttpStatus.OK);
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = game;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+			
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Game> (game, HttpStatus.NO_CONTENT);
+		return response;
 	}
 	
 	
