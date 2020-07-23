@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.user.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.user.dto.User;
 import com.ssafy.indieAndBob.user.service.UserService;
@@ -20,16 +23,21 @@ import io.swagger.annotations.ApiOperation;
 public class UserController {
 	@Autowired
 	UserService userService;
+	@Autowired
+	JwtService jwtService;
 
 	@PostMapping("/account/login")
 	@ApiOperation(value = "로그인")
-	public Object login(@RequestBody User user) {
+	public Object login(@RequestBody User user, HttpServletResponse res) {
 		ResponseEntity response = null;
 		User u = userService.selectByEmailAndPassword(user);
 		if (u != null) {
+			String token = jwtService.create(u);
+			res.setHeader("jwt-auth-token", token);
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
-			result.data = "success";
+			result.data = token;
+			result.object = u;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
