@@ -73,6 +73,13 @@ export default new Vuex.Store({
           // }
           console.error(err)
         })
+        .catch(err => {
+          if (err.response.status === 404) {
+            router.push({ name: "PageNotFound" })
+          } else {
+            console.error(err)
+          }
+        })
     },
 
     SignUp({ commit }, signupData) {
