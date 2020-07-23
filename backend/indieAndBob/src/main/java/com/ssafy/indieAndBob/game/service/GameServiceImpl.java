@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.game.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,12 @@ public class GameServiceImpl implements GameService{
 	@Override
 	public Game selectGameById(String gameId) {
 		return gamedao.selectGameById(gameId);
+	}
+
+	@Override
+	public List<Game> selectAllGame() {
+		// TODO Auto-generated method stub
+		return gamedao.selectAllGame();
 	}
 
 	

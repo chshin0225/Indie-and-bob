@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.reward.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,5 +24,15 @@ public class RewardDaoImpl implements RewardDao{
 	public Reward selectRewardById(String rewardId) {
 		
 		return temp.selectOne(ns+"selectRewardById", rewardId);
+	}
+
+	@Override
+	public List<Reward> selectAllReward() {
+		return temp.selectList(ns + "selectAllReward");
+	}
+
+	@Override
+	public List<Reward> selectRewardByGameId(String gameId) {
+		return temp.selectList(ns + " ", gameId);
 	}
 }

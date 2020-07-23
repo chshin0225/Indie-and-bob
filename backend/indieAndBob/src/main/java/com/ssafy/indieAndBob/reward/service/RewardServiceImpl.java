@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.reward.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,17 @@ public class RewardServiceImpl implements RewardService{
 
 	@Override
 	public Reward selectRewardById(String rewardId) {
-		// TODO Auto-generated method stub
 		return rewarddao.selectRewardById(rewardId);
+	}
+
+	@Override
+	public List<Reward> selectAllReward() {
+		return rewarddao.selectAllReward();
+	}
+
+	@Override
+	public List<Reward> selectRewardByGameId(String gameId) {
+		return rewarddao.selectRewardByGameId(gameId);
 	}
 
 	
