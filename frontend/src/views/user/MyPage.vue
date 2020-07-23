@@ -1,143 +1,98 @@
 <template>
   <div>
-     <v-card>
-    <v-toolbar flat color="primary" dark>
-      <v-toolbar-title>My Page</v-toolbar-title>
-    </v-toolbar>
-    <v-tabs vertical>
-      <v-tab>
-        <i class="fas fa-laptop mr-3"></i>
-        작성한 프로젝트
-      </v-tab>
-      <v-tab>
-        <i class="fas fa-money-check-alt mr-3"></i>
-        후원한 프로젝트
-      </v-tab>
-      <v-tab>
-        <i class="fas fa-edit mr-3"></i>
-        작성한 글
-      </v-tab>
-      <v-tab>
-        <i class="fas fa-thumbs-up mr-3"></i>
-        좋아요
-      </v-tab>
-      <v-tab>
-        <i class="fas fa-users mr-3"></i>
-        팔로우
-      </v-tab>
-      <v-tab>
-        <i class="fas fa-user-edit mr-3"></i>
-        내 정보확인/변경
-      </v-tab>
+    <!-- header -->
+    <div class="header">
+      <v-container>
+        <h1>Username</h1>
+        <p class="mb-0">follow: 0</p>
+        <p class="mb-0 pb-3">followers: 0</p>
+      </v-container>
+    </div>
+    <v-divider></v-divider>
 
-      <v-tab-item class="myProjects">
-        <v-card flat>
-          <v-card-text>
-            <p>
-              Sed aliquam ultrices mauris. Donec posuere vulputate arcu. Morbi ac felis. Etiam feugiat lorem non metus. Sed a libero.
-            </p>
+    <!-- tab menu -->
+    <v-card elevation=0>
+      <v-tabs vertical>
+        <v-tab>
+          <i class="fas fa-laptop mr-3"></i>
+          내 프로젝트
+        </v-tab>
+        <v-tab>
+          <i class="fas fa-money-check-alt mr-3"></i>
+          후원한 프로젝트
+        </v-tab>
+        <v-tab>
+          <i class="fas fa-edit mr-3"></i>
+          내가 작성한 글
+        </v-tab>
+        <v-tab>
+          <i class="fas fa-thumbs-up mr-3"></i>
+          좋아요 한 프로젝트
+        </v-tab>
+        <v-tab>
+          <i class="fas fa-users mr-3"></i>
+          팔로우 정보
+        </v-tab>
+        <v-tab>
+          <i class="fas fa-user-edit mr-3"></i>
+          내 정보확인/변경
+        </v-tab>
 
-            <p>
-              Nam ipsum risus, rutrum vitae, vestibulum eu, molestie vel, lacus. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Aliquam lobortis. Aliquam lobortis. Suspendisse non nisl sit amet velit hendrerit rutrum.
-            </p>
+        <!-- tab menu content -->
+        <v-tab-item class="myProjects">
+          <v-card flat>
+            <v-card-text>
+             <h2>내 프로젝트들</h2>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="myFundings">
+          <v-card flat>
+            <v-card-text>
+              <h2>내가 후원한 프로젝트들</h2>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="myArticles">
+          <v-card flat>
+            <v-card-text>
+              <h2>내가 작성한 글들</h2>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="Like">
+          <v-card flat>
+            <v-card-text>
+              <h2>내가 좋아요한 프로젝트들</h2>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="Follow">
+          <v-card flat>
+            <v-card-text>
+              <h2>내 팔로우 정보</h2>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="myInfo">
+          <v-card flat>
+            <v-card-text>
+             <h2>내 개인정보</h2>
+              <router-link to="/user/edit">회원정보 수정</router-link>
+              <br />
+              <router-link to="/user/password">비밀번호 변경</router-link>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
+    </v-card>
 
-            <p class="mb-0">
-              Phasellus dolor. Fusce neque. Fusce fermentum odio nec arcu. Pellentesque libero tortor, tincidunt et, tincidunt eget, semper nec, quam. Phasellus blandit leo ut odio.
-            </p>
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="myFundings">
-        <v-card flat>
-          <v-card-text>
-            <p>
-              Morbi nec metus. Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus, vitae iaculis lacus elit id tortor. Sed mollis, eros et ultrices tempus, mauris ipsum aliquam libero, non adipiscing dolor urna a orci. Curabitur ligula sapien, tincidunt non, euismod vitae, posuere imperdiet, leo. Nunc sed turpis.
-            </p>
-
-            <p>
-              Suspendisse feugiat. Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus, vitae iaculis lacus elit id tortor. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In hac habitasse platea dictumst. Fusce ac felis sit amet ligula pharetra condimentum.
-            </p>
-
-            <p>
-              Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Nam commodo suscipit quam. In consectetuer turpis ut velit. Sed cursus turpis vitae tortor. Aliquam eu nunc.
-            </p>
-
-            <p>
-              Etiam ut purus mattis mauris sodales aliquam. Ut varius tincidunt libero. Aenean viverra rhoncus pede. Duis leo. Fusce fermentum odio nec arcu.
-            </p>
-
-            <p class="mb-0">
-              Donec venenatis vulputate lorem. Aenean viverra rhoncus pede. In dui magna, posuere eget, vestibulum et, tempor auctor, justo. Fusce commodo aliquam arcu. Suspendisse enim turpis, dictum sed, iaculis a, condimentum nec, nisi.
-            </p>
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="myArticles">
-        <v-card flat>
-          <v-card-text>
-            <p>
-              Fusce a quam. Phasellus nec sem in justo pellentesque facilisis. Nam eget dui. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
-            </p>
-
-            <p class="mb-0">
-              Cras sagittis. Phasellus nec sem in justo pellentesque facilisis. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nam at tortor in tellus interdum sagittis.
-            </p>
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="Like">
-        <v-card flat>
-          <v-card-text>
-            <p>
-              Fusce a quam. Phasellus nec sem in justo pellentesque facilisis. Nam eget dui. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
-            </p>
-
-            <p class="mb-0">
-              Cras sagittis. Phasellus nec sem in justo pellentesque facilisis. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nam at tortor in tellus interdum sagittis.
-            </p>
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="Follow">
-        <v-card flat>
-          <v-card-text>
-            <p>
-              Fusce a quam. Phasellus nec sem in justo pellentesque facilisis. Nam eget dui. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
-            </p>
-
-            <p class="mb-0">
-              Cras sagittis. Phasellus nec sem in justo pellentesque facilisis. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nam at tortor in tellus interdum sagittis.
-            </p>
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="myInfo">
-        <v-card flat>
-          <v-card-text>
-            <p>
-              Fusce a quam. Phasellus nec sem in justo pellentesque facilisis. Nam eget dui. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
-            </p>
-
-            <p class="mb-0">
-              Cras sagittis. Phasellus nec sem in justo pellentesque facilisis. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nam at tortor in tellus interdum sagittis.
-            </p>
-            <router-link to="/user/edit">회원정보 수정</router-link>
-            <br>
-            <router-link to="/user/password">비밀번호 변경</router-link>
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-    </v-tabs>
-  </v-card>
-  <router-link to="/project/new">새 프로젝트 만들기</router-link>
+    <router-link to="/project/new">새 프로젝트 만들기</router-link>
   </div>
- 
-  
 </template>
 
 <script>
 // import { mapState, mapActions } from 'vuex'
-
 
 export default {
   // created() {
@@ -149,9 +104,11 @@ export default {
   // computed: {
   //   ...mapState([ 'user' ]),
   // }
-}
+};
 </script>
 
-<style>
-
+<style scoped>
+  .header {
+    background-color: #e4dfda;
+  }
 </style>

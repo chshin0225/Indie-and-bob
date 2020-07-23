@@ -74,14 +74,23 @@ export default new Vuex.Store({
         })
     },
 
-    login({ commit }, signupData) {
-      axios.post(SERVER.BASE + SERVER.LOGIN, signupData)
+    login({ commit }, loginData) {
+      axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
           console.log(res)
+          commit('setEmail', loginData.email)
+          commit('setPassword', loginData.password)
           commit('setLoggedIn', true)
           // local storage에 받은 jwt 저장
-          localStorage.setItem('user')
+          localStorage.setItem('user',)
           router.push('/feed/main')
+        })
+        .catch(err => {
+          if (err.response.status === 404) {
+            router.push({ name: "PageNotFound" })
+          } else {
+            console.error(err)
+          }
         })
     },
 
