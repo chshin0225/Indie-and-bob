@@ -58,7 +58,7 @@ import axios from "axios";
 
 export default {
   created() {
-    getUserInfo();
+    this.getUserInfo();
     axios
       .get("리워즈 찾아주는 URL" + this.$route.params.id)
       .then(res => {
