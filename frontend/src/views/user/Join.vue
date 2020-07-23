@@ -306,7 +306,7 @@ export default {
       this.checkForm();
     },
     isTerm: function() {
-      this.checkform();
+      this.checkForm();
     }
   },
   methods: {
@@ -374,8 +374,8 @@ export default {
             this.extraAddress = "";
           }
           this.postcode = data.zonecode;
-          this.$refs.extraAddress.focus();
           this.searchWindow.display = "none";
+          document.getElementById('extraAddress')[0].focus();
           document.body.scrollTop = currentScroll;
         },
         onResize: size => {
