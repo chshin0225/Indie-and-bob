@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <!-- <h1>{{ project.title }} 제작 페이지</h1>
+    <h1>{{ project.title }} 제작 페이지</h1>
     <p>{{ project.content }}</p>
     <v-btn>프로젝트 수정</v-btn>
     <hr />
     <h2>리워즈 목록</h2>
     <ul v-if="rewards">
       <div v-for="reward in rewards" :key="reward.id">{{reward.title}}</div>
-    </ul>-->
+    </ul>
 
     <!-- 리워드 만들기 -->
     <v-row justify="center">
@@ -107,18 +107,18 @@
 
 export default {
   created() {
-    // this.id = this.$route.params.id;
-    // axios
-    //   .get("getProject/" + this.id)
-    //   .then(res => {
-    //     this.project = res.data;
-    //     if (this.project.rewards) {
-    //       this.rewards = this.project.rewards;
-    //     } else {
-    //       this.rewards = [];
-    //     }
-    //   })
-    //   .catch(err => console.error(err));
+    this.id = this.$route.params.id;
+    axios
+      .get("getProject/" + this.id)
+      .then(res => {
+        this.project = res.data;
+        if (this.project.rewards) {
+          this.rewards = this.project.rewards;
+        } else {
+          this.rewards = [];
+        }
+      })
+      .catch(err => console.error(err));
   },
   data() {
     return {

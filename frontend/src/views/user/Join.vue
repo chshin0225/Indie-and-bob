@@ -9,8 +9,8 @@
         <v-text-field
           hide-details="true"
           class="my-3"
-          v-model="nickName"
-          id="nickname"
+          v-model="name"
+          id="name"
           outlined
           placeholder="닉네임을 입력해주세요...씨...."
           type="text"
