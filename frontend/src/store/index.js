@@ -9,20 +9,24 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // user
     isUser: false,
     isLoggedin: false,
     changedPw: false,
     oriEmail: "",
     oriPassword: "",
-    errorDetail: null,
     user: null,
     project: null,
 
     // community
     articleList: [],
+
+    // error
+    errorDetail: null,
   },
 
   mutations: {
+    // users
     setLoggedIn(state, val) {
       state.isLoggedIn = val
       console.log(state.isLoggedIn)
@@ -39,10 +43,6 @@ export default new Vuex.Store({
       state.oriPassword = val
       console.log(state.oriPassword)
     },
-    setErrorDetail(state, val) {
-      state.errorDetail = val
-      console.log(state.errorDetail)
-    },
     setUser(state, val) {
       state.user = val
       console.log(state.user)
@@ -51,6 +51,12 @@ export default new Vuex.Store({
     // community
     setArticleList(state, val) {
       state.articleList = val
+    },
+
+    // error
+    setErrorDetail(state, val) {
+      state.errorDetail = val
+      console.log(state.errorDetail)
     },
   },
 
@@ -66,12 +72,25 @@ export default new Vuex.Store({
           router.push("/feed/main");
         })
         .catch(err => {
-          // if (err.response.status === 404) {
-          //   router.push({ name: "PageNotFound" })
-          // } else {
-          //   console.error(err)
-          // }
-          console.error(err)
+          if (err.response.status === 404) {
+            router.push({ name: "PageNotFound" })
+          } else {
+            console.error(err)
+          }
+        })
+    },
+
+    // jwt login
+    login({ commit }, loginData) {
+      axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
+        .then(res => {
+          console.log(res)
+          commit('setEmail', loginData.email)
+          commit('setPassword', loginData.password)
+          commit('setLoggedIn', true)
+          // local storage에 받은 jwt 저장
+          localStorage.setItem('user', JSON.stringify(res.data))
+          router.push('/feed/main')
         })
         .catch(err => {
           if (err.response.status === 404) {
@@ -106,7 +125,6 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err.response)
-
         })
     },
 
