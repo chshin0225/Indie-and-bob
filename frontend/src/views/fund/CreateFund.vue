@@ -53,12 +53,12 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import axios from "axios";
 
 export default {
   created() {
-    getUserInfo();
+    // getUserInfo();
     axios
       .get("리워즈 찾아주는 URL" + this.$route.params.id)
       .then(res => {
@@ -68,7 +68,8 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getUserInfo"]),
+    // ...mapActions(["getUserInfo"]),
+
     execDaumPostcode() {
       const currentScroll = Math.max(
         document.body.scrollTop,
