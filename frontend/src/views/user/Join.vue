@@ -187,7 +187,7 @@
           hide-details="true"
           :items="banks"
           id="bankname"
-          v-model="bank"
+          v-model="bankname"
           outlined
         ></v-select>
       </v-col>
