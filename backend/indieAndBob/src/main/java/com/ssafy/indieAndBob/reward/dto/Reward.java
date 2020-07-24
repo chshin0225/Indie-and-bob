@@ -13,7 +13,7 @@ public class Reward {
 	public String gameId;
 	public String rewardName;
 	public String rImg;
-	public int leftPrice;
+	public int leftCount;
 	public int price;
 	public String content;
 }

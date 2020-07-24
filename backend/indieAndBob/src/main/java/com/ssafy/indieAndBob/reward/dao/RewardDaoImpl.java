@@ -33,6 +33,6 @@ public class RewardDaoImpl implements RewardDao{
 
 	@Override
 	public List<Reward> selectRewardByGameId(String gameId) {
-		return temp.selectList(ns + " ", gameId);
+		return temp.selectList(ns + "selectRewardByGameId", gameId);
 	}
 }
