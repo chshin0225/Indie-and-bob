@@ -35,6 +35,7 @@ public class UserController {
 	public Object login(@RequestBody User user, HttpServletResponse res) {
 		logger.info("==========login==========");
 		ResponseEntity response = null;
+		logger.info(""+user);
 		User u = userService.selectByEmailAndPassword(user);
 		if (u != null) {
 			String token = jwtService.create(u);
