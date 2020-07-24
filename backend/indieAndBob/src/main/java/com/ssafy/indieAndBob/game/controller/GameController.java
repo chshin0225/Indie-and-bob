@@ -3,7 +3,9 @@ package com.ssafy.indieAndBob.game.controller;
 import java.util.LinkedList;
 import java.util.List;
 
+
 import javax.servlet.http.HttpServletRequest;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,7 @@ import com.ssafy.indieAndBob.game.dto.GameLike;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.user.dto.User;
+import com.ssafy.indieAndBob.user.controller.UserController;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -84,6 +87,7 @@ public class GameController {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
+			result.object = request.getGameId();
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
