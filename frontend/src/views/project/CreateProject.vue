@@ -15,6 +15,19 @@
         ></v-text-field>
       </v-col>
     </v-row>
+    <v-row class='justify-center'>
+        <v-col class='py-0 mt-5' sm="10">
+          <label for="genres">장르선택(복수의 선택도 가능합니다)</label>
+          <v-select
+            v-model="value"
+            :items="genres"
+            chips
+            id="genres"
+            multiple
+            outlined
+          ></v-select>
+        </v-col>
+    </v-row>
     <v-row class="justify-center">
       <v-col class="py-0 mt-5" sm="10">
         <label for="content">프로젝트 내용</label>
@@ -90,6 +103,8 @@ export default {
   data() {
     return {
       text: "",
+      value: "",
+      genres:['판타지', '캐쥬얼', '보드게임', '사행성', '가챠', '로또', '이것저것'],
       today: new Date().toISOString().substr(0, 10),
       date: new Date().toISOString().substr(0, 10),
       title: "",
