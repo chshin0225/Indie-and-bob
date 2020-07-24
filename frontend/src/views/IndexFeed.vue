@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1>Main page</h1>
     <div>
       <router-link to="/user/mypage">마이페이지</router-link>
       <br>

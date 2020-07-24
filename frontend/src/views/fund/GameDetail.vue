@@ -6,7 +6,7 @@
         <h1>{{ project.name }}</h1>
         <v-row>
           <v-col>
-            <p>기간: {{ project.startedAt}} ~ {{ project.deadline }}</p>
+            <p>기간: {{ project.startedAt }} ~ {{ project.deadline }}</p>
             <p>목표: {{ project.aim }}원</p>
           </v-col>
         </v-row>

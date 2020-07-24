@@ -1,9 +1,10 @@
 <template>
   <v-app>
     <div>
+      <!-- navbar -->
       <v-app-bar color="primary" dense flat>
         <!-- 모바일 화면에서만 햄버거 메뉴 사용 가능-->
-        <v-app-bar-nav-icon class="d-md-none white--text"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon class="white--text" @click="drawer = true"></v-app-bar-nav-icon>
 
         <!-- 로고 -->
         <v-toolbar-title>
@@ -13,49 +14,97 @@
         <v-spacer></v-spacer>
 
         <!-- search bar -->
-        <v-text-field
-          dark
-          color="white"
-          class="mt-4"
-          placeholder="Search"
-        ></v-text-field>
+        <v-text-field dark color="white" class="mt-4 search-input" placeholder="Search"></v-text-field>
         <v-btn icon>
           <i class="fas fa-search white--text"></i>
         </v-btn>
 
-        <!-- <v-menu left bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
-
-          <v-list>
-            <v-list-item v-for="n in 5" :key="n" @click="() => {}">
-              <v-list-item-title>Option {{ n }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu> -->
-
-        <v-btn @click="goBack" color="secondary" class="black--text" depressed>
-          go back
-        </v-btn>
-
+        <!-- back btn -->
+        <v-btn @click="goBack" color="secondary" class="black--text" depressed>back</v-btn>
       </v-app-bar>
+
+      <v-navigation-drawer v-model="drawer" absolute temporary>
+        <v-list nav dense>
+          <v-list-item-group v-model="group" active-class="secondary--text black--text">
+            <v-list-item class="px-3">
+              <v-row>
+                <v-col cols="3">
+                  <i class="fas fa-home fa-lg grey--text text--darken-2"></i>
+                </v-col>
+                <v-col class="font-weight-regular">Home</v-col>
+              </v-row>
+            </v-list-item>
+
+            <v-list-item class="px-3">
+              <v-row>
+                <v-col cols="3">
+                  <i class="fas fa-user fa-lg grey--text text--darken-2"></i>
+                </v-col>
+                <v-col class="font-weight-regular">My Page</v-col>
+              </v-row>
+            </v-list-item>
+
+            <v-list-item class="px-3">
+              <v-row>
+                <v-col cols="3">
+                  <i class="fas fa-gamepad fa-lg grey--text text--darken-2"></i>
+                </v-col>
+                <v-col class="font-weight-regular">Browse Project</v-col>
+              </v-row>
+            </v-list-item>
+
+            <v-list-item class="px-3">
+              <v-row>
+                <v-col cols="3">
+                  <i class="fas fa-comment-alt fa-lg grey--text text--darken-2"></i>
+                </v-col>
+                <v-col class="font-weight-regular">Community</v-col>
+              </v-row>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+
+        <template v-slot:append>
+          <div class="pa-2">
+            <v-btn block color="secondary black--text">Logout</v-btn>
+          </div>
+        </template>
+      </v-navigation-drawer>
     </div>
 
+    <!-- router view -->
     <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 
 export default {
   name: "app",
 
-  methods: {
-    ...mapActions(['goBack',])
+  data() {
+    return {
+      drawer: false
+    };
   },
+
+  methods: {
+    ...mapActions(["goBack"])
+  }
 };
 </script>
+
+<style scoped>
+.search-input {
+  max-width: 300px;
+}
+
+.fa-user {
+  margin-left: 3px;
+}
+
+.fa-comment-alt {
+  margin-left: 2px;
+}
+</style>
