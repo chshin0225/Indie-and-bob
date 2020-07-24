@@ -18,10 +18,13 @@ export default new Vuex.Store({
     oriEmail: "",
     oriPassword: "",
     user: null,
-    project: null,
-
+    
     // community
     articleList: [],
+    
+    // project
+    projectList: [],
+    project: null,
 
     // error
     errorDetail: null,
@@ -65,6 +68,14 @@ export default new Vuex.Store({
     // community
     setArticleList(state, val) {
       state.articleList = val
+    },
+
+    // project
+    setProjectList(state, val) {
+      state.projectList = val
+    },
+    setProject(state, val) {
+      state.project = val
     },
 
     // error
@@ -179,7 +190,7 @@ export default new Vuex.Store({
     //     })
     //     .catch(err => console.error(err))
     // },
-    
+
     // community
     // fetchArticles({ commit }) {
     //   axios.get(게시글들 가져오기)
@@ -203,18 +214,25 @@ export default new Vuex.Store({
 
 
     
-    // projects
+    // project
 
-    // 프로젝트 받기
-    // getProject(id) {
-    //   axios.get(프로젝트getURL+'/'+id)
-    //   .then(res => {
-    //     this.commit('project', res.data)
+    fetchProjects({ commit }) {
+      axios.get(SERVER.BASE + SERVER.GAME)
+        .then(res => {
+          console.log(res.data.object)
+          commit('setProjectList', res.data.object)
+        })
+        .catch(err => console.error(err))
+    },
 
-    //   })
-    //   .catch(err => console.error(err))
-
-    // }
+    getProject({ commit }, gameId) {
+      axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`)
+      .then(res => {
+        console.log(res.data.object)
+        commit('setProject', res.data.object)
+      })
+      .catch(err => console.error(err))
+    },
   },
   modules: {
   }
