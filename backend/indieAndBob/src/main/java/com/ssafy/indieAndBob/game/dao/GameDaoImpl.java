@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.game.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,5 +24,10 @@ public class GameDaoImpl implements GameDao{
 	@Override
 	public Game selectGameById(String gameId) {
 		return temp.selectOne(ns+ "selectGameById", gameId);
+	}
+
+	@Override
+	public List<Game> selectAllGame() {
+		return temp.selectList(ns + "selectAllGame");
 	}
 }

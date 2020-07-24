@@ -7,6 +7,9 @@
    <select id="selectGameById" parameterType="String" resultType="game">
    	  select * from game where game_id=#{gameId}
    </select>
+   <select id="selectAllGame" resultType="game">
+   	  select * from game
+   </select>
    <insert id="registerGame" parameterType="game">
       insert into game (game_id, name, deadline, aim,left_price, is_end, is_approve, email,
       thumbnail ,created_at ,updated_at ,started_at) 

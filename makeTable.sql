@@ -11,35 +11,35 @@ create table reward (
     price int,
     content varchar(4000),
     primary key(`reward_id`)
-); 
+)default charset=utf8 collate utf8_general_ci;
 
 create table genre(
 	genre_id varchar(50) NOT NULL,
     genre_name varchar(200) NOT NULL,
     primary key(`genre_id`)
-);
+)default charset=utf8 collate utf8_general_ci;
 
 create table game_genre(
 	game_id varchar(50) NOT NULL,
     genre_id varchar(50) NOT NULL
-);
+)default charset=utf8 collate utf8_general_ci;
 
 create table follow(
 	follower varchar(100) NOT NULL,
     followed varchar(100) NOT NULL
-);
+)default charset=utf8 collate utf8_general_ci;
 
 create table game_like(
 	email varchar(100) NOT NULL,
     game_id varchar(50) NOT NULL
-);
+)default charset=utf8 collate utf8_general_ci;
 
 create table game_detail(
 	game_id varchar(50) NOT NULL,
     content varchar(4000),
     d_stage int NOT NULL,
     primary key(`game_id`)
-);
+)default charset=utf8 collate utf8_general_ci;
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`(
@@ -56,7 +56,7 @@ CREATE TABLE `user`(
     `profile` varchar(50),
     `introduction` varchar(100),
     primary key(`email`)
-);
+)default charset=utf8 collate utf8_general_ci;
 
 DROP TABLE IF EXISTS `funding`;
 CREATE TABLE `funding`(
@@ -66,7 +66,7 @@ CREATE TABLE `funding`(
     `money` int,
     `funded_at` datetime default now(),
     primary key(`funding_id`)
-);
+)default charset=utf8 collate utf8_general_ci;
 
 DROP TABLE IF EXISTS `game`;
 CREATE TABLE `game`(
@@ -76,11 +76,11 @@ CREATE TABLE `game`(
     `aim` int,
     `left_price` int,
     `is_end` boolean,
-    `is_approve` boolena default false,
+    `is_approve` boolean default false,
     `email` varchar(50) NOT NULL,
     `thumbnail` varchar(100) NOT NULL,
     `created_at` datetime default now(),
     `updated_at` datetime default now(),
     `started_at` datetime,
     primary key(`game_id`)
-);
+)default charset=utf8 collate utf8_general_ci;
