@@ -233,7 +233,7 @@
               @click="SignUp(
                 {email: email, 
                 password: password, 
-                nickname: nickName, 
+                name: nickName, 
                 is_developer: is_developer, 
                 phonenumber: phonenumber, 
                 bankname: bankname,
