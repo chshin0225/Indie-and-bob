@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import axios from 'axios'
+import cookies from 'vue-cookies'
 import SERVER from '../api/base'
 import router from '../router'
 
@@ -10,6 +11,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     // user
+    jwtToken: cookies.get('user'),
     isUser: false,
     isLoggedin: false,
     changedPw: false,
@@ -25,8 +27,20 @@ export default new Vuex.Store({
     errorDetail: null,
   },
 
+  getters: {
+    headersConfig: state => ({
+      headers: {
+        headers: `Bearer ${state.jwtToken}` 
+      }
+    })
+  },
+
   mutations: {
     // users
+    setToken(state, val) {
+      state.jwtToken = val
+      cookies.set('user', val)
+    },
     setLoggedIn(state, val) {
       state.isLoggedIn = val
       console.log(state.isLoggedIn)
@@ -62,34 +76,35 @@ export default new Vuex.Store({
 
   actions: {
     // user
-    LogIn({ commit }, loginData) {
-      commit('setEmail', loginData.email)
-      commit('setPassword', loginData.password)
-      axios.post(SERVER.BASE + "" + SERVER.LOGIN, loginData)
-        .then(res => {
-          console.log(res)
-          commit('setLoggedIn', true)
-          router.push("/feed/main");
-        })
-        .catch(err => {
-          if (err.response.status === 404) {
-            router.push({ name: "PageNotFound" })
-          } else {
-            console.error(err)
-          }
-        })
-    },
+
+    // LogIn({ commit }, loginData) {
+    //   commit('setEmail', loginData.email)
+    //   commit('setPassword', loginData.password)
+    //   axios.post(SERVER.BASE + "" + SERVER.LOGIN, loginData)
+    //     .then(res => {
+    //       console.log(res)
+    //       commit('setLoggedIn', true)
+    //       router.push("/feed/main");
+    //     })
+    //     .catch(err => {
+    //       if (err.response.status === 404) {
+    //         router.push({ name: "PageNotFound" })
+    //       } else {
+    //         console.error(err)
+    //       }
+    //     })
+    // },
 
     // jwt login
     login({ commit }, loginData) {
       axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
-          console.log(res)
+          console.log(res.headers['jwt-auth-token'])
           commit('setEmail', loginData.email)
           commit('setPassword', loginData.password)
           commit('setLoggedIn', true)
-          // local storage에 받은 jwt 저장
-          localStorage.setItem('user', JSON.stringify(res.data))
+          // 쿠키에 저장
+          commit('setToken', res.headers['jwt-auth-token'])
           router.push('/feed/main')
         })
         .catch(err => {
@@ -128,6 +143,10 @@ export default new Vuex.Store({
         })
     },
 
+    logout() {
+
+    },
+
     changePassword(context, passwordData) {
       axios.get(SERVER.BASE + SERVER.PWCHANGE + "?oripw=" + passwordData.oripw + "&newpw=" + passwordData.newpw)
         .then(res => {
@@ -153,6 +172,14 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
+    // changeUserInfo(context, changedData) {
+    //   axios.POST(회원정보변경URL, changedData)
+    //     .then(res => {
+    //       context.commit('setUser', res.data)
+    //     })
+    //     .catch(err => console.error(err))
+    // },
+    
     // community
     // fetchArticles({ commit }) {
     //   axios.get(게시글들 가져오기)
@@ -174,14 +201,9 @@ export default new Vuex.Store({
       router.go('-1')
     },
 
-    // changeUserInfo(context, changedData) {
-    //   axios.POST(회원정보변경URL, changedData)
-    //     .then(res => {
-    //       context.commit('setUser', res.data)
-    //     })
-    //     .catch(err => console.error(err))
-    // },
 
+    
+    // projects
 
     // 프로젝트 받기
     // getProject(id) {

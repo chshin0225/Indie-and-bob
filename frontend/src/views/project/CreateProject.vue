@@ -112,7 +112,7 @@ export default {
         'aim' : this.aim,
         'thumbnail' : this.thumbnailUrl
       }
-      axios.post(SERVER.BASE+ '/game/registergame', PARAMS)
+      axios.post(SERVER.BASE + '/game/registergame', PARAMS)
       .then(res => {
         router.push("/project/"+res.data.id);
       })
