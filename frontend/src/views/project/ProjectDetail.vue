@@ -5,9 +5,10 @@
     <v-btn>프로젝트 수정</v-btn>
     <hr />
     <h2>리워즈 목록</h2>
-    <ul v-if="rewards">
+    <div v-if="rewards">
       <div v-for="reward in rewards" :key="reward.id">{{reward.title}}</div>
-    </ul>
+    </div>
+    <v-btn>최종 제출</v-btn>
 
     <!-- 리워드 만들기 -->
     <v-row justify="center">
