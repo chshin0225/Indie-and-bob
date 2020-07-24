@@ -24,9 +24,17 @@
       </v-app-bar>
 
       <v-navigation-drawer v-model="drawer" absolute temporary>
+        <template v-slot:prepend>
+          <div class="pa-2 d-flex">
+            <v-avatar color="secondary">
+              <v-icon dark>mdi-account-circle</v-icon>
+            </v-avatar>
+            <h3 class="ml-4 align-self-center">로그인해주세요</h3>
+          </div>
+        </template>
         <v-list nav dense>
-          <v-list-item-group v-model="group" active-class="secondary--text black--text">
-            <v-list-item class="px-3">
+          <v-list-item-group v-model="group" active-class="primary--text">
+            <v-list-item class="px-3" to="/feed/main">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-home fa-lg grey--text text--darken-2"></i>
@@ -35,7 +43,7 @@
               </v-row>
             </v-list-item>
 
-            <v-list-item class="px-3">
+            <v-list-item class="px-3" to="/user/mypage">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-user fa-lg grey--text text--darken-2"></i>
@@ -44,7 +52,7 @@
               </v-row>
             </v-list-item>
 
-            <v-list-item class="px-3">
+            <v-list-item class="px-3" to="/project/all">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-gamepad fa-lg grey--text text--darken-2"></i>
@@ -53,7 +61,7 @@
               </v-row>
             </v-list-item>
 
-            <v-list-item class="px-3">
+            <v-list-item class="px-3" to="/community">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-comment-alt fa-lg grey--text text--darken-2"></i>
@@ -64,6 +72,7 @@
           </v-list-item-group>
         </v-list>
 
+        <!-- logout btn -->
         <template v-slot:append>
           <div class="pa-2">
             <v-btn block color="secondary black--text">Logout</v-btn>
