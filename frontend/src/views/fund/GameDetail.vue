@@ -3,10 +3,11 @@
     <!-- header -->
     <div class="header">
       <v-container>
-        <h1>Project title</h1>
+        <h1>{{ project.name }}</h1>
         <v-row>
           <v-col>
-            <p>기간, 목표 등등 정보</p>
+            <p>기간: {{ project.startedAt}} ~ {{ project.deadline }}</p>
+            <p>목표: {{ project.aim }}원</p>
           </v-col>
         </v-row>
       </v-container>
@@ -14,6 +15,7 @@
 
     <!-- content -->
     <v-container>
+      <p>{{ project }}</p>
       <v-row>
         <!-- tab section -->
         <v-col cols=8>
@@ -84,7 +86,21 @@
 </template>
 
 <script>
-export default {};
+import { mapState, mapActions } from 'vuex'
+
+export default {
+  computed: {
+    ...mapState(['project',])
+  },
+
+  methods: {
+    ...mapActions(['getProject',])
+  },
+
+  created() {
+    this.getProject(this.$route.params.id)
+  },
+};
 </script>
 
 <style scoped>
