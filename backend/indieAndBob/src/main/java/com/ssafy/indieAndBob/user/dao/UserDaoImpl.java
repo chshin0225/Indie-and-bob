@@ -1,9 +1,12 @@
 package com.ssafy.indieAndBob.user.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
 
 @Repository
@@ -32,8 +35,41 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public int changeUserInfo(User user) {
-		// TODO Auto-generated method stub
+
 		return temp.update(ns + "changeUserInfo", user);
+	}
+
+	@Override
+	public int registerFollow(Follow follow) {
+		
+		return temp.insert(ns + "registerFollow", follow);
+	}
+
+	@Override
+	public List<String> getFollower(String userId) {
+		
+		return temp.selectList(ns + "getFollower", userId);
+	}
+
+	@Override
+	public List<String> getFollowing(String userId) {
+	
+		return temp.selectList(ns + "getFollowing", userId);
+	}
+
+	@Override
+	public int deleteFollowing(Follow follow) {
+		
+		return temp.delete(ns + "deleteFollowing", follow);
+	}
+
+	@Override
+	public boolean isFollowing(Follow follow) {
+		
+		Follow f = temp.selectOne(ns + "deleteFollowing", follow);
+		if(f.equals(null)) return false;
+		
+		return true;
 	}
 
 }
