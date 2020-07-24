@@ -1,6 +1,9 @@
 package com.ssafy.indieAndBob.game.controller;
 
+import java.util.LinkedList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.indieAndBob.game.dto.Game;
+import com.ssafy.indieAndBob.game.dto.GameLike;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
-import com.ssafy.indieAndBob.user.controller.UserController;
+import com.ssafy.indieAndBob.user.dto.User;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -86,5 +91,79 @@ public class GameController {
 		return response;
 	}
 	
+	@PostMapping("/game/like")
+	@ApiOperation(value = "게임 좋아요 등록")
+	public Object gameLike(@RequestBody GameLike request) {
+		logger.debug("==========gameLike post==========");
+		logger.debug("gameLike post : " + request);
+		ResponseEntity response = null;
+		if (gservice.gameLike(request) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
 	
+	@DeleteMapping("/game/like")
+	@ApiOperation(value = "게임 좋아요 삭제")
+	public Object deleteGameLike(@RequestBody GameLike request) {
+		logger.debug("==========gameLike delete==========");
+		logger.debug("gameLike delete : " + request);
+		ResponseEntity response = null;
+		if (gservice.deleteGameLike(request) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/game/like/gamelist")
+	@ApiOperation(value = "좋아하는 게임 리스트")
+	public Object gameLikeList(HttpServletRequest request) {
+		logger.debug("==========gameLikeList==========");
+		String email = request.getParameter("email");
+		logger.debug("gameLikeList : " + email);
+		ResponseEntity response = null;
+		List<Game> games = new LinkedList<>();
+		games = gservice.selectGameByEmail(email);
+		if (games.size() != 0) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = games;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/game/like/userlist")
+	@ApiOperation(value = "좋아하는 게임 리스트")
+	public Object userLikeList(HttpServletRequest request) {
+		logger.debug("==========userLikeList==========");
+		String gameId = request.getParameter("gameId");
+		logger.debug("userLikeList : " + gameId);
+		ResponseEntity response = null;
+		List<User> users = new LinkedList<>();
+		users = gservice.selectUserByGameId(gameId);
+		if (users.size() != 0) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = users;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.indieAndBob.game.dao.GameDao;
 import com.ssafy.indieAndBob.game.dto.Game;
+import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.user.dto.User;
 
 @Service
 public class GameServiceImpl implements GameService{
@@ -27,8 +29,27 @@ public class GameServiceImpl implements GameService{
 
 	@Override
 	public List<Game> selectAllGame() {
-		// TODO Auto-generated method stub
 		return gamedao.selectAllGame();
+	}
+
+	@Override
+	public int gameLike(GameLike like) {
+		return gamedao.gameLike(like);
+	}
+
+	@Override
+	public List<Game> selectGameByEmail(String email) {
+		return gamedao.selectGameByEmail(email);
+	}
+
+	@Override
+	public List<User> selectUserByGameId(String gameId) {
+		return gamedao.selectUserByGameId(gameId);
+	}
+
+	@Override
+	public int deleteGameLike(GameLike like) {
+		return gamedao.deleteGameLike(like);
 	}
 
 	
