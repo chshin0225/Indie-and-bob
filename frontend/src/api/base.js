@@ -4,7 +4,7 @@ export default {
     'SIGNUP': "/account/signup",
     'PWCHANGE': "/account/pwchange",
     'USERINFO' : "/account/userinfo",
-    'GAMEDETAIL': "/game",
+    'GAME': "/game",
     'GAMEREGISTER' : "/game/registergame",
     'REWARDDETAIL': "/reward",
     'REWARDREGISTER':"/reward/registerreward",
