@@ -1,6 +1,8 @@
 package com.ssafy.indieAndBob.reward.controller;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.reward.dto.Reward;
 import com.ssafy.indieAndBob.reward.service.RewardService;
+import com.ssafy.indieAndBob.user.controller.UserController;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -23,10 +26,13 @@ public class RewardController {
 
 	@Autowired
 	RewardService rservice;
+	private static final Logger logger = LoggerFactory.getLogger(RewardController.class);
 
 	@GetMapping("/reward")
 	@ApiOperation(value = "모든리워드찾기")
 	public Object selectAllReward() {
+		logger.debug("===========selectAllReward==========");
+		
 		ResponseEntity response = null;
 		List<Reward> rewardlist = rservice.selectAllReward();
 		if(rewardlist.size()>0) {
@@ -44,6 +50,10 @@ public class RewardController {
 	@GetMapping("/reward/{rewardId}")
 	@ApiOperation(value = "리워드아이디로 리워드찾기")
 	public Object selectRewardById(@PathVariable String rewardId) {
+		
+		logger.debug("===========selectRewardById==========");
+		logger.debug("rewardId : " + rewardId);
+		
 		ResponseEntity response = null;
 		Reward reward = rservice.selectRewardById(rewardId);
 		if(!reward.equals(null)) {
@@ -60,6 +70,8 @@ public class RewardController {
 	@GetMapping("/reward/bygameid/{gameId}")
 	@ApiOperation(value = "게임아이디에 해당하는 리워드 찾기")
 	public Object selectRewardByGameId(@PathVariable String gameId) {
+		logger.debug("===========selectRewardByGameId==========");
+		logger.debug("gameId : " + gameId);
 		ResponseEntity response = null;
 		List<Reward> rewardlist = rservice.selectRewardByGameId(gameId);
 		if(rewardlist.size()>0) {
@@ -77,7 +89,9 @@ public class RewardController {
 
 	@PostMapping("/reward/registerreward")
 	@ApiOperation(value = "리워드등록")
-	public Object registerGame(@RequestBody Reward request) {
+	public Object registerReward(@RequestBody Reward request) {
+		logger.debug("===========registerGame==========");
+		logger.debug("reward : " + request);
 		ResponseEntity response = null;
 		if (rservice.registerReward(request) == 1) {
 			final BasicResponse result = new BasicResponse();
