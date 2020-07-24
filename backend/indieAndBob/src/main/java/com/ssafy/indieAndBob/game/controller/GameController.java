@@ -79,6 +79,7 @@ public class GameController {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
+			result.object = request.getGameId();
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

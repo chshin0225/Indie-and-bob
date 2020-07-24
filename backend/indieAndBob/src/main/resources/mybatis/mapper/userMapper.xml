@@ -22,4 +22,19 @@
       is_developer=#{isDeveloper},phone_number=#{phoneNumber},profile=#{profile},introduction=#{introduction}
       where email={#email}
    </update>
+   <insert id="registerFollow" parameterType="follow">
+   	  insert into follow (follower, following) values (#{userId},#{following})
+   </insert>
+   <select id="getFollower" parameterType="String">
+   	  select follower from follow where following=#{userId}
+   </select>
+   <select id="getFollowing" parameterType="String">
+   	  select following from follow where follower=#{userId}
+   </select>
+   <delete id="deleteFollowing" parameterType="follow">
+      delete from follow where follower=#{userId} and following=#{following}
+   </delete>
+   <select id="isFollowing" parameterType="follow">
+      select * from follow where follower=#{userId} and following=#{following}
+   </select>
 </mapper>
