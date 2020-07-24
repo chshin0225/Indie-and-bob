@@ -6,7 +6,7 @@
         <h1>{{ project.name }}</h1>
         <v-row>
           <v-col>
-            <p>기간: {{ project.startedAt}} ~ {{ project.deadline }}</p>
+            <p>기간: {{ project.startedAt }} ~ {{ project.deadline }}</p>
             <p>목표: {{ project.aim }}원</p>
           </v-col>
         </v-row>
@@ -18,7 +18,7 @@
       <p>{{ project }}</p>
       <v-row>
         <!-- tab section -->
-        <v-col cols=8>
+        <v-col cols="8">
           <v-tabs fixed-tabs>
             <v-tab>소개</v-tab>
             <v-tab>Q&A</v-tab>
@@ -54,29 +54,21 @@
         </v-col>
 
         <!-- rewards section -->
-        <v-col cols=4>
+        <v-col cols="4">
           <v-card tile>
             <v-list flat>
               <v-subheader>Rewards</v-subheader>
               <v-divider></v-divider>
-
-              <v-list-item-group color="primary">
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title>option 1</v-list-item-title>
-                    option1option1option1option1option1
-                  </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title>option 2</v-list-item-title>
-                    option2option2option2option2option2
-                  </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-              </v-list-item-group>
+              <v-expansion-panels>
+                <v-expansion-panel v-for="reward in rewards" :key="reward.id">
+                  <v-expansion-panel-header>{{reward.name}}</v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    {{reward.content}}<br>가격:{{reward.price}}원<br>남은 수량 : {{reward.left}}
+                  <v-btn color="primary">구매하러 가기</v-btn>
+                  </v-expansion-panel-content>
+                  
+                </v-expansion-panel>
+              </v-expansion-panels>
             </v-list>
           </v-card>
         </v-col>
@@ -86,20 +78,52 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-
 export default {
-  computed: {
-    ...mapState(['project',])
-  },
+  
+  data() {
+    return{
+      rewards:[{
+        id: 1,
+        name: '1번리워드',
+        content: '1번 리워드에 대한 설명입니다.',
+        left:999,
+        price: 10000,
+        thumbnail: 'n',
+      },
+      {
+        id: 2,
+        name: '2번리워드',
+        content: '2번 리워드에 대한 설명입니다.',
+        left:999,
+        price: 10000,
+        thumbnail: 'n',
+      },{
+        id: 3,
+        name: '3번리워드',
+        content: '3번 리워드에 대한 설명입니다.',
+        left:99,
+        price: 10000,
+        thumbnail: 'n',
+      },{
+        id: 4,
+        name: '4번리워드',
+        content: '4번 리워드에 대한 설명입니다.',
+        left:999,
+        price: 10000,
+        thumbnail: 'n',
+      },{
+        id: 5,
+        name: '5번리워드',
+        content: '5번 리워드에 대한 설명입니다.',
+        left:999,
+        price: 10000,
+        thumbnail: 'n',
+      },
+      ]
+    }
+  }
 
-  methods: {
-    ...mapActions(['getProject',])
-  },
 
-  created() {
-    this.getProject(this.$route.params.id)
-  },
 };
 </script>
 
