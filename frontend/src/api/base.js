@@ -4,11 +4,11 @@ export default {
     'SIGNUP': "/account/signup",
     'PWCHANGE': "/account/pwchange",
     'USERINFO' : "/account/userinfo",
-    'GAME': "/game",
+    'GAME': "/game?gameId=",
     'GAMEREGISTER' : "/game/registergame",
-    'REWARDDETAIL': "/reward",
+    'REWARDDETAIL': "/reward?rewardId=",
     'REWARDREGISTER':"/reward/registerreward",
-    'REWARDS' :"/reward/bygameid"
+    'REWARDS' :"/reward/bygameid?gameId=",
     
 
 }

@@ -3,10 +3,11 @@
     <h2>리워드 구매</h2>
     <h4>{{reward.title}}</h4>
     <p>{{reward.content}}</p>
+    <p>{{reward.price}}원</p>
 
     <p>구매정보입력</p>
 
-    <v-btn>새 주소 입력</v-btn>
+    <v-btn @click='myAddress'>내 기본 주소 사용</v-btn>
     <v-row class="justify-center">
       <v-col class="py-0 mt-3" sm="3">
         <label for="postcode">우편번호</label>
@@ -19,7 +20,7 @@
         ></v-text-field>
       </v-col>
       <v-col class="my-2" sm="3">
-        <v-btn @click="execDaumPostcode" dark>우편번호 찾기</v-btn>
+        <v-btn @click="execDaumPostcode" dark>주소 바꾸기</v-btn>
       </v-col>
     </v-row>
     <v-row class="justify-center">
@@ -48,6 +49,17 @@
         ></v-text-field>
       </v-col>
     </v-row>
+    <v-row justify=center>
+      <label for='phonenumber'>전화 번호</label>
+      <v-text-field
+        v-model='phonenumber'
+        id='phonenumber'
+        type='number'
+        hide-details='true'
+        outlined
+        required>
+      </v-text-field>
+    </v-row>
 
   </v-container>
 </template>
@@ -55,12 +67,13 @@
 <script>
 import { mapState } from "vuex";
 import axios from "axios";
+import SERVER from '../../api/base'
 
 export default {
   created() {
     this.getUserInfo();
     axios
-      .get("리워즈 찾아주는 URL" + this.$route.params.id)
+      .get(SERVER.BASE + SERVER.REWARDDETAIL + this.$route.params.id)
       .then(res => {
         this.reward = res.data;
       })
@@ -111,6 +124,11 @@ export default {
         height: "100%"
       }).embed(this.$refs.searchWindow);
       this.searchWindow.display = "block";
+    },
+    myAddress() {
+      this.postcode= this.user.postcode
+      this.address = this.user.address
+      this.extraAddress = this.user.extraAddress
     }
   },
   computed: {
@@ -118,7 +136,11 @@ export default {
   },
   data() {
     return {
-      
+      address: this.user.address,
+      postcode: this.user.postcode,
+      extraAddresss: this.user.extraAddress,
+      phonenumber: this.user.phonenumber,
+
     }
   }
 };
