@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.indieAndBob.mapper.user">
+
+   <select id="selectByEmailAndPassword" parameterType="user" resultType="user">
+      select * from user where email=#{email} and password=#{password}
+   </select>
+   <select id="selectByEmail" parameterType="String" resultType="user">
+   	  select * from user where email=#{email}
+   </select>
+   <insert id="registerUser" parameterType="user">
+      insert into user (email, name, password, postcode,address,extra_address,bank_name,bank_account,
+      is_developer,phone_number,profile,introduction) 
+      values (#{email}, #{name}, #{password}, #{postcode},#{address},#{extraAddress},#{bankName},#{bankAccount},
+      #{isDeveloper},#{phoneNumber},#{profile},#{introduction})
+   </insert>
+   <update id="changeUserInfo">
+   	  update user set email=#{email}, name=#{name}, password=#{password}, postcode=#{postcode},address=#{address},
+   	  extra_address=#{extraAddress},bank_name=#{bankName},bank_account=#{bankAccount},
+      is_developer=#{isDeveloper},phone_number=#{phoneNumber},profile=#{profile},introduction=#{introduction}
+      where email={#email}
+   </update>
+</mapper>

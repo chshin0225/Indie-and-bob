@@ -115,6 +115,11 @@ export default {
   },
   computed: {
     ...mapState(["user"])
+  },
+  data() {
+    return {
+      
+    }
   }
 };
 </script>
