@@ -64,7 +64,7 @@
                   <v-expansion-panel-header>{{reward.name}}</v-expansion-panel-header>
                   <v-expansion-panel-content>
                     {{reward.content}}<br>가격:{{reward.price}}원<br>남은 수량 : {{reward.left}}
-                  <v-btn color="primary">구매하러 가기</v-btn>
+                  <v-btn @click="rewardBuy(reward.id)" color="primary">구매하러 가기</v-btn>
                   </v-expansion-panel-content>
                   
                 </v-expansion-panel>
@@ -78,8 +78,18 @@
 </template>
 
 <script>
+import axios from 'axios';
+import router from '../../router'
+import SERVER from '../../api/base'
 export default {
-  
+  created() {
+   axios.get(SERVER.BASE + SERVER.GAME + '?gameId='+ this.$refs.params.id)
+   .then(res => {
+     this.game = res.data
+     
+   })
+
+  },
   data() {
     return{
       rewards:[{
@@ -120,8 +130,13 @@ export default {
         thumbnail: 'n',
       },
       ]
+    } 
+  },
+      methods : {
+      rewardBuy(id) {
+        router.push('/fund/'+ id)
+      }
     }
-  }
 
 
 };
