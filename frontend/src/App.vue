@@ -105,7 +105,7 @@
         <template v-slot:append>
           <!-- 로그인 했을 때 -->
           <div class="pa-2" v-if="isLoggedIn">
-            <v-btn block color="secondary black--text">Logout</v-btn>
+            <v-btn block color="secondary black--text" @click="logout">Logout</v-btn>
           </div>
           <!-- 로그인 안했을 때 -->
           <div class="pa-2" v-if="!isLoggedIn">
@@ -144,7 +144,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["goBack"])
+    ...mapActions(['goBack', 'logout'])
   }
 };
 </script>
