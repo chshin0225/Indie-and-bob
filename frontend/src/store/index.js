@@ -45,10 +45,15 @@ export default new Vuex.Store({
       state.jwtToken = val
       cookies.set('user', val)
     },
-    // setLoggedIn(state, val) {
-    //   state.isLoggedIn = val
-    //   console.log(state.isLoggedIn)
-    // },
+    SetLoggedIn(state) {
+      if (cookies.isKey('user')) {
+        state.token = cookies.get('user')
+        state.isLoggedin = true
+      } else {
+        state.isLoggedin = false
+      }
+    },
+
     setChangedPw(state, val) {
       state.changedPw = val;
       console.log(state.changedPw)
@@ -167,13 +172,14 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
-    // changeUserInfo(context, changedData) {
-    //   axios.POST(회원정보변경URL, changedData)
-    //     .then(res => {
-    //       context.commit('setUser', res.data)
-    //     })
-    //     .catch(err => console.error(err))
-    // },
+    changeUserInfo(context, changedData) {
+      axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
+        .then(res => {
+          context.commit('setUser', res.data)
+          alert('회원 정보가 변경되었습니다.')
+        })
+        .catch(err => console.error(err))
+    },
 
     follow() {
 
