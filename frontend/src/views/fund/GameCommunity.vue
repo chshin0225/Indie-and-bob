@@ -4,14 +4,13 @@
       <v-card>
         <v-list two-line>
           <template v-for="article in community">
-            <v-subheader :key="article.id">{{ article.content }}</v-subheader>
-            <v-list-item :key="article.title" @click="">
+            <v-list-item :key="article.id">
               <v-list-item-avatar>
                 <img :src="article.user.profileurl">
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title>{{article.user.username}}</v-list-item-title>
-                <v-list-item-subtitle>{{article.createdat}}</v-list-item-subtitle>
+                <v-list-item-title>{{article.content}}</v-list-item-title>
+                <v-list-item-subtitle>{{article.createdat}} by {{article.user.nickname}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </template>
