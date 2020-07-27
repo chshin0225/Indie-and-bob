@@ -1,13 +1,19 @@
 package com.ssafy.indieAndBob.user.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
+import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
 import com.ssafy.indieAndBob.user.service.UserService;
 
@@ -34,8 +41,8 @@ public class UserController {
 	@ApiOperation(value = "로그인")
 	public Object login(@RequestBody User user, HttpServletResponse res) {
 		logger.info("==========login==========");
+		logger.info("user : " + user);
 		ResponseEntity response = null;
-		logger.info(""+user);
 		User u = userService.selectByEmailAndPassword(user);
 		if (u != null) {
 			String token = jwtService.create(u);
@@ -55,21 +62,50 @@ public class UserController {
 	@ApiOperation(value = "가입하기")
 	public Object signup(@RequestBody User request) {
 		logger.info("==========signup==========");
+		logger.info("user : " + request);
 		ResponseEntity response = null;
 		User u = userService.selectByEmail(request.getEmail());
 		if (u == null) {
-			if (userService.registerUser(request) == 1) {
+			u = userService.selectByNickname(request.getNickname());
+			logger.info(" " + u);
+			if(u == null) {
+				if (userService.registerUser(request) == 1) {
+					final BasicResponse result = new BasicResponse();
+					result.status = true;
+					result.data = "success";
+					response = new ResponseEntity<>(result, HttpStatus.OK);
+				} else {
+					response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			}
+			else {
 				final BasicResponse result = new BasicResponse();
-				result.status = true;
-				result.data = "success";
-				response = new ResponseEntity<>(result, HttpStatus.OK);
-			} else {
-				response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+				result.status = false;
+				result.data = "duplicated nickname";
+				response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 			}
 		} else {
 			final BasicResponse result = new BasicResponse();
 			result.status = false;
 			result.data = "duplicated email";
+			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		}
+		return response;
+	}
+	
+	@GetMapping("/account/userinfo/{email}")
+	@ApiOperation(value = "특정 회원정보")
+	public Object selectUserByEmail(@PathVariable String email) {
+		logger.info("==========selectUserByEmail==========");
+		ResponseEntity response = null;
+		User u = userService.selectByEmail(email);
+		if (u == null) {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		} else {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = u;
 			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 		}
 		return response;
@@ -87,6 +123,102 @@ public class UserController {
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@PostMapping("/following")
+	@ApiOperation(value = "팔로우하기")
+	public Object following(@RequestBody Follow request) {
+		logger.info("==========following==========");
+		logger.info("follow : " + request);
+		ResponseEntity response = null;
+		if(userService.registerFollow(request) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+		
+	}
+	
+	@GetMapping("/follower/{userid}")
+	@ApiOperation(value = "팔로워리스트 불러오기")
+	public Object getFollower(@PathVariable String userId) {
+		logger.info("==========getFollower==========");
+		logger.info("userId : " + userId);
+		ResponseEntity response = null;
+		List<String> followerlist = userService.getFollower(userId);
+		if(followerlist.size()>0) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = followerlist;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/following/{userid}")
+	@ApiOperation(value = "팔로잉리스트 불러오기")
+	public Object getFollowing(@PathVariable String userId) {
+		logger.info("==========getFollowing==========");
+		logger.info("userId : " + userId);
+		ResponseEntity response = null;
+		List<String> followinglist = userService.getFollowing(userId);
+		if(followinglist.size()>0) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = followinglist;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@Delete("/unfollow")
+	@ApiOperation(value = "언팔하기")
+	public Object unFollow(@RequestBody Follow request) {
+		logger.info("==========unFollow==========");
+		logger.info("follow : " + request);
+		ResponseEntity response = null;
+		if(userService.deleteFollowing(request) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/isfollowing")
+	@ApiOperation(value="해당사람을 팔로우 하고 있는지 아닌지")
+	public Object isFollowing(@PathVariable String userId, @PathVariable String following) {
+		logger.info("==========isFollowing==========");
+		Follow follow = new Follow(userId, following);
+		logger.info("follow : " + follow);
+		ResponseEntity response = null;
+		if(userService.isFollowing(follow)) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = true;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = false;
+			response = new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return response;
 	}
