@@ -19,21 +19,50 @@
           <i class="fas fa-search white--text"></i>
         </v-btn>
 
+        <!-- notifications(login했을 때만) -->
+        <v-menu v-if="isLoggedIn" transition="slide-y-transition" :close-on-click="closeOnClick" nudge-bottom=50 bottom left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-bind="attrs" v-on="on"><i class="fas fa-bell white--text"></i></v-btn>
+          </template>
+          <v-list>
+            <v-list-item v-for="(item, i) in items" :key="i">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
         <!-- back btn -->
         <v-btn @click="goBack" color="secondary" class="black--text" depressed>back</v-btn>
       </v-app-bar>
 
+      <!-- nav drawer -->
       <v-navigation-drawer v-model="drawer" absolute temporary>
+        <!-- 현 유저 표시 -->
         <template v-slot:prepend>
-          <div class="pa-2 d-flex">
-            <v-avatar color="secondary">
-              <v-icon dark>mdi-account-circle</v-icon>
-            </v-avatar>
-            <h3 class="ml-4 align-self-center">로그인해주세요</h3>
-          </div>
+          <!-- 로그인 안했을 때 -->
+          <router-link to="/" class="text-decoration-none black--text" v-if="!isLoggedIn">
+            <div class="pa-2 d-flex">
+              <v-avatar color="secondary">
+                <v-icon dark>mdi-account-circle</v-icon>
+              </v-avatar>
+              <h3 class="ml-4 align-self-center">로그인해주세요</h3>
+            </div>
+          </router-link>
+
+          <!-- 로그인 했을 때 -->
+          <router-link to="/" class="text-decoration-none black--text" v-if="isLoggedIn">
+            <div class="pa-2 d-flex">
+              <v-avatar color="secondary">
+                <v-icon dark>mdi-account-circle</v-icon>
+              </v-avatar>
+              <h3 class="ml-4 align-self-center">username</h3>
+            </div>
+          </router-link>
         </template>
+
+        <!-- 네비게이션 -->
         <v-list nav dense>
-          <v-list-item-group v-model="group" active-class="primary--text">
+          <v-list-item-group active-class="primary--text">
             <v-list-item class="px-3" to="/feed/main">
               <v-row>
                 <v-col cols="3">
@@ -43,7 +72,7 @@
               </v-row>
             </v-list-item>
 
-            <v-list-item class="px-3" to="/user/mypage">
+            <v-list-item class="px-3" to="/user/mypage" v-if="isLoggedIn">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-user fa-lg grey--text text--darken-2"></i>
@@ -57,7 +86,7 @@
                 <v-col cols="3">
                   <i class="fas fa-gamepad fa-lg grey--text text--darken-2"></i>
                 </v-col>
-                <v-col class="font-weight-regular">Browse Project</v-col>
+                <v-col class="font-weight-regular">Browse Projects</v-col>
               </v-row>
             </v-list-item>
 
@@ -72,10 +101,15 @@
           </v-list-item-group>
         </v-list>
 
-        <!-- logout btn -->
+        <!-- logout/login btn -->
         <template v-slot:append>
-          <div class="pa-2">
+          <!-- 로그인 했을 때 -->
+          <div class="pa-2" v-if="isLoggedIn">
             <v-btn block color="secondary black--text">Logout</v-btn>
+          </div>
+          <!-- 로그인 안했을 때 -->
+          <div class="pa-2" v-if="!isLoggedIn">
+            <v-btn block color="accent white--text" to="/">Login</v-btn>
           </div>
         </template>
       </v-navigation-drawer>
@@ -87,15 +121,26 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "app",
 
   data() {
     return {
-      drawer: false
+      drawer: false,
+      items: [
+        { title: 'Notification1' },
+        { title: 'Notification2' },
+        { title: 'Notification3' },
+        { title: 'Notification4' },
+      ],
+      closeOnClick: true,
     };
+  },
+
+  computed: {
+    ...mapGetters(['isLoggedIn',])
   },
 
   methods: {
