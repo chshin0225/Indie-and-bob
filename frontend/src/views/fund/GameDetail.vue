@@ -63,10 +63,13 @@
                 <v-expansion-panel v-for="reward in rewards" :key="reward.id">
                   <v-expansion-panel-header>{{reward.name}}</v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    {{reward.content}}<br>가격:{{reward.price}}원<br>남은 수량 : {{reward.left}}
-                  <v-btn @click="rewardBuy(reward.id)" color="primary">구매하러 가기</v-btn>
+                    {{reward.content}}
+                    <br />
+                    가격:{{reward.price}}원
+                    <br />
+                    남은 수량 : {{reward.left}}
+                    <v-btn @click="rewardBuy(reward.id)" color="primary">구매하러 가기</v-btn>
                   </v-expansion-panel-content>
-                  
                 </v-expansion-panel>
               </v-expansion-panels>
             </v-list>
@@ -78,67 +81,78 @@
 </template>
 
 <script>
-import axios from 'axios';
-import router from '../../router'
-import SERVER from '../../api/base'
+// import axios from "axios";
+// import SERVER from "../../api/base";
+import router from "../../router";
+import { mapState, mapActions } from 'vuex'
+
 export default {
   created() {
-   axios.get(SERVER.BASE + SERVER.GAME + '?gameId='+ this.$refs.params.id)
-   .then(res => {
-     this.game = res.data
-     
-   })
-
+    this.getProject(this.$route.params.id)
+    // axios
+    //   .get(SERVER.BASE + SERVER.GAME + "?gameId=" + this.$refs.params.id)
+    //   .then(res => {
+    //     this.game = res.data;
+    //   });
   },
+
+  computed: {
+    ...mapState(['project',])
+  },
+
   data() {
-    return{
-      rewards:[{
-        id: 1,
-        name: '1번리워드',
-        content: '1번 리워드에 대한 설명입니다.',
-        left:999,
-        price: 10000,
-        thumbnail: 'n',
-      },
-      {
-        id: 2,
-        name: '2번리워드',
-        content: '2번 리워드에 대한 설명입니다.',
-        left:999,
-        price: 10000,
-        thumbnail: 'n',
-      },{
-        id: 3,
-        name: '3번리워드',
-        content: '3번 리워드에 대한 설명입니다.',
-        left:99,
-        price: 10000,
-        thumbnail: 'n',
-      },{
-        id: 4,
-        name: '4번리워드',
-        content: '4번 리워드에 대한 설명입니다.',
-        left:999,
-        price: 10000,
-        thumbnail: 'n',
-      },{
-        id: 5,
-        name: '5번리워드',
-        content: '5번 리워드에 대한 설명입니다.',
-        left:999,
-        price: 10000,
-        thumbnail: 'n',
-      },
+    return {
+      rewards: [
+        {
+          id: 1,
+          name: "1번리워드",
+          content: "1번 리워드에 대한 설명입니다.",
+          left: 999,
+          price: 10000,
+          thumbnail: "n"
+        },
+        {
+          id: 2,
+          name: "2번리워드",
+          content: "2번 리워드에 대한 설명입니다.",
+          left: 999,
+          price: 10000,
+          thumbnail: "n"
+        },
+        {
+          id: 3,
+          name: "3번리워드",
+          content: "3번 리워드에 대한 설명입니다.",
+          left: 99,
+          price: 10000,
+          thumbnail: "n"
+        },
+        {
+          id: 4,
+          name: "4번리워드",
+          content: "4번 리워드에 대한 설명입니다.",
+          left: 999,
+          price: 10000,
+          thumbnail: "n"
+        },
+        {
+          id: 5,
+          name: "5번리워드",
+          content: "5번 리워드에 대한 설명입니다.",
+          left: 999,
+          price: 10000,
+          thumbnail: "n"
+        }
       ]
-    } 
+    };
   },
-      methods : {
-      rewardBuy(id) {
-        router.push('/fund/'+ id)
-      }
-    }
+  methods: {
+    ...mapActions(['getProject',]),
 
-
+    rewardBuy(id) {
+      router.push("/fund/" + id);
+    },
+  }
 };
 </script>
 
