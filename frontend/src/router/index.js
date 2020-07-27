@@ -13,6 +13,7 @@ import FeedMain from '../views/IndexFeed.vue'
 import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
+import SearchResult from '../views/project/SearchResult.vue'
 
 //project + funding
 import GameMain from '../views/fund/GameMain.vue'
@@ -170,6 +171,12 @@ const routes = [
       title: 'Browse Projects'
     },
   },
+  {
+    path: '/search/:keyword',
+    name: 'SearchResult',
+    component: SearchResult,
+  }
+
 ]
 
 const router = new VueRouter({
