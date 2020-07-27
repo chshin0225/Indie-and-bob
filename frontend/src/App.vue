@@ -86,7 +86,7 @@
                 <v-col cols="3">
                   <i class="fas fa-gamepad fa-lg grey--text text--darken-2"></i>
                 </v-col>
-                <v-col class="font-weight-regular">Browse Project</v-col>
+                <v-col class="font-weight-regular">Browse Projects</v-col>
               </v-row>
             </v-list-item>
 
