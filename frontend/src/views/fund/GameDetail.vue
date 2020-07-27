@@ -15,7 +15,6 @@
 
     <!-- content -->
     <v-container>
-      <p>{{ project }}</p>
       <v-row>
         <!-- tab section -->
         <v-col cols="8">
@@ -29,6 +28,7 @@
               <v-card flat>
                 <v-card-text>
                   <h2>프로젝트 소개</h2>
+                  <p>{{project.content}}</p>
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -38,6 +38,7 @@
               <v-card flat>
                 <v-card-text>
                   <h2>Q&A</h2>
+                  <QuestionandAnswer />  
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -47,6 +48,7 @@
               <v-card flat>
                 <v-card-text>
                   <h2>Community</h2>
+                  <GameCommunity />
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -73,25 +75,52 @@
           </v-card>
         </v-col>
       </v-row>
+     <v-btn
+        fab
+        large
+        dark
+        bottom
+        right
+        color='pink'
+        class="v-btn--example"
+      >
+        <v-icon color='white'>fas fa-heart</v-icon>
+      </v-btn>
     </v-container>
+
   </div>
+  
 </template>
 
-<script>
-import axios from 'axios';
+// <script>
+// import axios from 'axios';
 import router from '../../router'
-import SERVER from '../../api/base'
+// import SERVER from '../../api/base'
+import GameCommunity from './GameCommunity.vue'
+import QuestionandAnswer from './QuestionandAnswer.vue'
 export default {
-  created() {
-   axios.get(SERVER.BASE + SERVER.GAME + '?gameId='+ this.$refs.params.id)
-   .then(res => {
-     this.game = res.data
+  // created() {
+  //  axios.get(SERVER.BASE + SERVER.GAME + '?gameId='+ this.$refs.params.id)
+  //  .then(res => {
+  //    this.project = res.data
      
-   })
+  //  })
 
+  // },
+  components: {
+    GameCommunity,
+    QuestionandAnswer,
   },
   data() {
     return{
+      project : {
+        name : 'example',
+        startedAt : '2020-07-14',
+        aim : '1000000',
+        deadline : '2020-08-14',
+        content : '예시 프로젝트 매우 좋은 프로젝트 뜌듀듀듀'
+
+      },
       rewards:[{
         id: 1,
         name: '1번리워드',
