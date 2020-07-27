@@ -50,6 +50,41 @@
       </v-col>
     </v-row>
 
+    <!-- name -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm="6">
+        <label for="name">이름</label>
+        <v-text-field
+          class="my-3"
+          hide-details="true"
+          v-model="name"
+          id="name"
+          outlined
+          placeholder="홍길동"
+          type="text"
+        />
+        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
+      </v-col>
+    </v-row>
+
+    <!-- profile image -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm="6">
+        <label for="profile-image">이미지</label>
+        <v-file-input
+          class="my-3"
+          accept="image/png, image/jpeg, image/bmp"
+          hide-details="true"
+          v-model="profileImage"
+          id="profile-image"
+          outlined
+          placeholder="없어도 됩니다."
+          type="text"
+        />
+        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
+      </v-col>
+    </v-row>
+
     <!-- password -->
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
@@ -233,7 +268,9 @@
               @click="SignUp(
                 {email: email, 
                 password: password, 
-                name: nickName, 
+                name:name,
+                profile: profileImage,
+                nickname: nickName, 
                 is_developer: is_developer, 
                 phonenumber: phonenumber, 
                 bankname: bankname,
@@ -392,6 +429,8 @@ export default {
   data() {
     return {
       email: "",
+      name: "",
+      profileImage: null,
       password: "",
       passwordConfirm: "",
       phonenumber: "",
