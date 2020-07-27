@@ -217,7 +217,7 @@ export default new Vuex.Store({
     // project
 
     fetchProjects({ commit }) {
-      axios.get(SERVER.BASE + SERVER.GAME)
+      axios.get(SERVER.BASE + SERVER.GAMELIST)
         .then(res => {
           console.log(res.data.object)
           commit('setProjectList', res.data.object)
