@@ -13,6 +13,7 @@ import FeedMain from '../views/IndexFeed.vue'
 import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
+import SearchResult from '../views/project/SearchResult.vue'
 
 //project + funding
 import GameMain from '../views/fund/GameMain.vue'
@@ -122,6 +123,12 @@ const routes = [
     name: 'GameMain',
     component: GameMain,
   },
+  {
+    path: '/search/:keyword',
+    name: 'SearchResult',
+    component: SearchResult,
+  }
+
 ]
 
 const router = new VueRouter({
@@ -129,5 +136,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+
 
 export default router
