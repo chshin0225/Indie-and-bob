@@ -80,6 +80,24 @@ public class UserController {
 		}
 		return response;
 	}
+	
+	@GetMapping("/account/userinfo/{email}")
+	@ApiOperation(value = "특정 회원정보")
+	public Object selectUserByEmail(@PathVariable String email) {
+		logger.info("==========selectUserByEmail==========");
+		ResponseEntity response = null;
+		User u = userService.selectByEmail(email);
+		if (u == null) {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		} else {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = u;
+			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		}
+		return response;
+	}
 
 	@PutMapping("/account/userinfo")
 	@ApiOperation(value = "회원 정보 수정")
@@ -97,7 +115,7 @@ public class UserController {
 		return response;
 	}
 	
-	@PutMapping("/following")
+	@PostMapping("/following")
 	@ApiOperation(value = "팔로우하기")
 	public Object following(@RequestBody Follow request) {
 		logger.info("==========following==========");

@@ -172,7 +172,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/game/islike")
-	@ApiOperation(value = "좋아하는 게임 리스트")
+	@ApiOperation(value = "특정 user가 특정 game을 좋아하는가")
 	public Object isLike(HttpServletRequest request) {
 		String email = request.getParameter("email");
 		String gameId = request.getParameter("gameId");
