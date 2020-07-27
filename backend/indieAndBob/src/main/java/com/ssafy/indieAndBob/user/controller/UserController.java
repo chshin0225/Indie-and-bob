@@ -41,6 +41,7 @@ public class UserController {
 	@ApiOperation(value = "로그인")
 	public Object login(@RequestBody User user, HttpServletResponse res) {
 		logger.info("==========login==========");
+		logger.info("user : " + user);
 		ResponseEntity response = null;
 		User u = userService.selectByEmailAndPassword(user);
 		if (u != null) {
@@ -61,16 +62,27 @@ public class UserController {
 	@ApiOperation(value = "가입하기")
 	public Object signup(@RequestBody User request) {
 		logger.info("==========signup==========");
+		logger.info("user : " + request);
 		ResponseEntity response = null;
 		User u = userService.selectByEmail(request.getEmail());
 		if (u == null) {
-			if (userService.registerUser(request) == 1) {
+			u = userService.selectByNickname(request.getNickname());
+			logger.info(" " + u);
+			if(u == null) {
+				if (userService.registerUser(request) == 1) {
+					final BasicResponse result = new BasicResponse();
+					result.status = true;
+					result.data = "success";
+					response = new ResponseEntity<>(result, HttpStatus.OK);
+				} else {
+					response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			}
+			else {
 				final BasicResponse result = new BasicResponse();
-				result.status = true;
-				result.data = "success";
-				response = new ResponseEntity<>(result, HttpStatus.OK);
-			} else {
-				response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+				result.status = false;
+				result.data = "duplicated nickname";
+				response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 			}
 		} else {
 			final BasicResponse result = new BasicResponse();

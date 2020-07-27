@@ -56,4 +56,23 @@ public class GameCommentController {
 		}
 		return response;
 	}
+	
+	@GetMapping("/game/comment/{gameId}")
+	@ApiOperation(value = "게임에 등록된 댓글 조회")
+	public Object selectCommentByGameId(@PathVariable String gameId) {
+		logger.info("==========selectCommentByGameId==========");
+		logger.info("selectCommentByGameId : " + gameId);
+		ResponseEntity response = null;
+		List<GameComment> comments = gcservice.selectCommentByGameId(gameId);
+		if (comments.size() != 0) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = comments;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
 }

@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.game.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,7 +17,12 @@ public class GameCommentDaoImpl implements GameCommentDao{
 	
 	@Override
 	public int registerComment(GameComment comment) {
-		return temp.insert(ns+"registerComment", comment);
+		return temp.insert(ns + "registerComment", comment);
+	}
+
+	@Override
+	public List<GameComment> selectCommentByGameId(String gameId) {
+		return temp.selectList(ns + "selectCommentByGameId", gameId);
 	}
 
 }

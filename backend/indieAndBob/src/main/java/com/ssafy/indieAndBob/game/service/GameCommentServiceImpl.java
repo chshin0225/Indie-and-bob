@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.game.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,11 @@ public class GameCommentServiceImpl implements GameCommentService {
 	@Override
 	public int registerComment(GameComment comment) {
 		return gameCommentDao.registerComment(comment);
+	}
+
+	@Override
+	public List<GameComment> selectCommentByGameId(String gameId) {
+		return gameCommentDao.selectCommentByGameId(gameId);
 	}
 
 }

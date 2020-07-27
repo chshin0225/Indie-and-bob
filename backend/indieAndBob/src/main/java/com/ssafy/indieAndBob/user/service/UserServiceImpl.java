@@ -32,38 +32,37 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int changeUserInfo(User user) {
-		// TODO Auto-generated method stub
 		return userDao.changeUserInfo(user);
 	}
 
 	@Override
 	public int registerFollow(Follow follow) {
-		// TODO Auto-generated method stub
 		return userDao.registerFollow(follow);
 	}
 
 	@Override
 	public List<String> getFollower(String userId) {
-		// TODO Auto-generated method stub
 		return userDao.getFollower(userId);
 	}
 
 	@Override
 	public List<String> getFollowing(String userId) {
-		// TODO Auto-generated method stub
 		return userDao.getFollowing(userId);
 	}
 
 	@Override
 	public int deleteFollowing(Follow follow) {
-		// TODO Auto-generated method stub
 		return userDao.deleteFollowing(follow);
 	}
 
 	@Override
 	public boolean isFollowing(Follow follow) {
-		// TODO Auto-generated method stub
 		return userDao.isFollowing(follow);
+	}
+
+	@Override
+	public User selectByNickname(String nickname) {
+		return userDao.selectByNickname(nickname);
 	}
 
 }
