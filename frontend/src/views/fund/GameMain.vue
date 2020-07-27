@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <!-- <router-link to="/game/1">GameDetail example</router-link>
-    <p>{{ projectList }}</p> -->
+
+    <!-- <p>{{ projectList }}</p> -->
     <h1 class="text-center">Projects</h1>
 
     <!-- projects  -->
