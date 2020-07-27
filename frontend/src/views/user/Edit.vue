@@ -2,6 +2,11 @@
   <v-container>
     <h1 class="text-center">회원정보 변경</h1>
 
+    <v-row>
+      <v-col class="py-0" sm=6>
+        <p>이름 : {{ this.name }} </p>
+      </v-col>
+    </v-row>
     <!-- id -->
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
@@ -36,6 +41,24 @@
     <v-row class="justify-center">
       <v-col class="py-0" sm=6>
         <p>이메일 : {{ email }}</p>
+      </v-col>
+    </v-row>
+
+    <!-- profile image -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm="6">
+        <label for="profile-image">이미지</label>
+        <v-file-input
+          class="my-3"
+          accept="image/png, image/jpeg, image/bmp"
+          hide-details="true"
+          v-model="profileImage"
+          id="profile-image"
+          outlined
+          placeholder="프로필 사진을 등록해주세요."
+          type="text"
+        />
+        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
 
@@ -231,7 +254,7 @@
 
           <v-col class="text-right py-0">
             <v-btn           
-              @click="changeUserInfo({email: email, password: password, nickname: nickName, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, postcode: postcode, address: address, extraAddress: extraAddress})"
+              @click="changeUserInfo({email: email, profile:profileImage, password: password, nickname: nickName, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, postcode: postcode, address: address, extraAddress: extraAddress})"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
@@ -280,7 +303,9 @@ export default {
       axios.유저정보가져오기()
         .then(res => {
           this.email = res.data.email
+          this.profileImage = res.data.profile
           this.password = res.data.password
+          this.name = res.data.name
           this.phonenumber = res.data.phonenumber
           this.nickName = res.data.nickName
           this.usertype = res.data.usertype
@@ -364,8 +389,10 @@ export default {
     return {
       email: "",
       password: "",
+      profileImage: "",
       phonenumber: "",
       nickName: "",
+      name: "",
       usertype: "",
       userTypes: ['일반 사용자', '개발자'], 
       banks: ['하나은행', '우리은행','국민은행'],
