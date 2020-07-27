@@ -20,7 +20,10 @@ public class GameDaoImpl implements GameDao{
 	
 	@Override
 	public int registerGame(Game game) {
-		return temp.insert(ns + "registerGame", game);
+		if(temp.insert(ns + "registerGame", game) != 1) {
+			return 0;
+		}
+		return game.getGameId();
 	}
 
 	@Override
@@ -51,5 +54,10 @@ public class GameDaoImpl implements GameDao{
 	@Override
 	public int deleteGameLike(GameLike like) {
 		return temp.delete(ns+"deleteGameLike", like);
+	}
+
+	@Override
+	public GameLike isLike(GameLike like) {
+		return temp.selectOne(ns+"isLike", like);
 	}
 }

@@ -13,6 +13,7 @@
 		<typeAlias type="com.ssafy.indieAndBob.user.dto.User" alias="user"/>
 		<typeAlias type="com.ssafy.indieAndBob.user.dto.Follow" alias="follow"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.Game" alias="game"/>
+		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameLike" alias="gamelike"/>
 		<typeAlias type="com.ssafy.indieAndBob.reward.dto.Reward" alias="reward"/>
 		
 		
