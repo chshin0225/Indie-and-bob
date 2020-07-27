@@ -7,8 +7,10 @@
           <h1>Username</h1>
           <v-btn outlined small color="primary" class="align-self-center ml-3">follow</v-btn>
         </v-row>
+        <p class="mb-0">introduction: 한줄소개</p>
         <p class="mb-0">following: 0</p>
         <p class="mb-0 pb-3">followers: 0</p>  
+        <p>{{ user }}</p>
       </v-container>
     </div>
     <v-divider></v-divider>
@@ -95,18 +97,18 @@
 </template>
 
 <script>
-// import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
-  // created() {
-  //   getUserInfo()
-  // },
-  // methods: {
-  //   ...mapActions([ 'getUserInfo' ]),
-  // },
-  // computed: {
-  //   ...mapState([ 'user' ]),
-  // }
+  created() {
+    this.getUserInfo('test100@naver.com')
+  },
+  methods: {
+    ...mapActions([ 'getUserInfo' ]),
+  },
+  computed: {
+    ...mapState([ 'user' ]),
+  }
 };
 </script>
 

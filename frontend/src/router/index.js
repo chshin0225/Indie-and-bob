@@ -36,29 +36,44 @@ const routes = [
   {
     path: '/',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {
+      title: 'Login'
+    },
   },
   {
     path: '/user/join',
     name: 'Join',
-    component: Join
+    component: Join,
+    meta: {
+      title: 'Signup'
+    },
   },
   {
     path: '/user/password',
     name: 'PasswordChange',
-    component: PasswordChange
+    component: PasswordChange,
+    meta: {
+      title: 'Change Password'
+    },
   },
   {
     path: '/user/mypage',
     name: 'MyPage',
-    component: MyPage
+    component: MyPage,
+    meta: {
+      title: 'My page'
+    },
   },
 
   // main
   {
     path: '/feed/main',
     name: 'FeedMain',
-    component: FeedMain
+    component: FeedMain,
+    meta: {
+      title: 'Home'
+    },
   },
 
   // community
@@ -66,62 +81,95 @@ const routes = [
     path: '/community',
     name: 'CommunityMain',
     component: CommunityMain,
+    meta: {
+      title: 'Community'
+    },
   },
   {
     path: '/community/new',
     name: 'CommunityForm',
     component: CommunityForm,
+    meta: {
+      title: 'New Article',
+    },
   },
   {
     path: '/community/:articleId',
     name: 'CommunityArticle',
     component: CommunityArticle,
+    meta: {
+      title: 'Article Detail'
+    },
   },
 
   // error
   {
     path: '/404',
     name: 'PageNotFound',
-    component: PageNotFound
+    component: PageNotFound,
+    meta: {
+      title: 'Page Not Found'
+    },
   },
   {
     path: '/error',
     name: 'ErrorPage',
-    component: ErrorPage
+    component: ErrorPage,
+    meta: {
+      title: 'Error'
+    },
   },
 
   //project(개발자 사이드) 관련
   {
     path : '/project/new',
     name : 'CreateProject',
-    component: CreateProject
+    component: CreateProject,
+    meta: {
+      title: 'Create Project'
+    },
   },
   {
     path: '/project/detail/:id',
     name: 'ProjectDetail',
-    component: ProjectDetail 
+    component: ProjectDetail,
+    meta: {
+      title: 'Create Project'
+    },
   },
   {
     path: '/project/done',
     name: 'CreateProjectDone',
-    component: CreateProjectDone
+    component: CreateProjectDone,
+    meta: {
+      title: 'Create Project'
+    },
   },
 
   //game(고객 사이드) 관련
   {
     path: '/game/:id',
     name: 'GameDetail',
-    component: GameDetail
+    component: GameDetail,
+    meta: {
+      title: 'Project Detail'
+    },
   },
   {
     path: '/fund/:id',
     name: 'CreateFund',
-    component: CreateFund
+    component: CreateFund,
+    meta: {
+      title: 'Fund Project',
+    },
   },
   {
     path: '/project/all',
     name: 'GameMain',
     component: GameMain,
+    meta: {
+      title: 'Browse Projects'
+    },
   },
   {
     path: '/search/:keyword',
@@ -137,6 +185,11 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  // tab 제목 바꾸기
+  document.title = to.meta.title
+  next()
+})
 
 
 export default router

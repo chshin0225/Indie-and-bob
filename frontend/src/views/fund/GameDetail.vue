@@ -65,10 +65,13 @@
                 <v-expansion-panel v-for="reward in rewards" :key="reward.id">
                   <v-expansion-panel-header>{{reward.name}}</v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    {{reward.content}}<br>가격:{{reward.price}}원<br>남은 수량 : {{reward.left}}
-                  <v-btn @click="rewardBuy(reward.id)" color="primary">구매하러 가기</v-btn>
+                    {{reward.content}}
+                    <br />
+                    가격:{{reward.price}}원
+                    <br />
+                    남은 수량 : {{reward.left}}
+                    <v-btn @click="rewardBuy(reward.id)" color="primary">구매하러 가기</v-btn>
                   </v-expansion-panel-content>
-                  
                 </v-expansion-panel>
               </v-expansion-panels>
             </v-list>
@@ -111,6 +114,7 @@ export default {
     GameCommunity,
     QuestionandAnswer,
   },
+
   data() {
     return{
       project : {
@@ -159,15 +163,15 @@ export default {
         thumbnail: 'n',
       },
       ]
-    } 
+    };
   },
-      methods : {
-      rewardBuy(id) {
-        router.push('/fund/'+ id)
-      }
-    }
+  methods: {
+    ...mapActions(['getProject',]),
 
-
+    rewardBuy(id) {
+      router.push("/fund/" + id);
+    },
+  }
 };
 </script>
 
