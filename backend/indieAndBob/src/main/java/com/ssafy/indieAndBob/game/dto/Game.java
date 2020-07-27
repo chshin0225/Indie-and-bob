@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Game {
-	public String gameId;
+	public int gameId;
 	public String name;
 	public Date deadline;
 	public int aim;

@@ -64,18 +64,18 @@ CREATE TABLE `funding`(
     `funded_at` datetime default now(),
     primary key(`funding_id`)
 );
-
-DROP TABLE IF EXISTS `game`;
 CREATE TABLE `game`(
-	`game_id` varchar(10) NOT NULL,
+    `game_id` int auto_increment,
     `name` varchar(30) NOT NULL,
     `deadline` datetime NOT NULL,
     `aim` int,
     `left_price` int,
     `is_end` boolean,
+    `is_approve` boolean default false,
     `email` varchar(50) NOT NULL,
     `thumbnail` varchar(100) NOT NULL,
     `created_at` datetime default now(),
     `updated_at` datetime default now(),
+    `started_at` datetime,
     primary key(`game_id`)
-);
+)default charset=utf8 collate utf8_general_ci;
