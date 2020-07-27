@@ -14,6 +14,7 @@
 		<typeAlias type="com.ssafy.indieAndBob.user.dto.Follow" alias="follow"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.Game" alias="game"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameLike" alias="gamelike"/>
+		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameComment" alias="gamecomment"/>
 		<typeAlias type="com.ssafy.indieAndBob.reward.dto.Reward" alias="reward"/>
 		
 		
@@ -23,6 +24,7 @@
 		<!-- 사용할 mapper 등록 -->
 		<mapper resource="mybatis/mapper/userMapper.xml" />
 		<mapper resource="mybatis/mapper/gameMapper.xml" />
+		<mapper resource="mybatis/mapper/gameCommentMapper.xml" />
 		<mapper resource="mybatis/mapper/rewardMapper.xml" />
 		
 	</mappers>

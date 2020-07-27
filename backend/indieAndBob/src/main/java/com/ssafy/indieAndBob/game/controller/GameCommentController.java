@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.indieAndBob.game.dto.Game;
+import com.ssafy.indieAndBob.game.dto.GameComment;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.service.GameCommentService;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.user.dto.User;
@@ -31,64 +33,23 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "http://i3a105.p.ssafy.io:3000" })
 @RestController
-public class GameController {
+public class GameCommentController {
 
-	private static final Logger logger = LoggerFactory.getLogger(GameController.class);
+	private static final Logger logger = LoggerFactory.getLogger(GameCommentController.class);
 	
 	@Autowired
-	GameService gservice;
+	GameCommentService gcservice;
 	
-	@GetMapping("/game")
-	@ApiOperation(value="모든게임리스트")
-	public Object selectAllGame() {
-		logger.info("==========selectAllGame==========");
+	@PostMapping("/game/comment")
+	@ApiOperation(value = "게임 댓글 등록")
+	public Object registerGameComment(@RequestBody GameComment comment) {
+		logger.info("==========registerGameComment==========");
+		logger.info("registerGameComment : " + comment);
 		ResponseEntity response = null;
-		List<Game> gamelist = gservice.selectAllGame();
-		if(gamelist.size()>0) {
+		if (gcservice.registerComment(comment) != 0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
-			result.object = gamelist;
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-		} else {
-			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
-		return response;
-	}
-	
-	@GetMapping("/game/{gameId}")
-	@ApiOperation(value = "게임아이디로 게임찾기")
-	public Object selectGameById(@PathVariable String gameId) {
-		logger.info("==========selectGameById==========");
-		logger.info("gameid : " + gameId);
-		ResponseEntity response = null;
-		Game game = gservice.selectGameById(gameId);
-		if(!game.equals(null)) {
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-			result.object = game;
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-			
-		} else {
-			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
-		return response;
-	}
-	
-	
-	@PostMapping("/game/registergame")
-	@ApiOperation(value = "펀딩할 게임등록")
-	public Object registerGame(@RequestBody Game request) {
-		logger.info("==========registerGame==========");
-		logger.info("Game : " + request);
-		ResponseEntity response = null;
-		int gameId = gservice.registerGame(request);
-		if (gameId != 0) {
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-			result.object = gameId;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
