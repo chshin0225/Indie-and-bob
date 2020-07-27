@@ -13,7 +13,7 @@ export default new Vuex.Store({
     // user
     jwtToken: cookies.get('user'),
     isUser: false,
-    isLoggedin: false,
+    // isLoggedin: false,
     changedPw: false,
     oriEmail: "",
     oriPassword: "",
@@ -35,7 +35,8 @@ export default new Vuex.Store({
       headers: {
         headers: `Bearer ${state.jwtToken}` 
       }
-    })
+    }),
+    isLoggedIn: state => !!state.jwtToken,
   },
 
   mutations: {
@@ -44,10 +45,10 @@ export default new Vuex.Store({
       state.jwtToken = val
       cookies.set('user', val)
     },
-    setLoggedIn(state, val) {
-      state.isLoggedIn = val
-      console.log(state.isLoggedIn)
-    },
+    // setLoggedIn(state, val) {
+    //   state.isLoggedIn = val
+    //   console.log(state.isLoggedIn)
+    // },
     setChangedPw(state, val) {
       state.changedPw = val;
       console.log(state.changedPw)
@@ -87,33 +88,13 @@ export default new Vuex.Store({
 
   actions: {
     // user
-
-    // LogIn({ commit }, loginData) {
-    //   commit('setEmail', loginData.email)
-    //   commit('setPassword', loginData.password)
-    //   axios.post(SERVER.BASE + "" + SERVER.LOGIN, loginData)
-    //     .then(res => {
-    //       console.log(res)
-    //       commit('setLoggedIn', true)
-    //       router.push("/feed/main");
-    //     })
-    //     .catch(err => {
-    //       if (err.response.status === 404) {
-    //         router.push({ name: "PageNotFound" })
-    //       } else {
-    //         console.error(err)
-    //       }
-    //     })
-    // },
-
-    // jwt login
     login({ commit }, loginData) {
       axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
           console.log(res.headers['jwt-auth-token'])
           commit('setEmail', loginData.email)
           commit('setPassword', loginData.password)
-          commit('setLoggedIn', true)
+          // commit('setLoggedIn', true)
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
           router.push('/feed/main')
