@@ -52,5 +52,10 @@ public class GameServiceImpl implements GameService{
 		return gamedao.deleteGameLike(like);
 	}
 
+	@Override
+	public GameLike isLike(GameLike like) {
+		return gamedao.isLike(like);
+	}
+
 	
 }

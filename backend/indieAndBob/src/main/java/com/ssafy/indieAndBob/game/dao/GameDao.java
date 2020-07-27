@@ -15,4 +15,5 @@ public interface GameDao {
 	List<Game> selectGameByEmail(String email);
 	List<User> selectUserByGameId(String gameId);
 	int deleteGameLike(GameLike like);
+	GameLike isLike(GameLike like);
 }

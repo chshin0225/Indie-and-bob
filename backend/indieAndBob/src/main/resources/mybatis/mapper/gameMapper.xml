@@ -8,16 +8,16 @@
 		select * from game where game_id=#{gameId}
     </select>
     <select id="selectAllGame" resultType="game">
-   	    select * from game
+   	    select * from game where is_approve
     </select>
-    <insert id="registerGame" parameterType="game">
-        insert into game (game_id, name, deadline, aim,left_price, is_end, is_approve, email,
-        thumbnail ,created_at ,updated_at ,started_at) 
-        values (#{gameId}, #{name}, #{deadline}, #{aim},#{leftPrice},#{isEnd},#{isApprove},#{email},
+    <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="game">
+        insert into game (name, deadline, aim,left_price, is_end, is_approve, email,
+        thumbnail ,created_at ,updated_at ,started_at)
+        values (#{name}, #{deadline}, #{aim},#{leftPrice},#{isEnd},#{isApprove},#{email},
         #{thumbnail},#{createdAt},#{updatedAt},#{startedAt})
     </insert>
-    <insert id="gameLike" parameterType="gameLike">
-    	insert into like (email,game_id) values(#{email},#{gameId})
+    <insert id="gameLike" parameterType="gamelike">
+    	insert into game_like (email,game_id) values(#{email},#{gameId})
     </insert>
     
     <select id="selectGameByEmail" parameterType="String" resultType="game">
@@ -27,10 +27,14 @@
     
     <select id="selectUserByGameId" parameterType="String" resultType="user">
     	select * from user 
-    	where email in (select email from game_like where game_id='#{gameId});
+    	where email in (select email from game_like where game_id=#{gameId});
     </select>
     
     <delete id="deleteGameLike" parameterType="gameLike">
     	delete from game_like where email=#{email} and game_id=#{gameId}
     </delete>
+    
+    <select id="isLike" parameterType="gamelike" resultType="gamelike">
+    	select * from game_like where email=#{email} and game_id=#{gameId}
+    </select>
 </mapper>

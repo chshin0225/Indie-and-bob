@@ -41,7 +41,7 @@ public class GameController {
 	@GetMapping("/game")
 	@ApiOperation(value="모든게임리스트")
 	public Object selectAllGame() {
-		logger.debug("==========selectAllGame==========");
+		logger.info("==========selectAllGame==========");
 		ResponseEntity response = null;
 		List<Game> gamelist = gservice.selectAllGame();
 		if(gamelist.size()>0) {
@@ -59,8 +59,8 @@ public class GameController {
 	@GetMapping("/game/{gameId}")
 	@ApiOperation(value = "게임아이디로 게임찾기")
 	public Object selectGameById(@PathVariable String gameId) {
-		logger.debug("==========selectGameById==========");
-		logger.debug("gameid : " + gameId);
+		logger.info("==========selectGameById==========");
+		logger.info("gameid : " + gameId);
 		ResponseEntity response = null;
 		Game game = gservice.selectGameById(gameId);
 		if(!game.equals(null)) {
@@ -80,13 +80,15 @@ public class GameController {
 	@PostMapping("/game/registergame")
 	@ApiOperation(value = "펀딩할 게임등록")
 	public Object registerGame(@RequestBody Game request) {
-		logger.debug("==========registerGame==========");
-		logger.debug("Game : " + request);
+		logger.info("==========registerGame==========");
+		logger.info("Game : " + request);
 		ResponseEntity response = null;
-		if (gservice.registerGame(request) == 1) {
+		int gameId = gservice.registerGame(request);
+		if (gameId != 0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
+			result.object = gameId;
 			result.object = request.getGameId();
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
@@ -98,8 +100,8 @@ public class GameController {
 	@PostMapping("/game/like")
 	@ApiOperation(value = "게임 좋아요 등록")
 	public Object gameLike(@RequestBody GameLike request) {
-		logger.debug("==========gameLike post==========");
-		logger.debug("gameLike post : " + request);
+		logger.info("==========gameLike post==========");
+		logger.info("gameLike post : " + request);
 		ResponseEntity response = null;
 		if (gservice.gameLike(request) == 1) {
 			final BasicResponse result = new BasicResponse();
@@ -115,8 +117,8 @@ public class GameController {
 	@DeleteMapping("/game/like")
 	@ApiOperation(value = "게임 좋아요 삭제")
 	public Object deleteGameLike(@RequestBody GameLike request) {
-		logger.debug("==========gameLike delete==========");
-		logger.debug("gameLike delete : " + request);
+		logger.info("==========gameLike delete==========");
+		logger.info("gameLike delete : " + request);
 		ResponseEntity response = null;
 		if (gservice.deleteGameLike(request) == 1) {
 			final BasicResponse result = new BasicResponse();
@@ -129,12 +131,11 @@ public class GameController {
 		return response;
 	}
 	
-	@GetMapping("/game/like/gamelist")
+	@GetMapping("/game/like/gamelist/{email}")
 	@ApiOperation(value = "좋아하는 게임 리스트")
-	public Object gameLikeList(HttpServletRequest request) {
-		logger.debug("==========gameLikeList==========");
-		String email = request.getParameter("email");
-		logger.debug("gameLikeList : " + email);
+	public Object gameLikeList(@PathVariable String email) {
+		logger.info("==========gameLikeList==========");
+		logger.info("gameLikeList : " + email);
 		ResponseEntity response = null;
 		List<Game> games = new LinkedList<>();
 		games = gservice.selectGameByEmail(email);
@@ -150,12 +151,11 @@ public class GameController {
 		return response;
 	}
 	
-	@GetMapping("/game/like/userlist")
-	@ApiOperation(value = "좋아하는 게임 리스트")
-	public Object userLikeList(HttpServletRequest request) {
-		logger.debug("==========userLikeList==========");
-		String gameId = request.getParameter("gameId");
-		logger.debug("userLikeList : " + gameId);
+	@GetMapping("/game/like/userlist/{gameId}")
+	@ApiOperation(value = "게임을 좋아하는 사람 리스트")
+	public Object userLikeList(@PathVariable String gameId) {
+		logger.info("==========userLikeList==========");
+		logger.info("userLikeList : " + gameId);
 		ResponseEntity response = null;
 		List<User> users = new LinkedList<>();
 		users = gservice.selectUserByGameId(gameId);
@@ -164,6 +164,26 @@ public class GameController {
 			result.status = true;
 			result.data = "success";
 			result.object = users;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/game/islike")
+	@ApiOperation(value = "좋아하는 게임 리스트")
+	public Object isLike(HttpServletRequest request) {
+		String email = request.getParameter("email");
+		String gameId = request.getParameter("gameId");
+		GameLike like = new GameLike(email, gameId);
+		logger.info("==========islike==========");
+		logger.info("islike : " + like);
+		ResponseEntity response = null;
+		if (gservice.isLike(like) != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
