@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class User {
 	private String email;
     private String name;
+    private String nickname;
     private String password;
     private int postcode;
     private String address;

@@ -89,7 +89,6 @@ public class GameController {
 			result.status = true;
 			result.data = "success";
 			result.object = gameId;
-			result.object = request.getGameId();
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -172,7 +171,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/game/islike")
-	@ApiOperation(value = "좋아하는 게임 리스트")
+	@ApiOperation(value = "특정 user가 특정 game을 좋아하는가")
 	public Object isLike(HttpServletRequest request) {
 		String email = request.getParameter("email");
 		String gameId = request.getParameter("gameId");
