@@ -109,8 +109,9 @@
 // import axios from 'axios';
 import router from "../../router";
 // import SERVER from '../../api/base'
-import GameCommunity from "./GameCommunity.vue";
-import QuestionandAnswer from "./QuestionandAnswer.vue";
+import GameCommunity from './GameCommunity.vue'
+import QuestionandAnswer from './QuestionandAnswer.vue'
+import { mapActions } from 'vuex'
 export default {
   // created() {
   //  axios.get(SERVER.BASE + SERVER.GAME + '?gameId='+ this.$refs.params.id)

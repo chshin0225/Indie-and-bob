@@ -168,6 +168,23 @@
       </v-col>
     </v-row>
 
+    <!-- introduction -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm="6">
+        <label for="introduction">한 줄 소개</label>
+        <v-text-field
+          class="my-3"
+          hide-details="true"
+          v-model="introduction"
+          id="introduction"
+          outlined
+          placeholder="자신을 소개해주세요~"
+          type="text"
+        />
+        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
+      </v-col>
+    </v-row>
+
     <!-- address -->
     <v-row
       ref="searchWindow"
@@ -444,6 +461,7 @@ export default {
       bankname: "",
       accountnumber: "",
       isTerm: false,
+      introduction: "",
       isLoading: false,
       error: {
         email: false,
