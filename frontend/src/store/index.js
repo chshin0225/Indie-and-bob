@@ -38,7 +38,6 @@ export default new Vuex.Store({
       }
     }),
     isLoggedIn: state => !!state.jwtToken,
-
   },
 
   mutations: {
@@ -58,15 +57,15 @@ export default new Vuex.Store({
 
     setChangedPw(state, val) {
       state.changedPw = val;
-      console.log(state.changedPw)
+      // console.log(state.changedPw)
     },
     setEmail(state, val) {
       state.oriEmail = val
-      console.log(state.oriEmail)
+      // console.log(state.oriEmail)
     },
     setPassword(state, val) {
       state.oriPassword = val
-      console.log(state.oriPassword)
+      // console.log(state.oriPassword)
     },
     setUsername(state, val) {
       state.username = val
@@ -74,7 +73,7 @@ export default new Vuex.Store({
     },
     setUserInfo(state, val) {
       state.userInfo = val
-      console.log(state.userInfo)
+      // console.log(state.userInfo)
     },
 
     // community
@@ -102,7 +101,7 @@ export default new Vuex.Store({
     login({ commit }, loginData) {
       axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
-          console.log(res.data.object)
+          // console.log(res.data.object)
           commit('setEmail', res.data.object.email)
           commit('setPassword', res.data.object.password)
 
