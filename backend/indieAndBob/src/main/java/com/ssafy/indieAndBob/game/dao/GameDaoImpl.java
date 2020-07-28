@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.indieAndBob.game.dto.Game;
+import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
 import com.ssafy.indieAndBob.user.dto.User;
 
@@ -24,6 +25,11 @@ public class GameDaoImpl implements GameDao{
 			return 0;
 		}
 		return game.getGameId();
+	}
+	
+	@Override
+	public int registerDetail(GameDetail detail) {
+		return temp.insert(ns + "registerGameDetail", detail);
 	}
 
 	@Override
@@ -60,4 +66,6 @@ public class GameDaoImpl implements GameDao{
 	public GameLike isLike(GameLike like) {
 		return temp.selectOne(ns+"isLike", like);
 	}
+
+	
 }
