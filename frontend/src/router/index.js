@@ -59,7 +59,7 @@ const routes = [
     },
   },
   {
-    path: '/user/mypage',
+    path: '/user/mypage/:username',
     name: 'MyPage',
     component: MyPage,
     meta: {
