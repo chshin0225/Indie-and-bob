@@ -29,7 +29,7 @@
    	  insert into follow (follower, following) values (#{userId},#{following})
    </insert>
    <select id="getFollower" parameterType="String">
-   	  select follower from follow where following=#{userId}
+   	  select follower from follow where following=#{nickname}
    </select>
    <select id="getFollowing" parameterType="String">
    	  select following from follow where follower=#{userId}
