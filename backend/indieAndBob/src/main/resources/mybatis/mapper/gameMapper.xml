@@ -13,7 +13,7 @@
     <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameregister">
         insert into game (name, deadline, aim,left_price, is_end, is_approve, email,
         thumbnail)
-        values (#{name}, #{deadline}, #{aim},#{leftPrice},#{isEnd},#{isApprove},#{email},
+        values (#{name}, #{deadline}, #{aim},#{aim},#{isEnd},#{isApprove},#{email},
         #{thumbnail})
     </insert>
     <insert id="registerGameDetail" parameterType="gameregister">
