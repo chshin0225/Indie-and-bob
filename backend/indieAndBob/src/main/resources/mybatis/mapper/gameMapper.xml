@@ -16,6 +16,9 @@
         values (#{name}, #{deadline}, #{aim},#{leftPrice},#{isEnd},#{isApprove},#{email},
         #{thumbnail},#{createdAt},#{updatedAt},#{startedAt})
     </insert>
+    <insert id="registerGameDetail" parameterType="gamedetail">
+    	insert into game_detail (game_id, content) values(#{gameId}, #{content})
+    </insert>
     <insert id="gameLike" parameterType="gamelike">
     	insert into game_like (email,game_id) values(#{email},#{gameId})
     </insert>

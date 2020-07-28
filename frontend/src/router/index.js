@@ -18,7 +18,6 @@ import SearchResult from '../views/project/SearchResult.vue'
 //project + funding
 import GameMain from '../views/fund/GameMain.vue'
 import CreateFund from '../views/fund/CreateFund.vue'
-import CreateFundDone from '../views/fund/CreateFundDone.vue'
 import GameDetail from '../views/fund/GameDetail.vue'
 
 // community
@@ -163,14 +162,6 @@ const routes = [
     meta: {
       title: 'Fund Project',
     },
-  },
-  {
-    path: '/complete/:id',
-    name: 'CreateFundDone',
-    component: CreateFundDone,
-    meta: {
-      title: 'Purchase Complete'
-    }
   },
   {
     path: '/project/all',

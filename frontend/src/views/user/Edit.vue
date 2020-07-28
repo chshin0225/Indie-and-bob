@@ -61,23 +61,6 @@
         <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
-    
-    <!-- introduction -->
-    <v-row class="justify-center">
-      <v-col class="py-0" sm="6">
-        <label for="introduction">한 줄 소개</label>
-        <v-text-field
-          class="my-3"
-          hide-details="true"
-          v-model="introduction"
-          id="introduction"
-          outlined
-          placeholder="자신을 소개해주세요~"
-          type="text"
-        />
-        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
-      </v-col>
-    </v-row>
 
     <!-- password
     <v-row class="justify-center">
@@ -323,7 +306,6 @@ export default {
           this.profileImage = res.data.profile
           this.password = res.data.password
           this.name = res.data.name
-          this.introduction = res.data.introduction
           this.phonenumber = res.data.phonenumber
           this.nickName = res.data.nickName
           this.usertype = res.data.usertype
@@ -416,7 +398,6 @@ export default {
       banks: ['하나은행', '우리은행','국민은행'],
       bankname: '',
       accountnumber: '',
-      introduction: "",
       isTerm: false,
       isLoading: false,
       error: {
