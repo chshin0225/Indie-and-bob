@@ -2,6 +2,7 @@ package com.ssafy.indieAndBob.game.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -87,7 +88,7 @@ public class GameController {
 		logger.info("token : " + token);
 		logger.info("" + jwtService.get(token));
 		logger.info("user : " + jwtService.get(token).get("User"));
-		String email = ((User) jwtService.get(token).get("User")).getEmail();
+		String email = (String) ((Map<String, Object>) jwtService.get(token).get("User")).get("email");
 		logger.info("==========registerGame==========");
 		logger.info("Game : " + request);
 		logger.info("email = " + email);
