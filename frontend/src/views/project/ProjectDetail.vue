@@ -160,7 +160,9 @@ export default {
         this.content = this.project.content
         console.log(this.project)
       })
-      .catch((err) => console.error(err));
+      .catch(err => {
+        console.error(err)
+      router.push('/404')});
     axios
       .get(SERVER.BASE + SERVER.REWARDS + this.id)
       .then((res) => {
@@ -265,7 +267,7 @@ export default {
     this.$prompt("If you want to delete your project, please type 'Delete the project'.", "", "Are you sure?", "question").then((text) => {
      // do somthing with text
      if(text==='Delete the project'){
-     axios.delete(SERVER.BASE+SERVER.GAME, {gameId:this.id}, this.headersConfig)
+     axios.delete(SERVER.BASE+SERVER.GAME+this.id, this.headersConfig)
      .then(router.push('/feed/main'))
      .catch(err=> {
        console.error(err)
