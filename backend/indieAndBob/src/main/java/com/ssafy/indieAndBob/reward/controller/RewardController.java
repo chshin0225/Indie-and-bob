@@ -89,7 +89,7 @@ public class RewardController {
 	}
 
 
-	@PostMapping("/reward/registerreward")
+	@PostMapping("/reward")
 	@ApiOperation(value = "리워드등록")
 	public Object registerReward(@RequestBody Reward request) {
 		logger.info("===========registerGame==========");
@@ -105,7 +105,7 @@ public class RewardController {
 		}
 		return response;
 	}
-	@PutMapping("/reward/updatereward")
+	@PutMapping("/reward")
 	@ApiOperation(value = "리워드수정")
 	public Object updateRewardByRewardId(@RequestBody Reward reqest) {
 		logger.info("===========updateRewardByRewardId==========");
@@ -122,9 +122,9 @@ public class RewardController {
 		return response;
 	}
 	
-	@DeleteMapping("/reward/deletereward")
+	@DeleteMapping("/reward/deletereward/{rewardId}")
 	@ApiOperation(value = "리워드삭제")
-	public Object deleteRewardByRewardId(@RequestBody int rewardId) {
+	public Object deleteRewardByRewardId(@PathVariable int rewardId) {
 		logger.info("===========deleteRewardByRewardId==========");
 		logger.info("rewardId : "+rewardId);
 		ResponseEntity response = null;
