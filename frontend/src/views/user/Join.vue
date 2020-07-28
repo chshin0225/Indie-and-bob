@@ -289,12 +289,13 @@
                 name:name,
                 profile: profileImage,
                 nickname: nickName, 
-                is_developer: is_developer, 
-                phonenumber: phonenumber, 
-                bankname: bankname,
-                accountnumber: accountnumber, 
+                isDeveloper: is_developer, 
+                phoneNumber: phonenumber, 
+                bankName: bankname,
+                bankAccount: accountnumber, 
                 postcode: postcode, 
-                address: address, 
+                address: address,
+                introduction: introduction, 
                 extraAddress: extraAddress})"
               :disabled="!isSubmit"
               class="d-inline-block"

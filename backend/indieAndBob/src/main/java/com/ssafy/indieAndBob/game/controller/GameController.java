@@ -3,9 +3,7 @@ package com.ssafy.indieAndBob.game.controller;
 import java.util.LinkedList;
 import java.util.List;
 
-
 import javax.servlet.http.HttpServletRequest;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.indieAndBob.game.dto.Game;
+import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.dto.GameRegister;
 import com.ssafy.indieAndBob.game.service.GameService;
+import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.user.dto.User;
-import com.ssafy.indieAndBob.user.controller.UserController;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -37,6 +37,9 @@ public class GameController {
 	
 	@Autowired
 	GameService gservice;
+	
+	@Autowired
+	JwtService jwtService;
 	
 	@GetMapping("/game")
 	@ApiOperation(value="모든게임리스트")
@@ -79,9 +82,14 @@ public class GameController {
 	
 	@PostMapping("/game/registergame")
 	@ApiOperation(value = "펀딩할 게임등록")
-	public Object registerGame(@RequestBody Game request) {
+	public Object registerGame(@RequestBody GameRegister request, HttpServletRequest req) {
+		String token = req.getHeader("jwt-auth-token");
+		logger.info("token : " + token);
+		logger.info("" + jwtService.get(token));
+		String email = (String) jwtService.get(token).get("email");
 		logger.info("==========registerGame==========");
 		logger.info("Game : " + request);
+		logger.info("email = " + email);
 		ResponseEntity response = null;
 		int gameId = gservice.registerGame(request);
 		if (gameId != 0) {

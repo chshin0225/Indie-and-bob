@@ -34,7 +34,7 @@ export default new Vuex.Store({
   getters: {
     headersConfig: state => ({
       headers: {
-        headers: `Bearer ${state.jwtToken}` 
+        "jwt-auth-token": state.jwtToken 
       }
     }),
     isLoggedIn: state => !!state.jwtToken,
