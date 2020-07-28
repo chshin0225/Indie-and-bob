@@ -7,6 +7,7 @@ export default {
 
     'FOLLOW': "/following",
     'GAMELIST' : "/gamelist/",
+    'UNAPPROVED' : "/admin/gamelist/",
     'GAME': "/game/",
     'GAMEREGISTER' : "/game/registergame",
     
