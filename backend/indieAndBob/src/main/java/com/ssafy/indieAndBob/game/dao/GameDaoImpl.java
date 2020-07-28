@@ -39,8 +39,8 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public List<Game> selectAllGame() {
-		return temp.selectList(ns + "selectAllGame");
+	public List<Game> selectAllGame(int page) {
+		return temp.selectList(ns + "selectAllGame",page);
 	}
 
 	@Override
@@ -66,6 +66,21 @@ public class GameDaoImpl implements GameDao{
 	@Override
 	public GameLike isLike(GameLike like) {
 		return temp.selectOne(ns+"isLike", like);
+	}
+
+	@Override
+	public int updateGame(Game game) {
+		return temp.update(ns + "updateGame", game);
+	}
+
+	@Override
+	public int deleteGameById(Game game) {
+		return temp.delete(ns + "deleteGameById", game);
+	}
+
+	@Override
+	public List<Game> selectAllGameAdmin(int page) {
+		return temp.selectList(ns + "selectAllGameAdmin", page);
 	}
 
 	

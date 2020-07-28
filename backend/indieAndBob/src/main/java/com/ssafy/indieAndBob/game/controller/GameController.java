@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,20 +43,35 @@ public class GameController {
 	@Autowired
 	JwtService jwtService;
 	
-	@GetMapping("/game")
+	@GetMapping("/gamelist/{page}")
 	@ApiOperation(value="모든게임리스트 조회")
-	public Object selectAllGame() {
+	public Object selectAllGame(@PathVariable int page, HttpServletRequest req) {
+		String nickname = jwtService.getNickname(req);
 		logger.info("==========selectAllGame==========");
 		ResponseEntity response = null;
-		List<Game> gamelist = gservice.selectAllGame();
-		if(gamelist.size()>0) {
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-			result.object = gamelist;
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-		} else {
-			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		if(nickname.equals("admin")) {
+			List<Game> gamelist = gservice.selectAllGameAdmin(page);
+			if(gamelist.size()>=0) {
+				final BasicResponse result = new BasicResponse();
+				result.status = true;
+				result.data = "success";
+				result.object = gamelist;
+				response = new ResponseEntity<>(result, HttpStatus.OK);
+			} else {
+				response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			}
+		}
+		else {
+			List<Game> gamelist = gservice.selectAllGame(page);
+			if(gamelist.size()>=0) {
+				final BasicResponse result = new BasicResponse();
+				result.status = true;
+				result.data = "success";
+				result.object = gamelist;
+				response = new ResponseEntity<>(result, HttpStatus.OK);
+			} else {
+				response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			}
 		}
 		return response;
 	}
@@ -72,6 +88,42 @@ public class GameController {
 			result.status = true;
 			result.data = "success";
 			result.object = game;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+			
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return response;
+	}
+	
+	@PutMapping("/game")
+	@ApiOperation(value = "게임 아이디로 게임 수정")
+	public Object updateGameById(@RequestBody Game game) {
+		logger.info("==========updateGameById==========");
+		logger.info("gameid : " + game);
+		ResponseEntity response = null;
+		if(gservice.updateGame(game) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+			
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return response;
+	}
+	
+	@DeleteMapping("/game")
+	@ApiOperation(value = "게임 아이디로 게임 삭제")
+	public Object deleteGameById(@RequestBody Game game) {
+		logger.info("==========deleteGameById==========");
+		logger.info("gameid : " + game);
+		ResponseEntity response = null;
+		if(gservice.deleteGameById(game) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 			
 		} else {

@@ -16,7 +16,7 @@ public class Game {
 	public int aim;
 	public int leftPrice;
 	public boolean isEnd;
-	public boolean isApprove;
+	public int isApprove;
 	public String email;
 	public String thumbnail;
 	public Date createdAt;

@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +34,7 @@ public class RewardController {
 	@ApiOperation(value = "모든리워드찾기")
 	public Object selectAllReward() {
 		logger.info("===========selectAllReward==========");
-		
+
 		ResponseEntity response = null;
 		List<Reward> rewardlist = rservice.selectAllReward();
 		if(rewardlist.size()>=0) {
@@ -50,10 +52,10 @@ public class RewardController {
 	@GetMapping("/reward/hj/{rewardId}")
 	@ApiOperation(value = "리워드아이디로 리워드찾기")
 	public Object selectRewardById(@PathVariable String rewardId) {
-		
+
 		logger.info("===========selectRewardById==========");
 		logger.info("rewardId : " + rewardId);
-		
+
 		ResponseEntity response = null;
 		Reward reward = rservice.selectRewardById(rewardId);
 		if(!reward.equals(null)) {
@@ -94,6 +96,39 @@ public class RewardController {
 		logger.info("reward : " + request);
 		ResponseEntity response = null;
 		if (rservice.registerReward(request) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	@PutMapping("/reward/updatereward")
+	@ApiOperation(value = "리워드수정")
+	public Object updateRewardByRewardId(@RequestBody Reward reqest) {
+		logger.info("===========updateRewardByRewardId==========");
+		logger.info("reward to update: " + reqest);
+		ResponseEntity response = null;
+		if(rservice.updateRewardByRewardId(reqest) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@DeleteMapping("/reward/deletereward")
+	@ApiOperation(value = "리워드삭제")
+	public Object deleteRewardByRewardId(@RequestBody int rewardId) {
+		logger.info("===========deleteRewardByRewardId==========");
+		logger.info("rewardId : "+rewardId);
+		ResponseEntity response = null;
+		if(rservice.deleteRewardByRewardId(rewardId) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";

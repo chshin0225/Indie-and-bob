@@ -45,10 +45,11 @@ export default {
         if (res.data.length > 0) {
           this.gameNum += 10;
           console.log(res.data)
-          this.SetMovies(res.data)
-          res.data.forEach(item => {
+          res.data.object.forEach(item => {
             this.games.push(item)
           })
+          console.log('게임즈')
+          console.log(this.games)
           $state.loaded();
         } else {
           $state.complete();

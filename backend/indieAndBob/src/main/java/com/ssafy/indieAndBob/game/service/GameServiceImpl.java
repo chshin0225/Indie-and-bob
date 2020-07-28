@@ -24,6 +24,16 @@ public class GameServiceImpl implements GameService{
 		gamedao.registerDetail(game);
 		return gameId;
 	}
+	
+	@Override
+	public int updateGame(Game game) {
+		return gamedao.updateGame(game);
+	}
+	
+	@Override
+	public int deleteGameById(Game game) {
+		return gamedao.deleteGameById(game);
+	}
 
 	@Override
 	public Game selectGameById(String gameId) {
@@ -31,8 +41,8 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<Game> selectAllGame() {
-		return gamedao.selectAllGame();
+	public List<Game> selectAllGame(int page) {
+		return gamedao.selectAllGame(page);
 	}
 
 	@Override
@@ -58,6 +68,11 @@ public class GameServiceImpl implements GameService{
 	@Override
 	public GameLike isLike(GameLike like) {
 		return gamedao.isLike(like);
+	}
+
+	@Override
+	public List<Game> selectAllGameAdmin(int page) {
+		return gamedao.selectAllGameAdmin(page);
 	}
 
 	
