@@ -139,7 +139,7 @@ export default new Vuex.Store({
         .then(res => {
           console.log(res)
           if (res.data.status) {
-            commit('setLoggedIn', false)
+            // commit('setLoggedIn', false)
             alert("회원가입 인증 메일이 발송되었습니다. 이메일을 확인해주세요.")
             router.push({ name: "Login" });
           } else {
