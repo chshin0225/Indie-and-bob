@@ -135,7 +135,8 @@ export default {
       axios
         .post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
         .then((res) => {
-          router.push("/project/" + res.data.id);
+          console.log(res)
+          router.push("/project/" + res.data.gameId);
         })
         .catch((err) => console.error(err));
     },
