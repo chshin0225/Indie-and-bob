@@ -93,12 +93,12 @@ public class UserController {
 		return response;
 	}
 	
-	@GetMapping("/account/userinfo/{email}")
+	@GetMapping("/account/userinfo/{nickname}")
 	@ApiOperation(value = "특정 회원정보")
-	public Object selectUserByEmail(@PathVariable String email) {
-		logger.info("==========selectUserByEmail==========");
+	public Object selectUserByNickName(@PathVariable String nickname) {
+		logger.info("==========selectUserByNickName==========");
 		ResponseEntity response = null;
-		User u = userService.selectByEmail(email);
+		User u = userService.selectByNickname(nickname);
 		if (u == null) {
 			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		} else {
