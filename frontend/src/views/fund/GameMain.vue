@@ -42,7 +42,7 @@ export default {
       axios.get(SERVER.BASE + SERVER.GAMELIST + this.gameNum + '/')
         .then(res => { 
           console.log(res)
-        if (res.data.length > 0) {
+        if (res.data.object.length > 0) {
           this.gameNum += 10;
           console.log(res.data)
           res.data.object.forEach(item => {
