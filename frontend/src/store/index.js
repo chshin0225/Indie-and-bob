@@ -17,7 +17,7 @@ export default new Vuex.Store({
     changedPw: false,
     oriEmail: "",
     oriPassword: "",
-    username: "",
+    username: localStorage.getItem('username'),
     userInfo: null,
     
     // community
@@ -70,6 +70,7 @@ export default new Vuex.Store({
     },
     setUsername(state, val) {
       state.username = val
+      localStorage.setItem('username', val)
     },
     setUserInfo(state, val) {
       state.userInfo = val
@@ -98,20 +99,24 @@ export default new Vuex.Store({
 
   actions: {
     // user
-    login({ commit, dispatch }, loginData) {
+    login({ commit }, loginData) {
       axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
           console.log(res.data.object)
           commit('setEmail', res.data.object.email)
           commit('setPassword', res.data.object.password)
+
+          // 로그인한 유저의 닉네임 저장 
           commit('setUsername', res.data.object.nickname)
           // commit('setLoggedIn', true)
+
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
-          let nickname = res.data.object.nickname
-          dispatch('getUserInfo', {
-            username: nickname
-          })
+
+          // 로그인한 유저의 정보 가져오기
+          // dispatch('getUserInfo', {
+          //   username: res.data.object.nickname
+          // })
           router.push('/feed/main')
         })
         .catch(err => {
@@ -151,8 +156,14 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit('setEmail', '')
       commit('setPassword', '')
+
+      // cookie에 있는 jwt 제거
       commit('setToken', null)
       cookies.remove('user')
+      
+      // local storage에 있는 username 정보 제거
+      commit('setUsername', null)
+      localStorage.removeItem('username')
       router.push({ name: 'FeedMain' })
     },
 
@@ -176,9 +187,9 @@ export default new Vuex.Store({
     getUserInfo({ commit }, username) {
       axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
         .then(res => {
-          console.log(res)
-          console.log(res.data)
-          commit('setUserInfo', res.data)
+          // console.log(res)
+          // console.log(res.data)
+          commit('setUserInfo', res.data.object)
         })
         .catch(err => console.error(err))
     },
@@ -192,8 +203,10 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
-    follow() {
-
+    follow({ getters }, following) {
+      axios.post(SERVER.BASE + SERVER.FOLLOW, following, getters.headersConfig)
+        .then(res => console.log(res.data))
+        .catch(err => console.error(err))
     },
 
     // community
