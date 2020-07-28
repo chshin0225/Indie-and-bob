@@ -10,13 +10,13 @@
     <select id="selectAllGame" resultType="game">
    	    select * from game where is_approve
     </select>
-    <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="game">
+    <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameregister">
         insert into game (name, deadline, aim,left_price, is_end, is_approve, email,
-        thumbnail ,created_at ,updated_at ,started_at)
-        values (#{name}, #{deadline}, #{aim},#{leftPrice},#{isEnd},#{isApprove},#{email},
-        #{thumbnail},#{createdAt},#{updatedAt},#{startedAt})
+        thumbnail)
+        values (#{name}, #{deadline}, #{aim},#{aim},#{isEnd},#{isApprove},#{email},
+        #{thumbnail})
     </insert>
-    <insert id="registerGameDetail" parameterType="gamedetail">
+    <insert id="registerGameDetail" parameterType="gameregister">
     	insert into game_detail (game_id, content) values(#{gameId}, #{content})
     </insert>
     <insert id="gameLike" parameterType="gamelike">

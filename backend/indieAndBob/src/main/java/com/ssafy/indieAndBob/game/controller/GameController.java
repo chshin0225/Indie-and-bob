@@ -2,6 +2,7 @@ package com.ssafy.indieAndBob.game.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.dto.GameRegister;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
@@ -41,7 +43,7 @@ public class GameController {
 	JwtService jwtService;
 	
 	@GetMapping("/game")
-	@ApiOperation(value="모든게임리스트")
+	@ApiOperation(value="모든게임리스트 조회")
 	public Object selectAllGame() {
 		logger.info("==========selectAllGame==========");
 		ResponseEntity response = null;
@@ -59,7 +61,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/game/{gameId}")
-	@ApiOperation(value = "게임아이디로 게임찾기")
+	@ApiOperation(value = "게임 아이디로 게임찾기")
 	public Object selectGameById(@PathVariable String gameId) {
 		logger.info("==========selectGameById==========");
 		logger.info("gameid : " + gameId);
@@ -80,17 +82,19 @@ public class GameController {
 	
 	
 	@PostMapping("/game/registergame")
-	@ApiOperation(value = "펀딩할 게임등록")
-	public Object registerGame(@RequestBody Game request, @RequestBody GameDetail detail, HttpServletRequest req) {
+	@ApiOperation(value = "게임 등록")
+	public Object registerGame(@RequestBody GameRegister request, HttpServletRequest req) {
 		String token = req.getHeader("jwt-auth-token");
+		logger.info("token : " + token);
 		logger.info("" + jwtService.get(token));
-		String email = (String) jwtService.get(token).get("email");
+		logger.info("user : " + jwtService.get(token).get("User"));
+		String email = (String) ((Map<String, Object>) jwtService.get(token).get("User")).get("email");
 		logger.info("==========registerGame==========");
 		logger.info("Game : " + request);
-		logger.info("detail : " + detail);
 		logger.info("email = " + email);
 		ResponseEntity response = null;
-		int gameId = gservice.registerGame(request, detail);
+		request.setEmail(email);
+		int gameId = gservice.registerGame(request);
 		if (gameId != 0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
@@ -104,7 +108,7 @@ public class GameController {
 	}
 	
 	@PostMapping("/game/like")
-	@ApiOperation(value = "게임 좋아요 등록")
+	@ApiOperation(value = "게임 좋아요")
 	public Object gameLike(@RequestBody GameLike request) {
 		logger.info("==========gameLike post==========");
 		logger.info("gameLike post : " + request);
@@ -138,7 +142,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/game/like/gamelist/{email}")
-	@ApiOperation(value = "좋아하는 게임 리스트")
+	@ApiOperation(value = "좋아요한 게임 리스트")
 	public Object gameLikeList(@PathVariable String email) {
 		logger.info("==========gameLikeList==========");
 		logger.info("gameLikeList : " + email);
@@ -158,7 +162,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/game/like/userlist/{gameId}")
-	@ApiOperation(value = "게임을 좋아하는 사람 리스트")
+	@ApiOperation(value = "게임을 좋아요 한 유저 리스트 조회")
 	public Object userLikeList(@PathVariable String gameId) {
 		logger.info("==========userLikeList==========");
 		logger.info("userLikeList : " + gameId);
@@ -178,7 +182,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/game/islike")
-	@ApiOperation(value = "특정 user가 특정 game을 좋아하는가")
+	@ApiOperation(value = "이 게임을 좋아하는지 여부 확인")
 	public Object isLike(HttpServletRequest request) {
 		String email = request.getParameter("email");
 		String gameId = request.getParameter("gameId");

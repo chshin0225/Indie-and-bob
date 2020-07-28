@@ -5,13 +5,14 @@ import java.util.List;
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.dto.GameRegister;
 import com.ssafy.indieAndBob.user.dto.User;
 
 public interface GameDao {
 
 	Game selectGameById(String gameId);
-	int registerGame(Game game);
-	int registerDetail(GameDetail detail);
+	int registerGame(GameRegister game);
+	int registerDetail(GameRegister detail);
 	List<Game> selectAllGame();
 	int gameLike(GameLike like);
 	List<Game> selectGameByEmail(String email);
