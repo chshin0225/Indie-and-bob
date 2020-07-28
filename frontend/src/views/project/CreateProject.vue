@@ -69,7 +69,7 @@
           <label for="thumbnail">썸네일</label>
           <v-file-input
             id="thumbnail"
-            @change="uploadImgPreview"
+            @change="uploadImage"
             accept="image/*"
             label="썸네일 이미지를 입력해주세요"
             prepend-icon="mdi-camera"
@@ -88,6 +88,7 @@ import axios from "axios";
 import router from "../../router";
 import { Editor } from "@toast-ui/vue-editor";
 import SERVER from "../../api/base";
+import { mapGetters } from 'vuex';
 export default {
   components: {
     editor: Editor,
@@ -117,6 +118,9 @@ export default {
       thumbnailUrl: "",
     };
   },
+  computed: {
+    ...mapGetters([ 'headersConfig' ])
+  },
   methods: {
     onButtonClick() {
       let PARAMS = {
@@ -127,14 +131,15 @@ export default {
         thumbnail: this.thumbnailUrl,
         
       };
+      console.log(this.headersConfig)
       axios
-        .post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS)
+        .post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
         .then((res) => {
           router.push("/project/" + res.data.id);
         })
         .catch((err) => console.error(err));
     },
-    uploadImgPreview() {
+    uploadImage() {
       let fileInfo = document.getElementById("thumbnail").files[0];
       let reader = new FileReader();
       reader.onload = function () {

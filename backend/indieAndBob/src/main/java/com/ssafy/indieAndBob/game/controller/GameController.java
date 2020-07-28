@@ -149,7 +149,7 @@ public class GameController {
 		ResponseEntity response = null;
 		List<Game> games = new LinkedList<>();
 		games = gservice.selectGameByEmail(email);
-		if (games.size() != 0) {
+		if (games.size() >= 0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -169,7 +169,7 @@ public class GameController {
 		ResponseEntity response = null;
 		List<User> users = new LinkedList<>();
 		users = gservice.selectUserByGameId(gameId);
-		if (users.size() != 0) {
+		if (users.size() >= 0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
