@@ -100,13 +100,13 @@ public class UserController {
 		ResponseEntity response = null;
 		User u = userService.selectByNickname(nickname);
 		if (u == null) {
-			response = new ResponseEntity<>(null, HttpStatus.OK);
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		} else {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
 			result.object = u;
-			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		return response;
 	}

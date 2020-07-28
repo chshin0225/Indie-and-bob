@@ -43,7 +43,7 @@ public class GameController {
 	JwtService jwtService;
 	
 	@GetMapping("/game")
-	@ApiOperation(value="ëª¨ë“ ê²Œì„ë¦¬ìŠ¤íŠ¸")
+	@ApiOperation(value="ëª¨ë“ ê²Œì„ë¦¬ìŠ¤?Š¸")
 	public Object selectAllGame() {
 		logger.info("==========selectAllGame==========");
 		ResponseEntity response = null;
@@ -61,7 +61,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/game/{gameId}")
-	@ApiOperation(value = "ê²Œì„ì•„ì´ë””ë¡œ ê²Œì„ì°¾ê¸°")
+	@ApiOperation(value = "ê²Œì„?•„?´?””ë¡? ê²Œì„ì°¾ê¸°")
 	public Object selectGameById(@PathVariable String gameId) {
 		logger.info("==========selectGameById==========");
 		logger.info("gameid : " + gameId);
@@ -82,7 +82,7 @@ public class GameController {
 	
 	
 	@PostMapping("/game/registergame")
-	@ApiOperation(value = "í€ë”©í•  ê²Œì„ë“±ë¡")
+	@ApiOperation(value = "???”©?•  ê²Œì„?“±ë¡?")
 	public Object registerGame(@RequestBody GameRegister request, HttpServletRequest req) {
 		String token = req.getHeader("jwt-auth-token");
 		logger.info("token : " + token);
@@ -108,7 +108,7 @@ public class GameController {
 	}
 	
 	@PostMapping("/game/like")
-	@ApiOperation(value = "ê²Œì„ ì¢‹ì•„ìš” ë“±ë¡")
+	@ApiOperation(value = "ê²Œì„ ì¢‹ì•„?š” ?“±ë¡?")
 	public Object gameLike(@RequestBody GameLike request) {
 		logger.info("==========gameLike post==========");
 		logger.info("gameLike post : " + request);
@@ -125,7 +125,7 @@ public class GameController {
 	}
 	
 	@DeleteMapping("/game/like")
-	@ApiOperation(value = "ê²Œì„ ì¢‹ì•„ìš” ì‚­ì œ")
+	@ApiOperation(value = "ê²Œì„ ì¢‹ì•„?š” ?‚­? œ")
 	public Object deleteGameLike(@RequestBody GameLike request) {
 		logger.info("==========gameLike delete==========");
 		logger.info("gameLike delete : " + request);
@@ -142,7 +142,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/game/like/gamelist/{email}")
-	@ApiOperation(value = "ì¢‹ì•„í•˜ëŠ” ê²Œì„ ë¦¬ìŠ¤íŠ¸")
+	@ApiOperation(value = "ì¢‹ì•„?•˜?Š” ê²Œì„ ë¦¬ìŠ¤?Š¸")
 	public Object gameLikeList(@PathVariable String email) {
 		logger.info("==========gameLikeList==========");
 		logger.info("gameLikeList : " + email);
@@ -162,7 +162,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/game/like/userlist/{gameId}")
-	@ApiOperation(value = "ê²Œì„ì„ ì¢‹ì•„í•˜ëŠ” ì‚¬ëŒ ë¦¬ìŠ¤íŠ¸")
+	@ApiOperation(value = "ê²Œì„?„ ì¢‹ì•„?•˜?Š” ?‚¬?Œ ë¦¬ìŠ¤?Š¸")
 	public Object userLikeList(@PathVariable String gameId) {
 		logger.info("==========userLikeList==========");
 		logger.info("userLikeList : " + gameId);
@@ -182,7 +182,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/game/islike")
-	@ApiOperation(value = "íŠ¹ì • userê°€ íŠ¹ì • gameì„ ì¢‹ì•„í•˜ëŠ”ê°€")
+	@ApiOperation(value = "?Š¹? • userê°? ?Š¹? • game?„ ì¢‹ì•„?•˜?Š”ê°?")
 	public Object isLike(HttpServletRequest request) {
 		String email = request.getParameter("email");
 		String gameId = request.getParameter("gameId");
