@@ -123,13 +123,13 @@ public class GameController {
 		return response;
 	}
 	
-	@DeleteMapping("/game")
+	@DeleteMapping("/game/{gameId}")
 	@ApiOperation(value = "게임 아이디로 게임 삭제")
-	public Object deleteGameById(@RequestBody Game game) {
+	public Object deleteGameById(@PathVariable int gameId) {
 		logger.info("==========deleteGameById==========");
-		logger.info("gameid : " + game);
+		logger.info("gameid : " + gameId);
 		ResponseEntity response = null;
-		if(gservice.deleteGameById(game) == 1) {
+		if(gservice.deleteGameById(gameId) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
