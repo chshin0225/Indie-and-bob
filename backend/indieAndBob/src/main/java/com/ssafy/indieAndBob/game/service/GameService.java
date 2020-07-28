@@ -21,4 +21,5 @@ public interface GameService {
 	List<User> selectUserByGameId(String gameId);
 	int deleteGameLike(GameLike like);
 	GameLike isLike(GameLike like);
+	int updateApprove(Game game);
 }
