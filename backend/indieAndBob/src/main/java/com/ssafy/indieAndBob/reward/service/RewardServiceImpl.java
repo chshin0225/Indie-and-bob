@@ -35,5 +35,15 @@ public class RewardServiceImpl implements RewardService{
 		return rewarddao.selectRewardByGameId(gameId);
 	}
 
+	@Override
+	public int updateRewardByRewardId(Reward reward) {
+		return rewarddao.updateRewardByRewardId(reward);
+	}
+
+	@Override
+	public int deleteRewardByRewardId(int rewardId) {
+		return rewarddao.deleteRewardByRewardId(rewardId);
+	}
+
 	
 }

@@ -9,4 +9,6 @@ public interface RewardDao {
 	Reward selectRewardById(String rewardId);
 	List<Reward> selectAllReward();
 	List<Reward> selectRewardByGameId(String gameId);
+	int updateRewardByRewardId(Reward reward);
+	int deleteRewardByRewardId(int rewardId);
 }

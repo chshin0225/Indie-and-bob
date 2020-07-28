@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class Reward {
 
 	public int rewardId;
-	public String gameId;
+	public int gameId;
 	public String rewardName;
 	public String rImg;
 	public int leftCount;
