@@ -119,9 +119,9 @@
 </template>
 
 // <script>
-// import axios from 'axios';
+import axios from 'axios';
 import router from "../../router";
-// import SERVER from '../../api/base'
+import SERVER from '../../api/base'
 import GameCommunity from "./GameCommunity.vue";
 import QuestionandAnswer from "./QuestionandAnswer.vue";
 import { mapActions } from "vuex";
