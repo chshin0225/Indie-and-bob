@@ -31,6 +31,8 @@ import CommunityArticle from '../views/community/CommunityArticle.vue'
 import PageNotFound from '../views/error/PageNotFound.vue'
 import ErrorPage from '../views/error/ErrorPage.vue'
 
+// import store from '../store'
+
 Vue.use(VueRouter)
 
 const routes = [

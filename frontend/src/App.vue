@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex"
 
 export default {
   name: "app",
@@ -137,7 +137,7 @@ export default {
         { title: 'Notification4' },
       ],
       closeOnClick: true,
-      currentUser: localStorage.getItem('username')
+      currentUser: localStorage.getItem('username'),
     };
   },
 
@@ -167,12 +167,6 @@ export default {
     ...mapActions(['goBack', 'logout', 'getUserInfo',])
   },
 
-  // updated() {
-  //   if (this.isLoggedIn) {
-  //     let username = localStorage.getItem('username')
-  //     this.getUserInfo(username)
-  //   }
-  // },
 };
 </script>
 
