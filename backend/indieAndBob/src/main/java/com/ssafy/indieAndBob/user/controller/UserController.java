@@ -152,7 +152,7 @@ public class UserController {
 		logger.info("userId : " + userId);
 		ResponseEntity response = null;
 		List<String> followerlist = userService.getFollower(userId);
-		if(followerlist.size()>0) {
+		if(followerlist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
