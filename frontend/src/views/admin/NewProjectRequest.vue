@@ -59,22 +59,7 @@ export default {
       })
         .catch(err => console.error(err))
     },
-        // approve() {
-        //     axios.post(게임승인)
-        //         .then(res => {
-        //             console.log(res)
-        //         })
-        //         .catch(err => console.error(err))
-        // },
-        // disapprove() {
-        //     axios.post(게임거절)
-        //         .then(res => {
-        //             console.log(res)
-        //         })
-        //         .catch(err => console.error(err))
-        // }
-    }
-
+  }
 }
 </script>
 
