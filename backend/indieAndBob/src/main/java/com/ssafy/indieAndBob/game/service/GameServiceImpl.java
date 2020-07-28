@@ -70,5 +70,10 @@ public class GameServiceImpl implements GameService{
 		return gamedao.isLike(like);
 	}
 
+	@Override
+	public List<Game> selectAllGameAdmin(int page) {
+		return gamedao.selectAllGameAdmin(page);
+	}
+
 	
 }

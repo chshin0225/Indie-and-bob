@@ -8,7 +8,10 @@
 		select * from game where game_id=#{gameId}
     </select>
     <select id="selectAllGame" parameterType="int" resultType="game">
-   	    select * from game where is_approve limit #{page},10
+   	    select * from game where is_approve=1 and is_end=false limit #{page},10
+    </select>
+    <select id="selectAllGameAdmin" parameterType="int" resultType="game">
+    	select * from game where is_approve=0 and is_end=false limit #{page},10
     </select>
     <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameregister">
         insert into game (name, deadline, aim,left_price, is_end, is_approve, email,
