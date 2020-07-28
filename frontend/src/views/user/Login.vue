@@ -10,7 +10,7 @@
           class="my-3"
           hide-details=true
           v-model="email"
-          @keyup.enter="LogIn({email: email, password: password})"
+          @keyup.enter="login({email: email, password: password})"
           id="email"
           outlined
           placeholder="이메일을 입력하세요."
@@ -29,7 +29,7 @@
           hide-details=true
           v-model="password"
           id="password"
-          @keyup.enter="LogIn({email: email, password: password})"
+          @keyup.enter="login({email: email, password: password})"
           outlined
           placeholder="비밀번호를 입력하세요."
           type="password"
@@ -42,7 +42,7 @@
     <v-row class="justify-center">
       <v-col class="py-0 text-right" sm=6>
         <v-btn
-          @click="LogIn({email: email, password: password})"
+          @click="login({email: email, password: password})"
           :disabled="!isSubmit"
           :class="{disabled : !isSubmit}"
           depressed
@@ -85,7 +85,6 @@ export default {
       .is()
       .max(100)
       .has()
-
       .digits()
       .has()
       .letters();
@@ -107,7 +106,7 @@ export default {
     this.password = this.oriPassword
   },
   methods: {
-    ...mapActions([ 'LogIn' ]),
+    ...mapActions([ 'login', ]),
 
     checkForm() {
       if (this.email.length >= 0 && !EmailValidator.validate(this.email))

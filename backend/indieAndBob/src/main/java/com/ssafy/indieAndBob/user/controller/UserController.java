@@ -34,6 +34,7 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	UserService userService;
+	
 	@Autowired
 	JwtService jwtService;
 
@@ -41,6 +42,7 @@ public class UserController {
 	@ApiOperation(value = "로그인")
 	public Object login(@RequestBody User user, HttpServletResponse res) {
 		logger.info("==========login==========");
+		logger.info("user : " + user);
 		ResponseEntity response = null;
 		User u = userService.selectByEmailAndPassword(user);
 		if (u != null) {
@@ -61,21 +63,50 @@ public class UserController {
 	@ApiOperation(value = "가입하기")
 	public Object signup(@RequestBody User request) {
 		logger.info("==========signup==========");
+		logger.info("user : " + request);
 		ResponseEntity response = null;
 		User u = userService.selectByEmail(request.getEmail());
 		if (u == null) {
-			if (userService.registerUser(request) == 1) {
+			u = userService.selectByNickname(request.getNickname());
+			logger.info(" " + u);
+			if(u == null) {
+				if (userService.registerUser(request) == 1) {
+					final BasicResponse result = new BasicResponse();
+					result.status = true;
+					result.data = "success";
+					response = new ResponseEntity<>(result, HttpStatus.OK);
+				} else {
+					response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			}
+			else {
 				final BasicResponse result = new BasicResponse();
-				result.status = true;
-				result.data = "success";
-				response = new ResponseEntity<>(result, HttpStatus.OK);
-			} else {
-				response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+				result.status = false;
+				result.data = "duplicated nickname";
+				response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 			}
 		} else {
 			final BasicResponse result = new BasicResponse();
 			result.status = false;
 			result.data = "duplicated email";
+			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		}
+		return response;
+	}
+	
+	@GetMapping("/account/userinfo/{nickname}")
+	@ApiOperation(value = "특정 회원정보")
+	public Object selectUserByNickName(@PathVariable String nickname) {
+		logger.info("==========selectUserByNickName==========");
+		ResponseEntity response = null;
+		User u = userService.selectByNickname(nickname);
+		if (u == null) {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		} else {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = u;
 			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 		}
 		return response;
@@ -97,7 +128,7 @@ public class UserController {
 		return response;
 	}
 	
-	@PutMapping("/following")
+	@PostMapping("/following")
 	@ApiOperation(value = "팔로우하기")
 	public Object following(@RequestBody Follow request) {
 		logger.info("==========following==========");
