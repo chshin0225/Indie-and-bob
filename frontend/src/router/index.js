@@ -14,6 +14,7 @@ import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
 import SearchResult from '../views/project/SearchResult.vue'
+import ProjectSettings from '../views/project/ProjectSettings.vue'
 
 //project + funding
 import GameMain from '../views/fund/GameMain.vue'
@@ -59,7 +60,7 @@ const routes = [
     },
   },
   {
-    path: '/user/mypage',
+    path: '/user/mypage/:username',
     name: 'MyPage',
     component: MyPage,
     meta: {
@@ -137,6 +138,14 @@ const routes = [
     meta: {
       title: 'Create Project'
     },
+  },
+  { 
+    path: '/project/:id/settings',
+    name: 'ProjectSettings',
+    component: ProjectSettings,
+    meta: {
+      title: 'Project Settings'
+    }
   },
   {
     path: '/project/done',

@@ -17,6 +17,7 @@ export default new Vuex.Store({
     changedPw: false,
     oriEmail: "",
     oriPassword: "",
+    username: "",
     userInfo: null,
     
     // community
@@ -37,6 +38,7 @@ export default new Vuex.Store({
       }
     }),
     isLoggedIn: state => !!state.jwtToken,
+
   },
 
   mutations: {
@@ -66,6 +68,9 @@ export default new Vuex.Store({
       state.oriPassword = val
       console.log(state.oriPassword)
     },
+    setUsername(state, val) {
+      state.username = val
+    },
     setUserInfo(state, val) {
       state.userInfo = val
       console.log(state.userInfo)
@@ -93,15 +98,20 @@ export default new Vuex.Store({
 
   actions: {
     // user
-    login({ commit }, loginData) {
+    login({ commit, dispatch }, loginData) {
       axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
-          console.log(res.headers['jwt-auth-token'])
-          commit('setEmail', loginData.email)
-          commit('setPassword', loginData.password)
+          console.log(res.data.object)
+          commit('setEmail', res.data.object.email)
+          commit('setPassword', res.data.object.password)
+          commit('setUsername', res.data.object.nickname)
           // commit('setLoggedIn', true)
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
+          let nickname = res.data.object.nickname
+          dispatch('getUserInfo', {
+            username: nickname
+          })
           router.push('/feed/main')
         })
         .catch(err => {
@@ -166,6 +176,7 @@ export default new Vuex.Store({
     getUserInfo({ commit }, username) {
       axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
         .then(res => {
+          console.log(res)
           console.log(res.data)
           commit('setUserInfo', res.data)
         })
