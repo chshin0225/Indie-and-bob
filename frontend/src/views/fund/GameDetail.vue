@@ -141,7 +141,8 @@ export default {
   created() {
    axios.get(SERVER.BASE + SERVER.GAME + this.$refs.params.id)
     .then(res => {
-      this.project = res.data
+      console.log(res)
+      this.project = res.data.object
     })
     .catch(err => {
       console.error(err)
