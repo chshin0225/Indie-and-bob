@@ -100,7 +100,7 @@ public class UserController {
 		ResponseEntity response = null;
 		User u = userService.selectByNickname(nickname);
 		if (u == null) {
-			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			response = new ResponseEntity<>(null, HttpStatus.OK);
 		} else {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
