@@ -14,8 +14,8 @@
    	  select * from reward
    </select>
    <insert id="registerReward" parameterType="reward">
-      insert into reward (reward_id, game_id, reward_name, r_img,left_count,price,content) 
-      values (#{rewardId}, #{gameId}, #{rewardName}, #{rImg},#{leftCount},#{price},#{content})
+      insert into reward (game_id, reward_name, r_img,left_count,price,content) 
+      values (#{gameId}, #{rewardName}, #{rImg},#{leftCount},#{price},#{content})
    </insert>
    <update id="updateRewardByRewardId" parameterType="reward">
       update reward set reward_name=#{rewardName}, r_img=#{rImg}, left_count=#{leftCount}, price=#{price}, content=#{content}
