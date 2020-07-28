@@ -74,8 +74,8 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public int deleteGameById(Game game) {
-		return temp.delete(ns + "deleteGameById", game);
+	public int deleteGameById(int gameId) {
+		return temp.delete(ns + "deleteGameById", gameId);
 	}
 
 	@Override

@@ -1,7 +1,8 @@
 <template v-if="render">
   <v-container>
     <h1>{{ this.project.name }} 제작페이지</h1>
-    <v-btn @click="projectDelete">프로젝트 삭제</v-btn>
+    <v-btn @click="projectDelete()">프로젝트 삭제</v-btn>
+    <v-btn @click="projectEdit()">프로젝트 수정</v-btn>
     <h2>프로젝트 소개내용</h2>
     <v-card outlined>
       <Viewer v-if="content != null" :initialValue="content" />
@@ -160,7 +161,9 @@ export default {
         this.content = this.project.content
         console.log(this.project)
       })
-      .catch((err) => console.error(err));
+      .catch(err => {
+        console.error(err)
+      router.push('/404')});
     axios
       .get(SERVER.BASE + SERVER.REWARDS + this.id)
       .then((res) => {
@@ -259,13 +262,13 @@ export default {
         });
     },
     projectEdit(){
-      router.push('/')
+      router.push('/pjt/edit/'+this.id)
     },
     projectDelete(){
     this.$prompt("If you want to delete your project, please type 'Delete the project'.", "", "Are you sure?", "question").then((text) => {
      // do somthing with text
      if(text==='Delete the project'){
-     axios.delete(SERVER.BASE+SERVER.GAME, {gameId:this.id}, this.headersConfig)
+     axios.delete(SERVER.BASE+SERVER.GAME+this.id, this.headersConfig)
      .then(router.push('/feed/main'))
      .catch(err=> {
        console.error(err)
