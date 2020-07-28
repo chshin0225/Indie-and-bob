@@ -41,10 +41,11 @@ create table game_detail(
     primary key(`game_id`)
 )default charset=utf8 collate utf8_general_ci;
 
-DROP TABLE IF EXISTS `user`;
+drop table `user`;
 CREATE TABLE `user`(
 	`email` varchar(50) NOT NULL,
     `name` varchar(20) NOT NULL,
+    `nickname` varchar(20) NOT NULL,
     `password` varchar(20) NOT NULL,
     `postcode` int NOT NULL,
     `address` varchar(50) NOT NULL,
@@ -56,7 +57,7 @@ CREATE TABLE `user`(
     `profile` varchar(50),
     `introduction` varchar(100),
     primary key(`email`)
-)default charset=utf8 collate utf8_general_ci;
+) default charset=utf8 collate utf8_general_ci;
 
 DROP TABLE IF EXISTS `funding`;
 CREATE TABLE `funding`(
@@ -70,7 +71,7 @@ CREATE TABLE `funding`(
 
 DROP TABLE IF EXISTS `game`;
 CREATE TABLE `game`(
-    `game_id` varchar(10) NOT NULL,
+    `game_id` int auto_increment,
     `name` varchar(30) NOT NULL,
     `deadline` datetime NOT NULL,
     `aim` int,
