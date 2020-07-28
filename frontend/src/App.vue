@@ -81,7 +81,7 @@
               </v-row>
             </v-list-item>
 
-            <v-list-item class="px-3" to="/project/all">
+            <v-list-item class="px-3" to="/projects">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-gamepad fa-lg grey--text text--darken-2"></i>

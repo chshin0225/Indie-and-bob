@@ -48,7 +48,9 @@
               <v-card flat>
                 <v-card-text>
                   <h2>프로젝트 소개</h2>
-                  <p>{{project.content}}</p>
+                  <v-card outlined>
+                    <Viewer v-if="content != null" :initialValue="content" />
+                  </v-card>
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -99,11 +101,26 @@
         </v-col>
       </v-row>
       <div fixed bottom right class="mr-5 mb-5">
-        <v-btn cols='auto' fab large @click="likeButton()" :color="iconBgColor" class="mr-3">
+        <v-btn cols="auto" fab large @click="likeButton()" :color="iconBgColor" class="mr-3">
           <v-icon :color="iconColor">fas fa-heart</v-icon>
         </v-btn>
-        <v-btn cols='auto' fab large @click="shareButton()" :color="iconBgColor" class="ml-3 mr-auto">
+        <v-btn
+          cols="auto"
+          fab
+          large
+          @click="shareButton()"
+          :color="iconBgColor"
+          class="ml-3 mr-auto"
+        >
           <v-icon :color="primary">fas fa-share-alt</v-icon>
+        </v-btn>
+      </div>
+      <div v-if="isAdmin">
+        <v-btn cols='auto' @click="approve" class="mr-3">
+          승인
+        </v-btn>
+        <v-btn cols='auto' @click="disapprove" class="mr-3">
+          거절
         </v-btn>
       </div>
     </v-container>
@@ -111,24 +128,33 @@
 </template>
 
 // <script>
-// import axios from 'axios';
+import axios from 'axios';
 import router from "../../router";
-// import SERVER from '../../api/base'
+import SERVER from '../../api/base'
 import GameCommunity from "./GameCommunity.vue";
 import QuestionandAnswer from "./QuestionandAnswer.vue";
 import { mapActions } from "vuex";
+import "codemirror/lib/codemirror.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Viewer } from "@toast-ui/vue-editor";
 export default {
-  // created() {
-  //  axios.get(SERVER.BASE + SERVER.GAME + '?gameId='+ this.$refs.params.id)
-  //  .then(res => {
-  //    this.project = res.data
-
-  //  })
-
-  // },
+  created() {
+   axios.get(SERVER.BASE + SERVER.GAME + this.$refs.params.id)
+    .then(res => {
+      console.log(res)
+      this.project = res.data.object
+    })
+    .catch(err => {
+      console.error(err)
+    })
+   if (localStorage.getItem('username') === 'admin') {
+     this.isAdmin = true
+   }
+  },
   components: {
     GameCommunity,
     QuestionandAnswer,
+    Viewer,
   },
 
   data() {
@@ -136,6 +162,7 @@ export default {
       likeDialog: false,
       iconColor: "white",
       iconBgColor: "accent",
+      isAdmin: false,
       project: {
         name: "example",
         startedAt: "2020-07-14",
@@ -200,6 +227,20 @@ export default {
         this.iconColor = "white";
       }
     },
+        approve() {
+         axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$refs.params.id, isApprove: 1 })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => console.error(err))
+        },
+        disapprove() {
+         axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$refs.params.id, isApprove: -1 })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => console.error(err))
+        }
   },
 };
 </script>

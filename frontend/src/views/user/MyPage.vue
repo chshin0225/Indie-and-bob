@@ -102,12 +102,12 @@
         </v-tabs>
       </v-card>
 
-      <router-link to="/project/new">새 프로젝트 만들기</router-link>
     </div>
 
     <div v-if="!dataFetched">
       Loading...
     </div>
+    <router-link to="/newproject">새 프로젝트 만들기</router-link>
   </div>
 </template>
 

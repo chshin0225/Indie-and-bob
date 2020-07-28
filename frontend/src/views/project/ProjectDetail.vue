@@ -125,7 +125,7 @@
             </v-card-text>
 
             <v-card-actions>
-              <v-btn color="accent" text>Delete</v-btn>
+              <v-btn @click="rewardDelete(reward.rewardId)" color="accent" text>Delete</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -156,7 +156,9 @@ export default {
     axios
       .get(SERVER.BASE + SERVER.GAME + this.id)
       .then((res) => {
-        this.project = res.data;
+        this.project = res.data.object;
+        this.content = this.project.content
+        console.log(this.project)
       })
       .catch((err) => console.error(err));
     axios
@@ -177,7 +179,7 @@ export default {
   data() {
     return {
       project: {},
-      content: `<h1>프로젝트 컨텐츠에ㅣ긩</h1><br><br><p>우룰루루루루html태그를 이용했다긔</p>`,
+      content: '',
       rewards: [],
       dialog: false,
       notifications: false,
@@ -238,7 +240,7 @@ export default {
       //관리자 페이지한테 승인 신청하기
     },
     rewardDelete(reward_id){
-      axios.delete(SERVER.BASE+ '지우는url',{rewardId: reward_id}, this.headersConfig )
+      axios.delete(SERVER.BASE+ SERVER.REWARDDETAIL+reward_id, this.headersConfig )
       axios
         .get(SERVER.BASE + SERVER.REWARDS + this.id)
         .then((res) => {
@@ -263,8 +265,11 @@ export default {
     this.$prompt("If you want to delete your project, please type 'Delete the project'.", "", "Are you sure?", "question").then((text) => {
      // do somthing with text
      if(text==='Delete the project'){
-     axios.delete(SERVER.BASE+"프로젝트 지우는것", {gameId: this.id}, this.headersConfig)
-     .then(router.push('/user/MyPage'))
+     axios.delete(SERVER.BASE+SERVER.GAME, {gameId:this.id}, this.headersConfig)
+     .then(router.push('/feed/main'))
+     .catch(err=> {
+       console.error(err)
+     })
      }else{
        this.$alert("Wrong input!")}
 

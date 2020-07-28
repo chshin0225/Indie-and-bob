@@ -1,5 +1,5 @@
 export default {
-    'BASE': "http://localhost:8080", 
+    'BASE': "http://localhost:8080",
     'LOGIN': "/account/login",
     'SIGNUP': "/account/signup",
     'PWCHANGE': "/account/pwchange",
@@ -8,8 +8,10 @@ export default {
     'FOLLOW': "/following",
 
     'GAMELIST' : "/gamelist/",
+    'UNAPPROVED' : "/admin/gamelist/",
     'GAME': "/game/",
     'GAMEREGISTER' : "/game/registergame",
+    'APPROVE' : "/game/approve",
     
     'REWARDDETAIL': "/reward/",
     'REWARDREGISTER':"/reward/registerreward",
