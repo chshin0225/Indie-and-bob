@@ -17,4 +17,11 @@
       insert into reward (game_id, reward_name, r_img,left_count,price,content) 
       values (#{gameId}, #{rewardName}, #{rImg},#{leftCount},#{price},#{content})
    </insert>
+   <update id="updateRewardByRewardId" parameterType="reward">
+      update reward set reward_name=#{rewardName}, r_img=#{rImg}, left_count=#{leftCount}, price=#{price}, content=#{content}
+      where reward_id=#{rewardId}
+   </update>
+   <delete id="deleteRewardByRewardId" parameterType="int">
+      delete from reward where reward_id=#{rewardId}
+   </delete>
 </mapper>
