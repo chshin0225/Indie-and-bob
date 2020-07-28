@@ -48,7 +48,9 @@
               <v-card flat>
                 <v-card-text>
                   <h2>프로젝트 소개</h2>
-                  <p>{{project.content}}</p>
+                  <v-card outlined>
+                    <Viewer v-if="content != null" :initialValue="content" />
+                  </v-card>
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -99,10 +101,17 @@
         </v-col>
       </v-row>
       <div fixed bottom right class="mr-5 mb-5">
-        <v-btn cols='auto' fab large @click="likeButton()" :color="iconBgColor" class="mr-3">
+        <v-btn cols="auto" fab large @click="likeButton()" :color="iconBgColor" class="mr-3">
           <v-icon :color="iconColor">fas fa-heart</v-icon>
         </v-btn>
-        <v-btn cols='auto' fab large @click="shareButton()" :color="iconBgColor" class="ml-3 mr-auto">
+        <v-btn
+          cols="auto"
+          fab
+          large
+          @click="shareButton()"
+          :color="iconBgColor"
+          class="ml-3 mr-auto"
+        >
           <v-icon :color="primary">fas fa-share-alt</v-icon>
         </v-btn>
       </div>
@@ -117,6 +126,9 @@ import router from "../../router";
 import GameCommunity from "./GameCommunity.vue";
 import QuestionandAnswer from "./QuestionandAnswer.vue";
 import { mapActions } from "vuex";
+import "codemirror/lib/codemirror.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Viewer } from "@toast-ui/vue-editor";
 export default {
   // created() {
   //  axios.get(SERVER.BASE + SERVER.GAME + '?gameId='+ this.$refs.params.id)
@@ -129,6 +141,7 @@ export default {
   components: {
     GameCommunity,
     QuestionandAnswer,
+    Viewer,
   },
 
   data() {
