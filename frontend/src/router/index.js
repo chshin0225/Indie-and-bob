@@ -124,7 +124,7 @@ const routes = [
 
   //project(개발자 사이드) 관련
   {
-    path : '/project/new',
+    path : '/newproject',
     name : 'CreateProject',
     component: CreateProject,
     meta: {
@@ -132,11 +132,11 @@ const routes = [
     },
   },
   {
-    path: '/project/detail/:id',
+    path: '/project/:id',
     name: 'ProjectDetail',
     component: ProjectDetail,
     meta: {
-      title: 'Create Project'
+      title: 'Create Rewards'
     },
   },
   { 
@@ -148,7 +148,7 @@ const routes = [
     }
   },
   {
-    path: '/project/done',
+    path: '/completed',
     name: 'CreateProjectDone',
     component: CreateProjectDone,
     meta: {

@@ -5,39 +5,58 @@
     <h1 class="text-center">Projects</h1>
 
     <!-- projects  -->
-    <div v-for="project in projectList" :key="project.gameId">
-      <v-card outlined :to="`/game/${project.gameId}`">
+    <div v-for="game in games" :key="game.gameId">
+      <v-card outlined :to="`/game/${game.gameId}`">
         <v-list-item three-line>
           <v-list-item-content>
-            <v-list-item-title class="headline mb-1">{{ project.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ project.deadline }}까지</v-list-item-subtitle>
-            <v-list-item-subtitle>목표액: {{ project.aim }}</v-list-item-subtitle>
+            <v-list-item-title class="headline mb-1">{{ game.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{ game.deadline }}까지</v-list-item-subtitle>
+            <v-list-item-subtitle>목표액: {{ game.aim }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-card>
 
     </div>
-
+  <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </v-container>
 </template>
-
 <script>
-import { mapState, mapActions } from "vuex";
+import InfiniteLoading from 'vue-infinite-loading';
+import axios from 'axios'
+import SERVER from '../../api/base'
 
 export default {
   name: "GameMain",
-
-  computed: {
-    ...mapState(["projectList"])
+  data() {
+    return {
+      gameNum: 0,
+      games: [],
+    }
   },
 
+  components: {
+    InfiniteLoading
+  },
   methods: {
-    ...mapActions(["fetchProjects"])
+    infiniteHandler($state) {
+      axios.get(SERVER.BASE + SERVER.GAMELIST + this.gameNum + '/')
+        .then(res => { 
+          console.log(res)
+        if (res.data.length > 0) {
+          this.gameNum += 10;
+          console.log(res.data)
+          this.SetMovies(res.data)
+          res.data.forEach(item => {
+            this.games.push(item)
+          })
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+      })
+        .catch(err => console.error(err))
+    }
   },
-
-  created() {
-    this.fetchProjects();
-  }
 };
 </script>
 

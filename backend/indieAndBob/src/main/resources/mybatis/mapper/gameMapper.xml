@@ -23,9 +23,9 @@
     	insert into game_like (email,game_id) values(#{email},#{gameId})
     </insert>
     
-    <select id="selectGameByEmail" parameterType="String" resultType="game">
+    <select id="selectGameByNickname" parameterType="String" resultType="game">
     	select * from game 
-    	where game_id in (select game_id from game_like where email=#{email});
+    	where game_id in (select game_id from game_like where nickname=#{nickname});
     </select>
     
     <select id="selectUserByGameId" parameterType="String" resultType="user">

@@ -129,9 +129,11 @@ public class UserController {
 	
 	@PostMapping("/following")
 	@ApiOperation(value = "팔로우하기")
-	public Object following(@RequestBody Follow request) {
+	public Object following(@RequestBody Follow request, HttpServletRequest req) {
 		logger.info("==========following==========");
 		logger.info("follow : " + request);
+		String nickname = jwtService.getNickname(req);
+		request.setUserId(nickname);
 		ResponseEntity response = null;
 		if(userService.registerFollow(request) == 1) {
 			final BasicResponse result = new BasicResponse();
@@ -152,7 +154,7 @@ public class UserController {
 		logger.info("userId : " + userId);
 		ResponseEntity response = null;
 		List<String> followerlist = userService.getFollower(userId);
-		if(followerlist.size()>0) {
+		if(followerlist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -171,7 +173,7 @@ public class UserController {
 		logger.info("userId : " + userId);
 		ResponseEntity response = null;
 		List<String> followinglist = userService.getFollowing(userId);
-		if(followinglist.size()>0) {
+		if(followinglist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
