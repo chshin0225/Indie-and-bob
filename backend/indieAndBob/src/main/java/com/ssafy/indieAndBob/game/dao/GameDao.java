@@ -14,8 +14,9 @@ public interface GameDao {
 	int registerGame(GameRegister game);
 	int registerDetail(GameRegister detail);
 	int updateGame(Game game);
-	int deleteGameById(Game game);
+	int deleteGameById(int gameId);
 	List<Game> selectAllGame(int page);
+	List<Game> selectAllGameAdmin(int page);
 	int gameLike(GameLike like);
 	List<Game> selectGameByNickname(String nickname);
 	List<User> selectUserByGameId(String gameId);

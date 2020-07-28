@@ -49,13 +49,37 @@ public class GameController {
 		logger.info("==========selectAllGame==========");
 		ResponseEntity response = null;
 		List<Game> gamelist = gservice.selectAllGame(page);
-		if(gamelist.size()>0) {
+		if(gamelist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
 			result.object = gamelist;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return response;
+	}
+	
+	@GetMapping("/admin/gamelist/{page}")
+	@ApiOperation(value="모든게임리스트 조회")
+	public Object selectAllGameAdmin(@PathVariable int page, HttpServletRequest req) {
+		String nickname = jwtService.getNickname(req);
+		logger.info("==========selectAllGame==========");
+		ResponseEntity response = null;
+		if(nickname.equals("admin")) {
+			List<Game> gamelist = gservice.selectAllGameAdmin(page);
+			if(gamelist.size()>=0) {
+				final BasicResponse result = new BasicResponse();
+				result.status = true;
+				result.data = "success";
+				result.object = gamelist;
+				response = new ResponseEntity<>(result, HttpStatus.OK);
+			} else {
+				response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			}
+		}
+		else {
 			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
 		return response;
@@ -99,13 +123,13 @@ public class GameController {
 		return response;
 	}
 	
-	@DeleteMapping("/game")
+	@DeleteMapping("/game/{gameId}")
 	@ApiOperation(value = "게임 아이디로 게임 삭제")
-	public Object deleteGameById(@RequestBody Game game) {
+	public Object deleteGameById(@PathVariable int gameId) {
 		logger.info("==========deleteGameById==========");
-		logger.info("gameid : " + game);
+		logger.info("gameid : " + gameId);
 		ResponseEntity response = null;
-		if(gservice.deleteGameById(game) == 1) {
+		if(gservice.deleteGameById(gameId) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
