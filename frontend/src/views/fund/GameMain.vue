@@ -23,7 +23,6 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
-
 export default {
   name: "GameMain",
   data() {
@@ -56,7 +55,7 @@ export default {
         .catch(err => console.error(err))
     }
   },
-};
+}
 </script>
 
 <style>

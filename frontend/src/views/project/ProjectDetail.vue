@@ -1,6 +1,7 @@
 <template v-if="render">
   <v-container>
     <h1>{{ this.project.name }} 제작페이지</h1>
+    <v-btn @click="projectDelete">프로젝트 삭제</v-btn>
     <h2>프로젝트 소개내용</h2>
     <v-card outlined>
       <Viewer v-if="content != null" :initialValue="content" />
@@ -131,13 +132,14 @@
       </v-row>
     </div>
     <v-row class="mt-5" justify="center">
-      <v-btn color="primary">최종 제출</v-btn>
+      <v-btn @click="onSubmitButton()" color="primary">최종 제출</v-btn>
     </v-row>
   </v-container>
 </template>
 
 <script>
 import axios from "axios";
+import router from "../../router";
 import SERVER from "../../api/base";
 import { mapGetters } from "vuex";
 import "codemirror/lib/codemirror.css";
@@ -231,6 +233,42 @@ export default {
               this.rewards = [];
             });
         });
+    },
+    onSubmitButton(){
+      //관리자 페이지한테 승인 신청하기
+    },
+    rewardDelete(reward_id){
+      axios.delete(SERVER.BASE+ '지우는url',{rewardId: reward_id}, this.headersConfig )
+      axios
+        .get(SERVER.BASE + SERVER.REWARDS + this.id)
+        .then((res) => {
+          console.log("rewards", res.data.object);
+          this.rewards = res.data.object;
+          this.dialog = false;
+          this.r_thumbnailUrl = "";
+          this.r_left = 0;
+          this.r_price = 0;
+          this.r_title = "";
+          this.r_content = "";
+        })
+        .catch((err) => {
+          console.error(err);
+          this.rewards = [];
+        });
+    },
+    projectEdit(){
+      router.push('/')
+    },
+    projectDelete(){
+    this.$prompt("If you want to delete your project, please type 'Delete the project'.", "", "Are you sure?", "question").then((text) => {
+     // do somthing with text
+     if(text==='Delete the project'){
+     axios.delete(SERVER.BASE+"프로젝트 지우는것", {gameId: this.id}, this.headersConfig)
+     .then(router.push('/user/MyPage'))
+     }else{
+       this.$alert("Wrong input!")}
+
+});
     },
   },
 };
