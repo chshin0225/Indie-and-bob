@@ -172,14 +172,14 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
-    changeUserInfo(context, changedData) {
-      axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
-        .then(res => {
-          context.commit('setUser', res.data)
-          alert('회원 정보가 변경되었습니다.')
-        })
-        .catch(err => console.error(err))
-    },
+    // changeUserInfo(context, changedData) {
+    //   axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
+    //     .then(res => {
+    //       context.commit('setUser', res.data)
+    //       alert('회원 정보가 변경되었습니다.')
+    //     })
+    //     .catch(err => console.error(err))
+    // },
 
     follow() {
 

@@ -69,7 +69,7 @@
           <label for="thumbnail">썸네일</label>
           <v-file-input
             id="thumbnail"
-            @change="uploadImgPreview"
+            @change="uploadImage"
             accept="image/*"
             label="썸네일 이미지를 입력해주세요"
             prepend-icon="mdi-camera"
@@ -134,7 +134,7 @@ export default {
         })
         .catch((err) => console.error(err));
     },
-    uploadImgPreview() {
+    uploadImage() {
       let fileInfo = document.getElementById("thumbnail").files[0];
       let reader = new FileReader();
       reader.onload = function () {
