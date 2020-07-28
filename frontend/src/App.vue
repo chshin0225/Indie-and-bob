@@ -50,12 +50,12 @@
           </router-link>
 
           <!-- 로그인 했을 때 -->
-          <router-link to="/" class="text-decoration-none black--text" v-if="isLoggedIn">
+          <router-link :to="`/user/mypage/${ userInfo.nickname }`" class="text-decoration-none black--text" v-if="isLoggedIn">
             <div class="pa-2 d-flex">
               <v-avatar color="secondary">
                 <v-icon dark>mdi-account-circle</v-icon>
               </v-avatar>
-              <h3 class="ml-4 align-self-center">{{ userInfo }}</h3>
+              <h3 class="ml-4 align-self-center">{{ userInfo.nickname }}</h3>
             </div>
           </router-link>
         </template>
@@ -72,7 +72,7 @@
               </v-row>
             </v-list-item>
 
-            <v-list-item class="px-3" to="/user/mypage" v-if="isLoggedIn">
+            <v-list-item class="px-3" :to="`/user/mypage/${ userInfo.nickname }`" v-if="isLoggedIn">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-user fa-lg grey--text text--darken-2"></i>
@@ -98,6 +98,7 @@
                 <v-col class="font-weight-regular">Community</v-col>
               </v-row>
             </v-list-item>
+
           </v-list-item-group>
         </v-list>
 
@@ -136,7 +137,25 @@ export default {
         { title: 'Notification4' },
       ],
       closeOnClick: true,
+      currentUser: localStorage.getItem('username')
     };
+  },
+
+  created() {
+    if (this.isLoggedIn) {
+      let username = localStorage.getItem('username')
+      this.getUserInfo(username)
+    }
+  },
+
+  watch: {
+    $route: function() {
+      // console.log('log', this.isLoggedIn)
+      if (this.isLoggedIn) {
+        let username = localStorage.getItem('username')
+        this.getUserInfo(username)
+      }
+    },
   },
 
   computed: {
@@ -148,11 +167,12 @@ export default {
     ...mapActions(['goBack', 'logout', 'getUserInfo',])
   },
 
-  updated() {
-    if (this.isLoggedIn) {
-      this.getUserInfo('test100')
-    }
-  },
+  // updated() {
+  //   if (this.isLoggedIn) {
+  //     let username = localStorage.getItem('username')
+  //     this.getUserInfo(username)
+  //   }
+  // },
 };
 </script>
 
