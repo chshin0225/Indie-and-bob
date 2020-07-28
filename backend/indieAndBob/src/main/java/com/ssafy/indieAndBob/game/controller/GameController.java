@@ -86,6 +86,7 @@ public class GameController {
 		String token = req.getHeader("jwt-auth-token");
 		logger.info("token : " + token);
 		logger.info("" + jwtService.get(token));
+		logger.info("user : " + jwtService.get(token).get("User"));
 		String email = ((User) jwtService.get(token).get("User")).getEmail();
 		logger.info("==========registerGame==========");
 		logger.info("Game : " + request);
