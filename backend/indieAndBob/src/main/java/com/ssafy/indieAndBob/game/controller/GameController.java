@@ -93,6 +93,7 @@ public class GameController {
 		logger.info("Game : " + request);
 		logger.info("email = " + email);
 		ResponseEntity response = null;
+		request.setEmail(email);
 		int gameId = gservice.registerGame(request);
 		if (gameId != 0) {
 			final BasicResponse result = new BasicResponse();
