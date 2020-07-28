@@ -33,6 +33,36 @@
       </v-col>
     </v-row>
 
+    <!-- bank account -->
+    <div class="bank-info" v-if="usertype=='개발자'">
+      <v-row class="justify-center">
+        <v-col class="py-0" sm="2">
+          <label for="bankname">은행명</label>
+          <v-select
+            class="my-3"
+            hide-details="true"
+            :items="banks"
+            id="bankname"
+            v-model="bankname"
+            outlined
+          ></v-select>
+        </v-col>
+        <v-col class="py-0" sm="4">
+          <label for="accountnumber">계좌번호</label>
+          <v-text-field
+            hide-details="true"
+            class="my-3"
+            v-model="accountnumber"
+            id="accountnumber"
+            outlined
+            placeholder="(-)를 제외한 숫자만 입력해주세요"
+            type="number"
+          />
+          <small class="d-block" v-if="error.accountnumber">{{ error.accountnumber }}</small>
+        </v-col>
+      </v-row>
+    </div>
+
     <!-- email -->
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
@@ -79,7 +109,6 @@
           id="profile-image"
           outlined
           placeholder="없어도 됩니다."
-          type="text"
         />
         <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
@@ -136,6 +165,23 @@
           type="number"
         />
         <small class="d-block" v-if="error.phonenumber">{{ error.phonenumber }}</small>
+      </v-col>
+    </v-row>
+
+    <!-- introduction -->
+    <v-row class="justify-center">
+      <v-col class="py-0" sm="6">
+        <label for="introduction">한 줄 소개</label>
+        <v-text-field
+          class="my-3"
+          hide-details="true"
+          v-model="introduction"
+          id="introduction"
+          outlined
+          placeholder="자신을 소개해주세요~"
+          type="text"
+        />
+        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
 
@@ -214,34 +260,6 @@
       @click:append="showPwc = !showPwc"
     ></v-text-field>-->
 
-    <!-- bank account -->
-    <v-row class="justify-center">
-      <v-col class="py-0" sm="2">
-        <label for="bankname">은행명</label>
-        <v-select
-          class="my-3"
-          hide-details="true"
-          :items="banks"
-          id="bankname"
-          v-model="bankname"
-          outlined
-        ></v-select>
-      </v-col>
-      <v-col class="py-0" sm="4">
-        <label for="accountnumber">계좌번호</label>
-        <v-text-field
-          hide-details="true"
-          class="my-3"
-          v-model="accountnumber"
-          id="accountnumber"
-          outlined
-          placeholder="(-)를 제외한 숫자만 입력해주세요"
-          type="number"
-        />
-        <small class="d-block" v-if="error.accountnumber">{{ error.accountnumber }}</small>
-      </v-col>
-    </v-row>
-
     <!-- term -->
     <v-row class="justify-center">
       <v-col sm="6">
@@ -271,12 +289,13 @@
                 name:name,
                 profile: profileImage,
                 nickname: nickName, 
-                is_developer: is_developer, 
-                phonenumber: phonenumber, 
-                bankname: bankname,
-                accountnumber: accountnumber, 
+                isDeveloper: is_developer, 
+                phoneNumber: phonenumber, 
+                bankName: bankname,
+                bankAccount: accountnumber, 
                 postcode: postcode, 
-                address: address, 
+                address: address,
+                introduction: introduction, 
                 extraAddress: extraAddress})"
               :disabled="!isSubmit"
               class="d-inline-block"
@@ -313,20 +332,20 @@ export default {
   },
 
   watch: {
-    password: function() {
+    password: function () {
       this.checkForm();
     },
-    nickName: function() {
+    nickName: function () {
       this.checkForm();
     },
-    usertype: function() {
+    usertype: function () {
       if (this.usertype === "개발자") {
         this.is_developer = true;
       } else {
         this.is_developer = false;
       }
     },
-    email: function() {
+    email: function () {
       this.checkForm();
       if (
         this.email.length > 0 &&
@@ -337,15 +356,15 @@ export default {
           this.email.substring(0, 1).toLowerCase() + this.email.substring(1);
       }
     },
-    passwordConfirm: function() {
+    passwordConfirm: function () {
       this.checkForm();
     },
-    phonenumber: function() {
+    phonenumber: function () {
       this.checkForm();
     },
-    isTerm: function() {
+    isTerm: function () {
       this.checkForm();
-    }
+    },
   },
   methods: {
     ...mapActions(["SignUp"]),
@@ -377,7 +396,7 @@ export default {
       else this.error.isTerm = true;
 
       let isSubmit = true;
-      Object.values(this.error).map(v => {
+      Object.values(this.error).map((v) => {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
@@ -389,7 +408,7 @@ export default {
       );
       // eslint-disable-next-line
       new daum.Postcode({
-        onComplete: data => {
+        onComplete: (data) => {
           if (data.userSelectedType === "R") {
             this.address = data.roadAddress;
           } else {
@@ -413,17 +432,17 @@ export default {
           }
           this.postcode = data.zonecode;
           this.searchWindow.display = "none";
-          document.getElementById('extraAddress')[0].focus()
+          document.getElementById("extraAddress")[0].focus();
           document.body.scrollTop = currentScroll;
         },
-        onResize: size => {
+        onResize: (size) => {
           this.searchWindow.height = `${size.height}px`;
         },
         width: "100%",
-        height: "100%"
+        height: "100%",
       }).embed(this.$refs.searchWindow);
       this.searchWindow.display = "block";
-    }
+    },
   },
 
   data() {
@@ -443,6 +462,7 @@ export default {
       bankname: "",
       accountnumber: "",
       isTerm: false,
+      introduction: "",
       isLoading: false,
       error: {
         email: false,
@@ -450,7 +470,7 @@ export default {
         phonenumber: false,
         nickName: "",
         passwordConfirm: false,
-        isTerm: false
+        isTerm: false,
       },
       isSubmit: false,
       passwordType: "password",
@@ -462,17 +482,17 @@ export default {
       showPwc: false,
       searchWindow: {
         display: "none",
-        height: "300px"
+        height: "300px",
       },
       postcode: "",
       address: "",
-      extraAddress: ""
+      extraAddress: "",
       // rules: {
       //   required: value => !!value || 'Required.',
       //   min: v => v.length >= 8 || 'Min 8 characters',
       // }
     };
-  }
+  },
 };
 </script>
 
