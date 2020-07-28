@@ -36,7 +36,7 @@ export default {
     computed: {
         ...mapGetters([ 'headersConfig' ])
     },
-    components() {
+    components : {
         InfiniteLoading
     },
     methods: {
