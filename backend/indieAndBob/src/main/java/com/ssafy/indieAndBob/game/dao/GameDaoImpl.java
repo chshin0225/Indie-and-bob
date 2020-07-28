@@ -78,5 +78,10 @@ public class GameDaoImpl implements GameDao{
 		return temp.delete(ns + "deleteGameById", game);
 	}
 
+	@Override
+	public List<Game> selectAllGameAdmin(int page) {
+		return temp.selectList(ns + "selectAllGameAdmin", page);
+	}
+
 	
 }
