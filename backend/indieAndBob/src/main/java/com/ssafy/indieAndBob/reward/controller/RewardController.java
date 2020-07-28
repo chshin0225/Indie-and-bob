@@ -35,7 +35,7 @@ public class RewardController {
 		
 		ResponseEntity response = null;
 		List<Reward> rewardlist = rservice.selectAllReward();
-		if(rewardlist.size()>0) {
+		if(rewardlist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";

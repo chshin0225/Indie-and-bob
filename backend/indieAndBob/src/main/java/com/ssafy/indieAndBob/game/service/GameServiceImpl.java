@@ -41,8 +41,8 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<Game> selectGameByEmail(String email) {
-		return gamedao.selectGameByEmail(email);
+	public List<Game> selectGameByNickname(String nickname) {
+		return gamedao.selectGameByNickname(nickname);
 	}
 
 	@Override

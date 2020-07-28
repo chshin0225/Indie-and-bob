@@ -17,12 +17,14 @@
       </v-card>
 
     </div>
-
+  <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </v-container>
 </template>
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
+import axios from 'axios'
+import SERVER from '../../api/base'
 
 export default {
   name: "GameMain",
