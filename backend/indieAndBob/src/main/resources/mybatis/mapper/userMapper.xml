@@ -10,16 +10,34 @@
    <select id="selectByEmail" parameterType="String" resultType="user">
    	  select * from user where email=#{email}
    </select>
+   <select id="selectByNickname" parameterType="String" resultType="user">
+   	  select * from user where nickname=#{nickname}
+   </select>
    <insert id="registerUser" parameterType="user">
-      insert into user (email, name, password, postcode,address,extra_address,bank_name,bank_account,
+      insert into user (email, name, nickname, password, postcode,address,extra_address,bank_name,bank_account,
       is_developer,phone_number,profile,introduction) 
-      values (#{email}, #{name}, #{password}, #{postcode},#{address},#{extraAddress},#{bankName},#{bankAccount},
+      values (#{email}, #{name}, #{nickname}, #{password}, #{postcode},#{address},#{extraAddress},#{bankName},#{bankAccount},
       #{isDeveloper},#{phoneNumber},#{profile},#{introduction})
    </insert>
    <update id="changeUserInfo">
-   	  update user set email=#{email}, name=#{name}, password=#{password}, postcode=#{postcode},address=#{address},
+   	  update user set email=#{email}, name=#{name}, nickname=#{nickname}, password=#{password}, postcode=#{postcode},address=#{address},
    	  extra_address=#{extraAddress},bank_name=#{bankName},bank_account=#{bankAccount},
       is_developer=#{isDeveloper},phone_number=#{phoneNumber},profile=#{profile},introduction=#{introduction}
       where email={#email}
    </update>
+   <insert id="registerFollow" parameterType="follow">
+   	  insert into follow (follower, following) values (#{userId},#{following})
+   </insert>
+   <select id="getFollower" parameterType="String">
+   	  select follower from follow where following=#{userId}
+   </select>
+   <select id="getFollowing" parameterType="String">
+   	  select following from follow where follower=#{userId}
+   </select>
+   <delete id="deleteFollowing" parameterType="follow">
+      delete from follow where follower=#{userId} and following=#{following}
+   </delete>
+   <select id="isFollowing" parameterType="follow">
+      select * from follow where follower=#{userId} and following=#{following}
+   </select>
 </mapper>
