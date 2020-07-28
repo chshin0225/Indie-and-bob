@@ -41,7 +41,7 @@ export default {
     },
     methods: {
         infiniteHandler($state) {
-            axios.get(SERVER.BASE + SERVER.UNAPPROVED + gameNum + '/', this.headersConfig)
+            axios.get(SERVER.BASE + SERVER.UNAPPROVED + this.gameNum + '/', this.headersConfig)
                 .then(res => { 
             console.log(res)
             if (res.data.object.length > 0) {
@@ -59,20 +59,20 @@ export default {
       })
         .catch(err => console.error(err))
     },
-        approve() {
-            axios.post(게임승인)
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(err => console.error(err))
-        },
-        disapprove() {
-            axios.post(게임거절)
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(err => console.error(err))
-        }
+        // approve() {
+        //     axios.post(게임승인)
+        //         .then(res => {
+        //             console.log(res)
+        //         })
+        //         .catch(err => console.error(err))
+        // },
+        // disapprove() {
+        //     axios.post(게임거절)
+        //         .then(res => {
+        //             console.log(res)
+        //         })
+        //         .catch(err => console.error(err))
+        // }
     }
 
 }
