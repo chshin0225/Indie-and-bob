@@ -88,7 +88,7 @@ const routes = [
     },
   },
   {
-    path: '/community/new',
+    path: '/community-new',
     name: 'CommunityForm',
     component: CommunityForm,
     meta: {
@@ -140,7 +140,7 @@ const routes = [
     },
   },
   { 
-    path: '/project/:id/settings',
+    path: '/project-settings/:id',
     name: 'ProjectSettings',
     component: ProjectSettings,
     meta: {
@@ -182,7 +182,7 @@ const routes = [
     }
   },
   {
-    path: '/project/all',
+    path: '/projects',
     name: 'GameMain',
     component: GameMain,
     meta: {
