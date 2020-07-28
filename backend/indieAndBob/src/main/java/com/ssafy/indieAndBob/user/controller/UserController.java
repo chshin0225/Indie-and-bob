@@ -129,9 +129,11 @@ public class UserController {
 	
 	@PostMapping("/following")
 	@ApiOperation(value = "팔로우하기")
-	public Object following(@RequestBody Follow request) {
+	public Object following(@RequestBody Follow request, HttpServletRequest req) {
 		logger.info("==========following==========");
 		logger.info("follow : " + request);
+		String nickname = jwtService.getNickname(req);
+		request.setUserId(nickname);
 		ResponseEntity response = null;
 		if(userService.registerFollow(request) == 1) {
 			final BasicResponse result = new BasicResponse();
