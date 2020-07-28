@@ -122,7 +122,7 @@ public class RewardController {
 		return response;
 	}
 	
-	@DeleteMapping("/reward/deletereward/{rewardId}")
+	@DeleteMapping("/reward/{rewardId}")
 	@ApiOperation(value = "리워드삭제")
 	public Object deleteRewardByRewardId(@PathVariable int rewardId) {
 		logger.info("===========deleteRewardByRewardId==========");
