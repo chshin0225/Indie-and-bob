@@ -7,8 +7,8 @@
    	<select id="selectGameById" parameterType="String" resultType="game">
 		select * from game where game_id=#{gameId}
     </select>
-    <select id="selectAllGame" resultType="game">
-   	    select * from game where is_approve
+    <select id="selectAllGame" parameterType="int" resultType="game">
+   	    select * from game where is_approve limit #{page},10
     </select>
     <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameregister">
         insert into game (name, deadline, aim,left_price, is_end, is_approve, email,
@@ -16,6 +16,13 @@
         values (#{name}, #{deadline}, #{aim},#{aim},#{isEnd},#{isApprove},#{email},
         #{thumbnail})
     </insert>
+    <update id="updateGame" parameterType="game">
+    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, left_price=#{leftPrice}, is_end=#{isEnd}, is_approve=#{isApprove}, email=#{email}
+        where game_id=#{gameId}
+    </update>
+    <delete id="deleteGameById" parameterType="game">
+    	delete from game where game_id=#{gameId}
+    </delete>
     <insert id="registerGameDetail" parameterType="gameregister">
     	insert into game_detail (game_id, content) values(#{gameId}, #{content})
     </insert>
