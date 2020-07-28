@@ -12,6 +12,7 @@ import FeedMain from '../views/IndexFeed.vue'
 //project making
 import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
+import EditProject from '../views/project/EditProject.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
 import SearchResult from '../views/project/SearchResult.vue'
 import ProjectSettings from '../views/project/ProjectSettings.vue'
@@ -167,6 +168,14 @@ const routes = [
     meta: {
       title: 'Create Project'
     },
+  }, 
+  {
+    path:'/pjt/edit/:id',
+    name: 'EditProject',
+    component : EditProject,
+    meta: {
+      title: 'Edit Project'
+    }
   },
 
   //game(고객 사이드) 관련

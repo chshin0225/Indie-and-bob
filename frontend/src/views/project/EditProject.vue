@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="my-5 text-center">Step 1/3. 프로젝트 개요를 입력해주세요!</h1>
+    <h1 class="my-5 text-center">프로젝트 수정</h1>
     <v-row class="justify-center">
       <v-col class="py-0" sm="10">
         <label for="title">제목</label>
@@ -66,6 +66,7 @@
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import axios from 'axios'
+import SERVER from '../../api/base'
 
 import { Editor } from "@toast-ui/vue-editor";
 
@@ -73,14 +74,16 @@ export default {
   components: {
     editor: Editor
   },
-  created() {
+  mounted() {
       this.id = this.$route.params.id
-      axios.get('프로젝트'+this.id)
+      axios.get(SERVER.BASE+SERVER.GAME+this.id)
       .then(res => {
-          this.content = res.data.content
-          this.today = res.data.created_at.toISOString().substr(0, 10)
-          this.date = res.data.date
-          this.title = res.data.title
+          console.log(res.data.object)
+          this.content = res.data.object.content
+          this.today = res.data.object.createdAt.substr(0, 10)
+          this.date = res.data.object.deadline.substr(0, 10)
+          this.title = res.data.object.name
+          this.aim = res.data.object.aim
 
      })
       .catch(err => console.error(err))
@@ -89,6 +92,11 @@ export default {
   data() {
     return {
       text: '',
+      content: '',
+      today: '',
+      date: '',
+      title: '',
+      aim: 0,
 
       menu2: false,
       editorOptions: {
