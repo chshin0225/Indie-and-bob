@@ -7,10 +7,10 @@
     </v-row>
     <v-row justify='center'>
         <v-col cols='auto' class='mr-2'>
-            <v-btn>구매내역 보기</v-btn>
+            <v-btn @click="myFunding()">구매내역 보기</v-btn>
         </v-col>
         <v-col cols='auto' class='ml-2'>
-            <v-btn>프로젝트로 돌아가기</v-btn>
+            <v-btn @click="oriProject()">프로젝트로 돌아가기</v-btn>
         </v-col>
     </v-row>
   </v-container>
@@ -18,7 +18,15 @@
 
 <script>
 export default {
+    methods: {
+        myFunding() {
 
+        },
+        oriProject() {
+
+        },
+
+    }
 }
 </script>
 
