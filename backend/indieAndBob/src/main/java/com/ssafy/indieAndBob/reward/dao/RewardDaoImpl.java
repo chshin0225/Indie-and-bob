@@ -35,4 +35,15 @@ public class RewardDaoImpl implements RewardDao{
 	public List<Reward> selectRewardByGameId(String gameId) {
 		return temp.selectList(ns + "selectRewardByGameId", gameId);
 	}
+
+	@Override
+	public int updateRewardByRewardId(Reward reward) {
+		return temp.update(ns + "updateRewardByRewardId",reward);
+	}
+
+	@Override
+	public int deleteRewardByRewardId(int rewardId) {
+		return temp.delete(ns + "deleteRewardByRewardId", rewardId);
+	}
+	
 }
