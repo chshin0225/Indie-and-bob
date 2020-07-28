@@ -75,5 +75,10 @@ public class GameServiceImpl implements GameService{
 		return gamedao.selectAllGameAdmin(page);
 	}
 
+	@Override
+	public int updateApprove(Game game) {
+		return gamedao.updateApprove(game);
+	}
+
 	
 }

@@ -83,5 +83,10 @@ public class GameDaoImpl implements GameDao{
 		return temp.selectList(ns + "selectAllGameAdmin", page);
 	}
 
+	@Override
+	public int updateApprove(Game game) {
+		return temp.update(ns + "updateApprove", game);
+	}
+
 	
 }
