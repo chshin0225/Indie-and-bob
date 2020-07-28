@@ -49,8 +49,8 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public List<Game> selectGameByEmail(String email) {
-		return temp.selectList(ns+"selectGameByEmail",email);
+	public List<Game> selectGameByNickname(String nickname) {
+		return temp.selectList(ns+"selectGameByNickname",nickname);
 	}
 
 	@Override
