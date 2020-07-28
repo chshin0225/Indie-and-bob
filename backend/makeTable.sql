@@ -35,7 +35,7 @@ create table game_like(
 );
 
 create table game_detail(
-	game_id varchar(50) NOT NULL,
+	game_id int NOT NULL,
     content varchar(4000),
     d_stage int NOT NULL,
     primary key(`game_id`)
