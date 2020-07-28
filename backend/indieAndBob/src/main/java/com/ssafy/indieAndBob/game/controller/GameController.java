@@ -45,18 +45,33 @@ public class GameController {
 	
 	@GetMapping("/gamelist/{page}")
 	@ApiOperation(value="모든게임리스트 조회")
-	public Object selectAllGame(@PathVariable int page) {
+	public Object selectAllGame(@PathVariable int page, HttpServletRequest req) {
+		String nickname = jwtService.getNickname(req);
 		logger.info("==========selectAllGame==========");
 		ResponseEntity response = null;
-		List<Game> gamelist = gservice.selectAllGame(page);
-		if(gamelist.size()>0) {
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-			result.object = gamelist;
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-		} else {
-			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		if(nickname.equals("admin")) {
+			List<Game> gamelist = gservice.selectAllGameAdmin(page);
+			if(gamelist.size()>=0) {
+				final BasicResponse result = new BasicResponse();
+				result.status = true;
+				result.data = "success";
+				result.object = gamelist;
+				response = new ResponseEntity<>(result, HttpStatus.OK);
+			} else {
+				response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			}
+		}
+		else {
+			List<Game> gamelist = gservice.selectAllGame(page);
+			if(gamelist.size()>=0) {
+				final BasicResponse result = new BasicResponse();
+				result.status = true;
+				result.data = "success";
+				result.object = gamelist;
+				response = new ResponseEntity<>(result, HttpStatus.OK);
+			} else {
+				response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			}
 		}
 		return response;
 	}
