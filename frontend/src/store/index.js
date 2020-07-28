@@ -33,7 +33,7 @@ export default new Vuex.Store({
   getters: {
     headersConfig: state => ({
       headers: {
-        headers: `Bearer ${state.jwtToken}` 
+        "jwt-auth-token": state.jwtToken 
       }
     }),
     isLoggedIn: state => !!state.jwtToken,
@@ -173,7 +173,7 @@ export default new Vuex.Store({
     },
 
     changeUserInfo(context, changedData) {
-      axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
+      axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, context.getters.headersConfig)
         .then(res => {
           context.commit('setUser', res.data)
           alert('회원 정보가 변경되었습니다.')
