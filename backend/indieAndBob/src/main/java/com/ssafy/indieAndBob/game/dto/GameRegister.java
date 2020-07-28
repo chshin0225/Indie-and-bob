@@ -2,6 +2,13 @@ package com.ssafy.indieAndBob.game.dto;
 
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class GameRegister {
 	public int gameId;
 	public String name;

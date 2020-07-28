@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.dto.GameRegister;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
@@ -81,16 +82,15 @@ public class GameController {
 	
 	@PostMapping("/game/registergame")
 	@ApiOperation(value = "펀딩할 게임등록")
-	public Object registerGame(@RequestBody Game request, @RequestBody GameDetail detail, HttpServletRequest req) {
+	public Object registerGame(@RequestBody GameRegister request, HttpServletRequest req) {
 		String token = req.getHeader("jwt-auth-token");
 		logger.info("" + jwtService.get(token));
 		String email = (String) jwtService.get(token).get("email");
 		logger.info("==========registerGame==========");
 		logger.info("Game : " + request);
-		logger.info("detail : " + detail);
 		logger.info("email = " + email);
 		ResponseEntity response = null;
-		int gameId = gservice.registerGame(request, detail);
+		int gameId = gservice.registerGame(request);
 		if (gameId != 0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
