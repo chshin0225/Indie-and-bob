@@ -3,6 +3,8 @@ package com.ssafy.indieAndBob.jwt.service;
 import java.util.Date;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -57,5 +59,17 @@ public class JwtService {
 		log.trace("claims: {}", claims);
 		
 		return claims.getBody();
+	}
+	
+	public String getEmail(HttpServletRequest req) {
+		String token = req.getHeader("jwt-auth-token");
+		String email = (String) ((Map<String, Object>) get(token).get("User")).get("email");
+		return email;
+	}
+	
+	public String getNickname(HttpServletRequest req) {
+		String token = req.getHeader("jwt-auth-token");
+		String nickname = (String) ((Map<String, Object>) get(token).get("User")).get("nickname");
+		return nickname;
 	}
 }

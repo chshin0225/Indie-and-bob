@@ -31,11 +31,11 @@ public class RewardController {
 	@GetMapping("/reward")
 	@ApiOperation(value = "모든리워드찾기")
 	public Object selectAllReward() {
-		logger.debug("===========selectAllReward==========");
+		logger.info("===========selectAllReward==========");
 		
 		ResponseEntity response = null;
 		List<Reward> rewardlist = rservice.selectAllReward();
-		if(rewardlist.size()>0) {
+		if(rewardlist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -51,8 +51,8 @@ public class RewardController {
 	@ApiOperation(value = "리워드아이디로 리워드찾기")
 	public Object selectRewardById(@PathVariable String rewardId) {
 		
-		logger.debug("===========selectRewardById==========");
-		logger.debug("rewardId : " + rewardId);
+		logger.info("===========selectRewardById==========");
+		logger.info("rewardId : " + rewardId);
 		
 		ResponseEntity response = null;
 		Reward reward = rservice.selectRewardById(rewardId);
@@ -70,11 +70,11 @@ public class RewardController {
 	@GetMapping("/reward/bygameid/{gameId}")
 	@ApiOperation(value = "게임아이디에 해당하는 리워드 찾기")
 	public Object selectRewardByGameId(@PathVariable String gameId) {
-		logger.debug("===========selectRewardByGameId==========");
-		logger.debug("gameId : " + gameId);
+		logger.info("===========selectRewardByGameId==========");
+		logger.info("gameId : " + gameId);
 		ResponseEntity response = null;
 		List<Reward> rewardlist = rservice.selectRewardByGameId(gameId);
-		if(rewardlist.size()>0) {
+		if(rewardlist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -90,8 +90,8 @@ public class RewardController {
 	@PostMapping("/reward/registerreward")
 	@ApiOperation(value = "리워드등록")
 	public Object registerReward(@RequestBody Reward request) {
-		logger.debug("===========registerGame==========");
-		logger.debug("reward : " + request);
+		logger.info("===========registerGame==========");
+		logger.info("reward : " + request);
 		ResponseEntity response = null;
 		if (rservice.registerReward(request) == 1) {
 			final BasicResponse result = new BasicResponse();
