@@ -10,6 +10,7 @@ export default {
     'UNAPPROVED' : "/admin/gamelist/",
     'GAME': "/game/",
     'GAMEREGISTER' : "/game/registergame",
+    'APPROVE' : "/game/approve",
     
     'REWARDDETAIL': "/reward/",
     'REWARDREGISTER':"/reward/registerreward",

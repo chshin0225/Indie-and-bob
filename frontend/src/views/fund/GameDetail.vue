@@ -106,6 +106,14 @@
           <v-icon :color="primary">fas fa-share-alt</v-icon>
         </v-btn>
       </div>
+      <div v-if="isAdmin">
+        <v-btn cols='auto' @click="approve" class="mr-3">
+          승인
+        </v-btn>
+        <v-btn cols='auto' @click="disapprove" class="mr-3">
+          거절
+        </v-btn>
+      </div>
     </v-container>
   </div>
 </template>
@@ -118,14 +126,18 @@ import GameCommunity from "./GameCommunity.vue";
 import QuestionandAnswer from "./QuestionandAnswer.vue";
 import { mapActions } from "vuex";
 export default {
-  // created() {
-  //  axios.get(SERVER.BASE + SERVER.GAME + '?gameId='+ this.$refs.params.id)
-  //  .then(res => {
-  //    this.project = res.data
-
-  //  })
-
-  // },
+  created() {
+   axios.get(SERVER.BASE + SERVER.GAME + this.$refs.params.id)
+    .then(res => {
+      this.project = res.data
+    })
+    .catch(err => {
+      console.error(err)
+    })
+   if (localStorage.getItem('username') === 'admin') {
+     this.isAdmin = true
+   }
+  },
   components: {
     GameCommunity,
     QuestionandAnswer,
@@ -136,6 +148,7 @@ export default {
       likeDialog: false,
       iconColor: "white",
       iconBgColor: "accent",
+      isAdmin: false,
       project: {
         name: "example",
         startedAt: "2020-07-14",
@@ -200,6 +213,20 @@ export default {
         this.iconColor = "white";
       }
     },
+        approve() {
+         axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$refs.params.id, isApprove: 1 })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => console.error(err))
+        },
+        disapprove() {
+         axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$refs.params.id, isApprove: -1 })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => console.error(err))
+        }
   },
 };
 </script>
