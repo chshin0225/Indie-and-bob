@@ -4,13 +4,22 @@
     <div class="header">
       <v-container>
         <v-row>
-          <h1>Username</h1>
-          <v-btn outlined small color="primary" class="align-self-center ml-3">follow</v-btn>
+          <h1>{{ userInfo.nickname }}</h1>
+          <v-btn 
+            outlined 
+            small 
+            color="primary" 
+            class="align-self-center ml-3" 
+            @click="follow({'following': userInfo.nickname})"
+            v-if="!isSelf"
+            >follow
+          </v-btn>
         </v-row>
-        <p class="mb-0">introduction: 한줄소개</p>
+        <p class="mb-0">introduction: {{ userInfo.introduction }}</p>
         <p class="mb-0">following: 0</p>
         <p class="mb-0 pb-3">followers: 0</p>  
-        <p>{{ user }}</p>
+        <p>{{ $route.params }}</p>
+        <p>{{ userInfo }}</p>
       </v-container>
     </div>
     <v-divider></v-divider>
@@ -101,14 +110,19 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   created() {
-    this.getUserInfo('test100@naver.com')
+    // console.log(this.$route.params.username)
+    this.getUserInfo(this.$route.params.username)
   },
+
   methods: {
-    ...mapActions([ 'getUserInfo' ]),
+    ...mapActions([ 'getUserInfo', 'follow', ]),
   },
   computed: {
-    ...mapState([ 'user' ]),
-  }
+    ...mapState([ 'userInfo' ]),
+    isSelf: function() {
+      return this.userInfo.nickname === localStorage.getItem('username')
+    },
+  },
 };
 </script>
 

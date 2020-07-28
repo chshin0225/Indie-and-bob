@@ -17,17 +17,19 @@
       </v-card>
 
     </div>
-
+  <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </v-container>
 </template>
-
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
+import axios from 'axios'
+import SERVER from '../../api/base'
+
 export default {
   name: "GameMain",
   data() {
     return {
-      gameNum: 10,
+      gameNum: 0,
       games: [],
     }
   },
@@ -37,8 +39,8 @@ export default {
   },
   methods: {
     infiniteHandler($state) {
-      axios.get(SERVER.BASE + SERVER.GAMELIST)
-        .then(res => {
+      axios.get(SERVER.BASE + SERVER.GAMELIST + this.gameNum + '/')
+        .then(res => { 
           console.log(res)
         if (res.data.length > 0) {
           this.gameNum += 10;

@@ -5,7 +5,8 @@ export default {
     'PWCHANGE': "/account/pwchange",
     'USERINFO' : "/account/userinfo",
 
-    'GAMELIST' : "/game",
+    'FOLLOW': "/following",
+    'GAMELIST' : "/gamelist/",
     'GAME': "/game/",
     'GAMEREGISTER' : "/game/registergame",
     
