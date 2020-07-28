@@ -31,9 +31,22 @@ import CommunityArticle from '../views/community/CommunityArticle.vue'
 import PageNotFound from '../views/error/PageNotFound.vue'
 import ErrorPage from '../views/error/ErrorPage.vue'
 
+// admin
+import NewProjectRequest from '../views/admin/NewProjectRequest.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
+  // admin
+  {
+    path: '/newrequest',
+    name: 'NewProjectRequest',
+    component: NewProjectRequest,
+    meta: {
+      title: 'New Project Request'
+    },
+  },
+
   // user
   {
     path: '/',
