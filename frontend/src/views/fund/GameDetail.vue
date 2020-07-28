@@ -98,9 +98,14 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-btn fab large dark bottom right color="pink" class="v-btn--example">
-        <v-icon color="white">fas fa-heart</v-icon>
-      </v-btn>
+      <div fixed bottom right class="mr-5 mb-5">
+        <v-btn cols='auto' fab large @click="likeButton()" :color="iconBgColor" class="mr-3">
+          <v-icon :color="iconColor">fas fa-heart</v-icon>
+        </v-btn>
+        <v-btn cols='auto' fab large @click="shareButton()" :color="iconBgColor" class="ml-3 mr-auto">
+          <v-icon :color="primary">fas fa-share-alt</v-icon>
+        </v-btn>
+      </div>
     </v-container>
   </div>
 </template>
@@ -109,9 +114,9 @@
 // import axios from 'axios';
 import router from "../../router";
 // import SERVER from '../../api/base'
-import GameCommunity from './GameCommunity.vue'
-import QuestionandAnswer from './QuestionandAnswer.vue'
-import { mapActions } from 'vuex'
+import GameCommunity from "./GameCommunity.vue";
+import QuestionandAnswer from "./QuestionandAnswer.vue";
+import { mapActions } from "vuex";
 export default {
   // created() {
   //  axios.get(SERVER.BASE + SERVER.GAME + '?gameId='+ this.$refs.params.id)
@@ -128,7 +133,9 @@ export default {
 
   data() {
     return {
-      likeDialog : false,
+      likeDialog: false,
+      iconColor: "white",
+      iconBgColor: "accent",
       project: {
         name: "example",
         startedAt: "2020-07-14",
@@ -181,10 +188,17 @@ export default {
     };
   },
   methods: {
-    // ...mapActions(['getProject',]),
+    ...mapActions(["getProject"]),
 
     rewardBuy(id) {
       router.push("/fund/" + id);
+    },
+    likeButton() {
+      if (this.iconColor === "white") {
+        this.iconColor = "primary";
+      } else {
+        this.iconColor = "white";
+      }
     },
   },
 };
