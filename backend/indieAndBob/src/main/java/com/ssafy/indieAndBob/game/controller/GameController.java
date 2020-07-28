@@ -84,6 +84,7 @@ public class GameController {
 	@ApiOperation(value = "펀딩할 게임등록")
 	public Object registerGame(@RequestBody GameRegister request, HttpServletRequest req) {
 		String token = req.getHeader("jwt-auth-token");
+		logger.info("token : " + token);
 		logger.info("" + jwtService.get(token));
 		String email = (String) jwtService.get(token).get("email");
 		logger.info("==========registerGame==========");
