@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Reward {
 
-	public String rewardId;
-	public String gameId;
+	public int rewardId;
+	public int gameId;
 	public String rewardName;
 	public String rImg;
 	public int leftCount;
