@@ -55,7 +55,7 @@
               <v-avatar color="secondary">
                 <v-icon dark>mdi-account-circle</v-icon>
               </v-avatar>
-              <h3 class="ml-4 align-self-center">username</h3>
+              <h3 class="ml-4 align-self-center">{{ userInfo }}</h3>
             </div>
           </router-link>
         </template>
@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "app",
@@ -140,12 +140,19 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isLoggedIn',])
+    ...mapGetters(['isLoggedIn',]),
+    ...mapState(['userInfo',])
   },
 
   methods: {
-    ...mapActions(['goBack', 'logout'])
-  }
+    ...mapActions(['goBack', 'logout', 'getUserInfo',])
+  },
+
+  updated() {
+    if (this.isLoggedIn) {
+      this.getUserInfo('test100')
+    }
+  },
 };
 </script>
 

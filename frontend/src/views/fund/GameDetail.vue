@@ -181,7 +181,7 @@ export default {
     };
   },
   methods: {
-    // ...mapActions(['getProject',]),
+    ...mapActions(['getProject',]),
 
     rewardBuy(id) {
       router.push("/fund/" + id);
