@@ -106,7 +106,7 @@ public class UserController {
 			result.status = true;
 			result.data = "success";
 			result.object = u;
-			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		return response;
 	}
