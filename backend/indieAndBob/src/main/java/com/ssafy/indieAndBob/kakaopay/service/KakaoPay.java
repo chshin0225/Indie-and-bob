@@ -24,7 +24,6 @@ public class KakaoPay {
  
     private static final String HOST = "https://kapi.kakao.com";
     
-    @Autowired
     private KakaoPayReadyVO kakaoPayReadyVO;
     
     //결제화면
@@ -48,9 +47,9 @@ public class KakaoPay {
         params.add("quantity", "1");//수량
         params.add("total_amount", "900");//가격
         params.add("tax_free_amount", "100");//세금
-        params.add("approval_url", "http://i3a105.p.ssafy.io/kakaoPaySuccess");//승인시갈곳
-        params.add("cancel_url", "http://i3a105.p.ssafy.io/kakaoPayCancel");//취소시갈곳
-        params.add("fail_url", "http://i3a105.p.ssafy.io/kakaoPaySuccessFail");//실패시갈곳
+        params.add("approval_url", "http://i3a105.p.ssafy.io");//승인시갈곳
+        params.add("cancel_url", "http://i3a105.p.ssafy.io");//취소시갈곳
+        params.add("fail_url", "http://i3a105.p.ssafy.io");//실패시갈곳
  
          HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
  

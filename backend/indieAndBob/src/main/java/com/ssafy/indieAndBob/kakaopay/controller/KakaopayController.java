@@ -1,45 +1,69 @@
 package com.ssafy.indieAndBob.kakaopay.controller;
 
 
+import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayApprovalVO;
 import com.ssafy.indieAndBob.kakaopay.service.KakaoPay;
+import com.ssafy.indieAndBob.response.dto.BasicResponse;
+
+import io.swagger.annotations.ApiOperation;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.Setter;
 import lombok.extern.java.Log;
 
+@CrossOrigin(origins = { "http://i3a105.p.ssafy.io:3000" })
 @Log
-@Controller
+@RestController
 public class KakaopayController {
 	@Setter(onMethod_ = @Autowired)
 	
-	@ Autowired
     private KakaoPay kakaopay;
     
-    
-    @GetMapping("/kakaoPay")
-    public void kakaoPayGet() {
-        
-    }
-    
     @PostMapping("/kakaoPay")
-    public String kakaoPay() {
+    @ApiOperation(value = "결제하기")
+    public Object kakaoPay() {
         log.info("kakaoPay post............................................");
-        
-        return "redirect:" + kakaopay.kakaoPayReady();
+        ResponseEntity response = null;
+		if( kakaopay.kakaoPayReady() != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "https://mockup-pg-web.kakao.com/v1/3570137c07cbaeb047e7d0d698de44ac7d374072e3a381c43165618c6b3c1403/info";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
  
     }
     
     @GetMapping("/kakaoPaySuccess")//결제가된다면 url에 pg_token이 포함되어있을것이다
-    public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model) {
+    @ApiOperation(value = "결제내역")
+    public Object kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model) {
         log.info("kakaoPaySuccess get............................................");
         log.info("kakaoPaySuccess pg_token : " + pg_token);
         
-        model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token));//정보들
+       // model.addAttribute("info",kakaopay.kakaoPayInfo(pg_token));//정보들
+        ResponseEntity response = null;
+        KakaoPayApprovalVO info = kakaopay.kakaoPayInfo(pg_token);
+        if( info != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = info;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
         
     }
 }
