@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.annotation.DeterminableImports;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -189,11 +190,16 @@ public class UserController {
 	
 	@Delete("/unfollow")
 	@ApiOperation(value = "언팔하기")
-	public Object unFollow(@RequestBody Follow request) {
+	public Object unFollow(HttpServletRequest request) {
 		logger.info("==========unFollow==========");
+		String following = request.getParameter("following");
+		String follower = request.getParameter("follower");
+		Follow deleteFollow = new Follow();
+		deleteFollow.setFollower(follower);
+		deleteFollow.setFollower(following);
 		logger.info("follow : " + request);
 		ResponseEntity response = null;
-		if(userService.deleteFollowing(request) == 1) {
+		if(userService.deleteFollowing(deleteFollow) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
