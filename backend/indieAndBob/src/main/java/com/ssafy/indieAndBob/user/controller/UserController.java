@@ -147,15 +147,14 @@ public class UserController {
 		
 	}
 	
-	@GetMapping("/follower")
+	@GetMapping("/follower/{nickname}")
 	@ApiOperation(value = "팔로워리스트 불러오기")
-	public Object getFollower(HttpServletRequest req) {
-		String nickname = jwtService.getNickname(req);
+	public Object getFollower(@PathVariable String nickname) {
 		logger.info("==========getFollower==========");
 		logger.info("userId : " + nickname);
 		ResponseEntity response = null;
 		List<String> followerlist = userService.getFollower(nickname);
-		if(followerlist.size()>=0) {
+		if(followerlist.size() >= 0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -205,9 +204,13 @@ public class UserController {
 	
 	@GetMapping("/isfollowing")
 	@ApiOperation(value="해당사람을 팔로우 하고 있는지 아닌지")
-	public Object isFollowing(@PathVariable String userId, @PathVariable String following) {
+	public Object isFollowing(HttpServletRequest request) {
+		String userId = request.getParameter("userId");
+		String following = request.getParameter("following");
 		logger.info("==========isFollowing==========");
-		Follow follow = new Follow(userId, following);
+		Follow follow = new Follow();
+		follow.setUserId(userId);
+		follow.setFollowing(following);
 		logger.info("follow : " + follow);
 		ResponseEntity response = null;
 		if(userService.isFollowing(follow)) {
