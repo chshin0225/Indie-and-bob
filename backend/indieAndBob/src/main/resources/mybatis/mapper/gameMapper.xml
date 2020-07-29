@@ -23,7 +23,7 @@
     	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, left_price=#{leftPrice}, is_end=#{isEnd}, is_approve=#{isApprove}, email=#{email}
         where game_id=#{gameId}
     </update>
-    <delete id="deleteGameById" parameterType="String">
+    <delete id="deleteGameById" parameterType="int">
     	delete from game where game_id=#{gameId}
     </delete>
     <insert id="registerGameDetail" parameterType="gameregister">
@@ -50,4 +50,8 @@
     <select id="isLike" parameterType="gamelike" resultType="gamelike">
     	select * from game_like where email=#{email} and game_id=#{gameId}
     </select>
+    
+    <update id="gameApprove" parameterType="game">
+    	update game set is_approve=#{isApprove} where game_id=#{gameId}
+    </update>
 </mapper>
