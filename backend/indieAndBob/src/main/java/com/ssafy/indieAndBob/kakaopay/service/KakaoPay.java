@@ -24,7 +24,6 @@ public class KakaoPay {
  
     private static final String HOST = "https://kapi.kakao.com";
     
-    @Autowired
     private KakaoPayReadyVO kakaoPayReadyVO;
     
     //결제화면
