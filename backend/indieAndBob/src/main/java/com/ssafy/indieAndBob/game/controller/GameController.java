@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
-import com.ssafy.indieAndBob.game.dto.GameRegister;
+import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
@@ -91,7 +91,7 @@ public class GameController {
 		logger.info("==========selectGameById==========");
 		logger.info("gameid : " + gameId);
 		ResponseEntity response = null;
-		Game game = gservice.selectGameById(gameId);
+		GameAll game = gservice.selectGameById(gameId);
 		if(!game.equals(null)) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
@@ -144,7 +144,7 @@ public class GameController {
 	
 	@PostMapping("/game/registergame")
 	@ApiOperation(value = "게임 등록")
-	public Object registerGame(@RequestBody GameRegister request, HttpServletRequest req) {
+	public Object registerGame(@RequestBody GameAll request, HttpServletRequest req) {
 		String token = req.getHeader("jwt-auth-token");
 		logger.info("token : " + token);
 		logger.info("" + jwtService.get(token));
@@ -245,9 +245,11 @@ public class GameController {
 	@GetMapping("/game/islike")
 	@ApiOperation(value = "이 게임을 좋아하는지 여부 확인")
 	public Object isLike(HttpServletRequest request) {
-		String email = request.getParameter("email");
+		String nickname = request.getParameter("nickname");
 		String gameId = request.getParameter("gameId");
-		GameLike like = new GameLike(email, gameId);
+		GameLike like = new GameLike();
+		like.setNickname(nickname);
+		like.setGameId(gameId);
 		logger.info("==========islike==========");
 		logger.info("islike : " + like);
 		ResponseEntity response = null;
