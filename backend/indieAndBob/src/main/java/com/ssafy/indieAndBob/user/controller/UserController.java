@@ -147,6 +147,7 @@ public class UserController {
 		
 	}
 	
+
 	@GetMapping("/follower/{nickname}")
 	@ApiOperation(value = "팔로워리스트 불러오기")
 	public Object getFollower(@PathVariable String nickname) {
