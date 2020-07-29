@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.indieAndBob.game.dto.Game;
-import com.ssafy.indieAndBob.game.dto.GameDetail;
+import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.game.dto.GameLike;
-import com.ssafy.indieAndBob.game.dto.GameRegister;
 import com.ssafy.indieAndBob.user.dto.User;
 
 @Repository
@@ -21,7 +20,7 @@ public class GameDaoImpl implements GameDao{
 	SqlSessionTemplate temp;
 	
 	@Override
-	public int registerGame(GameRegister game) {
+	public int registerGame(GameAll game) {
 		if(temp.insert(ns + "registerGame", game) != 1) {
 			return 0;
 		}
@@ -29,12 +28,12 @@ public class GameDaoImpl implements GameDao{
 	}
 	
 	@Override
-	public int registerDetail(GameRegister detail) {
+	public int registerDetail(GameAll detail) {
 		return temp.insert(ns + "registerGameDetail", detail);
 	}
 
 	@Override
-	public Game selectGameById(String gameId) {
+	public GameAll selectGameById(String gameId) {
 		return temp.selectOne(ns+ "selectGameById", gameId);
 	}
 
