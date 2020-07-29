@@ -18,7 +18,8 @@ export default new Vuex.Store({
     oriPassword: "",
     username: localStorage.getItem('username'),
     userInfo: null,
-    followerList: [],
+    followerList: null,
+    followingList: null,
     
     // community
     articleList: [],
@@ -78,6 +79,9 @@ export default new Vuex.Store({
     },
     setFollowerList(state, val) {
       state.followerList = val
+    },
+    setFollowingList(state, val) {
+      state.followingList = val
     },
 
     // community
@@ -205,20 +209,30 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
+    // follow 
     follow({ getters }, following) {
-      axios.post(SERVER.BASE + SERVER.FOLLOW, following, getters.headersConfig)
+      axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
         .then(res => console.log(res.data))
         .catch(err => console.error(err))
     },
 
-    fetchFollowers({ commit, getters }) {
-      axios.get(SERVER.BASE + SERVER.FOLLOWER, getters.headersConfig)
+    fetchFollowers({ commit, getters }, username) {
+      axios.get(SERVER.BASE + SERVER.FOLLOWER + `/${username}`, getters.headersConfig)
         .then(res => {
-          console.log(res.data)
-          commit('setFollowerList', res.data)
+          console.log(res.data.object)
+          commit('setFollowerList', res.data.object)
         })
         .catch(err => console.error(err))
     },  
+
+    fetchFollowings({ commit, getters }, username) {
+      axios.get(SERVER.BASE + SERVER.FOLLOWING + `/${username}`, getters.headersConfig)
+        .then(res => {
+          console.log(res.data.object)
+          commit('setFollowingList', res.data.object)
+        })
+        .catch(err => console.error(err))
+    },
 
     // community
     // fetchArticles({ commit }) {
@@ -244,7 +258,6 @@ export default new Vuex.Store({
 
     
     // project
-
     fetchProjects({ commit }) {
       axios.get(SERVER.BASE + SERVER.GAMELIST)
         .then(res => {
