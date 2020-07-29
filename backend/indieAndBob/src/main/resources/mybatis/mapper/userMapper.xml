@@ -13,6 +13,11 @@
    <select id="selectByNickname" parameterType="String" resultType="user">
    	  select * from user where nickname=#{nickname}
    </select>
+   
+   <select id="searchUser" parameterType="String" resultType="user">
+   	  select * from user where nickname like CONCAT('%', #{keyword}, '%')
+   </select>
+   
    <insert id="registerUser" parameterType="user">
       insert into user (email, name, nickname, password, postcode,address,extra_address,bank_name,bank_account,
       is_developer,phone_number,profile,introduction) 
