@@ -167,13 +167,13 @@ public class UserController {
 		return response;
 	}
 	
-	@GetMapping("/following/{userid}")
+	@GetMapping("/following/{nickname}")
 	@ApiOperation(value = "팔로잉리스트 불러오기")
-	public Object getFollowing(@PathVariable String userId) {
+	public Object getFollowing(@PathVariable String nickname) {
 		logger.info("==========getFollowing==========");
-		logger.info("userId : " + userId);
+		logger.info("userId : " + nickname);
 		ResponseEntity response = null;
-		List<String> followinglist = userService.getFollowing(userId);
+		List<String> followinglist = userService.getFollowing(nickname);
 		if(followinglist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
