@@ -3,28 +3,41 @@
     <div v-if="dataFetched">
       <!-- header -->
       <div class="header">
-        <v-container>
+        <v-container class="ml-5">
           <v-row>
-            <h1>{{ userInfo.nickname }}</h1>
-            <v-btn 
-              outlined 
-              small 
-              color="primary" 
-              class="align-self-center ml-3" 
-              @click="follow({'following': userInfo.nickname,})"
-              v-if="!isSelf"
-              >follow
-            </v-btn>
+  
+
+            <v-avatar size=100 class="mr-5 mr-sm-9">
+              <img src="../../assets/default_profile.png" :alt="userInfo.nickname" />
+            </v-avatar>
+
+            <v-col>
+              <v-row>
+                <h1>{{ userInfo.nickname }}</h1>
+                <v-btn
+                  outlined
+                  small
+                  color="primary"
+                  class="align-self-center ml-3"
+                  @click="follow({'following': userInfo.nickname,})"
+                  v-if="!isSelf"
+                >follow</v-btn>
+              </v-row>
+              <v-row>
+                <p class="mb-0">introduction: {{ userInfo.introduction }}</p>
+                <!-- <p class="mb-0">following: {{ this.followerCount }}</p>
+                <p class="mb-0 pb-3">followers: {{ this.followingCount }}</p>-->
+              </v-row>
+
+            </v-col>
+
           </v-row>
-          <p class="mb-0">introduction: {{ userInfo.introduction }}</p>
-          <!-- <p class="mb-0">following: {{ this.followerCount }}</p>
-          <p class="mb-0 pb-3">followers: {{ this.followingCount }}</p>   -->
         </v-container>
       </div>
       <v-divider></v-divider>
 
       <!-- tab menu -->
-      <v-card elevation=0>
+      <v-card elevation="0">
         <v-tabs vertical>
           <v-tab>
             <i class="fas fa-laptop mr-3"></i>
@@ -55,7 +68,7 @@
           <v-tab-item class="myProjects">
             <v-card flat>
               <v-card-text>
-              <h2>내 프로젝트들</h2>
+                <h2>내 프로젝트들</h2>
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -107,6 +120,7 @@
       <router-link to="/newproject">새 프로젝트 만들기</router-link>
     </div>
 
+    <!-- loading page -->
     <div v-if="!dataFetched">
       <h3 class="text-center">Loading...</h3>
     </div>
@@ -114,56 +128,61 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState, mapGetters } from 'vuex'
+import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
 
-import ProjectCard from '../../components/ProjectCard.vue'
-import FollowInfo from '../../components/user/FollowInfo.vue'
-import MyInfo from '../../components/user/MyInfo.vue'
+import ProjectCard from "../../components/ProjectCard.vue";
+import FollowInfo from "../../components/user/FollowInfo.vue";
+import MyInfo from "../../components/user/MyInfo.vue";
 
 export default {
-  name: 'MyPage',
+  name: "MyPage",
 
   components: {
     ProjectCard,
     FollowInfo,
-    MyInfo,
+    MyInfo
   },
 
   computed: {
-    ...mapState(['userInfo', 'followerList', 'followingList']),
-    ...mapGetters(['dataFetched']),
+    ...mapState(["userInfo", "followerList", "followingList"]),
+    ...mapGetters(["dataFetched"]),
     isSelf: function() {
-      return this.userInfo.nickname === localStorage.getItem('username')
+      return this.userInfo.nickname === localStorage.getItem("username");
     },
     followInfo: function() {
       return {
-        'following': this.userInfo.username,
-      }
+        following: this.userInfo.username
+      };
     },
     followerCount: function() {
-      return this.followerList.length
+      return this.followerList.length;
     },
     followingCount: function() {
-      return this.followingList.length
-    },
+      return this.followingList.length;
+    }
   },
 
   methods: {
-    ...mapActions([ 'getUserInfo', 'follow', 'fetchFollowers', 'fetchFollowings',]),
-    ...mapMutations(['setUserInfo',])
+    ...mapActions([
+      "getUserInfo",
+      "follow",
+      "fetchFollowers",
+      "fetchFollowings"
+    ]),
+    ...mapMutations(["setUserInfo"])
   },
 
   created() {
-    let username = this.$route.params.username
-    this.getUserInfo(username)
-    this.fetchFollowers(username)
-    this.fetchFollowings(username)
-  },
+    let username = this.$route.params.username;
+    this.getUserInfo(username);
+    this.fetchFollowers(username);
+    this.fetchFollowings(username);
+  }
 };
 </script>
 
 <style scoped>
-  .header {
-    background-color: #e4dfda;
-  }
+.header {
+  background-color: #e4dfda;
+}
 </style>

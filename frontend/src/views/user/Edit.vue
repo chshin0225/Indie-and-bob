@@ -4,21 +4,13 @@
 
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
-        <p>이름 : {{ this.name }}</p>
+        <p>이름 : {{ userInfo.name }}</p>
       </v-col>
     </v-row>
     <!-- id -->
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
-        <label for="nickname">닉네임</label>
-        <v-text-field
-          hide-details="true"
-          class="my-3"
-          v-model="nickName"
-          id="nickname"
-          outlined
-          type="text"
-        />
+        <p>닉네임 : {{ userInfo.nickname }}</p>
         <small class="d-block" v-if="error.nickName">{{ error.nickName }}</small>
       </v-col>
     </v-row>
@@ -33,7 +25,7 @@
     <!-- email -->
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
-        <p>이메일 : {{ email }}</p>
+        <p>이메일 : {{ userInfo.email }}</p>
       </v-col>
     </v-row>
 
@@ -71,44 +63,6 @@
         <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
-
-    <!-- password
-    <v-row class="justify-center">
-      <v-col class="py-0" sm=6>
-        <label for="password">비밀번호</label>
-        <v-text-field
-         class="my-3"
-         hide-details=true
-         v-model="password" 
-         :append-icon="showPw ? 'mdi-eye' : 'mdi-eye-off'"
-         id="password" 
-         outlined
-         :type="showPw ? 'text' : 'password'" 
-         placeholder="영소문자와 숫자를 합쳐 8글자 이상 가능합니다." 
-         @click:append="showPw = !showPw"
-        />
-      <small class="d-block" v-if="error.password">{{ error.password }}</small>
-      </v-col>
-    </v-row>
-    password confirmation
-    <v-row class="justify-center">
-      <v-col class="py-0" sm=6>
-        <label for="password-confirm">비밀번호 확인</label>
-        <v-text-field
-          class="my-3"
-          hide-details=true
-          v-model="passwordConfirm"
-          :append-icon="showPwc ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="showPwc ? 'text' : 'password'"
-          outlined
-          id="password-confirm"
-          placeholder="비밀번호와 일치해야합니다."
-          @click:append="showPwc = !showPwc"
-        />
-      <small class="d-block" v-if="error.passwordConfirm">{{ error.passwordConfirm }}</small>
-      </v-col>
-    </v-row>
-    -->
 
     <!-- phone number -->
     <v-row class="justify-center">
@@ -188,18 +142,6 @@
       </v-col>
     </v-row>
 
-    <!-- <v-text-field
-      v-model="passwordConfirm"
-      :append-icon="showPwc ? 'mdi-eye' : 'mdi-eye-off'"
-      :rules="[rules.required, rules.min]"
-      :type="showPwc ? 'text' : 'password'"
-      name="input-10-1"
-      label="Password Confirmation"
-      hint="It must match the password."
-      counter
-      @click:append="showPwc = !showPwc"
-    ></v-text-field>-->
-
     <!-- bank account -->
     <v-row class="justify-center">
       <v-col class="py-0" sm="2">
@@ -267,14 +209,51 @@
 
 <script>
 import axios from "axios"
-import { mapActions } from "vuex"
+import { mapActions, mapState } from "vuex"
 
 export default {
   name: 'Edit',
 
   created() {
-    this.component = this;
-    // getUser()
+    this.component = this
+    this.getUserInfo(this.$route.params.username)
+  },
+
+  data() {
+    return {
+      email: "",
+      profileImage: "",
+      phonenumber: "",
+      nickName: "",
+      name: "",
+      usertype: "",
+      userTypes: ["일반 사용자", "개발자"],
+      banks: ["하나은행", "우리은행", "국민은행"],
+      bankname: "",
+      accountnumber: "",
+      introduction: "",
+      isLoading: false,
+      error: {
+        email: false,
+        phonenumber: false,
+        nickName: "",
+        accountnumber: false,
+      },
+      isSubmit: false,
+      termPopup: false,
+      dialog: false,
+      searchWindow: {
+        display: "none",
+        height: "300px"
+      },
+      postcode: "",
+      address: "",
+      extraAddress: ""
+    };
+  },
+
+  computed: {
+    ...mapState(['userInfo'])
   },
 
   watch: {
@@ -296,8 +275,9 @@ export default {
       this.checkForm();
     },
   },
+
   methods: {
-    ...mapActions(["changeUserInfo"]),
+    ...mapActions(['changeUserInfo', 'getUserInfo']),
 
     getUser() {
       axios
@@ -379,48 +359,7 @@ export default {
     }
   },
 
-  data() {
-    return {
-      email: "",
-      password: "",
-      profileImage: "",
-      phonenumber: "",
-      nickName: "",
-      name: "",
-      usertype: "",
-      userTypes: ["일반 사용자", "개발자"],
-      banks: ["하나은행", "우리은행", "국민은행"],
-      bankname: "",
-      accountnumber: "",
-      introduction: "",
-      isLoading: false,
-      error: {
-        email: false,
-        password: false,
-        phonenumber: false,
-        nickName: "",
-        passwordConfirm: false,
-        accountnumber: false,
-      },
-      isSubmit: false,
-      passwordType: "password",
-      termPopup: false,
-      showPw: false,
-      dialog: false,
-      showPwc: false,
-      searchWindow: {
-        display: "none",
-        height: "300px"
-      },
-      postcode: "",
-      address: "",
-      extraAddress: ""
-      // rules: {
-      //   required: value => !!value || 'Required.',
-      //   min: v => v.length >= 8 || 'Min 8 characters',
-      // }
-    };
-  }
+
 };
 </script>
 

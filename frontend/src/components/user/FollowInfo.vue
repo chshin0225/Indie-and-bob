@@ -1,12 +1,9 @@
 <template>
   <v-container>
-    <!-- <h1 class="text-center">내 팔로우 정보</h1> -->
-    <!-- <p>followers: {{ followerList }}</p>
-    <p>following: {{ followingList }}</p> -->
     <v-row>
       <!-- 팔로워 리스트 -->
-      <v-col cols=12 sm=6>
-        <h2>나를 팔로우하는 사람들</h2>
+      <v-col cols=12 sm=5>
+        <h2 class="mb-3">나를 팔로우하는 사람들</h2>
         <v-list v-if="followerList.length > 0">
           <v-list-item
             v-for="follower in followerList"
@@ -14,7 +11,7 @@
             :to="`/user/mypage/${follower.nickname}`"
           >
             <v-list-item-avatar>
-              <v-img src="../../assets/default_profile.png"></v-img>
+              <v-img src="../../assets/default_profile.png" :alt="follower.nickname"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ follower.nickname }}</v-list-item-title>
@@ -26,9 +23,13 @@
         </div>
       </v-col>
 
+      <v-col cols=1 class="d-none d-sm-flex">
+        <v-divider vertical class="secondary"></v-divider>
+      </v-col>
+
       <!-- 팔로잉 리스트 -->
-      <v-col cols=12 sm=6>
-        <h2>내가 팔로우하는 사람들</h2>
+      <v-col cols=12 sm=5>
+        <h2 class="mb-3">내가 팔로우하는 사람들</h2>
         <v-list v-if="followingList.length > 0">
           <v-list-item
             v-for="following in followingList"
@@ -57,17 +58,6 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'FollowInfo',
-
-  data() {
-    return {
-      items: [
-        { active: true, title: 'Jason Oner', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
-        { active: true, title: 'Ranee Carlson', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
-        { title: 'Cindy Baker', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
-        { title: 'Ali Connors', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-      ],
-    }
-  },
 
   computed: {
     ...mapState(['followerList', 'followingList']),
