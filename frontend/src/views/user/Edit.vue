@@ -2,7 +2,7 @@
   <v-container>
     <h1 class="text-center">회원정보 변경</h1>
 
-    <v-row>
+    <v-row class="justify-center">
       <v-col class="py-0" sm=6>
         <p>이름 : {{ this.name }} </p>
       </v-col>
@@ -293,7 +293,7 @@ import { mapActions } from 'vuex'
 export default {
   created() {
     this.component = this;
-    getUser()
+    // getUser()
   }, 
 
   watch: {

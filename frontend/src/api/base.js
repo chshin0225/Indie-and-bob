@@ -6,6 +6,8 @@ export default {
     'USERINFO' : "/account/userinfo",
 
     'FOLLOW': "/following",
+    'FOLLOWER': "/follower",
+
 
     'GAMELIST' : "/gamelist/",
     'UNAPPROVED' : "/admin/gamelist/",

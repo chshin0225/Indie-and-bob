@@ -6,6 +6,7 @@ import Login from '../views/user/Login.vue'
 import Join from '../views/user/Join.vue'
 import PasswordChange from '../views/user/PasswordChange.vue'
 import MyPage from '../views/user/MyPage.vue'
+import Edit from '../views/user/Edit.vue'
 
 import FeedMain from '../views/IndexFeed.vue'
 
@@ -79,6 +80,14 @@ const routes = [
     component: MyPage,
     meta: {
       title: 'My page'
+    },
+  },
+  {
+    path: '/user/edit',
+    name: 'Edit',
+    component: Edit,
+    meta: {
+      title: 'Edit Profile',
     },
   },
 

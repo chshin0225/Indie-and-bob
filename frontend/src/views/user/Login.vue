@@ -71,10 +71,10 @@
 <script>
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
-// import UserApi from "../../api/UserApi";
 import { mapActions, mapState } from 'vuex';
 
 export default {
+  name: 'Login',
 
   created() {
     this.component = this;

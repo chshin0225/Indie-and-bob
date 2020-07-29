@@ -13,12 +13,12 @@ export default new Vuex.Store({
     // user
     jwtToken: cookies.get('user'),
     isUser: false,
-    // isLoggedin: false,
     changedPw: false,
     oriEmail: "",
     oriPassword: "",
     username: localStorage.getItem('username'),
     userInfo: null,
+    followerList: [],
     
     // community
     articleList: [],
@@ -38,6 +38,7 @@ export default new Vuex.Store({
       }
     }),
     isLoggedIn: state => !!state.jwtToken,
+    dataFetched: state => !!state.userInfo,
   },
 
   mutations: {
@@ -46,14 +47,14 @@ export default new Vuex.Store({
       state.jwtToken = val
       cookies.set('user', val)
     },
-    SetLoggedIn(state) {
-      if (cookies.isKey('user')) {
-        state.token = cookies.get('user')
-        state.isLoggedin = true
-      } else {
-        state.isLoggedin = false
-      }
-    },
+    // SetLoggedIn(state) {
+    //   if (cookies.isKey('user')) {
+    //     state.token = cookies.get('user')
+    //     state.isLoggedin = true
+    //   } else {
+    //     state.isLoggedin = false
+    //   }
+    // },
 
     setChangedPw(state, val) {
       state.changedPw = val;
@@ -74,6 +75,9 @@ export default new Vuex.Store({
     setUserInfo(state, val) {
       state.userInfo = val
       // console.log(state.userInfo)
+    },
+    setFollowerList(state, val) {
+      state.followerList = val
     },
 
     // community
@@ -107,15 +111,10 @@ export default new Vuex.Store({
 
           // 로그인한 유저의 닉네임 저장 
           commit('setUsername', res.data.object.nickname)
-          // commit('setLoggedIn', true)
 
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
 
-          // 로그인한 유저의 정보 가져오기
-          // dispatch('getUserInfo', {
-          //   username: res.data.object.nickname
-          // })
           router.push('/feed/main')
         })
         .catch(err => {
@@ -138,7 +137,6 @@ export default new Vuex.Store({
         .then(res => {
           console.log(res)
           if (res.data.status) {
-            // commit('setLoggedIn', false)
             alert("회원가입 인증 메일이 발송되었습니다. 이메일을 확인해주세요.")
             router.push({ name: "Login" });
           } else {
@@ -184,8 +182,10 @@ export default new Vuex.Store({
     },
 
     getUserInfo({ commit }, username) {
+      commit('setUserInfo', null)
       axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
         .then(res => {
+          // console.log('user',username)
           // console.log(res)
           // console.log(res.data)
           commit('setUserInfo', res.data.object)
@@ -193,10 +193,10 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
-    changeUserInfo(context, changedData) {
-      axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, context.getters.headersConfig)
+    changeUserInfo({ getters, commit }, changedData) {
+      axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
         .then(res => {
-          context.commit('setUser', res.data)
+          commit('setUser', res.data)
           alert('회원 정보가 변경되었습니다.')
         })
         .catch(err => console.error(err))
@@ -207,6 +207,15 @@ export default new Vuex.Store({
         .then(res => console.log(res.data))
         .catch(err => console.error(err))
     },
+
+    fetchFollowers({ commit, getters }) {
+      axios.get(SERVER.BASE + SERVER.FOLLOWER, getters.headersConfig)
+        .then(res => {
+          console.log(res.data)
+          commit('setFollowerList', res.data)
+        })
+        .catch(err => console.error(err))
+    },  
 
     // community
     // fetchArticles({ commit }) {
