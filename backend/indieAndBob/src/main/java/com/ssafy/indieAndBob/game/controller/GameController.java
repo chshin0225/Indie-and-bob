@@ -187,11 +187,16 @@ public class GameController {
 	
 	@DeleteMapping("/game/like")
 	@ApiOperation(value = "게임 좋아요 삭제")
-	public Object deleteGameLike(@RequestBody GameLike request) {
+	public Object deleteGameLike(HttpServletRequest request) {
 		logger.info("==========gameLike delete==========");
-		logger.info("gameLike delete : " + request);
+		String gameId = request.getParameter("gameId");
+		String nickname = request.getParameter("nickname");
+		GameLike like = new GameLike();
+		like.setGameId(gameId);
+		like.setNickname(nickname);
+		logger.info("gameLike delete : " + like);
 		ResponseEntity response = null;
-		if (gservice.deleteGameLike(request) == 1) {
+		if (gservice.deleteGameLike(like) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
