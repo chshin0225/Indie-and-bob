@@ -17,7 +17,6 @@ import lombok.extern.java.Log;
 public class KakaopayController {
 	@Setter(onMethod_ = @Autowired)
 	
-	@ Autowired
     private KakaoPay kakaopay;
     
     
