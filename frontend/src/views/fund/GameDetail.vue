@@ -6,7 +6,7 @@
         <h1>{{ project.name }}</h1>
         <v-row>
           <v-col cols="12" sm="6">
-            <p>기간: {{ project.startedAt }} ~ {{ project.deadline }}</p>
+            <p>기간: {{ project.createdAt }} ~ {{ project.deadline }}</p>
             <p>목표: {{ project.aim }}원</p>
           </v-col>
           <v-col cols="12" sm="6">
@@ -49,7 +49,7 @@
                 <v-card-text>
                   <h2>프로젝트 소개</h2>
                   <v-card outlined>
-                    <Viewer v-if="project.content != null" :initialValue="project.content" />
+                    <Viewer :value="project.content" />
                   </v-card>
                 </v-card-text>
               </v-card>
@@ -57,22 +57,14 @@
 
             <!-- Q&A -->
             <v-tab-item>
-              <v-card flat>
-                <v-card-text>
                   <h2>Q&A</h2>
                   <QuestionandAnswer />
-                </v-card-text>
-              </v-card>
             </v-tab-item>
 
             <!-- Community -->
             <v-tab-item>
-              <v-card flat>
-                <v-card-text>
-                  <h2>Community</h2>
-                  <GameCommunity />
-                </v-card-text>
-              </v-card>
+              <h2>Community</h2>
+              <GameCommunity />
             </v-tab-item>
           </v-tabs>
         </v-col>
@@ -137,25 +129,33 @@ import SERVER from "../../api/base";
 import GameCommunity from "./GameCommunity.vue";
 import QuestionandAnswer from "./QuestionandAnswer.vue";
 import { mapActions } from "vuex";
+
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
+
 export default {
   mounted() {
-    console.log(this.$route.params.id);
     axios
-      .get(SERVER.BASE + SERVER.GAME + this.$route.params.id, this.headersConfig)
+      .get(
+        SERVER.BASE + SERVER.GAME + this.$route.params.id,
+        this.headersConfig
+      )
       .then((res) => {
-        console.log(res);
         this.project = res.data.object;
-        this.project.content = '<p>test</p>'
+        this.project.content = "ddddddddddddddddddddddddddd";
         this.render = true;
-        this.project.deadline = this.project.deadline.substr(0,10)
-        let PARAMS ='?nickname='+localStorage.getItem('username') + '&gameId='+this.project.gameId
+        this.project.deadline = this.project.deadline.substr(0, 10);
+        this.project.createdAt = this.project.createdAt.substr(0, 10);
+        let PARAMS =
+          "?nickname=" +
+          localStorage.getItem("username") +
+          "&gameId=" +
+          this.project.gameId;
         axios
           .get(SERVER.BASE + SERVER.ISLIKE + PARAMS, this.headersConfig)
           .then((res) => {
-            console.log(res)
+            console.log(res);
             if (res.data.object) {
               this.iconColor = "primary";
             } else this.iconColor = "white";
@@ -182,13 +182,14 @@ export default {
       url: "http://localhost:3000" + window.location.pathname,
       //후에 바꿀 예정데스
       isAdmin: false,
-      iconColor: 'white',
+      iconColor: "white",
       render: false,
       project: {
-        name: "example",
-        startedAt: "2020-07-14",
-        aim: "1000000",
-        deadline: "2020-08-14",
+        name: "",
+        startedAt: "",
+        createdAt: "",
+        aim: "",
+        deadline: "",
         content: "",
       },
       rewards: [
