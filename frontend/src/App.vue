@@ -201,7 +201,7 @@ export default {
 }
 
 .main-content {
-  margin-top: 50px;
+  margin-top: 48px;
 }
 
 .nav-drawer {

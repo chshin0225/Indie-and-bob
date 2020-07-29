@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.indieAndBob.mapper.game">
 
-   	<select id="selectGameById" parameterType="String" resultType="game">
-		select * from game where game_id=#{gameId}
+   	<select id="selectGameById" parameterType="String" resultType="gameall">
+		select * from game natural join game_detail where game_id=#{gameId}
     </select>
     <select id="selectAllGame" parameterType="int" resultType="game">
    	    select * from game where is_approve=1 and is_end=false limit #{page},10
@@ -13,7 +13,7 @@
     <select id="selectAllGameAdmin" parameterType="int" resultType="game">
     	select * from game where is_approve=0 and is_end=false limit #{page},10
     </select>
-    <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameregister">
+    <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameall">
         insert into game (name, deadline, aim,left_price, is_end, is_approve, email,
         thumbnail)
         values (#{name}, #{deadline}, #{aim},#{aim},#{isEnd},#{isApprove},#{email},
@@ -26,7 +26,7 @@
     <delete id="deleteGameById" parameterType="int">
     	delete from game where game_id=#{gameId}
     </delete>
-    <insert id="registerGameDetail" parameterType="gameregister">
+    <insert id="registerGameDetail" parameterType="gameall">
     	insert into game_detail (game_id, content) values(#{gameId}, #{content})
     </insert>
     <insert id="gameLike" parameterType="gamelike">
