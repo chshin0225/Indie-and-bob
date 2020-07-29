@@ -12,17 +12,18 @@
           <v-col cols="12" sm="6">
             <p class="font-weight-bold">이 프로젝트를 좋아한 사람들</p>
 
-            <v-dialog v-model="likeDialog" persistent max-width="290">
+            <v-dialog v-model="likeDialog" scrollable max-width="400">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn color="primary" x-small v-bind="attrs" v-on="on">더보기</v-btn>
               </template>
               <v-card>
-                <v-card-title class="headline">Use Google's location service?</v-card-title>
-                <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+                <v-card-title class="headline">이 프로젝트를 좋아한 사람들</v-card-title>
+                <v-card-text>
+                  <GameLike />
+                  </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="likeDialog = false">Disagree</v-btn>
-                  <v-btn color="green darken-1" text @click="likeDialog = false">Agree</v-btn>
+                  <v-btn color="dark" text @click="likeDialog = false">CLOSE</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -57,8 +58,8 @@
 
             <!-- Q&A -->
             <v-tab-item>
-                  <h2>Q&A</h2>
-                  <QuestionandAnswer />
+              <h2>Q&A</h2>
+              <QuestionandAnswer />
             </v-tab-item>
 
             <!-- Community -->
@@ -126,8 +127,9 @@
 import axios from "axios";
 import router from "../../router";
 import SERVER from "../../api/base";
-import GameCommunity from "./GameCommunity.vue";
-import QuestionandAnswer from "./QuestionandAnswer.vue";
+import GameCommunity from "../../components/GameDetail/GameCommunity.vue";
+import QuestionandAnswer from "../../components/GameDetail/QuestionandAnswer.vue";
+import GameLike from "../../components/GameDetail/GameLike.vue";
 import { mapActions } from "vuex";
 
 import "codemirror/lib/codemirror.css";
@@ -157,6 +159,7 @@ export default {
           .then((res) => {
             console.log(res);
             if (res.data.object) {
+              this.isLike = true;
               this.iconColor = "primary";
             } else this.iconColor = "white";
           });
@@ -171,6 +174,7 @@ export default {
   components: {
     GameCommunity,
     QuestionandAnswer,
+    GameLike,
     Viewer,
   },
 
@@ -179,6 +183,7 @@ export default {
       likeDialog: false,
       shareIcon: "white",
       menu: false,
+      isLike: false,
       url: "http://localhost:3000" + window.location.pathname,
       //후에 바꿀 예정데스
       isAdmin: false,
@@ -217,22 +222,6 @@ export default {
           price: 10000,
           thumbnail: "n",
         },
-        {
-          id: 4,
-          name: "4번리워드",
-          content: "4번 리워드에 대한 설명입니다.",
-          left: 999,
-          price: 10000,
-          thumbnail: "n",
-        },
-        {
-          id: 5,
-          name: "5번리워드",
-          content: "5번 리워드에 대한 설명입니다.",
-          left: 999,
-          price: 10000,
-          thumbnail: "n",
-        },
       ],
     };
   },
@@ -244,8 +233,24 @@ export default {
     },
     likeButton() {
       if (this.iconColor === "white") {
+        axios.post(
+          SERVER.BASE + SERVER.LIKE,
+          {
+            nickname: localStorage.getItem("username"),
+            gameId: this.project.gameId,
+          },
+          this.headersConfig
+        );
         this.iconColor = "primary";
       } else {
+        const deleteLike =
+          SERVER.BASE +
+          SERVER.LIKE +
+          "?nickname=" +
+          localStorage.getItem("username") +
+          "&gameId=" +
+          this.project.gameId;
+        axios.delete(deleteLike, this.headersConfig);
         this.iconColor = "white";
       }
     },
