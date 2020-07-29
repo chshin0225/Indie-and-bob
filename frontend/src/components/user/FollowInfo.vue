@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>내 팔로우 정보</h1>
+    <h1 class="text-center">내 팔로우 정보</h1>
     <p>followers: {{ followerList }}</p>
     <p>following: {{ followingList }}</p>
 
@@ -24,7 +24,7 @@ export default {
   created() {
     let username = this.$route.params.username
     this.fetchFollowers(username)
-    // this.fetchFollowings(username)
+    this.fetchFollowings(username)
   },
 }
 </script>

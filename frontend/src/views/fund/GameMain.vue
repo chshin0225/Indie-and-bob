@@ -1,64 +1,82 @@
 <template>
   <v-container>
-
     <!-- <p>{{ projectList }}</p> -->
-    <h1 class="text-center">Projects</h1>
+    <h1 class="text-center mb-3">Projects</h1>
 
     <!-- projects  -->
-    <div v-for="game in games" :key="game.gameId">
-      <v-card outlined :to="`/game/${game.gameId}`">
-        <v-list-item three-line>
-          <v-list-item-content>
-            <v-list-item-title class="headline mb-1">{{ game.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ game.deadline }}까지</v-list-item-subtitle>
-            <v-list-item-subtitle>목표액: {{ game.aim }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-card>
+    <v-row>
+      <v-col v-for="game in games" :key="game.gameId" cols=6 sm=4>
+        <v-card>
+          <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
+              <v-list-item>
+                <v-list-item-avatar color="secondary"></v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title class="headline">{{ game.name }}</v-list-item-title>
+                  <v-list-item-subtitle>개발자 이름</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{ $moment(game.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                  <v-list-item-subtitle>목표액: {{ game.aim }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" height="194"></v-img>
+          </router-link>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn icon>
+              <v-icon>mdi-heart</v-icon>
+            </v-btn>
+            <v-btn icon>
+              <v-icon>mdi-share-variant</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
 
-    </div>
-  <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </v-container>
 </template>
 <script>
-import InfiniteLoading from 'vue-infinite-loading';
-import axios from 'axios'
-import SERVER from '../../api/base'
+import InfiniteLoading from "vue-infinite-loading";
+import axios from "axios";
+import SERVER from "../../api/base";
 
 export default {
   name: "GameMain",
+
   data() {
     return {
       gameNum: 0,
-      games: [],
-    }
+      games: []
+    };
   },
 
   components: {
     InfiniteLoading
   },
+
   methods: {
     infiniteHandler($state) {
-      axios.get(SERVER.BASE + SERVER.GAMELIST + this.gameNum + '/')
-        .then(res => { 
-          console.log(res)
-        if (res.data.object.length > 0) {
-          this.gameNum += 10;
-          console.log(res.data)
-          res.data.object.forEach(item => {
-            this.games.push(item)
-          })
-          console.log('게임즈')
-          console.log(this.games)
-          $state.loaded();
-        } else {
-          $state.complete();
-        }
-      })
-        .catch(err => console.error(err))
+      axios
+        .get(SERVER.BASE + SERVER.GAMELIST + this.gameNum + "/")
+        .then(res => {
+          console.log(res);
+          if (res.data.object.length > 0) {
+            this.gameNum += 10;
+            console.log(res.data);
+            res.data.object.forEach(item => {
+              this.games.push(item);
+            });
+            console.log("게임즈");
+            console.log(this.games);
+            $state.loaded();
+          } else {
+            $state.complete();
+          }
+        })
+        .catch(err => console.error(err));
     }
-  },
-}
+  }
+};
 </script>
 
 <style>

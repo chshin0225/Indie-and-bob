@@ -9,12 +9,13 @@ public interface UserDao {
 	User selectByEmailAndPassword(User user);
 	User selectByEmail(String email);
 	User selectByNickname(String nickname);
+	List<User> searchUser(String keyword);
 	int registerUser(User user);
 	int changeUserInfo(User user);
 	
 	int registerFollow(Follow follow);
-	List<String> getFollower(String userId);
-	List<String> getFollowing(String userId);
+	List<User> getFollower(String userId);
+	List<User> getFollowing(String userId);
 	int deleteFollowing(Follow follow);
 	boolean isFollowing(Follow follow);
 }

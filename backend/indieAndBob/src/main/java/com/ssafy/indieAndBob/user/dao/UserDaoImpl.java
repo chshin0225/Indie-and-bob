@@ -42,12 +42,12 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<String> getFollower(String userId) {
+	public List<User> getFollower(String userId) {
 		return temp.selectList(ns + "getFollower", userId);
 	}
 
 	@Override
-	public List<String> getFollowing(String userId) {
+	public List<User> getFollowing(String userId) {
 		return temp.selectList(ns + "getFollowing", userId);
 	}
 
@@ -66,6 +66,11 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User selectByNickname(String nickname) {
 		return temp.selectOne(ns + "selectByNickname", nickname);
+	}
+
+	@Override
+	public List<User> searchUser(String keyword) {
+		return temp.selectList(ns + "searchUser", keyword);
 	}
 
 }

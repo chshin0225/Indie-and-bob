@@ -41,12 +41,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<String> getFollower(String userId) {
+	public List<User> getFollower(String userId) {
 		return userDao.getFollower(userId);
 	}
 
 	@Override
-	public List<String> getFollowing(String userId) {
+	public List<User> getFollowing(String userId) {
 		return userDao.getFollowing(userId);
 	}
 
@@ -63,6 +63,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User selectByNickname(String nickname) {
 		return userDao.selectByNickname(nickname);
+	}
+
+	@Override
+	public List<User> searchUser(String keyword) {
+		return userDao.searchUser(keyword);
 	}
 
 }

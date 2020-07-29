@@ -13,8 +13,9 @@ public interface UserService {
 	int changeUserInfo(User user);
 	
 	int registerFollow(Follow follow);
-	List<String> getFollower(String userId);
-	List<String> getFollowing(String userId);
+	List<User> getFollower(String userId);
+	List<User> getFollowing(String userId);
 	int deleteFollowing(Follow follow);
 	boolean isFollowing(Follow follow);
+	List<User> searchUser(String keyword);
 }

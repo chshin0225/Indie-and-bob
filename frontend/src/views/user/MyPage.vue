@@ -11,7 +11,7 @@
               small 
               color="primary" 
               class="align-self-center ml-3" 
-              @click="follow({'following': userInfo.nickname})"
+              @click="follow({'following': userInfo.nickname,})"
               v-if="!isSelf"
               >follow
             </v-btn>
@@ -19,7 +19,6 @@
           <p class="mb-0">introduction: {{ userInfo.introduction }}</p>
           <p class="mb-0">following: 0</p>
           <p class="mb-0 pb-3">followers: 0</p>  
-          <p>{{ userInfo }}</p>
         </v-container>
       </div>
       <v-divider></v-divider>
@@ -136,6 +135,11 @@ export default {
     isSelf: function() {
       return this.userInfo.nickname === localStorage.getItem('username')
     },
+    followInfo: function() {
+      return {
+        'following': this.userInfo.username,
+      }
+    }
   },
 
   methods: {

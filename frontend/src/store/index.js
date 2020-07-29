@@ -211,6 +211,7 @@ export default new Vuex.Store({
 
     // follow 
     follow({ getters }, following) {
+      console.log(following)
       axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
         .then(res => console.log(res.data))
         .catch(err => console.error(err))
@@ -219,7 +220,7 @@ export default new Vuex.Store({
     fetchFollowers({ commit, getters }, username) {
       axios.get(SERVER.BASE + SERVER.FOLLOWER + `/${username}`, getters.headersConfig)
         .then(res => {
-          console.log(res.data.object)
+          // console.log(res.data.object)
           commit('setFollowerList', res.data.object)
         })
         .catch(err => console.error(err))
@@ -228,7 +229,7 @@ export default new Vuex.Store({
     fetchFollowings({ commit, getters }, username) {
       axios.get(SERVER.BASE + SERVER.FOLLOWING + `/${username}`, getters.headersConfig)
         .then(res => {
-          console.log(res.data.object)
+          // console.log(res.data.object)
           commit('setFollowingList', res.data.object)
         })
         .catch(err => console.error(err))
