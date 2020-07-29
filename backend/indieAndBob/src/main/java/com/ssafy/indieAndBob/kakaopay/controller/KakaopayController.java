@@ -33,10 +33,11 @@ public class KakaopayController {
     public Object kakaoPay() {
         log.info("kakaoPay post............................................");
         ResponseEntity response = null;
-		if( kakaopay.kakaoPayReady() != null) {
+        String toPay = kakaopay.kakaoPayReady();
+		if( toPay != null) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
-			result.data = "https://mockup-pg-web.kakao.com/v1/3570137c07cbaeb047e7d0d698de44ac7d374072e3a381c43165618c6b3c1403/info";
+			result.data = toPay;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,7 +51,7 @@ public class KakaopayController {
     public Object kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model) {
         log.info("kakaoPaySuccess get............................................");
         log.info("kakaoPaySuccess pg_token : " + pg_token);
-        
+        model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token));
        // model.addAttribute("info",kakaopay.kakaoPayInfo(pg_token));//정보들
         ResponseEntity response = null;
         KakaoPayApprovalVO info = kakaopay.kakaoPayInfo(pg_token);
