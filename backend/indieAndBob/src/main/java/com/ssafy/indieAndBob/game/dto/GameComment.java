@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GameComment {
 	private int gcId;
-	private String email;
+	private String nickname;
 	private int gameId;
 	private String content;
 	private String createdAt;

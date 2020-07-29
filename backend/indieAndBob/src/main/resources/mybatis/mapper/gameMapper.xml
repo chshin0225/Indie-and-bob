@@ -30,7 +30,7 @@
     	insert into game_detail (game_id, content) values(#{gameId}, #{content})
     </insert>
     <insert id="gameLike" parameterType="gamelike">
-    	insert into game_like (email,game_id) values(#{email},#{gameId})
+    	insert into game_like (nickname,game_id) values(#{nickname},#{gameId})
     </insert>
     
     <select id="selectGameByNickname" parameterType="String" resultType="game">
@@ -40,15 +40,15 @@
     
     <select id="selectUserByGameId" parameterType="String" resultType="user">
     	select * from user 
-    	where email in (select email from game_like where game_id=#{gameId});
+    	where nickname in (select nickname from game_like where game_id=#{gameId});
     </select>
     
     <delete id="deleteGameLike" parameterType="gameLike">
-    	delete from game_like where email=#{email} and game_id=#{gameId}
+    	delete from game_like where nickname=#{nickname} and game_id=#{gameId}
     </delete>
     
     <select id="isLike" parameterType="gamelike" resultType="gamelike">
-    	select * from game_like where email=#{email} and game_id=#{gameId}
+    	select * from game_like where nickname=#{nickname} and game_id=#{gameId}
     </select>
     
     <update id="updateApprove" parameterType="game">
