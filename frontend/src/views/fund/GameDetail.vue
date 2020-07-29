@@ -147,6 +147,7 @@ export default {
     .catch(err => {
       console.error(err)
     })
+   console.log(localStorage.getItem('username'))
    if (localStorage.getItem('username') === 'admin') {
      this.isAdmin = true
    }
