@@ -1,7 +1,8 @@
 <template>
   <v-container>
     <h1>내 팔로우 정보</h1>
-    <p>{{ followerList }}</p>
+    <p>followers: {{ followerList }}</p>
+    <p>following: {{ followingList }}</p>
 
   </v-container>
 </template>
@@ -13,15 +14,17 @@ export default {
   name: 'FollowInfo',
 
   computed: {
-    ...mapState(['followerList']),
+    ...mapState(['followerList', 'followingList']),
   },
 
   methods: {
-    ...mapActions(['fetchFollowers']),
+    ...mapActions(['fetchFollowers', 'fetchFollowings',]),
   },
 
   created() {
-    this.fetchFollowers()
+    let username = this.$route.params.username
+    this.fetchFollowers(username)
+    // this.fetchFollowings(username)
   },
 }
 </script>
