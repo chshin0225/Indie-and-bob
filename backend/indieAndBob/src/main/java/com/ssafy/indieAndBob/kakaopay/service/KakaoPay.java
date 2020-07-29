@@ -47,9 +47,9 @@ public class KakaoPay {
         params.add("quantity", "1");//수량
         params.add("total_amount", "900");//가격
         params.add("tax_free_amount", "100");//세금
-        params.add("approval_url", "http://i3a105.p.ssafy.io/kakaoPaySuccess");//승인시갈곳
-        params.add("cancel_url", "http://i3a105.p.ssafy.io/kakaoPayCancel");//취소시갈곳
-        params.add("fail_url", "http://i3a105.p.ssafy.io/kakaoPaySuccessFail");//실패시갈곳
+        params.add("approval_url", "http://i3a105.p.ssafy.io");//승인시갈곳
+        params.add("cancel_url", "http://i3a105.p.ssafy.io");//취소시갈곳
+        params.add("fail_url", "http://i3a105.p.ssafy.io");//실패시갈곳
  
          HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
  
@@ -57,9 +57,7 @@ public class KakaoPay {
             kakaoPayReadyVO = restTemplate.postForObject(new URI(HOST + "/v1/payment/ready"), body, KakaoPayReadyVO.class);
             
             log.info("" + kakaoPayReadyVO);
-            
-            return kakaoPayReadyVO.getNext_redirect_pc_url();
- 
+
         } catch (RestClientException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -67,8 +65,7 @@ public class KakaoPay {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        return "/pay";
+        return kakaoPayReadyVO.getNext_redirect_pc_url();
         
     }
     
