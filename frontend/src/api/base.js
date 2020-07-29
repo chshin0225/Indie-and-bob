@@ -14,6 +14,8 @@ export default {
     'GAMEREGISTER' : "/game/registergame",
     'APPROVE' : "/game/approve",
     
+    'LIKEDPROJECT': "/game/like/gamelist",
+    
     'REWARD': "/reward/",
     'REWARDS' :"/rewards/bygameid/",
 }

@@ -84,7 +84,7 @@ const routes = [
     },
   },
   {
-    path: '/user/edit',
+    path: '/user/edit/:username',
     name: 'Edit',
     component: Edit,
     meta: {

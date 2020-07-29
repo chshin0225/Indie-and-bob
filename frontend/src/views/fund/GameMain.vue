@@ -36,38 +36,38 @@
   </v-container>
 </template>
 <script>
-import InfiniteLoading from "vue-infinite-loading";
 import axios from "axios";
 import SERVER from "../../api/base";
 
+import InfiniteLoading from "vue-infinite-loading";
+
 export default {
   name: "GameMain",
-
-  data() {
-    return {
-      gameNum: 0,
-      games: []
-    };
-  },
 
   components: {
     InfiniteLoading
   },
 
+  data() {
+    return {
+      gameNum: 0,
+      games: []
+    }
+  },
+
   methods: {
     infiniteHandler($state) {
-      axios
-        .get(SERVER.BASE + SERVER.GAMELIST + this.gameNum + "/")
+      axios.get(SERVER.BASE + SERVER.GAMELIST + this.gameNum + "/")
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.object.length > 0) {
             this.gameNum += 10;
-            console.log(res.data);
+            // console.log(res.data);
             res.data.object.forEach(item => {
               this.games.push(item);
             });
-            console.log("게임즈");
-            console.log(this.games);
+            // console.log("게임즈");
+            // console.log(this.games);
             $state.loaded();
           } else {
             $state.complete();

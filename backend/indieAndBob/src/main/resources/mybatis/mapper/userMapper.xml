@@ -13,6 +13,11 @@
    <select id="selectByNickname" parameterType="String" resultType="user">
    	  select * from user where nickname=#{nickname}
    </select>
+   
+   <select id="searchUser" parameterType="String" resultType="user">
+   	  select * from user where nickname like CONCAT('%', #{keyword}, '%')
+   </select>
+   
    <insert id="registerUser" parameterType="user">
       insert into user (email, name, nickname, password, postcode,address,extra_address,bank_name,bank_account,
       is_developer,phone_number,profile,introduction) 
@@ -26,7 +31,7 @@
       where email={#email}
    </update>
    <insert id="registerFollow" parameterType="follow">
-   	  insert into follow (follower, following) values (#{userId},#{following})
+   	  insert into follow (follower, following) values (#{follower},#{following})
    </insert>
    <select id="getFollower" parameterType="String" resultType="user">
    	  select * from user where nickname in (select follower from follow where following=#{nickname})
@@ -35,9 +40,9 @@
    	  select * from user where nickname in (select following from follow where follower=#{nickname})
    </select>
    <delete id="deleteFollowing" parameterType="follow">
-      delete from follow where follower=#{userId} and following=#{following}
+      delete from follow where follower=#{follower} and following=#{following}
    </delete>
    <select id="isFollowing" parameterType="follow">
-      select * from follow where follower=#{userId} and following=#{following}
+      select * from follow where follower=#{follower} and following=#{following}
    </select>
 </mapper>

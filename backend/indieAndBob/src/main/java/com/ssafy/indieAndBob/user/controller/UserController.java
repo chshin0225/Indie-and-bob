@@ -111,6 +111,26 @@ public class UserController {
 		}
 		return response;
 	}
+	
+	@GetMapping("/user/search")
+	@ApiOperation(value = "유저 검색")
+	public Object userSearch(HttpServletRequest request) {
+		logger.info("==========userSearch==========");
+		String keyword = request.getParameter("keyword");
+		logger.info("keyword : " + keyword);
+		ResponseEntity response = null;
+		List<User> users = userService.searchUser(keyword);
+		if (users.size() >= 0) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = users;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return response;
+	}
 
 	@PutMapping("/account/userinfo")
 	@ApiOperation(value = "회원 정보 수정")
@@ -155,7 +175,7 @@ public class UserController {
 		logger.info("==========getFollower==========");
 		logger.info("userId : " + nickname);
 		ResponseEntity response = null;
-		List<String> followerlist = userService.getFollower(nickname);
+		List<User> followerlist = userService.getFollower(nickname);
 		logger.info("list : " + followerlist);
 		if(followerlist.size() >= 0) {
 			final BasicResponse result = new BasicResponse();
@@ -175,7 +195,7 @@ public class UserController {
 		logger.info("==========getFollowing==========");
 		logger.info("userId : " + nickname);
 		ResponseEntity response = null;
-		List<String> followinglist = userService.getFollowing(nickname);
+		List<User> followinglist = userService.getFollowing(nickname);
 		if(followinglist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;

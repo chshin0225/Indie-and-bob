@@ -18,6 +18,8 @@ export default new Vuex.Store({
     oriPassword: "",
     username: localStorage.getItem('username'),
     userInfo: null,
+
+    // follow
     followerList: null,
     followingList: null,
     
@@ -27,6 +29,9 @@ export default new Vuex.Store({
     // project
     projectList: [],
     project: null,
+
+    // like
+    likedProjectList: [],
 
     // error
     errorDetail: null,
@@ -95,6 +100,10 @@ export default new Vuex.Store({
     },
     setProject(state, val) {
       state.project = val
+    },
+
+    setLikedProjectList(state, val) {
+      state.likedProjectList = val
     },
 
     // error
@@ -256,8 +265,6 @@ export default new Vuex.Store({
       router.go('-1')
     },
 
-
-    
     // project
     fetchProjects({ commit }) {
       axios.get(SERVER.BASE + SERVER.GAMELIST)
@@ -275,6 +282,16 @@ export default new Vuex.Store({
         commit('setProject', res.data.object[0])
       })
       .catch(err => console.error(err))
+    },
+
+    
+    fetchLikedProjects({ commit }, username) {
+      axios.get(SERVER.BASE + SERVER.LIKEDPROJECT + `/${username}`)
+        .then(res => {
+          console.log(res.data.object)
+          commit('setLikedProjectList', res.data.object)
+        })
+        .catch(err => console.error(err))
     },
   },
   modules: {
