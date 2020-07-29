@@ -50,7 +50,7 @@
           </router-link>
 
           <!-- 로그인 했을 때 -->
-          <router-link :to="`/user/mypage/${ userInfo.nickname }`" class="text-decoration-none black--text" v-if="isLoggedIn">
+          <router-link :to="`/user/mypage/${ userInfo.nickname }`" class="text-decoration-none black--text" v-if="isLoggedIn && dataFetched">
             <div class="pa-2 d-flex">
               <v-avatar color="secondary">
                 <v-icon dark>mdi-account-circle</v-icon>
@@ -72,7 +72,7 @@
               </v-row>
             </v-list-item>
 
-            <v-list-item class="px-3" :to="`/user/mypage/${ userInfo.nickname }`" v-if="isLoggedIn">
+            <v-list-item class="px-3" :to="`/user/mypage/${ userInfo.nickname }`" v-if="isLoggedIn && dataFetched">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-user fa-lg grey--text text--darken-2"></i>
@@ -124,13 +124,16 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex"
+import { mapActions, mapGetters } from "vuex"
+import axios from 'axios'
+import SERVER from './api/base'
 
 export default {
   name: "app",
 
   data() {
     return {
+      userInfo: null,
       drawer: false,
       items: [
         { title: 'Notification1' },
@@ -143,31 +146,43 @@ export default {
     };
   },
 
-  created() {
-    if (this.isLoggedIn) {
-      let username = localStorage.getItem('username')
-      this.getUserInfo(username)
+  methods: {
+    ...mapActions(['goBack', 'logout',]),
+
+    getUserInfo() {
+      this.userInfo = null
+      if (this.isLoggedIn) {
+        let username = localStorage.getItem('username')
+        axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
+          .then(res => {
+            // console.log('user',username)
+            // console.log(res.data)
+            this.userInfo = res.data.object
+          })
+          .catch(err => console.error(err))
+      }
     }
+  },
+
+  created() {
+    this.getUserInfo()
   },
 
   watch: {
     $route: function() {
       // console.log('log', this.isLoggedIn)
-      if (this.isLoggedIn) {
-        let username = localStorage.getItem('username')
-        this.getUserInfo(username)
-      }
+      this.getUserInfo()
     },
   },
 
   computed: {
     ...mapGetters(['isLoggedIn',]),
-    ...mapState(['userInfo',])
+
+    dataFetched: function() {
+      return !!this.userInfo
+    },
   },
 
-  methods: {
-    ...mapActions(['goBack', 'logout', 'getUserInfo',])
-  },
 
 };
 </script>

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameLike {
-	private String email;
+	private int gameLikeId;
+	private String nickname;
 	private String gameId;
 }
