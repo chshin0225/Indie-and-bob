@@ -92,8 +92,7 @@
           <v-tab-item class="Like">
             <v-card flat>
               <v-card-text>
-                <h2>내가 좋아요한 프로젝트들</h2>
-                <ProjectCard />
+                <LikedProjects />
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -130,7 +129,7 @@
 <script>
 import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
 
-import ProjectCard from "../../components/ProjectCard.vue";
+import LikedProjects from "../../components/user/LikedProjects.vue";
 import FollowInfo from "../../components/user/FollowInfo.vue";
 import MyInfo from "../../components/user/MyInfo.vue";
 
@@ -138,7 +137,7 @@ export default {
   name: "MyPage",
 
   components: {
-    ProjectCard,
+    LikedProjects,
     FollowInfo,
     MyInfo
   },
