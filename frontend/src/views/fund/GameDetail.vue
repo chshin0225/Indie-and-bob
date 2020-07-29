@@ -2,7 +2,7 @@
   <div>
     <!-- header -->
     <div class="header">
-      <v-container>
+      <v-container v-if="render">
         <h1>{{ project.name }}</h1>
         <v-row>
           <v-col cols="12" sm="6">
@@ -49,7 +49,7 @@
                 <v-card-text>
                   <h2>프로젝트 소개</h2>
                   <v-card outlined>
-                    <Viewer v-if="content != null" :initialValue="content" />
+                    <Viewer v-if="project.content != null" :initialValue="project.content" />
                   </v-card>
                 </v-card-text>
               </v-card>
@@ -104,52 +104,36 @@
         <v-btn cols="auto" fab large @click="likeButton()" color="accent" class="mr-3">
           <v-icon :color="iconColor">fas fa-heart</v-icon>
         </v-btn>
-        <v-menu
-      v-model="menu"
-      :close-on-content-click="false"
-      :nudge-width="200"
-      offset-x
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="accent"
-          v-bind="attrs"
-          v-on="on"
-          fab
-          large
-          cols='auto'
-          class='ml-3'
-        >
-          <v-icon :color="shareIcon" @click="shareButton()">fas fa-share-alt</v-icon>
-        </v-btn>
-      </template>
+        <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="accent" v-bind="attrs" v-on="on" fab large cols="auto" class="ml-3">
+              <v-icon :color="shareIcon" @click="shareButton()">fas fa-share-alt</v-icon>
+            </v-btn>
+          </template>
 
-      <v-card>
-        <p>{{url}}</p>
-        <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-card>
+            <p ref="shareUrl">{{url}}</p>
+            <v-btn x-small @click="copy()">복사하기</v-btn>
+            <v-card-actions>
+              <v-spacer></v-spacer>
 
-          <v-btn text @click="menu = false">close</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-menu>
+              <v-btn text @click="menu = false;shareIcon='white';">close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
       </div>
       <div v-if="isAdmin && project.isApprove === 0">
-        <v-btn cols='auto' @click="approve" class="mr-3">
-          승인
-        </v-btn>
-        <v-btn cols='auto' @click="disapprove" class="mr-3">
-          거절
-        </v-btn>
+        <v-btn cols="auto" @click="approve" class="mr-3">승인</v-btn>
+        <v-btn cols="auto" @click="disapprove" class="mr-3">거절</v-btn>
       </div>
     </v-container>
   </div>
 </template>
 
 // <script>
-import axios from 'axios';
+import axios from "axios";
 import router from "../../router";
-import SERVER from '../../api/base'
+import SERVER from "../../api/base";
 import GameCommunity from "./GameCommunity.vue";
 import QuestionandAnswer from "./QuestionandAnswer.vue";
 import { mapActions } from "vuex";
@@ -157,20 +141,32 @@ import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 export default {
-  created() {
-   console.log(this.$route.params)
-   axios.get(SERVER.BASE + SERVER.GAME + this.$route.params.id)
-    .then(res => {
-      console.log(res)
-      this.project = res.data.object
-    })
-    .catch(err => {
-      console.error(err)
-    })
-   console.log(localStorage.getItem('username'))
-   if (localStorage.getItem('username') === 'admin') {
-     this.isAdmin = true
-   }
+  mounted() {
+    console.log(this.$route.params.id);
+    axios
+      .get(SERVER.BASE + SERVER.GAME + this.$route.params.id, this.headersConfig)
+      .then((res) => {
+        console.log(res);
+        this.project = res.data.object;
+        this.project.content = '<p>test</p>'
+        this.render = true;
+        this.project.deadline = this.project.deadline.substr(0,10)
+        let PARAMS ='?nickname='+localStorage.getItem('username') + '&gameId='+this.project.gameId
+        axios
+          .get(SERVER.BASE + SERVER.ISLIKE + PARAMS, this.headersConfig)
+          .then((res) => {
+            console.log(res)
+            if (res.data.object) {
+              this.iconColor = "primary";
+            } else this.iconColor = "white";
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    if (localStorage.getItem("username") === "admin") {
+      this.isAdmin = true;
+    }
   },
   components: {
     GameCommunity,
@@ -181,17 +177,19 @@ export default {
   data() {
     return {
       likeDialog: false,
-      iconColor: "white",
       shareIcon: "white",
       menu: false,
-      url: this.$route.query.page,
+      url: "http://localhost:3000" + window.location.pathname,
+      //후에 바꿀 예정데스
       isAdmin: false,
+      iconColor: 'white',
+      render: false,
       project: {
         name: "example",
         startedAt: "2020-07-14",
         aim: "1000000",
         deadline: "2020-08-14",
-        content: "예시 프로젝트 매우 좋은 프로젝트 뜌듀듀듀",
+        content: "",
       },
       rewards: [
         {
@@ -250,26 +248,39 @@ export default {
         this.iconColor = "white";
       }
     },
-    shareButton(){
-
-
+    shareButton() {
+      this.shareIcon = "primary";
     },
-        approve() {
-         axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$route.params.id, isApprove: 1 })
-            .then(res => {
-                console.log(res)
-                router.push({name: "GameMain"})
-            })
-            .catch(err => console.error(err))
-        },
-        disapprove() {
-         axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$route.params.id, isApprove: -1 })
-            .then(res => {
-                console.log(res)
-                router.push({name: "GameMain"})
-            })
-            .catch(err => console.error(err))
-        }
+    copy() {
+      this.$clipboard(this.url);
+      this.$alert("url이 복사되었습니다.");
+      this.menu = false;
+      this.shareIcon = "white";
+    },
+    approve() {
+      axios
+        .put(SERVER.BASE + SERVER.APPROVE, {
+          gameId: this.$route.params.id,
+          isApprove: 1,
+        })
+        .then((res) => {
+          console.log(res);
+          router.push({ name: "GameMain" });
+        })
+        .catch((err) => console.error(err));
+    },
+    disapprove() {
+      axios
+        .put(SERVER.BASE + SERVER.APPROVE, {
+          gameId: this.$route.params.id,
+          isApprove: -1,
+        })
+        .then((res) => {
+          console.log(res);
+          router.push({ name: "GameMain" });
+        })
+        .catch((err) => console.error(err));
+    },
   },
 };
 </script>
