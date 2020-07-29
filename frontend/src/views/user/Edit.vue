@@ -3,43 +3,36 @@
     <h1 class="text-center">회원정보 변경</h1>
 
     <v-row class="justify-center">
-      <v-col class="py-0" sm=6>
-        <p>이름 : {{ this.name }} </p>
+      <v-col class="py-0" sm="6">
+        <p>이름 : {{ this.name }}</p>
       </v-col>
     </v-row>
     <!-- id -->
     <v-row class="justify-center">
-      <v-col class="py-0" sm=6>
+      <v-col class="py-0" sm="6">
         <label for="nickname">닉네임</label>
-        <v-text-field 
-          hide-details=true
+        <v-text-field
+          hide-details="true"
           class="my-3"
-          v-model="nickName" 
-          id="nickname" 
+          v-model="nickName"
+          id="nickname"
           outlined
-          type="text" 
+          type="text"
         />
         <small class="d-block" v-if="error.nickName">{{ error.nickName }}</small>
       </v-col>
     </v-row>
 
-
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
         <label for="usertype">주 사용자 유형</label>
-        <v-select
-          hide-details=true
-          :items="userTypes"
-          id="usertype"
-          v-model="usertype"
-          outlined
-        ></v-select>
+        <v-select hide-details="true" :items="userTypes" id="usertype" v-model="usertype" outlined></v-select>
       </v-col>
     </v-row>
 
     <!-- email -->
     <v-row class="justify-center">
-      <v-col class="py-0" sm=6>
+      <v-col class="py-0" sm="6">
         <p>이메일 : {{ email }}</p>
       </v-col>
     </v-row>
@@ -61,7 +54,7 @@
         <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
-    
+
     <!-- introduction -->
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
@@ -115,19 +108,19 @@
       <small class="d-block" v-if="error.passwordConfirm">{{ error.passwordConfirm }}</small>
       </v-col>
     </v-row>
- -->
+    -->
 
-   <!-- phone number -->
+    <!-- phone number -->
     <v-row class="justify-center">
-      <v-col class="py-0" sm=6>
+      <v-col class="py-0" sm="6">
         <label for="phonenumber">핸드폰 번호('-' 제외)</label>
-        <v-text-field 
-          hide-details=true
+        <v-text-field
+          hide-details="true"
           class="my-3"
-          v-model="phonenumber" 
-          id="phonenumber" 
+          v-model="phonenumber"
+          id="phonenumber"
           outlined
-          type="number" 
+          type="number"
         />
         <small class="d-block" v-if="error.phonenumber">{{ error.phonenumber }}</small>
       </v-col>
@@ -139,68 +132,61 @@
       :style="searchWindow"
       style="border:1px solid;width:100%;margin:5px 0;position:relative"
     >
-    <v-col class="py-0" sm=6>
-      <img
-        
-        src="//t1.daumcdn.net/postcode/resource/images/close.png"
-        id="btnFoldWrap"
-        style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1"
-        @click="searchWindow.display = 'none'"
-        alt="close"
-      >
-    </v-col>
+      <v-col class="py-0" sm="6">
+        <img
+          src="//t1.daumcdn.net/postcode/resource/images/close.png"
+          id="btnFoldWrap"
+          style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1"
+          @click="searchWindow.display = 'none'"
+          alt="close"
+        />
+      </v-col>
     </v-row>
-  
-  <v-row class= 'justify-center'>
-        <v-col
-          class="py-0 mt-3" sm=3>
-          <label for="postcode">우편번호</label>
-          <v-text-field
-            v-model="postcode"
-            outlined
-            hide-details=true
-            id="postcode"
-            placeholder="자동으로 입력됩니다."
-            required
-          ></v-text-field>
-          
-        </v-col>
-        <v-col class="my-2" sm=3>
-            <v-btn @click="execDaumPostcode" dark>우편번호 찾기</v-btn>
-        </v-col>
 
-
-  </v-row>
-  <v-row class="justify-center">
-        <v-col
-          class="py-0" sm=6>
-          <label for="address">주소</label>
-          <v-text-field
-            type='text'
-            v-model="address"
-            outlined
-            hide-details=true
-            id="address"
-            placeholder="자동으로 입력됩니다"
-            required
-          ></v-text-field>
-        </v-col>
-  </v-row>
-  <v-row class="justify-center">
-        <v-col
-          class="py-0" sm=6>
-          <label for="extraAddress">상세주소</label>
-          <v-text-field
-            v-model="extraAddress"
-            id="extraAddress"
-            placeholder="상세주소를 입력해주세요"
-            type="text"
-            hide-details=true
-            outlined
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
+    <v-row class="justify-center">
+      <v-col class="py-0 mt-3" sm="3">
+        <label for="postcode">우편번호</label>
+        <v-text-field
+          v-model="postcode"
+          outlined
+          hide-details="true"
+          id="postcode"
+          placeholder="자동으로 입력됩니다."
+          required
+        ></v-text-field>
+      </v-col>
+      <v-col class="my-2" sm="3">
+        <v-btn @click="execDaumPostcode" dark>우편번호 찾기</v-btn>
+      </v-col>
+    </v-row>
+    <v-row class="justify-center">
+      <v-col class="py-0" sm="6">
+        <label for="address">주소</label>
+        <v-text-field
+          type="text"
+          v-model="address"
+          outlined
+          hide-details="true"
+          id="address"
+          placeholder="자동으로 입력됩니다"
+          required
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row class="justify-center">
+      <v-col class="py-0" sm="6">
+        <label for="extraAddress">상세주소</label>
+        <v-text-field
+          v-model="extraAddress"
+          id="extraAddress"
+          placeholder="상세주소를 입력해주세요"
+          type="text"
+          hide-details="true"
+          outlined
+          required
+        ></v-text-field>
+      </v-col>
+    </v-row>
 
     <!-- <v-text-field
       v-model="passwordConfirm"
@@ -212,89 +198,84 @@
       hint="It must match the password."
       counter
       @click:append="showPwc = !showPwc"
-    ></v-text-field> -->
+    ></v-text-field>-->
 
     <!-- bank account -->
     <v-row class="justify-center">
-      <v-col class="py-0" sm=2>
+      <v-col class="py-0" sm="2">
         <label for="bankname">은행명</label>
         <v-select
           class="my-3"
-          hide-details=true
+          hide-details="true"
           :items="banks"
           id="bankname"
           v-model="bank"
           outlined
         ></v-select>
       </v-col>
-      <v-col class="py-0" sm=4>
+      <v-col class="py-0" sm="4">
         <label for="accountnumber">계좌번호</label>
-        <v-text-field 
-          hide-details=true
+        <v-text-field
+          hide-details="true"
           class="my-3"
-          v-model="accountnumber" 
-          id="accountnumber" 
+          v-model="accountnumber"
+          id="accountnumber"
           outlined
-          placeholder="(-)를 제외한 숫자만 입력해주세요" 
-          type="number" 
+          placeholder="(-)를 제외한 숫자만 입력해주세요"
+          type="number"
         />
         <small class="d-block" v-if="error.accountnumber">{{ error.accountnumber }}</small>
       </v-col>
     </v-row>
-    
+
     <!-- term -->
     <v-row class="justify-center">
-      <v-col sm=6>
+      <v-col sm="6">
         <v-row class="justify-space-between">
           <v-col class="py-0">
-         <v-switch class="ml-2" v-model="isTerm" label="약관에 동의합니다."></v-switch>
-    <v-dialog v-model="dialog" persistent max-width="290">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-         text
-          v-bind="attrs"
-          v-on="on"
-        >
-          약관보기
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-title class="headline">IndieAndBob 약관</v-card-title>
-        <v-card-text>게임을 게임ㅁ게임 밥알을 밥알바알</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">닫기</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+            <v-dialog v-model="dialog" persistent max-width="290">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn text v-bind="attrs" v-on="on">약관보기</v-btn>
+              </template>
+              <v-card>
+                <v-card-title class="headline">IndieAndBob 약관</v-card-title>
+                <v-card-text>게임을 게임ㅁ게임 밥알을 밥알바알</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" text @click="dialog = false">닫기</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-col>
 
           <v-col class="text-right py-0">
-            <v-btn           
+            <v-btn
               @click="changeUserInfo({email: email, profile:profileImage, password: password, nickname: nickName, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, postcode: postcode, address: address, extraAddress: extraAddress})"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
               depressed
               large
-              color="primary">회원 정보 변경</v-btn>
+              color="primary"
+            >회원 정보 변경</v-btn>
           </v-col>
         </v-row>
       </v-col>
     </v-row>
-
   </v-container>
 </template>
 
 <script>
-import axios from 'axios'
-import { mapActions } from 'vuex'
+import axios from "axios"
+import { mapActions } from "vuex"
 
 export default {
+  name: 'Edit',
+
   created() {
     this.component = this;
     // getUser()
-  }, 
+  },
 
   watch: {
     nickName: function() {
@@ -302,38 +283,41 @@ export default {
     },
     email: function() {
       this.checkForm();
-      if (this.email.length>0 && this.email.charAt(0)>='A' && this.email.charAt(0) <='Z') {
-            this.email = this.email.substring(0,1).toLowerCase() + this.email.substring(1)
-        }
+      if (
+        this.email.length > 0 &&
+        this.email.charAt(0) >= "A" &&
+        this.email.charAt(0) <= "Z"
+      ) {
+        this.email =
+          this.email.substring(0, 1).toLowerCase() + this.email.substring(1);
+      }
     },
     phonenumber: function() {
       this.checkForm();
     },
-    isTerm: function() {
-      this.checkform();
-    }
   },
   methods: {
-    ...mapActions([ 'changeUserInfo' ]),
+    ...mapActions(["changeUserInfo"]),
 
     getUser() {
-      axios.유저정보가져오기()
+      axios
+        .유저정보가져오기()
         .then(res => {
-          this.email = res.data.email
-          this.profileImage = res.data.profile
-          this.password = res.data.password
-          this.name = res.data.name
-          this.introduction = res.data.introduction
-          this.phonenumber = res.data.phonenumber
-          this.nickName = res.data.nickName
-          this.usertype = res.data.usertype
-          this.bankname = res.data.bankname
-          this.accountnumber = res.data.accountnumber
-          this.postcode = res.data.postcode
-          this.address = res.data.address
-          this.extraAddress = res.data.extraAddress
+          this.email = res.data.email;
+          this.profileImage = res.data.profile;
+          this.password = res.data.password;
+          this.name = res.data.name;
+          this.introduction = res.data.introduction;
+          this.phonenumber = res.data.phonenumber;
+          this.nickName = res.data.nickName;
+          this.usertype = res.data.usertype;
+          this.bankname = res.data.bankname;
+          this.accountnumber = res.data.accountnumber;
+          this.postcode = res.data.postcode;
+          this.address = res.data.address;
+          this.extraAddress = res.data.extraAddress;
         })
-        .catch(err => console.error(err))
+        .catch(err => console.error(err));
     },
 
     checkForm() {
@@ -341,16 +325,9 @@ export default {
         this.error.nickName = "왜 지웠어요? 다시 쓰세요";
       else this.error.nickName = false;
 
-     if (
-       (this.phonenumber + '').length != 11 
-     )
-      this.error.phonenumber = "올바른 휴대폰번호 형식이ㅣ 아닙니다.";
-    else this.error.phonenumber = false;
-    
-    if (
-      this.isTerm    
-    ) this.error.isTerm = false;
-    else this.error.isTerm = true;
+      if ((this.phonenumber + "").length != 11)
+        this.error.phonenumber = "올바른 휴대폰번호 형식이ㅣ 아닙니다.";
+      else this.error.phonenumber = false;
 
       let isSubmit = true;
       Object.values(this.error).map(v => {
@@ -361,46 +338,45 @@ export default {
     execDaumPostcode() {
       const currentScroll = Math.max(
         document.body.scrollTop,
-        document.documentElement.scrollTop,
+        document.documentElement.scrollTop
       );
       // eslint-disable-next-line
       new daum.Postcode({
-        onComplete: (data) => {
-          if (data.userSelectedType === 'R') {
+        onComplete: data => {
+          if (data.userSelectedType === "R") {
             this.address = data.roadAddress;
           } else {
             this.address = data.jibunAddress;
           }
-          if (data.userSelectedType === 'R') {
-            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+          if (data.userSelectedType === "R") {
+            if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
               this.extraAddress += data.bname;
             }
-            if (data.buildingName !== '' && data.apartment === 'Y') {
+            if (data.buildingName !== "" && data.apartment === "Y") {
               this.extraAddress +=
-                this.extraAddress !== ''
+                this.extraAddress !== ""
                   ? `, ${data.buildingName}`
                   : data.buildingName;
             }
-            if (this.extraAddress !== '') {
+            if (this.extraAddress !== "") {
               this.extraAddress = ` (${this.extraAddress})`;
             }
           } else {
-            this.extraAddress = '';
+            this.extraAddress = "";
           }
           this.postcode = data.zonecode;
           this.$refs.extraAddress.focus();
-          this.searchWindow.display = 'none';
+          this.searchWindow.display = "none";
           document.body.scrollTop = currentScroll;
         },
-        onResize: (size) => {
+        onResize: size => {
           this.searchWindow.height = `${size.height}px`;
         },
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%"
       }).embed(this.$refs.searchWindow);
-      this.searchWindow.display = 'block';
-    },
-
+      this.searchWindow.display = "block";
+    }
   },
 
   data() {
@@ -412,12 +388,11 @@ export default {
       nickName: "",
       name: "",
       usertype: "",
-      userTypes: ['일반 사용자', '개발자'], 
-      banks: ['하나은행', '우리은행','국민은행'],
-      bankname: '',
-      accountnumber: '',
+      userTypes: ["일반 사용자", "개발자"],
+      banks: ["하나은행", "우리은행", "국민은행"],
+      bankname: "",
+      accountnumber: "",
       introduction: "",
-      isTerm: false,
       isLoading: false,
       error: {
         email: false,
@@ -426,7 +401,6 @@ export default {
         nickName: "",
         passwordConfirm: false,
         accountnumber: false,
-        isTerm: false
       },
       isSubmit: false,
       passwordType: "password",
@@ -435,18 +409,18 @@ export default {
       dialog: false,
       showPwc: false,
       searchWindow: {
-        display: 'none',
-        height: '300px',
+        display: "none",
+        height: "300px"
       },
-      postcode: '',
-      address: '',
-      extraAddress: '',
+      postcode: "",
+      address: "",
+      extraAddress: ""
       // rules: {
       //   required: value => !!value || 'Required.',
       //   min: v => v.length >= 8 || 'Min 8 characters',
       // }
-    }
+    };
   }
-}
+};
 </script>
 
