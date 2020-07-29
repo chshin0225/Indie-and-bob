@@ -245,9 +245,11 @@ public class GameController {
 	@GetMapping("/game/islike")
 	@ApiOperation(value = "이 게임을 좋아하는지 여부 확인")
 	public Object isLike(HttpServletRequest request) {
-		String email = request.getParameter("email");
+		String nickname = request.getParameter("nickname");
 		String gameId = request.getParameter("gameId");
-		GameLike like = new GameLike(email, gameId);
+		GameLike like = new GameLike();
+		like.setNickname(nickname);
+		like.setGameId(gameId);
 		logger.info("==========islike==========");
 		logger.info("islike : " + like);
 		ResponseEntity response = null;
