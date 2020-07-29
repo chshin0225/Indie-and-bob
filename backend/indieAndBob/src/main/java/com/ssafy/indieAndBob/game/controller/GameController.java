@@ -261,4 +261,21 @@ public class GameController {
 		}
 		return response;
 	}
+	
+	@PutMapping("/game/approve")
+	@ApiOperation(value = "게임 승인 여부")
+	public Object approve(@RequestBody Game game) {
+		logger.info("==========approve==========");
+		logger.info("approve : " + game);
+		ResponseEntity response = null;
+		if (gservice.updateApprove(game) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
 }

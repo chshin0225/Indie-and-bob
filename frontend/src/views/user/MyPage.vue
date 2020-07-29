@@ -19,7 +19,6 @@
           <p class="mb-0">introduction: {{ userInfo.introduction }}</p>
           <p class="mb-0">following: 0</p>
           <p class="mb-0 pb-3">followers: 0</p>  
-          <p>{{ $route.params }}</p>
           <p>{{ userInfo }}</p>
         </v-container>
       </div>
@@ -61,6 +60,7 @@
               </v-card-text>
             </v-card>
           </v-tab-item>
+
           <v-tab-item class="myFundings">
             <v-card flat>
               <v-card-text>
@@ -68,6 +68,7 @@
               </v-card-text>
             </v-card>
           </v-tab-item>
+
           <v-tab-item class="myArticles">
             <v-card flat>
               <v-card-text>
@@ -75,6 +76,7 @@
               </v-card-text>
             </v-card>
           </v-tab-item>
+
           <v-tab-item class="Like">
             <v-card flat>
               <v-card-text>
@@ -82,70 +84,65 @@
               </v-card-text>
             </v-card>
           </v-tab-item>
+
+          <!-- 팔로우 정보 -->
           <v-tab-item class="Follow">
             <v-card flat>
               <v-card-text>
-                <h2>내 팔로우 정보</h2>
+                <FollowInfo />
               </v-card-text>
             </v-card>
           </v-tab-item>
+
+          <!-- 내 정보 -->
           <v-tab-item class="myInfo">
             <v-card flat>
               <v-card-text>
-              <h2>내 개인정보</h2>
-                <router-link to="/user/edit">회원정보 수정</router-link>
-                <br />
-                <router-link to="/user/password">비밀번호 변경</router-link>
+                <MyInfo />
               </v-card-text>
             </v-card>
           </v-tab-item>
         </v-tabs>
       </v-card>
-
+      <router-link to="/newproject">새 프로젝트 만들기</router-link>
     </div>
 
     <div v-if="!dataFetched">
-      Loading...
+      <h3 class="text-center">Loading...</h3>
     </div>
-    <router-link to="/newproject">새 프로젝트 만들기</router-link>
   </div>
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
-import axios from 'axios'
-import SERVER from '../../api/base'
+import { mapActions, mapMutations, mapState, mapGetters } from 'vuex'
+
+import FollowInfo from '../../components/user/FollowInfo.vue'
+import MyInfo from '../../components/user/MyInfo.vue'
 
 export default {
-  data() {
-    return {
-      userInfo: null,
-      dataFetched: false,
-    }
+  name: 'MyPage',
+
+  components: {
+    FollowInfo,
+    MyInfo,
   },
 
-  created() {
-    this.dataFetched = false
-
-    axios.get(SERVER.BASE + SERVER.USERINFO + `/${this.$route.params.username}`)
-        .then(res => {
-          // console.log(res)
-          // console.log(res.data)
-          this.userInfo = res.data.object
-          this.dataFetched = true
-        })
-        .catch(err => console.error(err))
-  },
-
-
-  methods: {
-    ...mapActions([ 'getUserInfo', 'follow', ]),
-    ...mapMutations(['setUserInfo'])
-  },
   computed: {
+    ...mapState(['userInfo']),
+    ...mapGetters(['dataFetched']),
     isSelf: function() {
       return this.userInfo.nickname === localStorage.getItem('username')
     },
+  },
+
+  methods: {
+    ...mapActions([ 'getUserInfo', 'follow',]),
+    ...mapMutations(['setUserInfo',])
+  },
+
+  created() {
+    console.log('router',this.$route.params.username)
+    this.getUserInfo(this.$route.params.username)
   },
 };
 </script>

@@ -50,4 +50,8 @@
     <select id="isLike" parameterType="gamelike" resultType="gamelike">
     	select * from game_like where email=#{email} and game_id=#{gameId}
     </select>
+    
+    <update id="gameApprove" parameterType="game">
+    	update game set is_approve=#{isApprove} where game_id=#{gameId}
+    </update>
 </mapper>

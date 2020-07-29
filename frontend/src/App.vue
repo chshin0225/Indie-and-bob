@@ -2,7 +2,7 @@
   <v-app>
     <div>
       <!-- navbar -->
-      <v-app-bar color="primary" dense flat>
+      <v-app-bar color="primary" dense flat fixed>
         <!-- 모바일 화면에서만 햄버거 메뉴 사용 가능-->
         <v-app-bar-nav-icon class="white--text" @click="drawer = true"></v-app-bar-nav-icon>
 
@@ -36,7 +36,7 @@
       </v-app-bar>
 
       <!-- nav drawer -->
-      <v-navigation-drawer v-model="drawer" absolute temporary>
+      <v-navigation-drawer v-model="drawer" absolute temporary class="nav-drawer">
         <!-- 현 유저 표시 -->
         <template v-slot:prepend>
           <!-- 로그인 안했을 때 -->
@@ -117,7 +117,9 @@
     </div>
 
     <!-- router view -->
-    <router-view></router-view>
+    <div class="main-content">
+      <router-view></router-view>
+    </div>
   </v-app>
 </template>
 
@@ -181,5 +183,14 @@ export default {
 
 .fa-comment-alt {
   margin-left: 2px;
+}
+
+.main-content {
+  margin-top: 50px;
+}
+
+.nav-drawer {
+  position: fixed;
+  height: 100vh;
 }
 </style>
