@@ -17,8 +17,8 @@
             </v-btn>
           </v-row>
           <p class="mb-0">introduction: {{ userInfo.introduction }}</p>
-          <p class="mb-0">following: 0</p>
-          <p class="mb-0 pb-3">followers: 0</p>  
+          <!-- <p class="mb-0">following: {{ this.followerCount }}</p>
+          <p class="mb-0 pb-3">followers: {{ this.followingCount }}</p>   -->
         </v-container>
       </div>
       <v-divider></v-divider>
@@ -130,7 +130,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['userInfo']),
+    ...mapState(['userInfo', 'followerList', 'followingList']),
     ...mapGetters(['dataFetched']),
     isSelf: function() {
       return this.userInfo.nickname === localStorage.getItem('username')
@@ -139,16 +139,25 @@ export default {
       return {
         'following': this.userInfo.username,
       }
-    }
+    },
+    followerCount: function() {
+      return this.followerList.length
+    },
+    followingCount: function() {
+      return this.followingList.length
+    },
   },
 
   methods: {
-    ...mapActions([ 'getUserInfo', 'follow',]),
+    ...mapActions([ 'getUserInfo', 'follow', 'fetchFollowers', 'fetchFollowings',]),
     ...mapMutations(['setUserInfo',])
   },
 
   created() {
-    this.getUserInfo(this.$route.params.username)
+    let username = this.$route.params.username
+    this.getUserInfo(username)
+    this.fetchFollowers(username)
+    this.fetchFollowings(username)
   },
 };
 </script>
