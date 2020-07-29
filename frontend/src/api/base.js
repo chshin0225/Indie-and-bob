@@ -13,6 +13,12 @@ export default {
     'GAME': "/game/",
     'GAMEREGISTER' : "/game/registergame",
     'APPROVE' : "/game/approve",
+    'LIKE': "/game/like",
+    'ISLIKE': "/game/islike",
+    'LIKEBYUSER' : "game/like/gamelist/",
+    'LIKEBYGAME' : "game/like/userlist/",
+    
+    'LIKEDPROJECT': "/game/like/gamelist",
     
     'REWARD': "/reward/",
     'REWARDS' :"/rewards/bygameid/",
