@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.indieAndBob.mapper.gamecomment">
+
+	<insert id="registerComment" parameterType="gamecomment">
+		insert into game_comment (email, game_id, content) values(#{email},#{gameId},#{content})
+	</insert>
+	
+	<select id="selectCommentByGameId" parameterType="String" resultType="gamecomment">
+		select * from game_comment where game_id=#{gameId}
+	</select>
+</mapper>
