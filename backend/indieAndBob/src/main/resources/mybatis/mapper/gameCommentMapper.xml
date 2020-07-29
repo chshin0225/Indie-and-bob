@@ -5,7 +5,7 @@
 <mapper namespace="com.ssafy.indieAndBob.mapper.gamecomment">
 
 	<insert id="registerComment" parameterType="gamecomment">
-		insert into game_comment (email, game_id, content) values(#{email},#{gameId},#{content})
+		insert into game_comment (nickname, game_id, content) values(#{nickname},#{gameId},#{content})
 	</insert>
 	
 	<select id="selectCommentByGameId" parameterType="String" resultType="gamecomment">
