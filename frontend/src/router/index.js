@@ -32,6 +32,7 @@ import CommunityArticle from '../views/community/CommunityArticle.vue'
 // error
 import PageNotFound from '../views/error/PageNotFound.vue'
 import ErrorPage from '../views/error/ErrorPage.vue'
+import AuthorizationError from '../views/error/AuthorizationError.vue'
 
 // admin
 import NewProjectRequest from '../views/admin/NewProjectRequest.vue'
@@ -135,6 +136,14 @@ const routes = [
     meta: {
       title: 'Page Not Found'
     },
+  },
+  {
+    path: '/405',
+    name: 'AuthorizationError',
+    component: AuthorizationError,
+    meta: {
+      title: 'Not Authorized'
+    }
   },
   {
     path: '/error',

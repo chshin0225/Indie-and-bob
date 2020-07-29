@@ -1,12 +1,13 @@
 <template>
-  <v-container>
+  <v-card>
 
-  </v-container>
+  </v-card>
 </template>
 
 <script>
 export default {
     name:'SettingsQnA',
+
     
 
 }

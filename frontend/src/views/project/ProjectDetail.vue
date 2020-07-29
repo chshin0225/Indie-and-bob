@@ -132,9 +132,6 @@
         </v-col>
       </v-row>
     </div>
-    <v-row class="mt-5" justify="center">
-      <v-btn @click="onSubmitButton()" color="primary">최종 제출</v-btn>
-    </v-row>
   </v-container>
 </template>
 
@@ -158,12 +155,13 @@ export default {
       .get(SERVER.BASE + SERVER.GAME + this.id)
       .then((res) => {
         this.project = res.data.object;
-        this.content = this.project.content
-        console.log(this.project)
+        this.content = this.project.content;
+        console.log(this.project);
       })
-      .catch(err => {
-        console.error(err)
-      router.push('/404')});
+      .catch((err) => {
+        console.error(err);
+        router.push("/404");
+      });
     axios
       .get(SERVER.BASE + SERVER.REWARDS + this.id)
       .then((res) => {
@@ -182,7 +180,7 @@ export default {
   data() {
     return {
       project: {},
-      content: '',
+      content: "",
       rewards: [],
       dialog: false,
       notifications: false,
@@ -218,7 +216,7 @@ export default {
       };
       console.log(PARAMS);
       axios
-        .post(SERVER.BASE + SERVER.REWARDREGISTER, PARAMS, this.headersConfig)
+        .post(SERVER.BASE + SERVER.REWARD, PARAMS, this.headersConfig)
         .then((res) => {
           console.log(res);
           axios
@@ -239,44 +237,57 @@ export default {
             });
         });
     },
-    onSubmitButton(){
-      //관리자 페이지한테 승인 신청하기
+    rewardDelete(reward_id) {
+      this.$prompt(
+        "Please type 'Delete the reward'.",
+        "",
+        "Are you sure?",
+        "question"
+      ).then((text) => {
+        if (text === "Delete the reward") {
+          axios
+            .delete(SERVER.BASE + SERVER.REWARD + reward_id, this.headersConfig)
+            .then((res) => {
+              console.log(res)
+              axios
+                .get(SERVER.BASE + SERVER.REWARDS + this.id)
+                .then((res) => {
+                  console.log("rewards", res.data.object);
+                  this.rewards = res.data.object;
+                  this.$alert("Reward Deleted");
+                })
+                .catch((err) => {
+                  console.error(err);
+                  this.rewards = [];
+                });
+            });
+        } else {
+          this.$alert("Wrong input!");
+        }
+      });
     },
-    rewardDelete(reward_id){
-      axios.delete(SERVER.BASE+ SERVER.REWARDDETAIL+reward_id, this.headersConfig )
-      axios
-        .get(SERVER.BASE + SERVER.REWARDS + this.id)
-        .then((res) => {
-          console.log("rewards", res.data.object);
-          this.rewards = res.data.object;
-          this.dialog = false;
-          this.r_thumbnailUrl = "";
-          this.r_left = 0;
-          this.r_price = 0;
-          this.r_title = "";
-          this.r_content = "";
-        })
-        .catch((err) => {
-          console.error(err);
-          this.rewards = [];
-        });
+    projectEdit() {
+      router.push("/pjt/edit/" + this.id);
     },
-    projectEdit(){
-      router.push('/pjt/edit/'+this.id)
-    },
-    projectDelete(){
-    this.$prompt("If you want to delete your project, please type 'Delete the project'.", "", "Are you sure?", "question").then((text) => {
-     // do somthing with text
-     if(text==='Delete the project'){
-     axios.delete(SERVER.BASE+SERVER.GAME+this.id, this.headersConfig)
-     .then(router.push('/feed/main'))
-     .catch(err=> {
-       console.error(err)
-     })
-     }else{
-       this.$alert("Wrong input!")}
-
-});
+    projectDelete() {
+      this.$prompt(
+        "If you want to delete your project, please type 'Delete the project'.",
+        "",
+        "Are you sure?",
+        "question"
+      ).then((text) => {
+        // do somthing with text
+        if (text === "Delete the project") {
+          axios
+            .delete(SERVER.BASE + SERVER.GAME + this.id, this.headersConfig)
+            .then(router.push("/feed/main"))
+            .catch((err) => {
+              console.error(err);
+            });
+        } else {
+          this.$alert("Wrong input!");
+        }
+      });
     },
   },
 };
