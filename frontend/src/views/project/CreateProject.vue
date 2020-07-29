@@ -124,18 +124,18 @@ export default {
   methods: {
     onButtonClick() {
       let PARAMS = {
-        content: this.$refs.toastuiEditor.invoke("getMarkdown"),
+        content: this.$refs.toastuiEditor.invoke("getHtml"),
         name: this.title,
         deadline: this.date,
         aim: this.aim,
         thumbnail: this.thumbnailUrl,
         
       };
-      console.log(this.headersConfig)
       axios
         .post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
         .then((res) => {
-          router.push("/project/" + res.data.id);
+          console.log(res)
+          router.push("/project/" + res.data.object);
         })
         .catch((err) => console.error(err));
     },
