@@ -9,7 +9,7 @@ import com.ssafy.indieAndBob.game.dao.GameDao;
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
-import com.ssafy.indieAndBob.game.dto.GameRegister;
+import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.user.dto.User;
 
 @Service
@@ -19,7 +19,7 @@ public class GameServiceImpl implements GameService{
 	GameDao gamedao;
 	
 	@Override
-	public int registerGame(GameRegister game) {
+	public int registerGame(GameAll game) {
 		int gameId = gamedao.registerGame(game);
 		gamedao.registerDetail(game);
 		return gameId;
@@ -36,7 +36,7 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public Game selectGameById(String gameId) {
+	public GameAll selectGameById(String gameId) {
 		return gamedao.selectGameById(gameId);
 	}
 

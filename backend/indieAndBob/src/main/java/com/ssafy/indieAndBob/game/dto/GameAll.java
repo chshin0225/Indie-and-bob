@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameRegister {
+public class GameAll {
 	public int gameId;
 	public String name;
 	public Date deadline;
