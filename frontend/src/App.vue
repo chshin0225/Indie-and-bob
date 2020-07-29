@@ -2,7 +2,7 @@
   <v-app>
     <div>
       <!-- navbar -->
-      <v-app-bar color="primary" dense flat>
+      <v-app-bar color="primary" dense flat fixed>
         <!-- 모바일 화면에서만 햄버거 메뉴 사용 가능-->
         <v-app-bar-nav-icon class="white--text" @click="drawer = true"></v-app-bar-nav-icon>
 
@@ -36,7 +36,7 @@
       </v-app-bar>
 
       <!-- nav drawer -->
-      <v-navigation-drawer v-model="drawer" absolute temporary>
+      <v-navigation-drawer v-model="drawer" absolute temporary class="nav-drawer">
         <!-- 현 유저 표시 -->
         <template v-slot:prepend>
           <!-- 로그인 안했을 때 -->
@@ -50,12 +50,12 @@
           </router-link>
 
           <!-- 로그인 했을 때 -->
-          <router-link to="/" class="text-decoration-none black--text" v-if="isLoggedIn">
+          <router-link :to="`/user/mypage/${ userInfo.nickname }`" class="text-decoration-none black--text" v-if="isLoggedIn && dataFetched">
             <div class="pa-2 d-flex">
               <v-avatar color="secondary">
                 <v-icon dark>mdi-account-circle</v-icon>
               </v-avatar>
-              <h3 class="ml-4 align-self-center">username</h3>
+              <h3 class="ml-4 align-self-center">{{ userInfo.nickname }}</h3>
             </div>
           </router-link>
         </template>
@@ -72,7 +72,7 @@
               </v-row>
             </v-list-item>
 
-            <v-list-item class="px-3" to="/user/mypage" v-if="isLoggedIn">
+            <v-list-item class="px-3" :to="`/user/mypage/${ userInfo.nickname }`" v-if="isLoggedIn && dataFetched">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-user fa-lg grey--text text--darken-2"></i>
@@ -81,7 +81,7 @@
               </v-row>
             </v-list-item>
 
-            <v-list-item class="px-3" to="/project/all">
+            <v-list-item class="px-3" to="/projects">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-gamepad fa-lg grey--text text--darken-2"></i>
@@ -98,6 +98,7 @@
                 <v-col class="font-weight-regular">Community</v-col>
               </v-row>
             </v-list-item>
+
           </v-list-item-group>
         </v-list>
 
@@ -116,18 +117,23 @@
     </div>
 
     <!-- router view -->
-    <router-view></router-view>
+    <div class="main-content">
+      <router-view></router-view>
+    </div>
   </v-app>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex"
+import axios from 'axios'
+import SERVER from './api/base'
 
 export default {
   name: "app",
 
   data() {
     return {
+      userInfo: null,
       drawer: false,
       items: [
         { title: 'Notification1' },
@@ -136,16 +142,48 @@ export default {
         { title: 'Notification4' },
       ],
       closeOnClick: true,
+      currentUser: localStorage.getItem('username'),
     };
   },
 
-  computed: {
-    ...mapGetters(['isLoggedIn',])
+  methods: {
+    ...mapActions(['goBack', 'logout',]),
+
+    getUserInfo() {
+      this.userInfo = null
+      if (this.isLoggedIn) {
+        let username = localStorage.getItem('username')
+        axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
+          .then(res => {
+            // console.log('user',username)
+            // console.log(res.data)
+            this.userInfo = res.data.object
+          })
+          .catch(err => console.error(err))
+      }
+    }
   },
 
-  methods: {
-    ...mapActions(['goBack', 'logout'])
-  }
+  created() {
+    this.getUserInfo()
+  },
+
+  watch: {
+    $route: function() {
+      // console.log('log', this.isLoggedIn)
+      this.getUserInfo()
+    },
+  },
+
+  computed: {
+    ...mapGetters(['isLoggedIn',]),
+
+    dataFetched: function() {
+      return !!this.userInfo
+    },
+  },
+
+
 };
 </script>
 
@@ -160,5 +198,14 @@ export default {
 
 .fa-comment-alt {
   margin-left: 2px;
+}
+
+.main-content {
+  margin-top: 50px;
+}
+
+.nav-drawer {
+  position: fixed;
+  height: 100vh;
 }
 </style>

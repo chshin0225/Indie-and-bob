@@ -1,18 +1,25 @@
 export default {
-    'BASE': "http://localhost:8080", 
+    'BASE': "http://localhost:8080",
     'LOGIN': "/account/login",
     'SIGNUP': "/account/signup",
     'PWCHANGE': "/account/pwchange",
     'USERINFO' : "/account/userinfo",
 
-    'GAMELIST' : "/game",
-    'GAME': "/game?gameId=",
+    'FOLLOW': "/following",
+    'FOLLOWER': "/follower",
+
+
+    'GAMELIST' : "/gamelist/",
+    'UNAPPROVED' : "/admin/gamelist/",
+    'GAME': "/game/",
     'GAMEREGISTER' : "/game/registergame",
+    'APPROVE' : "/game/approve",
     
-    'REWARDDETAIL': "/reward?rewardId=",
+    'REWARDDETAIL': "/reward/",
     'REWARDREGISTER':"/reward/registerreward",
-    'REWARDS' :"/reward/bygameid?gameId=",
+    'REWARDS' :"/rewards/bygameid/",
 }
 
 
 // "http://i3a105.p.ssafy.io:8080", 
+// "http://localhost:8080",

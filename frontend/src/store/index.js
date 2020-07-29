@@ -13,11 +13,12 @@ export default new Vuex.Store({
     // user
     jwtToken: cookies.get('user'),
     isUser: false,
-    // isLoggedin: false,
     changedPw: false,
     oriEmail: "",
     oriPassword: "",
+    username: localStorage.getItem('username'),
     userInfo: null,
+    followerList: [],
     
     // community
     articleList: [],
@@ -37,6 +38,7 @@ export default new Vuex.Store({
       }
     }),
     isLoggedIn: state => !!state.jwtToken,
+    dataFetched: state => !!state.userInfo,
   },
 
   mutations: {
@@ -45,30 +47,37 @@ export default new Vuex.Store({
       state.jwtToken = val
       cookies.set('user', val)
     },
-    SetLoggedIn(state) {
-      if (cookies.isKey('user')) {
-        state.token = cookies.get('user')
-        state.isLoggedin = true
-      } else {
-        state.isLoggedin = false
-      }
-    },
+    // SetLoggedIn(state) {
+    //   if (cookies.isKey('user')) {
+    //     state.token = cookies.get('user')
+    //     state.isLoggedin = true
+    //   } else {
+    //     state.isLoggedin = false
+    //   }
+    // },
 
     setChangedPw(state, val) {
       state.changedPw = val;
-      console.log(state.changedPw)
+      // console.log(state.changedPw)
     },
     setEmail(state, val) {
       state.oriEmail = val
-      console.log(state.oriEmail)
+      // console.log(state.oriEmail)
     },
     setPassword(state, val) {
       state.oriPassword = val
-      console.log(state.oriPassword)
+      // console.log(state.oriPassword)
+    },
+    setUsername(state, val) {
+      state.username = val
+      localStorage.setItem('username', val)
     },
     setUserInfo(state, val) {
       state.userInfo = val
-      console.log(state.userInfo)
+      // console.log(state.userInfo)
+    },
+    setFollowerList(state, val) {
+      state.followerList = val
     },
 
     // community
@@ -96,12 +105,16 @@ export default new Vuex.Store({
     login({ commit }, loginData) {
       axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
-          console.log(res.headers['jwt-auth-token'])
-          commit('setEmail', loginData.email)
-          commit('setPassword', loginData.password)
-          // commit('setLoggedIn', true)
+          // console.log(res.data.object)
+          commit('setEmail', res.data.object.email)
+          commit('setPassword', res.data.object.password)
+
+          // 로그인한 유저의 닉네임 저장 
+          commit('setUsername', res.data.object.nickname)
+
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
+
           router.push('/feed/main')
         })
         .catch(err => {
@@ -124,7 +137,6 @@ export default new Vuex.Store({
         .then(res => {
           console.log(res)
           if (res.data.status) {
-            commit('setLoggedIn', false)
             alert("회원가입 인증 메일이 발송되었습니다. 이메일을 확인해주세요.")
             router.push({ name: "Login" });
           } else {
@@ -141,9 +153,18 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit('setEmail', '')
       commit('setPassword', '')
+
+      // cookie에 있는 jwt 제거
       commit('setToken', null)
       cookies.remove('user')
-      router.push({ name: 'FeedMain' })
+      
+      // local storage에 있는 username 정보 제거
+      commit('setUsername', null)
+      localStorage.removeItem('username')
+      
+      if (router.currentRoute.name !== 'FeedMain') {
+        router.push({ name: 'FeedMain' })
+      }
     },
 
     changePassword(context, passwordData) {
@@ -164,26 +185,40 @@ export default new Vuex.Store({
     },
 
     getUserInfo({ commit }, username) {
+      commit('setUserInfo', null)
       axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
         .then(res => {
-          console.log(res.data)
-          commit('setUserInfo', res.data)
+          // console.log('user',username)
+          // console.log(res)
+          // console.log(res.data)
+          commit('setUserInfo', res.data.object)
         })
         .catch(err => console.error(err))
     },
 
-    changeUserInfo(context, changedData) {
-      axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, context.getters.headersConfig)
+    changeUserInfo({ getters, commit }, changedData) {
+      axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
         .then(res => {
-          context.commit('setUser', res.data)
+          commit('setUser', res.data)
           alert('회원 정보가 변경되었습니다.')
         })
         .catch(err => console.error(err))
     },
 
-    follow() {
-
+    follow({ getters }, following) {
+      axios.post(SERVER.BASE + SERVER.FOLLOW, following, getters.headersConfig)
+        .then(res => console.log(res.data))
+        .catch(err => console.error(err))
     },
+
+    fetchFollowers({ commit, getters }) {
+      axios.get(SERVER.BASE + SERVER.FOLLOWER, getters.headersConfig)
+        .then(res => {
+          console.log(res.data)
+          commit('setFollowerList', res.data)
+        })
+        .catch(err => console.error(err))
+    },  
 
     // community
     // fetchArticles({ commit }) {

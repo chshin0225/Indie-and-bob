@@ -6,14 +6,17 @@ import Login from '../views/user/Login.vue'
 import Join from '../views/user/Join.vue'
 import PasswordChange from '../views/user/PasswordChange.vue'
 import MyPage from '../views/user/MyPage.vue'
+import Edit from '../views/user/Edit.vue'
 
 import FeedMain from '../views/IndexFeed.vue'
 
 //project making
 import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
+import EditProject from '../views/project/EditProject.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
 import SearchResult from '../views/project/SearchResult.vue'
+import ProjectSettings from '../views/project/ProjectSettings.vue'
 
 //project + funding
 import GameMain from '../views/fund/GameMain.vue'
@@ -30,9 +33,22 @@ import CommunityArticle from '../views/community/CommunityArticle.vue'
 import PageNotFound from '../views/error/PageNotFound.vue'
 import ErrorPage from '../views/error/ErrorPage.vue'
 
+// admin
+import NewProjectRequest from '../views/admin/NewProjectRequest.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
+  // admin
+  {
+    path: '/newrequest',
+    name: 'NewProjectRequest',
+    component: NewProjectRequest,
+    meta: {
+      title: 'New Project Request'
+    },
+  },
+
   // user
   {
     path: '/',
@@ -59,11 +75,19 @@ const routes = [
     },
   },
   {
-    path: '/user/mypage',
+    path: '/user/mypage/:username',
     name: 'MyPage',
     component: MyPage,
     meta: {
       title: 'My page'
+    },
+  },
+  {
+    path: '/user/edit',
+    name: 'Edit',
+    component: Edit,
+    meta: {
+      title: 'Edit Profile',
     },
   },
 
@@ -87,7 +111,7 @@ const routes = [
     },
   },
   {
-    path: '/community/new',
+    path: '/community-new',
     name: 'CommunityForm',
     component: CommunityForm,
     meta: {
@@ -123,7 +147,7 @@ const routes = [
 
   //project(개발자 사이드) 관련
   {
-    path : '/project/new',
+    path : '/newproject',
     name : 'CreateProject',
     component: CreateProject,
     meta: {
@@ -131,20 +155,36 @@ const routes = [
     },
   },
   {
-    path: '/project/detail/:id',
+    path: '/project/:id',
     name: 'ProjectDetail',
     component: ProjectDetail,
     meta: {
-      title: 'Create Project'
+      title: 'Create Rewards'
     },
   },
+  { 
+    path: '/project-settings/:id',
+    name: 'ProjectSettings',
+    component: ProjectSettings,
+    meta: {
+      title: 'Project Settings'
+    }
+  },
   {
-    path: '/project/done',
+    path: '/completed',
     name: 'CreateProjectDone',
     component: CreateProjectDone,
     meta: {
       title: 'Create Project'
     },
+  }, 
+  {
+    path:'/pjt/edit/:id',
+    name: 'EditProject',
+    component : EditProject,
+    meta: {
+      title: 'Edit Project'
+    }
   },
 
   //game(고객 사이드) 관련
@@ -173,7 +213,7 @@ const routes = [
     }
   },
   {
-    path: '/project/all',
+    path: '/projects',
     name: 'GameMain',
     component: GameMain,
     meta: {
