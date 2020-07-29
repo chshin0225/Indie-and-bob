@@ -47,7 +47,7 @@
             <i class="fas fa-users mr-3"></i>
             팔로우 정보
           </v-tab>
-          <v-tab>
+          <v-tab v-if="isSelf">
             <i class="fas fa-user-edit mr-3"></i>
             내 정보확인/변경
           </v-tab>
@@ -81,6 +81,7 @@
             <v-card flat>
               <v-card-text>
                 <h2>내가 좋아요한 프로젝트들</h2>
+                <ProjectCard />
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -95,7 +96,7 @@
           </v-tab-item>
 
           <!-- 내 정보 -->
-          <v-tab-item class="myInfo">
+          <v-tab-item class="myInfo" v-if="isSelf">
             <v-card flat>
               <v-card-text>
                 <MyInfo />
@@ -116,6 +117,7 @@
 <script>
 import { mapActions, mapMutations, mapState, mapGetters } from 'vuex'
 
+import ProjectCard from '../../components/ProjectCard.vue'
 import FollowInfo from '../../components/user/FollowInfo.vue'
 import MyInfo from '../../components/user/MyInfo.vue'
 
@@ -123,6 +125,7 @@ export default {
   name: 'MyPage',
 
   components: {
+    ProjectCard,
     FollowInfo,
     MyInfo,
   },
@@ -141,7 +144,6 @@ export default {
   },
 
   created() {
-    console.log('router',this.$route.params.username)
     this.getUserInfo(this.$route.params.username)
   },
 };

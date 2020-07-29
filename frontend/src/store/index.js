@@ -161,7 +161,10 @@ export default new Vuex.Store({
       // local storage에 있는 username 정보 제거
       commit('setUsername', null)
       localStorage.removeItem('username')
-      router.push({ name: 'FeedMain' })
+      
+      if (router.currentRoute.name !== 'FeedMain') {
+        router.push({ name: 'FeedMain' })
+      }
     },
 
     changePassword(context, passwordData) {
