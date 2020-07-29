@@ -115,7 +115,7 @@
           <v-icon :color="primary">fas fa-share-alt</v-icon>
         </v-btn>
       </div>
-      <div v-if="isAdmin">
+      <div v-if="isAdmin && project.isApprove === 0">
         <v-btn cols='auto' @click="approve" class="mr-3">
           승인
         </v-btn>
@@ -139,7 +139,8 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 export default {
   created() {
-   axios.get(SERVER.BASE + SERVER.GAME + this.$refs.params.id)
+   console.log(this.$route.params)
+   axios.get(SERVER.BASE + SERVER.GAME + this.$route.params.id)
     .then(res => {
       console.log(res)
       this.project = res.data.object
@@ -229,16 +230,18 @@ export default {
       }
     },
         approve() {
-         axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$refs.params.id, isApprove: 1 })
+         axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$route.params.id, isApprove: 1 })
             .then(res => {
                 console.log(res)
+                router.push({name: "GameMain"})
             })
             .catch(err => console.error(err))
         },
         disapprove() {
-         axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$refs.params.id, isApprove: -1 })
+         axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$route.params.id, isApprove: -1 })
             .then(res => {
                 console.log(res)
+                router.push({name: "GameMain"})
             })
             .catch(err => console.error(err))
         }
