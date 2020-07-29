@@ -131,6 +131,7 @@ export default {
         thumbnail: this.thumbnailUrl,
         
       };
+      console.log(PARAMS.content)
       axios
         .post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
         .then((res) => {

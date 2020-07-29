@@ -15,8 +15,7 @@ export default {
     'GAMEREGISTER' : "/game/registergame",
     'APPROVE' : "/game/approve",
     
-    'REWARDDETAIL': "/reward/",
-    'REWARDREGISTER':"/reward/registerreward",
+    'REWARD': "/reward/",
     'REWARDS' :"/rewards/bygameid/",
 }
 

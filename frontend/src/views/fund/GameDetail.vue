@@ -101,19 +101,38 @@
         </v-col>
       </v-row>
       <div fixed bottom right class="mr-5 mb-5">
-        <v-btn cols="auto" fab large @click="likeButton()" :color="iconBgColor" class="mr-3">
+        <v-btn cols="auto" fab large @click="likeButton()" color="accent" class="mr-3">
           <v-icon :color="iconColor">fas fa-heart</v-icon>
         </v-btn>
+        <v-menu
+      v-model="menu"
+      :close-on-content-click="false"
+      :nudge-width="200"
+      offset-x
+    >
+      <template v-slot:activator="{ on, attrs }">
         <v-btn
-          cols="auto"
+          color="accent"
+          v-bind="attrs"
+          v-on="on"
           fab
           large
-          @click="shareButton()"
-          :color="iconBgColor"
-          class="ml-3 mr-auto"
+          cols='auto'
+          class='ml-3'
         >
-          <v-icon :color="primary">fas fa-share-alt</v-icon>
+          <v-icon :color="shareIcon" @click="shareButton()">fas fa-share-alt</v-icon>
         </v-btn>
+      </template>
+
+      <v-card>
+        <p>{{url}}</p>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn text @click="menu = false">close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-menu>
       </div>
       <div v-if="isAdmin">
         <v-btn cols='auto' @click="approve" class="mr-3">
@@ -139,6 +158,7 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 export default {
   created() {
+   console.log(this.$refs.params.id)
    axios.get(SERVER.BASE + SERVER.GAME + this.$refs.params.id)
     .then(res => {
       console.log(res)
@@ -162,7 +182,9 @@ export default {
     return {
       likeDialog: false,
       iconColor: "white",
-      iconBgColor: "accent",
+      shareIcon: "white",
+      menu: false,
+      url: this.$route.query.page,
       isAdmin: false,
       project: {
         name: "example",
@@ -227,6 +249,10 @@ export default {
       } else {
         this.iconColor = "white";
       }
+    },
+    shareButton(){
+
+
     },
         approve() {
          axios.put(SERVER.BASE + SERVER.APPROVE, { gameId: this.$refs.params.id, isApprove: 1 })
