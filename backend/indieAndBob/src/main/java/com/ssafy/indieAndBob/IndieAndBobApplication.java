@@ -21,11 +21,11 @@ public class IndieAndBobApplication implements WebMvcConfigurer {
 	@Autowired
 	private JwtInterceptor jwtInterceptor;
 	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(jwtInterceptor).addPathPatterns("/user/**")
-		        .excludePathPatterns(java.util.Arrays.asList("/user/join/**"));
-	}
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(jwtInterceptor).addPathPatterns("/user/**")
+//		        .excludePathPatterns(java.util.Arrays.asList("/user/join/**"));
+//	}
 	
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
