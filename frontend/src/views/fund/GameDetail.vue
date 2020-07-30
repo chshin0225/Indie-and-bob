@@ -59,13 +59,13 @@
             <!-- Q&A -->
             <v-tab-item>
               <h2>Q&A</h2>
-              <QuestionandAnswer />
+              <QuestionandAnswer v-bind:project="project" />
             </v-tab-item>
 
             <!-- Community -->
             <v-tab-item>
               <h2>Community</h2>
-              <GameCommunity />
+              <GameCommunity v-bind:project="project" />
             </v-tab-item>
           </v-tabs>
         </v-col>
@@ -158,7 +158,8 @@ export default {
           .get(SERVER.BASE + SERVER.ISLIKE + PARAMS, this.headersConfig)
           .then((res) => {
             console.log(res);
-            if (res.data.object) {
+            if (res.data.status) {
+              
               this.isLike = true;
               this.iconColor = "primary";
             } else this.iconColor = "white";
@@ -197,32 +198,7 @@ export default {
         deadline: "",
         content: "",
       },
-      rewards: [
-        {
-          id: 1,
-          name: "1번리워드",
-          content: "1번 리워드에 대한 설명입니다.",
-          left: 999,
-          price: 10000,
-          thumbnail: "n",
-        },
-        {
-          id: 2,
-          name: "2번리워드",
-          content: "2번 리워드에 대한 설명입니다.",
-          left: 999,
-          price: 10000,
-          thumbnail: "n",
-        },
-        {
-          id: 3,
-          name: "3번리워드",
-          content: "3번 리워드에 대한 설명입니다.",
-          left: 99,
-          price: 10000,
-          thumbnail: "n",
-        },
-      ],
+      rewards: [],
     };
   },
   methods: {
