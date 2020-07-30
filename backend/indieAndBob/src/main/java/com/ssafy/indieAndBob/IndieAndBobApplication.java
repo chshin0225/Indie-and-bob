@@ -3,16 +3,20 @@ package com.ssafy.indieAndBob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 import com.ssafy.indieAndBob.jwt.interceptor.JwtInterceptor;
 
-import io.jsonwebtoken.lang.Arrays;
-
 @SpringBootApplication
 public class IndieAndBobApplication implements WebMvcConfigurer {
+	
+	@Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
+    }
 
 	public static void main(String[] args) {
 		SpringApplication.run(IndieAndBobApplication.class, args);
