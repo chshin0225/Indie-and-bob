@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.indieAndBob.mapper.alarm">
+
+   	<insert id="insertAlarm" parameterType="alarm">
+   		insert into alarm (type,nickname,target) values(#{type},#{nickname},#{target})
+   	</insert>
+   	
+   	<select id="getAlarm" parameterType="String">
+   		select * from alarm where target=#{nickname}
+   	</select>
+</mapper>
