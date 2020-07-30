@@ -14,8 +14,8 @@
         <v-spacer></v-spacer>
 
         <!-- search bar -->
-        <v-text-field dark color="white" class="mt-4 search-input" placeholder="Search" v-model="searchKeyword"></v-text-field>
-        <v-btn icon @click="">
+        <v-text-field dark color="white" class="mt-4 search-input" placeholder="Search" v-model="searchKeyword" @keypress.enter="sendSearch(searchKeyword)"></v-text-field>
+        <v-btn icon @click="sendSearch(searchKeyword)">
           <i class="fas fa-search white--text"></i>
         </v-btn>
 
@@ -156,7 +156,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['goBack', 'logout',]),
+    ...mapActions(['goBack', 'logout', 'search']),
 
     getUserInfo() {
       this.userInfo = null
@@ -182,7 +182,11 @@ export default {
     onError(evt) {
       console.log(evt)
       console.log("Error")
-    }
+    },
+    sendSearch(searchKeyword) {
+      this.search(searchKeyword)
+      this.searchKeyword = ''
+    },
   },
 
   created() {
