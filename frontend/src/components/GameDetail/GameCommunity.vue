@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center">
+  <v-row v-if="commentRender" justify="center">
     <v-col cols="12">
       <v-row class="justify-center">
         <v-col cols="12" sm="10">
@@ -18,14 +18,11 @@
         </v-col>
       </v-row>
       <v-divider></v-divider>
-      <v-list two-line>
+      <v-list v-if="community" two-line>
         <template v-for="article in community">
           <v-list-item :key="article.id">
-            <v-list-item-avatar>
-              <img :src="article.user.profileurl" />
-            </v-list-item-avatar>
             <v-list-item-content>
-              <v-row v-if="article.user===localStorage.getItem('username')">
+              <v-row v-if="article.nickname===myName">
                 <v-col cols="11">
                   <v-list-item-title>{{article.content}}</v-list-item-title>
                 </v-col>
@@ -39,7 +36,7 @@
                 </v-col>
               </v-row>
 
-              <v-list-item-subtitle>{{article.createdAt}} by {{article.user}}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{article.createdAt}} by {{article.nickname}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </template>.
@@ -52,18 +49,24 @@
 import axios from "axios";
 import SERVER from "../../api/base";
 export default {
+  props: ['project'],
   name: "GameCommunity",
-  created() {
+  mounted() {
+    console.log(this.project)
     axios
-      .get(SERVER.BASE + "gamecommunityurl")
+      .get(SERVER.BASE + SERVER.GAMECOMMUNITY +'/'+ this.project.gameId)
       .then((res) => {
         this.community = res.data.object;
+        this.commentRender = true;
       })
+
       .catch((err) => console.error(err));
   },
   data() {
     return {
       communityComment: "",
+      myName: localStorage.getItem('username'),
+      commentRender : false,
     };
   },
   methods: {
@@ -71,14 +74,17 @@ export default {
       let PARAMS = {
         nickname: localStorage.getItem("username"),
         content: this.communityComment,
+        gameId : this.project.gameId
       };
       axios
-        .post(SERVER.BASE, PARAMS, this.headersConfig)
+        .post(SERVER.BASE+SERVER.GAMECOMMUNITY, PARAMS, this.headersConfig)
         .then((res) => {
           console.log(res.data);
+          this.communityComment = '',
           axios
-            .get(SERVER.BASE + "gamecommunityurl")
+            .get(SERVER.BASE + SERVER.GAMECOMMUNITY + '/'+ this.project.gameId)
             .then((res) => {
+              console.log(res.data.object)
               this.community = res.data.object;
             })
             .catch((err) => console.error(err));
@@ -87,11 +93,11 @@ export default {
     },
     communityCommentDelete(ID) {
       axios
-        .delete(SERVER.BASE + ID, this.headersConfig)
+        .delete(SERVER.BASE+SERVER.GAMECOMMUNITY+'/' + ID, this.headersConfig)
         .then((res) => {
           console.log(res.data);
           axios
-            .get(SERVER.BASE + "gamecommunityurl")
+            .get(SERVER.BASE + SERVER.GAMECOMMUNITY + '/'+ this.project.gameId)
             .then((res) => {
               this.community = res.data.object;
             })

@@ -15,7 +15,7 @@
 
         <!-- search bar -->
         <v-text-field dark color="white" class="mt-4 search-input" placeholder="Search" v-model="searchKeyword"></v-text-field>
-        <v-btn icon @click="">
+        <v-btn icon @click="search()">
           <i class="fas fa-search white--text"></i>
         </v-btn>
 
