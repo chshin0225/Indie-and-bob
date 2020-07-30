@@ -18,6 +18,7 @@
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameLike" alias="gamelike"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameComment" alias="gamecomment"/>
 		<typeAlias type="com.ssafy.indieAndBob.reward.dto.Reward" alias="reward"/>
+		<typeAlias type="com.ssafy.indieAndBob.alarm.dto.Alarm" alias="alarm"/>
 		
 		
 	</typeAliases>
