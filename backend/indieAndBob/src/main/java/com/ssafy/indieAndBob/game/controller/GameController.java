@@ -145,16 +145,12 @@ public class GameController {
 	@PostMapping("/game/registergame")
 	@ApiOperation(value = "게임 등록")
 	public Object registerGame(@RequestBody GameAll request, HttpServletRequest req) {
-		String token = req.getHeader("jwt-auth-token");
-		logger.info("token : " + token);
-		logger.info("" + jwtService.get(token));
-		logger.info("user : " + jwtService.get(token).get("User"));
-		String email = (String) ((Map<String, Object>) jwtService.get(token).get("User")).get("email");
+		String nickname = jwtService.getNickname(req);
 		logger.info("==========registerGame==========");
 		logger.info("Game : " + request);
-		logger.info("email = " + email);
+		logger.info("email = " + nickname);
 		ResponseEntity response = null;
-		request.setEmail(email);
+		request.setNickname(nickname);
 		int gameId = gservice.registerGame(request);
 		if (gameId != 0) {
 			final BasicResponse result = new BasicResponse();

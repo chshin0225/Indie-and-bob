@@ -17,7 +17,7 @@ public class GameAll {
 	public int leftPrice;
 	public boolean isEnd;
 	public boolean isApprove;
-	public String email;
+	public String nickname;
 	public String thumbnail;
 	public Date createdAt;
 	public Date updatedAt;
