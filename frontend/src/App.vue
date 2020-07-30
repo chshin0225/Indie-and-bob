@@ -127,6 +127,7 @@
 import { mapActions, mapGetters } from "vuex"
 import axios from 'axios'
 import SERVER from './api/base'
+import SocketIO from 'socket.io-client'
 
 export default {
   name: "app",
@@ -143,9 +144,16 @@ export default {
       ],
       closeOnClick: true,
       currentUser: localStorage.getItem('username'),
+      socket: SocketIO(),
+      wsUri : "ws://localhost:8080/websocket",
+      websocket : null,
     };
   },
-
+  sockets: {
+    connect: function() {
+      console.log('socket connected')
+    },
+  },
   methods: {
     ...mapActions(['goBack', 'logout',]),
 
@@ -161,18 +169,42 @@ export default {
           })
           .catch(err => console.error(err))
       }
+    },
+    onOpen(evt) {
+      console.log(evt)
+      console.log("open")
+    },
+    onMessage(evt) {
+      console.log(evt)
+      console.log("message")
+    },
+    onError(evt) {
+      console.log(evt)
+      console.log("Error")
     }
   },
 
   created() {
     this.getUserInfo()
+    this.websocket = new WebSocket(this.wsUri);
+    this.websocket.onopen = function (evt) {
+        this.onOpen(evt)
+    };
+    this.websocket.onmessage = function (evt) {
+        this.onMessage(evt)
+    };
+    this.websocket.onerror = function (evt) {
+        this.onError(evt)
+    };  
   },
-
   watch: {
     $route: function() {
       // console.log('log', this.isLoggedIn)
       this.getUserInfo()
-    },
+    },  
+    items() {
+
+    }
   },
 
   computed: {
@@ -201,7 +233,7 @@ export default {
 }
 
 .main-content {
-  margin-top: 50px;
+  margin-top: 48px;
 }
 
 .nav-drawer {
