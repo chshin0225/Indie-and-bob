@@ -19,6 +19,9 @@ export default new Vuex.Store({
     username: localStorage.getItem('username'),
     userInfo: null,
 
+    wsUri : "ws://localhost:8080/websocket",
+    websocket : null,
+
     // follow
     followerList: null,
     followingList: null,
@@ -63,6 +66,9 @@ export default new Vuex.Store({
     //     state.isLoggedin = false
     //   }
     // },
+    setWebsocket(state, val) {
+      state.websocket = val
+    },
 
     setChangedPw(state, val) {
       state.changedPw = val;
@@ -121,7 +127,7 @@ export default new Vuex.Store({
 
   actions: {
     // user
-    login({ commit }, loginData) {
+    login({ commit, state }, loginData) {
       axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
           // console.log(res.data.object)
@@ -133,7 +139,8 @@ export default new Vuex.Store({
 
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
-
+          commit('setWebsocket', new WebSocket(state.wsUri))
+          state.websocket.onopen = () => state.websocket.send('login,'+res.data.object.nickname);
           router.push('/feed/main')
         })
         .catch(err => {
@@ -169,14 +176,15 @@ export default new Vuex.Store({
         })
     },
 
-    logout({ commit }) {
+    logout({ commit, state }) {
       commit('setEmail', '')
       commit('setPassword', '')
 
       // cookie에 있는 jwt 제거
       commit('setToken', null)
       cookies.remove('user')
-      
+      state.websocket.close()
+      commit('setWebsocket', null)
       // local storage에 있는 username 정보 제거
       commit('setUsername', null)
       localStorage.removeItem('username')
@@ -225,10 +233,13 @@ export default new Vuex.Store({
     },
 
     // follow 
-    follow({ getters }, following) {
+    follow({ getters, state }, following) {
       console.log(following)
       axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
-        .then(res => console.log(res.data))
+        .then(res => {
+          console.log(res.data)
+          state.websocket.send('follow,'+state.username+','+following.following)
+        })
         .catch(err => console.error(err))
     },
 
