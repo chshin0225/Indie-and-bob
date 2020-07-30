@@ -9,6 +9,7 @@
       <v-tab-item>
         <v-card flat outlined>
           <v-card-text>통합검색 부분입니다.</v-card-text>
+          <p>{{ searchResult }}</p>
         </v-card>
       </v-tab-item>
       
@@ -34,12 +35,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
+  name: 'SearchResult',
+
   data() {
     return {
       tab: null,
       tabs: 4,
     };
+  },
+
+  computed: {
+    ...mapState(['searchResult'])
   },
 };
 </script>
