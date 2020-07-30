@@ -99,7 +99,7 @@
     </v-row>
     <v-row justify="center">
       <v-col col="auto">
-        <v-btn color="primary">구매하기</v-btn>
+        <v-btn @click="kakaoPay()" color="primary">결제하기~~~~</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -107,7 +107,7 @@
 
 <script>
 // import { mapState } from "vuex";
-// import axios from "axios";
+import axios from "axios";
 // import SERVER from '../../api/base'
 
 export default {
@@ -123,6 +123,26 @@ export default {
 
   methods: {
     // ...mapActions(["getUserInfo"]),
+    kakaoPay() {
+      const PARAMS = {
+        cid : "TCONETIME",
+        partner_order_id: '',
+        partner_user_id: '',
+        item_name: this.reward.title,
+        item_code : this.reward.rewardId,
+        quantity: 1,
+        total_amount : this.reward.price,
+        tax_free_amount: this.reward.price,
+
+      }
+      const HEADER = {
+        'Authorization': 'KakaoAK 0fe306a5da3f90e0d081a31a9dab6bdf'
+      }
+      axios.post('https://kapi.kakao.com/v1/payment/ready', PARAMS, HEADER)
+      .then(res => {
+        console.log(res.data)
+      })
+    },
 
     execDaumPostcode() {
       const currentScroll = Math.max(
