@@ -7,4 +7,5 @@ import com.ssafy.indieAndBob.alarm.dto.Alarm;
 public interface AlarmService {
 	int insertAlarm(Alarm alarm);
 	List<Alarm> getAlarms(String nickname);
+	String test();
 }

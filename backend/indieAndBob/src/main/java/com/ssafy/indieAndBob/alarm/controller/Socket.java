@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 
 import com.ssafy.indieAndBob.alarm.dto.Alarm;
 import com.ssafy.indieAndBob.alarm.service.AlarmService;
+import com.ssafy.indieAndBob.alarm.service.AlarmServiceImpl;
 
 import lombok.extern.java.Log;
 
@@ -29,9 +30,6 @@ public class Socket {
     private Session session;
     public static Map<String, Socket> users = new ConcurrentHashMap<>();
     public static Map<String, String> sessionIds = new ConcurrentHashMap<>();
-    
-    @Autowired
-    AlarmService alarmService;
 
     @OnOpen //클라이언트가 소켓에 연결되때 마다 호출
     public void onOpen(Session session) {
@@ -43,8 +41,12 @@ public class Socket {
     @OnClose //클라이언트와 소켓과의 연결이 닫힐때 (끊길떄) 마다 호
     public void onClose(Session session) {
         String nickname = sessionIds.get(session.getId());
+        if(nickname == null) {
+        	return;
+        }
         sessionIds.remove(session.getId());
         users.remove(nickname);
+        log.info("onClose");
         log.info("onClose called, userCount:" + users.size());
     }
 
@@ -56,11 +58,13 @@ public class Socket {
             users.put(request[1], this);
             sessionIds.put(session.getId(), request[1]);
             log.info("onOpen called, userCount:"+ users.size());
-            List<Alarm> alarms = alarmService.getAlarms(request[1]);
-            for(Alarm alarm : alarms) {
-            	String msg = alarm.getType()+","+alarm.getNickname()+","+alarm.getTarget();
-            	this.sendMessage(msg);
-            }
+            log.info("nickname : "+ request[1]);
+//            log.info(alarmService.test());
+//            List<Alarm> alarms = alarmService.getAlarms(request[1]);
+//            for(Alarm alarm : alarms) {
+//            	String msg = alarm.getType()+","+alarm.getNickname()+","+alarm.getTarget();
+//            	this.sendMessage(msg);
+//            }
         }
         else if(request[0].equals("follow")){
         	String nickname = request[1];
@@ -74,7 +78,7 @@ public class Socket {
         		alarm.setType("follow");
         		alarm.setNickname(nickname);
         		alarm.setTarget(target);
-        		alarmService.insertAlarm(alarm);
+//        		alarmService.insertAlarm(alarm);
         	}
         }
     }
@@ -84,7 +88,7 @@ public class Socket {
     	String nickname = sessionIds.get(session.getId());
         sessionIds.remove(session.getId());
         users.remove(nickname);
-        log.info("onClose called, userCount:" + users.size());
+        log.info("onError called, userCount:" + users.size());
     }
 
     private void sendMessage(String message) {
