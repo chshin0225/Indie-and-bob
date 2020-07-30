@@ -124,10 +124,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex"
+import { mapActions, mapState, mapGetters } from "vuex"
 import axios from 'axios'
 import SERVER from './api/base'
-import SocketIO from 'socket.io-client'
 
 export default {
   name: "app",
@@ -145,15 +144,7 @@ export default {
       ],
       closeOnClick: true,
       currentUser: localStorage.getItem('username'),
-      socket: SocketIO(),
-      wsUri : "ws://localhost:8080/websocket",
-      websocket : null,
     };
-  },
-  sockets: {
-    connect: function() {
-      console.log('socket connected')
-    },
   },
   methods: {
     ...mapActions(['goBack', 'logout', 'search']),
@@ -171,18 +162,6 @@ export default {
           .catch(err => console.error(err))
       }
     },
-    onOpen(evt) {
-      console.log(evt)
-      console.log("open")
-    },
-    onMessage(evt) {
-      console.log(evt)
-      console.log("message")
-    },
-    onError(evt) {
-      console.log(evt)
-      console.log("Error")
-    },
     sendSearch(searchKeyword) {
       this.search(searchKeyword)
       this.searchKeyword = ''
@@ -191,16 +170,9 @@ export default {
 
   created() {
     this.getUserInfo()
-    this.websocket = new WebSocket(this.wsUri);
-    this.websocket.onopen = function (evt) {
-        this.onOpen(evt)
-    };
-    this.websocket.onmessage = function (evt) {
-        this.onMessage(evt)
-    };
-    this.websocket.onerror = function (evt) {
-        this.onError(evt)
-    };  
+    if (this.websocket !== null) {
+      this.websocket.onmessage = function(e){ console.log(e.data); }
+    }
   },
   watch: {
     $route: function() {
@@ -214,7 +186,7 @@ export default {
 
   computed: {
     ...mapGetters(['isLoggedIn',]),
-
+    ...mapState(['websocket']),
     dataFetched: function() {
       return !!this.userInfo
     },

@@ -17,7 +17,11 @@ export default {
     'ISLIKE': "/game/islike",
     'LIKEBYUSER' : "game/like/gamelist/",
     'LIKEBYGAME' : "game/like/userlist/",
+
+    'GAMECOMMUNITY' : "/game/comment",
     
+
+
     'LIKEDPROJECT': "/game/like/gamelist",
     
     'REWARD': "/reward/",
