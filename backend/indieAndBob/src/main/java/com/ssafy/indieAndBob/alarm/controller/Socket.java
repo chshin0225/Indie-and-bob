@@ -71,6 +71,7 @@ public class Socket {
         	String target = request[2];
         	Socket socket = users.get(target);
         	if(socket != null) {
+        		log.info("send");
         		socket.sendMessage(message);
         	}
         	else {
