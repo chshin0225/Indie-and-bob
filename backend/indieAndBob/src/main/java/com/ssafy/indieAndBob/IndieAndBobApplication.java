@@ -13,10 +13,10 @@ import com.ssafy.indieAndBob.jwt.interceptor.JwtInterceptor;
 @SpringBootApplication
 public class IndieAndBobApplication implements WebMvcConfigurer {
 	
-	@Bean
-    public ServerEndpointExporter serverEndpointExporter() {
-        return new ServerEndpointExporter();
-    }
+//	@Bean
+//    public ServerEndpointExporter serverEndpointExporter() {
+//        return new ServerEndpointExporter();
+//    }
 
 	public static void main(String[] args) {
 		SpringApplication.run(IndieAndBobApplication.class, args);
