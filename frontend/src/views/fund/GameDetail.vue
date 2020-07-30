@@ -19,7 +19,7 @@
               <v-card>
                 <v-card-title class="headline">이 프로젝트를 좋아한 사람들</v-card-title>
                 <v-card-text>
-                  <GameLike />
+                  <GameLike :project="project" />
                   </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>

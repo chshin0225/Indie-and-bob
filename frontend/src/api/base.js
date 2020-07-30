@@ -15,8 +15,8 @@ export default {
     'APPROVE' : "/game/approve",
     'LIKE': "/game/like",
     'ISLIKE': "/game/islike",
-    'LIKEBYUSER' : "game/like/gamelist/",
-    'LIKEBYGAME' : "game/like/userlist/",
+    'LIKEBYUSER' : "/game/like/gamelist/",
+    'LIKEBYGAME' : "/game/like/userlist/",
 
     'GAMECOMMUNITY' : "/game/comment",
     
