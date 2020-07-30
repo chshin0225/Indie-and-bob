@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.indieAndBob.alarm.dao.AlarmDao;
+import com.ssafy.indieAndBob.alarm.dao.AlarmDaoImpl;
 import com.ssafy.indieAndBob.alarm.dto.Alarm;
 
 @Service
@@ -21,7 +22,13 @@ public class AlarmServiceImpl implements AlarmService {
 
 	@Override
 	public List<Alarm> getAlarms(String nickname) {
+		System.out.println("get alarms");
 		return alarmDao.getAlarms(nickname);
 	}
 
+	@Override
+	public String test() {
+		return "test service";
+	}
+	
 }
