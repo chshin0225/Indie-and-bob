@@ -260,7 +260,10 @@ public class GameController {
 			result.data = "success";
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
-			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		return response;
 	}
