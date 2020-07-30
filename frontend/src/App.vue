@@ -188,13 +188,13 @@ export default {
     this.getUserInfo()
     this.websocket = new WebSocket(this.wsUri);
     this.websocket.onopen = function (evt) {
-        this.onOpen(evt)
+        self.$options.methods.onOpen(evt)
     };
     this.websocket.onmessage = function (evt) {
-        this.onMessage(evt)
+        self.$options.methods.onMessage(evt)
     };
     this.websocket.onerror = function (evt) {
-        this.onError(evt)
+        self.$options.methods.onError(evt)
     };  
   },
   watch: {
