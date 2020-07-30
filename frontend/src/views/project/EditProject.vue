@@ -5,7 +5,7 @@
       <v-col class="py-0" sm="10">
         <label for="title">제목</label>
         <v-text-field
-          v-model="title"
+          v-model="project.name"
           id="extraAddress"
           placeholder="프로젝트 제목을 입력해주세요"
           type="title"
@@ -22,6 +22,8 @@
           ref="toastuiEditor"
           :options="editorOptions"
           id="content"
+          :value = "project.content"
+          :initialValue="project.content"
           initialEditType="wysiwyg"
           previewStyle="vertical"
         />
@@ -37,9 +39,9 @@
           offset-y
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-text-field v-model="date" label="마감날짜" readonly v-bind="attrs" v-on="on"></v-text-field>
+            <v-text-field v-model="project.deadline" label="마감날짜" readonly v-bind="attrs" v-on="on"></v-text-field>
           </template>
-          <v-date-picker v-model="date" :min="today" @input="menu2 = false"></v-date-picker>
+          <v-date-picker v-model="project.deadline" :min="today" @input="menu2 = false"></v-date-picker>
         </v-menu>
       </v-col>
     </v-row>
@@ -47,7 +49,7 @@
       <v-col class="py-0 mt-5" sm="10">
         <label for="aim">목표 모금금액(단위:원)</label>
         <v-text-field
-          v-model="aim"
+          v-model="project.aim"
           id="aim"
           placeholder="목표 모금금액을 작성해주세요. 상세 리워드는 프로젝트 상세 페이지에서 추가/수정 가능합니다."
           type="number"
@@ -57,7 +59,20 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-btn @click="onButtonClick" class="deep-purple accent-4"></v-btn>
+      <v-row class="justify-center">
+        <v-col class="py-0 mt-5" sm="6">
+          <label for="thumbnail">썸네일</label>
+          <v-file-input
+            id="thumbnail"
+            @change="uploadImage"
+            accept="image/*"
+            v-model = "project.thumbnail"
+            label="썸네일 이미지를 입력해주세요"
+            prepend-icon="mdi-camera"
+          ></v-file-input>
+        </v-col>
+      </v-row>
+    <v-btn @click="onButtonClick" class="primary">수정하기</v-btn>
   </v-container>
 </template>
 
@@ -79,11 +94,8 @@ export default {
       axios.get(SERVER.BASE+SERVER.GAME+this.id)
       .then(res => {
           console.log(res.data.object)
-          this.content = res.data.object.content
-          this.today = res.data.object.createdAt.substr(0, 10)
-          this.date = res.data.object.deadline.substr(0, 10)
-          this.title = res.data.object.name
-          this.aim = res.data.object.aim
+          this.project = res.data.object
+          this.project.deadline = this.project.deadline.substr(0,10)
 
      })
       .catch(err => console.error(err))
@@ -91,12 +103,7 @@ export default {
       },
   data() {
     return {
-      text: '',
-      content: '',
-      today: '',
-      date: '',
-      title: '',
-      aim: 0,
+      project : {},
 
       menu2: false,
       editorOptions: {
@@ -106,6 +113,8 @@ export default {
   },
   methods: {
     onButtonClick() {
+      this.project.content = this.$refs.toastuiEditor.invoke("getHtml");
+
 
     }
   }

@@ -39,7 +39,7 @@ export default {
     },
   methods: { 
     createAction() {
-      this.text = this.$refs.toastuiEditor.invoke("getMarkdown");
+      this.text = this.$refs.toastuiEditor.invoke("getHtml");
       console.log(this.text)
       }
   }

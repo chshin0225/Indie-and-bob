@@ -76,7 +76,10 @@
           ></v-file-input>
         </v-col>
       </v-row>
-      <v-btn @click="onButtonClick" class="deep-purple accent-4">프로젝트 생성</v-btn>
+      <v-row class='justify-center'>
+ <v-btn cols=auto @click="onButtonClick" class="primary">프로젝트 생성</v-btn>
+      </v-row>
+     
     </v-row>
   </v-container>
 </template>
