@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="commentRender" justify="center">
+  <v-row justify="center">
     <v-col cols="12">
       <v-row class="justify-center">
         <v-col cols="12" sm="10">
@@ -18,7 +18,7 @@
         </v-col>
       </v-row>
       <v-divider></v-divider>
-      <v-list v-if="community" two-line>
+      <v-list v-if="commentRender&&community" two-line>
         <template v-for="article in community">
           <v-list-item :key="article.id">
             <v-list-item-content>

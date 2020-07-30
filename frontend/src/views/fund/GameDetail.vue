@@ -35,7 +35,7 @@
     </div>
 
     <!-- content -->
-    <v-container>
+    <v-container v-if="render">
       <v-row>
         <!-- tab section -->
         <v-col cols="8">
@@ -50,7 +50,7 @@
                 <v-card-text>
                   <h2>프로젝트 소개</h2>
                   <v-card outlined>
-                    <Viewer :value="project.content" />
+                    <Viewer :initialValue="project.content"/>
                   </v-card>
                 </v-card-text>
               </v-card>
@@ -145,7 +145,6 @@ export default {
       )
       .then((res) => {
         this.project = res.data.object;
-        this.project.content = "ddddddddddddddddddddddddddd";
         this.render = true;
         this.project.deadline = this.project.deadline.substr(0, 10);
         this.project.createdAt = this.project.createdAt.substr(0, 10);
