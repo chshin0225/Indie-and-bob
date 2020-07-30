@@ -78,14 +78,14 @@
               <v-divider></v-divider>
               <v-expansion-panels>
                 <v-expansion-panel v-for="reward in rewards" :key="reward.id">
-                  <v-expansion-panel-header>{{reward.name}}</v-expansion-panel-header>
+                  <v-expansion-panel-header>{{reward.rewardName}}</v-expansion-panel-header>
                   <v-expansion-panel-content>
                     {{reward.content}}
                     <br />
                     가격:{{reward.price}}원
                     <br />
-                    남은 수량 : {{reward.left}}
-                    <v-btn @click="rewardBuy(reward.id)" color="primary">구매하러 가기</v-btn>
+                    남은 수량 : {{reward.leftCount}}
+                    <v-btn @click="rewardBuy(reward.rewardId)" color="primary">구매하러 가기</v-btn>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -164,6 +164,11 @@ export default {
               this.iconColor = "primary";
             } else this.iconColor = "white";
           });
+        axios.get(SERVER.BASE + SERVER.REWARDS + this.project.gameId)
+        .then(res => {
+          console.log(res.data)
+          this.rewards = res.data.object
+        })
       })
       .catch((err) => {
         console.error(err);
