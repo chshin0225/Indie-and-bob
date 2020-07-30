@@ -22,6 +22,8 @@ export default {
     
     'REWARD': "/reward/",
     'REWARDS' :"/rewards/bygameid/",
+
+    'SEARCH': "/user/search?keyword=",
 }
 
 

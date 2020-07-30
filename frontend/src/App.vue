@@ -14,8 +14,8 @@
         <v-spacer></v-spacer>
 
         <!-- search bar -->
-        <v-text-field dark color="white" class="mt-4 search-input" placeholder="Search"></v-text-field>
-        <v-btn icon>
+        <v-text-field dark color="white" class="mt-4 search-input" placeholder="Search" v-model="searchKeyword"></v-text-field>
+        <v-btn icon @click="">
           <i class="fas fa-search white--text"></i>
         </v-btn>
 
@@ -136,6 +136,7 @@ export default {
     return {
       userInfo: null,
       drawer: false,
+      searchKeyword: '',
       items: [
         { title: 'Notification1' },
         { title: 'Notification2' },

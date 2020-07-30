@@ -35,6 +35,8 @@ export default new Vuex.Store({
 
     // error
     errorDetail: null,
+
+    searchResult: null,
   },
 
   getters: {
@@ -110,6 +112,10 @@ export default new Vuex.Store({
     setErrorDetail(state, val) {
       state.errorDetail = val
       console.log(state.errorDetail)
+    },
+
+    setSearchResult(state, val) {
+      state.searchResult = val
     },
   },
 
@@ -293,6 +299,16 @@ export default new Vuex.Store({
         })
         .catch(err => console.error(err))
     },
+
+    search({ commit }, searchKeyword) {
+      axios.get(SERVER.BASE + SERVER.SEARCH + `${searchKeyword}`)
+        .then(res => {
+          console.log(res.data)
+          commit('setSearchResult', res.data.object)
+          router.push(`/search/${searchKeyword}`)
+        })
+        .catch(err => console.error(err))
+    },  
   },
   modules: {
   }
