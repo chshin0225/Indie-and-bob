@@ -12,7 +12,7 @@
           v-model="nickName"
           id="nickname"
           outlined
-          placeholder="닉네임을 입력해주세요...씨...."
+          placeholder="닉네임을 입력해주세요."
           type="text"
         />
         <small class="d-block" v-if="error.nickName">{{ error.nickName }}</small>
@@ -26,7 +26,7 @@
           hide-details="true"
           :items="userTypes"
           id="usertype"
-          placeholder="주 사용자 유형을 입력해주세요..씨..."
+          placeholder="주 사용자 유형을 입력해주세요."
           v-model="usertype"
           outlined
         ></v-select>
