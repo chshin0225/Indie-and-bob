@@ -9,6 +9,6 @@
 	</insert>
 	
 	<select id="selectCommentByGameId" parameterType="String" resultType="gamecomment">
-		select * from game_comment where game_id=#{gameId}
+		select * from game_comment where game_id=#{gameId} order by gc_id desc
 	</select>
 </mapper>
