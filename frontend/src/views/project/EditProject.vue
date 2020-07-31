@@ -22,8 +22,7 @@
           ref="toastuiEditor"
           :options="editorOptions"
           id="content"
-          :value = "project.content"
-          :initialValue="project.content"
+          :initial-value="project.content"
           initialEditType="wysiwyg"
           previewStyle="vertical"
         />
