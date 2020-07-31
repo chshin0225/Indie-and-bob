@@ -145,10 +145,12 @@ export default {
       )
       .then((res) => {
         this.project = res.data.object;
+        // console.log(this.project)
         this.project.content = "ddddddddddddddddddddddddddd";
         this.render = true;
         this.project.deadline = this.project.deadline.substr(0, 10);
         this.project.createdAt = this.project.createdAt.substr(0, 10);
+        this.project.isApprove = res.data.object.isApprove
         let PARAMS =
           "?nickname=" +
           localStorage.getItem("username") +
@@ -174,8 +176,10 @@ export default {
         console.error(err);
       });
     if (localStorage.getItem("username") === "admin") {
-      console.log(localStorage.getItem("username"))
+      // console.log(localStorage.getItem("username"))
       this.isAdmin = true;
+      // console.log(this.isAdmin)
+      // console.log(this.project.isApprove)
     }
   },
   components: {
