@@ -146,7 +146,6 @@ export default {
       .then((res) => {
         this.project = res.data.object;
         // console.log(this.project)
-        this.project.content = "ddddddddddddddddddddddddddd";
         this.render = true;
         this.project.deadline = this.project.deadline.substr(0, 10);
         this.project.createdAt = this.project.createdAt.substr(0, 10);
