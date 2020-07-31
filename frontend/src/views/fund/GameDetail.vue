@@ -173,6 +173,7 @@ export default {
         console.error(err);
       });
     if (localStorage.getItem("username") === "admin") {
+      console.log(localStorage.getItem("username"))
       this.isAdmin = true;
     }
   },
