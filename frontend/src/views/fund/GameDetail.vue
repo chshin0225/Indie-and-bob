@@ -191,8 +191,7 @@ export default {
       shareIcon: "white",
       menu: false,
       isLike: false,
-      url: "http://localhost:3000" + window.location.pathname,
-      //후에 바꿀 예정데스
+      url: "http://i3a105.p.ssafy.io:3000" + window.location.pathname,
       isAdmin: false,
       iconColor: "white",
       render: false,
@@ -203,6 +202,7 @@ export default {
         aim: "",
         deadline: "",
         content: "",
+        isApprove: null,
       },
       rewards: [],
     };
