@@ -35,7 +35,7 @@
     </div>
 
     <!-- content -->
-    <v-container>
+    <v-container v-if="render">
       <v-row>
         <!-- tab section -->
         <v-col cols="8">
@@ -50,7 +50,7 @@
                 <v-card-text>
                   <h2>프로젝트 소개</h2>
                   <v-card outlined>
-                    <Viewer :value="project.content" />
+                    <Viewer :initialValue="project.content"/>
                   </v-card>
                 </v-card-text>
               </v-card>
