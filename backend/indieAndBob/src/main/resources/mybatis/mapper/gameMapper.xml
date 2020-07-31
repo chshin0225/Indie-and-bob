@@ -5,10 +5,10 @@
 <mapper namespace="com.ssafy.indieAndBob.mapper.game">
 
    	<select id="selectGameById" parameterType="String" resultType="gameall">
-		select * from game natural join game_detail where game_id=#{gameId}
+		select * from game left outer join game_detail using(game_id) where game_id=#{game_id};
     </select>
     <select id="selectAllGame" parameterType="int" resultType="game">
-   	    select * from game where is_approve=1 and is_end=false limit #{page},10
+   	    select * from game where is_approve=1 and is_end=false order by game_id desc limit #{page},10
     </select>
     <select id="selectAllGameAdmin" parameterType="int" resultType="game">
     	select * from game where is_approve=0 and is_end=false limit #{page},10
