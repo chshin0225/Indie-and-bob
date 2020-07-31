@@ -389,7 +389,7 @@ export default {
         this.error.passwordConfirm = "비밀번호가 일치하지 않습니다.";
       else this.error.passwordConfirm = false;
       if ((this.phonenumber + "").length != 11)
-        this.error.phonenumber = "올바른 휴대폰번호 형식이ㅣ 아닙니다.";
+        this.error.phonenumber = "올바른 휴대폰번호 형식이 아닙니다.";
       else this.error.phonenumber = false;
 
       if (this.isTerm) this.error.isTerm = false;
