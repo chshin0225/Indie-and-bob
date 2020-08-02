@@ -93,7 +93,6 @@
           placeholder="홍길동"
           type="text"
         />
-        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
 
@@ -110,7 +109,6 @@
           outlined
           placeholder="없어도 됩니다."
         />
-        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
 
@@ -132,6 +130,7 @@
         <small class="d-block" v-if="error.password">{{ error.password }}</small>
       </v-col>
     </v-row>
+
     <!-- password confirmation -->
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
@@ -181,7 +180,6 @@
           placeholder="자신을 소개해주세요~"
           type="text"
         />
-        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
 
@@ -214,8 +212,8 @@
           required
         ></v-text-field>
       </v-col>
-      <v-col class="my-2" sm="3">
-        <v-btn @click="execDaumPostcode" dark>우편번호 찾기</v-btn>
+      <v-col class="my-2 d-flex align-content-center" sm="3">
+        <v-btn @click="execDaumPostcode" depressed color="accent">우편번호 찾기</v-btn>
       </v-col>
     </v-row>
     <v-row class="justify-center">

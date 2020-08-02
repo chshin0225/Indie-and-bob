@@ -1,32 +1,36 @@
 export default {
-    'BASE': "http://i3a105.p.ssafy.io:8080",
+    'BASE': "http://localhost:8080",
+
+    // user
     'LOGIN': "/account/login",
     'SIGNUP': "/account/signup",
     'PWCHANGE': "/account/pwchange",
     'USERINFO' : "/account/userinfo",
 
+    // follow
     'FOLLOWING': "/following",
     'FOLLOWER': "/follower",
 
-    'GAMELIST' : "/gamelist/",
+    // project
     'UNAPPROVED' : "/admin/gamelist/",
+    'APPROVE' : "/game/approve",
+    'GAMELIST' : "/gamelist/",
     'GAME': "/game/",
     'GAMEREGISTER' : "/game/registergame",
-    'APPROVE' : "/game/approve",
+    'GAMECOMMUNITY' : "/game/comment",
+
+    // fund
+    'REWARD': "/reward/",
+    'REWARDS' :"/rewards/bygameid/",
+
+    // like
     'LIKE': "/game/like",
     'ISLIKE': "/game/islike",
     'LIKEBYUSER' : "/game/like/gamelist/",
     'LIKEBYGAME' : "/game/like/userlist/",
-
-    'GAMECOMMUNITY' : "/game/comment",
-    
-
-
     'LIKEDPROJECT': "/game/like/gamelist",
     
-    'REWARD': "/reward/",
-    'REWARDS' :"/rewards/bygameid/",
-
+    // search
     'SEARCH': "/user/search?keyword=",
 }
 

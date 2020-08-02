@@ -1,45 +1,60 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+// home
+import Home from '../views/Home.vue'
+
+// admin
+import NewProjectRequest from '../views/admin/NewProjectRequest.vue'
+
 // user
 import Login from '../views/user/Login.vue'
-import Join from '../views/user/Join.vue'
+import Signup from '../views/user/Signup.vue'
 import PasswordChange from '../views/user/PasswordChange.vue'
 import MyPage from '../views/user/MyPage.vue'
 import Edit from '../views/user/Edit.vue'
 
-import FeedMain from '../views/IndexFeed.vue'
-
-//project making
+// project making
 import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 import EditProject from '../views/project/EditProject.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
-import SearchResult from '../views/project/SearchResult.vue'
 import ProjectSettings from '../views/project/ProjectSettings.vue'
 
-//project + funding
+// project + funding
 import GameMain from '../views/fund/GameMain.vue'
 import CreateFund from '../views/fund/CreateFund.vue'
 import CreateFundDone from '../views/fund/CreateFundDone.vue'
 import GameDetail from '../views/fund/GameDetail.vue'
+
 
 // community
 import CommunityMain from '../views/community/CommunityMain.vue'
 import CommunityForm from '../views/community/CommunityForm.vue'
 import CommunityArticle from '../views/community/CommunityArticle.vue'
 
+// search
+import SearchResult from '../views/project/SearchResult.vue'
+
 // error
 import PageNotFound from '../views/error/PageNotFound.vue'
 import ErrorPage from '../views/error/ErrorPage.vue'
 import AuthorizationError from '../views/error/AuthorizationError.vue'
 
-// admin
-import NewProjectRequest from '../views/admin/NewProjectRequest.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  // home
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      meta: {
+        title: 'Indie and Bob'
+      },
+    },
+
   // admin
   {
     path: '/newrequest',
@@ -56,15 +71,15 @@ const routes = [
     name: 'Login',
     component: Login,
     meta: {
-      title: 'Login'
+      title: '로그인'
     },
   },
   {
-    path: '/user/join',
-    name: 'Join',
-    component: Join,
+    path: '/signup',
+    name: 'Signup',
+    component: Signup,
     meta: {
-      title: 'Signup'
+      title: '회원가입'
     },
   },
   {
@@ -72,7 +87,7 @@ const routes = [
     name: 'PasswordChange',
     component: PasswordChange,
     meta: {
-      title: 'Change Password'
+      title: '비밀번호 변경'
     },
   },
   {
@@ -80,7 +95,7 @@ const routes = [
     name: 'MyPage',
     component: MyPage,
     meta: {
-      title: 'My page'
+      title: '마이 페이지'
     },
   },
   {
@@ -88,69 +103,7 @@ const routes = [
     name: 'Edit',
     component: Edit,
     meta: {
-      title: 'Edit Profile',
-    },
-  },
-
-  // main
-  {
-    path: '/feed/main',
-    name: 'FeedMain',
-    component: FeedMain,
-    meta: {
-      title: 'Home'
-    },
-  },
-
-  // community
-  {
-    path: '/community',
-    name: 'CommunityMain',
-    component: CommunityMain,
-    meta: {
-      title: 'Community'
-    },
-  },
-  {
-    path: '/community-new',
-    name: 'CommunityForm',
-    component: CommunityForm,
-    meta: {
-      title: 'New Article',
-    },
-  },
-  {
-    path: '/community/:articleId',
-    name: 'CommunityArticle',
-    component: CommunityArticle,
-    meta: {
-      title: 'Article Detail'
-    },
-  },
-
-  // error
-  {
-    path: '/404',
-    name: 'PageNotFound',
-    component: PageNotFound,
-    meta: {
-      title: 'Page Not Found'
-    },
-  },
-  {
-    path: '/405',
-    name: 'AuthorizationError',
-    component: AuthorizationError,
-    meta: {
-      title: 'Not Authorized'
-    }
-  },
-  {
-    path: '/error',
-    name: 'ErrorPage',
-    component: ErrorPage,
-    meta: {
-      title: 'Error'
+      title: '내 정보 수정',
     },
   },
 
@@ -229,11 +182,65 @@ const routes = [
       title: 'Browse Projects'
     },
   },
+
+   // community
+   {
+    path: '/community',
+    name: 'CommunityMain',
+    component: CommunityMain,
+    meta: {
+      title: '커뮤니티'
+    },
+  },
+  {
+    path: '/community/new',
+    name: 'CommunityForm',
+    component: CommunityForm,
+    meta: {
+      title: '새 글 쓰기',
+    },
+  },
+  {
+    path: '/community/:articleId',
+    name: 'CommunityArticle',
+    component: CommunityArticle,
+    meta: {
+      title: '커뮤니티'
+    },
+  },
+
+  // search
   {
     path: '/search/:keyword',
     name: 'SearchResult',
     component: SearchResult,
-  }
+  },
+
+  // error
+  {
+    path: '/404',
+    name: 'PageNotFound',
+    component: PageNotFound,
+    meta: {
+      title: 'Page Not Found'
+    },
+  },
+  {
+    path: '/405',
+    name: 'AuthorizationError',
+    component: AuthorizationError,
+    meta: {
+      title: 'Not Authorized'
+    }
+  },
+  {
+    path: '/error',
+    name: 'ErrorPage',
+    component: ErrorPage,
+    meta: {
+      title: 'Error'
+    },
+  },
 
 ]
 

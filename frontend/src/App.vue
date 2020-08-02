@@ -8,7 +8,7 @@
 
         <!-- 로고 -->
         <v-toolbar-title>
-          <router-link to="/feed/main" class="white--text text-decoration-none">Indie and Bob</router-link>
+          <router-link to="/home" class="white--text text-decoration-none">Indie and Bob</router-link>
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
@@ -40,7 +40,7 @@
         <!-- 현 유저 표시 -->
         <template v-slot:prepend>
           <!-- 로그인 안했을 때 -->
-          <router-link to="/" class="text-decoration-none black--text" v-if="!isLoggedIn">
+          <router-link :to="{ name: 'Login' }" class="text-decoration-none black--text" v-if="!isLoggedIn">
             <div class="pa-2 d-flex">
               <v-avatar color="secondary">
                 <v-icon dark>mdi-account-circle</v-icon>
@@ -63,7 +63,7 @@
         <!-- 네비게이션 -->
         <v-list nav dense>
           <v-list-item-group active-class="primary--text">
-            <v-list-item class="px-3" to="/feed/main">
+            <v-list-item class="px-3" to="/home">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-home fa-lg grey--text text--darken-2"></i>
@@ -110,7 +110,7 @@
           </div>
           <!-- 로그인 안했을 때 -->
           <div class="pa-2" v-if="!isLoggedIn">
-            <v-btn block color="accent white--text" to="/">Login</v-btn>
+            <v-btn block color="accent white--text" :to="{ name: 'Login' }">Login</v-btn>
           </div>
         </template>
       </v-navigation-drawer>
