@@ -1,36 +1,42 @@
 <template>
-<div v-if="likedRender">
-  <ul>
-    <li v-for="likedUser in likedUsers" :key="likedUser.id">
-       <p>{{likedUser.nickname}}</p>
-    </li>
-  </ul>
-</div>
+  <div>
+    <v-list v-if="likedUserList.length > 0">
+      <v-list-item
+        v-for="likedUser in likedUserList"
+        :key="likedUser.nickname"
+        :to="`/user/mypage/${likedUser.nickname}`"
+      >
+        <v-list-item-avatar>
+          <v-img src="../../assets/default_profile.png" :alt="likedUser.nickname"></v-img>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title>{{ likedUser.nickname }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+    <div v-else class="mt-5">
+      <p class="text-center">아직 좋아요한 사람이 없네요!</p>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from "axios";
-import SERVER from "../../api/base";
+import { mapState, mapActions } from 'vuex'
+
 export default {
-  props: ['project'],
-  mounted() {
-    axios
-      .get(SERVER.BASE + SERVER.LIKEBYGAME + this.project.gameId)
-      .then((res) => {
-        console.log(res.data)
-        this.likedUsers = res.data.object;
-        this.likedRender = true;
-      
-      })
-      .catch((err) => console.error(err));
-      
+  name: 'GameLike',
+
+  computed: {
+    ...mapState(['project', 'likedUserList'])
   },
-  data() {
-      return {
-          likedUsers : [],
-          likedRender: false,
-      }
-  }
+
+  methods: {
+    ...mapActions(['fetchLikedUsers',])
+  },
+
+  created() {
+    this.fetchLikedUsers(this.$route.params.id)
+  },
 };
 </script>
 

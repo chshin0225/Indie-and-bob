@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div v-if="dataFetched">
+    <div v-if="userDataFetched">
       <!-- header -->
       <div class="header">
         <v-container class="ml-5">
           <v-row>
   
-
             <v-avatar size=100 class="mr-5 mr-sm-9">
               <img src="../../assets/default_profile.png" :alt="userInfo.nickname" />
             </v-avatar>
@@ -14,14 +13,26 @@
             <v-col>
               <v-row>
                 <h1>{{ userInfo.nickname }}</h1>
-                <v-btn
-                  outlined
-                  small
-                  color="primary"
-                  class="align-self-center ml-3"
-                  @click="follow({'following': userInfo.nickname,})"
-                  v-if="!isSelf"
-                >follow</v-btn>
+                <div class="d-flex" v-if="!isSelf">
+                  <v-btn
+                    outlined
+                    small
+                    color="primary"
+                    class="align-self-center ml-3"
+                    @click="follow({'following': userInfo.nickname,})"
+       
+                  >follow</v-btn>
+
+                  <v-btn
+                    outlined
+                    small
+                    color="accent"
+                    class="align-self-center ml-3"
+                    @click="unfollow(userInfo.nickname)"
+                    
+                  >unfollow</v-btn>
+                </div>
+                
               </v-row>
               <v-row>
                 <p class="mb-0">introduction: {{ userInfo.introduction }}</p>
@@ -133,8 +144,8 @@
     </div>
 
     <!-- loading page -->
-    <div v-if="!dataFetched">
-      <h3 class="text-center">Loading...</h3>
+    <div v-if="!userDataFetched">
+      <h2 class="text-center mt-10">Loading...</h2>
     </div>
   </div>
 </template>
@@ -160,8 +171,8 @@ export default {
   },
 
   computed: {
-    ...mapState(["userInfo", "followerList", "followingList"]),
-    ...mapGetters(["dataFetched"]),
+    ...mapState(["userInfo", "followerList", "followingList",]),
+    ...mapGetters(["userDataFetched"]),
     isSelf: function() {
       return this.userInfo.nickname === localStorage.getItem("username");
     },
@@ -175,13 +186,27 @@ export default {
     },
     followingCount: function() {
       return this.followingList.length;
-    }
+    },
+    // isFollowing: function() {
+    //   currentUser = localStorage.getItem("username")
+    //   return 
+    // },
+  },
+
+  watch: {
+    '$route.params.username': function() {
+      let username = this.$route.params.username;
+      this.getUserInfo(username);
+      this.fetchFollowers(username);
+      this.fetchFollowings(username);
+    },
   },
 
   methods: {
     ...mapActions([
       "getUserInfo",
       "follow",
+      "unfollow",
       "fetchFollowers",
       "fetchFollowings"
     ]),
