@@ -208,7 +208,7 @@ export default {
       "fetchFollowers",
       "fetchFollowings"
     ]),
-    ...mapMutations(["setUserInfo"])
+    ...mapMutations(["setUserInfo"]),
   },
 
   created() {

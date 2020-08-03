@@ -18,6 +18,12 @@ export default new Vuex.Store({
     oriPassword: "",
     username: localStorage.getItem('username'),
     userInfo: null,
+              
+    // notification
+    wsUri : "ws://localhost:8080/websocket",
+    websocket : null,
+    message: 0,
+    items: [],
 
     // follow
     followerList: null,
@@ -78,6 +84,24 @@ export default new Vuex.Store({
     },
     setUserInfo(state, val) {
       state.userInfo = val
+    },
+
+    // connection
+    setWebsocket(state, val) {
+      console.log(val)
+      state.websocket = val
+      console.log(state.websocket)
+    },
+
+    setMessage(state) {
+      state.message += 1
+      console.log(state.message)
+    },
+
+    setItems(state, val) {
+      var followArray = val.split(',')
+      state.items.push(followArray[1] + '님이' + followArray[2] + '님을' + followArray[0] + '했습니다.')
+      console.log('1', state.items)
     },
 
     // follow
@@ -142,6 +166,27 @@ export default new Vuex.Store({
             console.error(err)
           }
         })
+    },
+
+    socketConnect({commit, getters, state}) {
+      console.log('socketconnect')
+      console.log(getters.isLoggedIn)
+      if (getters.isLoggedIn) {
+        console.log('isLoggedin = true')
+        if (state.websocket === null) {
+          console.log('socket open')
+          commit('setWebsocket', new WebSocket(state.wsUri))
+          console.log(state.websocket)
+          state.websocket.onopen = () => state.websocket.send('login,' + localStorage.getItem('username'));
+        }
+        if (state.websocket !== null) {
+          state.websocket.onmessage = function(e){ 
+            commit('setMessage')
+            commit('setItems', e.data)
+            console.log(e.data);
+           }
+        }
+      }///
     },
 
     SignUp({ commit }, signupData) {
