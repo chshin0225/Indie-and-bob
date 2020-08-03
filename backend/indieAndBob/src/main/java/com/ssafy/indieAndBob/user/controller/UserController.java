@@ -217,8 +217,8 @@ public class UserController {
 		String following = request.getParameter("following");
 		Follow deleteFollow = new Follow();
 		deleteFollow.setFollower(follower);
-		deleteFollow.setFollower(following);
-		logger.info("unfollow : " + request);
+		deleteFollow.setFollowing(following);
+		logger.info("unfollow : " + following);
 		ResponseEntity response = null;
 		if(userService.deleteFollowing(deleteFollow) == 1) {
 			final BasicResponse result = new BasicResponse();
