@@ -11,4 +11,8 @@
 	<select id="selectCommentByGameId" parameterType="String" resultType="gamecomment">
 		select * from game_comment where game_id=#{gameId} order by gc_id desc
 	</select>
+	
+	<delete id="deleteCommentByGcId" parameterType="int">
+		delete from game_comment where gc_id=#{gdId}
+	</delete>
 </mapper>
