@@ -7,7 +7,6 @@ import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayApprovalVO;
 import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayReadyVO;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -49,7 +48,7 @@ public class KakaoPay {
         params.add("total_amount", Integer.toString(request.getMoney()));//가격
         params.add("tax_free_amount", "100");//세금
         //params.add("approval_url", "http://i3a105.p.ssafy.io");//승인시갈곳
-        params.add("approval_url", "http://i3a105.p.ssafy.io/kakaoPaySuccess?userId="+request.getNickname()+"&orderId="+Integer.toString(request.getFundingId())+"&amount="+Integer.toString(request.getMoney()));
+        params.add("approval_url", "http://i3a105.p.ssafy.io/kakaoPaySuccess?nickname="+request.getNickname()+"&orderId="+Integer.toString(request.getFundingId())+"&amount="+Integer.toString(request.getMoney()));
         params.add("cancel_url", "http://i3a105.p.ssafy.io");//취소시갈곳
         params.add("fail_url", "http://i3a105.p.ssafy.io");//실패시갈곳
  
