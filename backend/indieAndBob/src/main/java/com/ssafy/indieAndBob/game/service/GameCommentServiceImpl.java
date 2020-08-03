@@ -23,4 +23,9 @@ public class GameCommentServiceImpl implements GameCommentService {
 		return gameCommentDao.selectCommentByGameId(gameId);
 	}
 
+	@Override
+	public int deleteCommentByGcId(int gcId) {
+		return gameCommentDao.deleteCommentByGcId(gcId);
+	}
+
 }
