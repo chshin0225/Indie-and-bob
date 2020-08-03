@@ -25,4 +25,9 @@ public class GameCommentDaoImpl implements GameCommentDao{
 		return temp.selectList(ns + "selectCommentByGameId", gameId);
 	}
 
+	@Override
+	public int deleteCommentByGcId(int gcId) {
+		return temp.delete(ns + "deleteCommentByGcId", gcId);
+	}
+
 }

@@ -75,4 +75,23 @@ public class GameCommentController {
 		}
 		return response;
 	}
+	
+	@DeleteMapping("/game/comment")
+	@ApiOperation(value = "게임에 등록된 댓글 삭제")
+	public Object deleteCommentByGcId(HttpServletRequest request) {
+		logger.info("==========deleteCommentByGcId==========");
+		int gcId = Integer.parseInt(request.getParameter("gcId"));
+		logger.info("deleteCommentByGcId : " + gcId);
+		ResponseEntity response = null;
+		if (gcservice.deleteCommentByGcId(gcId) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
 }
