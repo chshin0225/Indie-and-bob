@@ -13,7 +13,7 @@ import router from '../../router'
 export default {
   methods: {
       onButtonClick() {
-          router.push({name: 'FeedMain'})
+          router.push({name: 'Home'})
       }
   }
 }

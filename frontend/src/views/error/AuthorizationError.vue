@@ -17,7 +17,7 @@ import router from "../../router"
 export default {
     methods: {
         goToMain () {
-            router.push('/feed/main')
+            router.push('/home')
         }
     },
 }

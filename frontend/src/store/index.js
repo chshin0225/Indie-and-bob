@@ -18,7 +18,8 @@ export default new Vuex.Store({
     oriPassword: "",
     username: localStorage.getItem('username'),
     userInfo: null,
-
+    
+    // notification
     wsUri : "ws://localhost:8080/websocket",
     websocket : null,
 
@@ -39,48 +40,37 @@ export default new Vuex.Store({
     // error
     errorDetail: null,
 
+    // search
     searchResult: null,
   },
 
   getters: {
+    // auth
     headersConfig: state => ({
       headers: {
         "jwt-auth-token": state.jwtToken 
       }
     }),
+
+    // user
     isLoggedIn: state => !!state.jwtToken,
     dataFetched: state => !!state.userInfo,
   },
 
   mutations: {
-    // users
+    // user
     setToken(state, val) {
       state.jwtToken = val
       cookies.set('user', val)
     },
-    // SetLoggedIn(state) {
-    //   if (cookies.isKey('user')) {
-    //     state.token = cookies.get('user')
-    //     state.isLoggedin = true
-    //   } else {
-    //     state.isLoggedin = false
-    //   }
-    // },
-    setWebsocket(state, val) {
-      state.websocket = val
-    },
-
     setChangedPw(state, val) {
       state.changedPw = val;
-      // console.log(state.changedPw)
     },
     setEmail(state, val) {
       state.oriEmail = val
-      // console.log(state.oriEmail)
     },
     setPassword(state, val) {
       state.oriPassword = val
-      // console.log(state.oriPassword)
     },
     setUsername(state, val) {
       state.username = val
@@ -88,8 +78,14 @@ export default new Vuex.Store({
     },
     setUserInfo(state, val) {
       state.userInfo = val
-      // console.log(state.userInfo)
     },
+
+    // notification
+    setWebsocket(state, val) {
+      state.websocket = val
+    },
+
+    // follow
     setFollowerList(state, val) {
       state.followerList = val
     },
@@ -109,19 +105,19 @@ export default new Vuex.Store({
     setProject(state, val) {
       state.project = val
     },
-
     setLikedProjectList(state, val) {
       state.likedProjectList = val
+    },
+
+    // search
+    setSearchResult(state, val) {
+      state.searchResult = val
     },
 
     // error
     setErrorDetail(state, val) {
       state.errorDetail = val
       console.log(state.errorDetail)
-    },
-
-    setSearchResult(state, val) {
-      state.searchResult = val
     },
   },
 
@@ -130,7 +126,6 @@ export default new Vuex.Store({
     login({ commit, state }, loginData) {
       axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
-          // console.log(res.data.object)
           commit('setEmail', res.data.object.email)
           commit('setPassword', res.data.object.password)
 
@@ -139,9 +134,12 @@ export default new Vuex.Store({
 
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
+
+          // 웹소켓 생성
           commit('setWebsocket', new WebSocket(state.wsUri))
           state.websocket.onopen = () => state.websocket.send('login,'+res.data.object.nickname);
-          router.push('/feed/main')
+          
+          router.push('/home')
         })
         .catch(err => {
           if (err.response.status === 404) {
@@ -156,9 +154,6 @@ export default new Vuex.Store({
       if (signupData.email.charAt(0) >= 'A' && signupData.email.charAt(0) <= 'Z') {
         signupData.email = signupData.email.substring(0, 1).toLowerCase() + signupData.email.substring(1)
       }
-      // console.log(signupData.email)
-      // console.log(SERVER.BASE)
-      // console.log(SERVER.SIGNUP)
       axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
         .then(res => {
           console.log(res)
@@ -183,14 +178,17 @@ export default new Vuex.Store({
       // cookie에 있는 jwt 제거
       commit('setToken', null)
       cookies.remove('user')
-      state.websocket.close()
-      commit('setWebsocket', null)
+
       // local storage에 있는 username 정보 제거
       commit('setUsername', null)
       localStorage.removeItem('username')
+
+      // 웹소켓 제거
+      state.websocket.close()
+      commit('setWebsocket', null)
       
-      if (router.currentRoute.name !== 'FeedMain') {
-        router.push({ name: 'FeedMain' })
+      if (router.currentRoute.name !== 'Home') {
+        router.push({ name: 'Home' })
       }
     },
 
@@ -201,7 +199,7 @@ export default new Vuex.Store({
             console.log(res)
             alert("비밀번호가 변경되었습니다.")
             context.commit('setChangedPw', true)
-            router.push({ name: 'FeedMain' })
+            router.push({ name: 'Home' })
           } else {
             alert(`error : ${res.data.data}`)
           }
@@ -215,9 +213,6 @@ export default new Vuex.Store({
       commit('setUserInfo', null)
       axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
         .then(res => {
-          // console.log('user',username)
-          // console.log(res)
-          // console.log(res.data)
           commit('setUserInfo', res.data.object)
         })
         .catch(err => console.error(err))
@@ -232,6 +227,7 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
+
     // follow 
     follow({ getters, state }, following) {
       console.log(following)
@@ -245,42 +241,16 @@ export default new Vuex.Store({
 
     fetchFollowers({ commit, getters }, username) {
       axios.get(SERVER.BASE + SERVER.FOLLOWER + `/${username}`, getters.headersConfig)
-        .then(res => {
-          // console.log(res.data.object)
-          commit('setFollowerList', res.data.object)
-        })
+        .then(res => commit('setFollowerList', res.data.object))
         .catch(err => console.error(err))
     },  
 
     fetchFollowings({ commit, getters }, username) {
       axios.get(SERVER.BASE + SERVER.FOLLOWING + `/${username}`, getters.headersConfig)
-        .then(res => {
-          // console.log(res.data.object)
-          commit('setFollowingList', res.data.object)
-        })
+        .then(res => commit('setFollowingList', res.data.object))
         .catch(err => console.error(err))
     },
 
-    // community
-    // fetchArticles({ commit }) {
-    //   axios.get(게시글들 가져오기)
-    //     .then(res => {
-    //       commit('setArticleList', res.data)
-    //     })
-    //     .catch(err => console.error(err))
-    // },
-
-    // createArticle(context, articleData) {
-    //   axios.post(새 게시글 작성)
-    //     .then(res => console.log(res.data))
-    //     .catch(err => console.error(err))
-    //   router.push({ name: 'CommunityMain' })
-    // },
-
-    // 기타
-    goBack() {
-      router.go('-1')
-    },
 
     // project
     fetchProjects({ commit }) {
@@ -311,15 +281,38 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
+
+    // community
+    // fetchArticles({ commit }) {
+    //   axios.get(게시글들 가져오기)
+    //     .then(res => {
+    //       commit('setArticleList', res.data)
+    //     })
+    //     .catch(err => console.error(err))
+    // },
+
+    // createArticle(context, articleData) {
+    //   axios.post(새 게시글 작성)
+    //     .then(res => console.log(res.data))
+    //     .catch(err => console.error(err))
+    //   router.push({ name: 'CommunityMain' })
+    // },
+
+
+    // search
     search({ commit }, searchKeyword) {
       axios.get(SERVER.BASE + SERVER.SEARCH + `${searchKeyword}`)
-        .then(res => {
-          console.log(res.data)
-          commit('setSearchResult', res.data.object)
-          router.push(`/search/${searchKeyword}`)
-        })
-        .catch(err => console.error(err))
+      .then(res => {
+        commit('setSearchResult', res.data.object)
+        router.push(`/search/${searchKeyword}`)
+      })
+      .catch(err => console.error(err))
     },  
+
+    // 기타
+    goBack() {
+      router.go('-1')
+    },
   },
   modules: {
   }

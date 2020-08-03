@@ -60,7 +60,7 @@
 
         <div class="wrap">
           <p>아직 회원이 아니신가요?</p>
-          <router-link to="/user/join" class="v-btn">가입하기</router-link>
+          <router-link :to="{ name: 'Signup' }" class="v-btn">가입하기</router-link>
         </div>
       </v-col>
     </v-row>

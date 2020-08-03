@@ -280,7 +280,7 @@ export default {
         if (text === "Delete the project") {
           axios
             .delete(SERVER.BASE + SERVER.GAME + this.id, this.headersConfig)
-            .then(router.push("/feed/main"))
+            .then(router.push("/home"))
             .catch((err) => {
               console.error(err);
             });
