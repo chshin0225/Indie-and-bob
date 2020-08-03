@@ -6,6 +6,7 @@
         <h1>{{ project.name }}</h1>
         <v-row>
           <v-col cols="12" sm="6">
+            <p>개발자: {{ project.nickname }}</p>
             <p>기간: {{ $moment(project.createdAt).format("YYYY.MM.DD") }} ~ {{ $moment(project.deadline).format("YYYY.MM.DD") }}</p>
             <p>목표: {{ project.aim }}원</p>
           </v-col>

@@ -52,7 +52,7 @@
 
               <!-- date/writer -->
               <v-list-item-subtitle>
-                {{article.createdAt}} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span>
+                {{ $moment(article.createdAt).format('YYYY.MM.DD HH:MM') }} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span>
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -65,6 +65,7 @@
 <script>
 import axios from "axios";
 import SERVER from "../../api/base";
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'GameCommunity',
@@ -76,6 +77,10 @@ export default {
       commentRender : false,
       commentList: null,
     }
+  },
+
+  computed: {
+    ...mapGetters(['headersConfig',])
   },
 
   methods: {
@@ -100,11 +105,8 @@ export default {
     },
 
     deleteComment(id) {
-      axios.delete(SERVER.BASE + SERVER.GAMECOMMUNITY + '/' + id, this.headersConfig)
-        .then(() => {
-          // console.log(res.data);
-          this.fetchComments()
-        })
+      axios.delete(SERVER.BASE + SERVER.GAMECOMMUNITY + '?gcId=' + id, this.headersConfig)
+        .then(() => this.fetchComments())
         .catch((err) => console.error(err.data));
     },
   },
