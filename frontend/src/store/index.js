@@ -18,10 +18,6 @@ export default new Vuex.Store({
     oriPassword: "",
     username: localStorage.getItem('username'),
     userInfo: null,
-    
-    // notification
-    wsUri : "ws://localhost:8080/websocket",
-    websocket : null,
 
     // follow
     followerList: null,
@@ -80,11 +76,6 @@ export default new Vuex.Store({
       state.userInfo = val
     },
 
-    // notification
-    setWebsocket(state, val) {
-      state.websocket = val
-    },
-
     // follow
     setFollowerList(state, val) {
       state.followerList = val
@@ -134,10 +125,6 @@ export default new Vuex.Store({
 
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
-
-          // 웹소켓 생성
-          commit('setWebsocket', new WebSocket(state.wsUri))
-          state.websocket.onopen = () => state.websocket.send('login,'+res.data.object.nickname);
           
           router.push('/home')
         })
