@@ -144,6 +144,11 @@ export default {
       ],
       closeOnClick: true,
       currentUser: localStorage.getItem('username'),
+            
+      // notification
+      wsUri : "ws://localhost:8080/websocket",
+      websocket : null,
+
     };
   },
   methods: {
@@ -170,9 +175,6 @@ export default {
 
   created() {
     this.getUserInfo()
-    if (this.websocket !== null) {
-      this.websocket.onmessage = function(e){ console.log(e.data); }
-    }
   },
   watch: {
     $route: function() {
@@ -181,6 +183,17 @@ export default {
     },  
     items() {
 
+    },
+    isLoggedIn() {
+      if (this.isLoggedIn) {
+        if (this.websocket === null) {
+          this.websocket = new WebSocket(this.wsUri)
+          state.websocket.onopen = () => this.websocket.send('login,' + localStorage.getItem('username'));
+        }
+        if (this.websocket !== null) {
+          this.websocket.onmessage = function(e){ console.log(e.data); }
+        }
+      }
     }
   },
 
