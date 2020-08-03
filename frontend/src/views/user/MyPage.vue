@@ -5,11 +5,9 @@
       <div class="header">
         <v-container class="ml-5">
           <v-row>
-  
             <v-avatar size=100 class="mr-5 mr-sm-9">
               <img src="../../assets/default_profile.png" :alt="userInfo.nickname" />
             </v-avatar>
-
             <v-col>
               <v-row>
                 <h1>{{ userInfo.nickname }}</h1>
@@ -36,8 +34,8 @@
               </v-row>
               <v-row>
                 <p class="mb-0">introduction: {{ userInfo.introduction }}</p>
-                <!-- <p class="mb-0">following: {{ this.followerCount }}</p>
-                <p class="mb-0 pb-3">followers: {{ this.followingCount }}</p>-->
+                <!-- <p class="mb-0">following: {{ this.followerCount }}</p><br>
+                <p class="mb-0 pb-3">followers: {{ this.followingCount }}</p><br> -->
               </v-row>
 
             </v-col>
@@ -75,21 +73,21 @@
             내 정보확인/변경
           </v-tab>
 
-          <!-- tab menu content -->
+        <!-- tab menu content -->
+          <!-- 내 프로젝트들 -->
           <v-tab-item class="myProjects">
             <v-card flat>
               <v-card-text>
-                <h2>내 프로젝트들</h2>
-                <MyProjects/>
+                <MyProjects />
               </v-card-text>
             </v-card>
           </v-tab-item>
 
+          <!-- 내가 후원한 프로젝트들 -->
           <v-tab-item class="myFundings">
             <v-card flat>
               <v-card-text>
-                <h2>내가 후원한 프로젝트들</h2>
-                <FundedProjects/>
+                <FundedProjects />
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -104,7 +102,7 @@
           </v-tab-item>
 
           <!-- 내가 좋아한 프로젝트들 -->
-          <v-tab-item class="Like">
+          <v-tab-item class="myLikes">
             <v-card flat>
               <v-card-text>
                 <LikedProjects />
