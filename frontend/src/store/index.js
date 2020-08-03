@@ -229,14 +229,26 @@ export default new Vuex.Store({
 
 
     // follow 
-    follow({ getters, state }, following) {
+    follow({ getters, state, dispatch }, following) {
       console.log(following)
       axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
         .then(res => {
           console.log(res.data)
+          dispatch('fetchFollowers', following.following)
           state.websocket.send('follow,'+state.username+','+following.following)
         })
         .catch(err => console.error(err))
+    },
+
+    unfollow({ getters, dispatch }, unfollowing) {
+      console.log(unfollowing)
+      axios.delete(SERVER.BASE + SERVER.UNFOLLOW, unfollowing, getters.headersConfig)
+        .then(res => {
+          console.log(res.data)
+          dispatch('fetchFollowers', unfollowing.following)
+        })
+        .catch(err => console.error(err))
+
     },
 
     fetchFollowers({ commit, getters }, username) {

@@ -62,16 +62,6 @@ export default {
   computed: {
     ...mapState(['followerList', 'followingList']),
   },
-
-  methods: {
-    // ...mapActions(['fetchFollowers', 'fetchFollowings',]),
-  },
-
-  created() {
-    // let username = this.$route.params.username
-    // this.fetchFollowers(username)
-    // this.fetchFollowings(username)
-  },
 }
 </script>
 
