@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Main page</h1>
+    <h1>Home</h1>
     <div>
       <router-link to="/newproject">새 프로젝트 만들기</router-link>
     </div>
@@ -15,6 +15,7 @@
 
 <script>
 export default {
+  name: 'Home',
 
 };
 </script>
