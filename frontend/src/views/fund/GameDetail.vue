@@ -2,43 +2,45 @@
   <div>
     <!-- header -->
     <div class="header">
-      <v-container v-if="render">
+      <v-container v-if="projectDataFetched">
         <h1>{{ project.name }}</h1>
         <v-row>
           <v-col cols="12" sm="6">
-            <p>기간: {{ project.createdAt }} ~ {{ project.deadline }}</p>
+            <p>기간: {{ $moment(project.createdAt).format("YYYY.MM.DD") }} ~ {{ $moment(project.deadline).format("YYYY.MM.DD") }}</p>
             <p>목표: {{ project.aim }}원</p>
           </v-col>
+          
+          <!-- likes -->
           <v-col cols="12" sm="6">
-            <p class="font-weight-bold">이 프로젝트를 좋아한 사람들</p>
-
+            <h4>이 프로젝트를 좋아한 사람들</h4>
             <v-dialog v-model="likeDialog" scrollable max-width="400">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" x-small v-bind="attrs" v-on="on">더보기</v-btn>
+                <v-btn color="accent" x-small depressed v-bind="attrs" v-on="on">더보기</v-btn>
               </template>
               <v-card>
                 <v-card-title class="headline">이 프로젝트를 좋아한 사람들</v-card-title>
                 <v-card-text>
-                  <GameLike :project="project" />
-                  </v-card-text>
+                  <GameLike />
+                </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="dark" text @click="likeDialog = false">CLOSE</v-btn>
+                  <v-btn color="dark" text @click="likeDialog = false">닫기</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
 
             <!-- 좋아하는 사람들 프로필 사진을 앞에 30개 정도만 작게 올리고 ... + 이런식으로 할까봐요 -->
           </v-col>
+
         </v-row>
       </v-container>
     </div>
 
     <!-- content -->
-    <v-container v-if="render">
+    <v-container v-if="projectDataFetched">
       <v-row>
         <!-- tab section -->
-        <v-col cols="8">
+        <v-col cols=12 sm="8">
           <v-tabs fixed-tabs>
             <v-tab>소개</v-tab>
             <v-tab>Q&A</v-tab>
@@ -62,19 +64,22 @@
               <QuestionandAnswer v-bind:project="project" />
             </v-tab-item>
 
-            <!-- Community -->
+            <!-- 응원하기 -->
             <v-tab-item>
-              <GameCommunity v-bind:project="project" />
+              <GameCommunity />
             </v-tab-item>
           </v-tabs>
         </v-col>
 
         <!-- rewards section -->
-        <v-col cols="4">
+        <v-col cols=12 sm="4">
           <v-card tile>
             <v-list flat>
-              <v-subheader>Rewards</v-subheader>
+              <!-- header -->
+              <v-subheader>리워드</v-subheader>
               <v-divider></v-divider>
+
+              <!-- rewards -->
               <v-expansion-panels>
                 <v-expansion-panel v-for="reward in rewards" :key="reward.id">
                   <v-expansion-panel-header>{{reward.rewardName}}</v-expansion-panel-header>
@@ -84,7 +89,8 @@
                     가격:{{reward.price}}원
                     <br />
                     남은 수량 : {{reward.leftCount}}
-                    <v-btn @click="rewardBuy(reward.rewardId)" color="primary">구매하러 가기</v-btn>
+                    <br />
+                    <v-btn @click="rewardBuy(reward.rewardId)" color="primary" depressed>구매하러 가기</v-btn>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -92,41 +98,54 @@
           </v-card>
         </v-col>
       </v-row>
-      <div fixed bottom right class="mr-5 mb-5">
+
+      <div fixed bottom left class="mr-5 mb-5">
+        <!-- like button -->
         <v-btn cols="auto" fab large @click="likeButton()" color="accent" class="mr-3">
           <v-icon :color="iconColor">fas fa-heart</v-icon>
         </v-btn>
-        <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x>
+
+        <!-- share button -->
+        <v-menu v-model="menu" :close-on-content-click="false" nudge-width="200" nudge-right="20" offset-x>
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="accent" v-bind="attrs" v-on="on" fab large cols="auto" class="ml-3">
-              <v-icon :color="shareIcon" @click="shareButton()">fas fa-share-alt</v-icon>
+              <v-icon :color="shareIcon">fas fa-share-alt</v-icon>
             </v-btn>
           </template>
 
+          <!-- share button popup -->
           <v-card>
-            <p ref="shareUrl">{{url}}</p>
-            <v-btn x-small @click="copy()">복사하기</v-btn>
-            <v-card-actions>
+            <v-container>
+              <h3>이 프로젝트를 널리널리 소문내주세요!</h3>
+              <p ref="shareUrl" class="my-3">{{url}}</p>
               <v-spacer></v-spacer>
-
-              <v-btn text @click="menu = false;shareIcon='white';">close</v-btn>
-            </v-card-actions>
+              <div>
+                <v-btn small depressed color="accent" @click="copy()">복사하기</v-btn>
+              </div>
+              <!-- <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text @click="menu = false; shareIcon='white';">close</v-btn>
+              </v-card-actions> -->
+            </v-container>
           </v-card>
         </v-menu>
       </div>
+      
+      <!-- admin -->
       <div v-if="isAdmin && project.isApprove === 0">
         <v-btn cols="auto" @click="approve" class="mr-3">승인</v-btn>
         <v-btn cols="auto" @click="disapprove" class="mr-3">거절</v-btn>
-      </div>
+      </div>  
+
     </v-container>
   </div>
 </template>
 
-// <script>
+<script>
 import axios from "axios";
 import router from "../../router";
 import SERVER from "../../api/base";
-import { mapActions } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 import GameCommunity from "../../components/GameDetail/GameCommunity.vue";
 import QuestionandAnswer from "../../components/GameDetail/QuestionandAnswer.vue";
@@ -148,99 +167,74 @@ export default {
 
   data() {
     return {
+      isLike: false,
       likeDialog: false,
       shareIcon: "white",
-      menu: false,
-      isLike: false,
-      url: "http://i3a105.p.ssafy.io:3000" + window.location.pathname,
-      isAdmin: false,
       iconColor: "white",
-      render: false,
-      project: {
-        name: "",
-        startedAt: "",
-        createdAt: "",
-        aim: "",
-        deadline: "",
-        content: "",
-        isApprove: null,
-      },
+      menu: false,
+      url: "http://i3a105.p.ssafy.io:3000" + window.location.pathname,
       rewards: [],
+      isAdmin: false,
     };
   },
 
-  mounted() {
-    axios.get(SERVER.BASE + SERVER.GAME + this.$route.params.id, this.headersConfig)
-      .then((res) => {
-        this.project = res.data.object;
-        // console.log(this.project)
-        this.render = true;
-        this.project.deadline = this.project.deadline.substr(0, 10);
-        this.project.createdAt = this.project.createdAt.substr(0, 10);
-        this.project.isApprove = res.data.object.isApprove
-        let PARAMS =
-          "?nickname=" +
-          localStorage.getItem("username") +
-          "&gameId=" +
-          this.project.gameId;
-        axios.get(SERVER.BASE + SERVER.ISLIKE + PARAMS, this.headersConfig)
-          .then((res) => {
-            console.log(res);
-            if (res.data.status) {    
-              this.isLike = true;
-              this.iconColor = "primary";
-            } else this.iconColor = "white";
-          });
-        axios.get(SERVER.BASE + SERVER.REWARDS + this.project.gameId)
-        .then(res => {
-          console.log(res.data)
-          this.rewards = res.data.object
-        })
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-    if (localStorage.getItem("username") === "admin") {
-      // console.log(localStorage.getItem("username"))
-      this.isAdmin = true;
-      // console.log(this.isAdmin)
-      // console.log(this.project.isApprove)
-    }
+  computed: {
+    ...mapState(['project']),
+    ...mapGetters(['headersConfig', 'projectDataFetched'])
   },
 
   methods: {
-    ...mapActions(["getProject"]),
+    ...mapActions(['getProject', 'fetchLikedUsers',]),
 
     rewardBuy(id) {
       router.push("/fund/" + id);
     },
 
+    isLiked() {
+      let PARAMS = "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.$route.params.id
+      axios.get(SERVER.BASE + SERVER.ISLIKE + PARAMS, this.headersConfig)
+        .then((res) => {
+          if (res.data.status) {    
+            this.isLike = true;
+            this.iconColor = "primary";
+          } else {
+            this.iconColor = "white"
+          }
+        })
+        .catch(err => console.error(err))
+    },
+
+    fetchRewards() {
+      axios.get(SERVER.BASE + SERVER.REWARDS + this.$route.params.id)
+      .then(res => {
+        this.rewards = res.data.object
+      })
+      .catch(err => console.error(err))
+    },
+
     likeButton() {
       if (this.iconColor === "white") {
-        axios.post(
-          SERVER.BASE + SERVER.LIKE,
+        axios.post(SERVER.BASE + SERVER.LIKE,
           {
             nickname: localStorage.getItem("username"),
             gameId: this.project.gameId,
           },
           this.headersConfig
-        );
-        this.iconColor = "primary";
+          )
+          .then(() => {
+            this.iconColor = "primary"
+            this.fetchLikedUsers(this.project.gameId)
+          })
+          .catch(err => console.error(err))
       } else {
-        const deleteLike = 
-          SERVER.BASE +
-          SERVER.LIKE +
-          "?nickname=" +
-          localStorage.getItem("username") +
-          "&gameId=" +
-          this.project.gameId;
-        axios.delete(deleteLike, this.headersConfig);
-        this.iconColor = "white";
+        const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.project.gameId;
+        axios.delete(deleteLike, this.headersConfig)
+          .then(() => {
+            this.iconColor = "white"
+            this.fetchLikedUsers(this.project.gameId)
+          })
+          .catch(err => console.error(err))
       }
-    },
-
-    shareButton() {
-      this.shareIcon = "primary";
     },
 
     copy() {
@@ -261,6 +255,7 @@ export default {
         })
         .catch((err) => console.error(err));
     },
+
     disapprove() {
       axios.put(SERVER.BASE + SERVER.APPROVE, {
         gameId: this.$route.params.id,
@@ -272,6 +267,16 @@ export default {
         })
         .catch((err) => console.error(err));
     },
+  },
+
+  created() {
+    this.getProject(this.$route.params.id)
+    this.isLiked()
+    this.fetchRewards()
+
+    if (localStorage.getItem("username") === "admin") {
+      this.isAdmin = true;
+    }
   },
 };
 </script>

@@ -37,7 +37,7 @@
                 </v-col>
                 <v-spacer></v-spacer>
                 <v-col>
-                  <v-btn @click="deleteComment(article.commentId)" icon x-small>
+                  <v-btn @click="deleteComment(article.gcId)" icon x-small>
                     <i class="fas fa-times fa-lg"></i>
                   </v-btn>
                 </v-col>
@@ -69,8 +69,6 @@ import SERVER from "../../api/base";
 export default {
   name: 'GameCommunity',
 
-  props: ['project'],
-
   data() {
     return {
       communityComment: "",
@@ -83,10 +81,7 @@ export default {
   methods: {
     fetchComments() {
       axios.get(SERVER.BASE + SERVER.GAMECOMMUNITY + '/'+ this.$route.params.id)
-        .then((res) => {
-          // console.log(res.data.object)
-          this.commentList = res.data.object;
-        })
+        .then((res) => this.commentList = res.data.object)
         .catch((err) => console.error(err));
     },
 
@@ -98,7 +93,6 @@ export default {
       };
       axios.post(SERVER.BASE + SERVER.GAMECOMMUNITY, PARAMS, this.headersConfig)
         .then(() => {
-          // console.log(res.data);
           this.communityComment = '',
           this.fetchComments()
         })
@@ -116,7 +110,6 @@ export default {
   },
 
   mounted() {
-    // console.log(this.project)
     this.fetchComments()
     this.commentRender = true
   },

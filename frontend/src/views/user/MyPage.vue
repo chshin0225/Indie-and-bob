@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="dataFetched">
+    <div v-if="userDataFetched">
       <!-- header -->
       <div class="header">
         <v-container class="ml-5">
@@ -28,7 +28,7 @@
                     small
                     color="accent"
                     class="align-self-center ml-3"
-                    @click="unfollow({'following': userInfo.nickname,})"
+                    @click="unfollow(userInfo.nickname)"
                     
                   >unfollow</v-btn>
                 </div>
@@ -144,8 +144,8 @@
     </div>
 
     <!-- loading page -->
-    <div v-if="!dataFetched">
-      <h3 class="text-center">Loading...</h3>
+    <div v-if="!userDataFetched">
+      <h2 class="text-center mt-10">Loading...</h2>
     </div>
   </div>
 </template>
@@ -172,7 +172,7 @@ export default {
 
   computed: {
     ...mapState(["userInfo", "followerList", "followingList",]),
-    ...mapGetters(["dataFetched"]),
+    ...mapGetters(["userDataFetched"]),
     isSelf: function() {
       return this.userInfo.nickname === localStorage.getItem("username");
     },
