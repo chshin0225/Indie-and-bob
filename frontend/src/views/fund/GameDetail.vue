@@ -42,7 +42,7 @@
           <v-tabs fixed-tabs>
             <v-tab>소개</v-tab>
             <v-tab>Q&A</v-tab>
-            <v-tab>Community</v-tab>
+            <v-tab>응원하기</v-tab>
 
             <!-- 프로젝트 소개 -->
             <v-tab-item>
@@ -64,7 +64,6 @@
 
             <!-- Community -->
             <v-tab-item>
-              <h2>Community</h2>
               <GameCommunity v-bind:project="project" />
             </v-tab-item>
           </v-tabs>
@@ -127,60 +126,19 @@
 import axios from "axios";
 import router from "../../router";
 import SERVER from "../../api/base";
+import { mapActions } from "vuex";
+
 import GameCommunity from "../../components/GameDetail/GameCommunity.vue";
 import QuestionandAnswer from "../../components/GameDetail/QuestionandAnswer.vue";
 import GameLike from "../../components/GameDetail/GameLike.vue";
-import { mapActions } from "vuex";
 
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 
 export default {
-  mounted() {
-    axios
-      .get(
-        SERVER.BASE + SERVER.GAME + this.$route.params.id,
-        this.headersConfig
-      )
-      .then((res) => {
-        this.project = res.data.object;
-        // console.log(this.project)
-        this.render = true;
-        this.project.deadline = this.project.deadline.substr(0, 10);
-        this.project.createdAt = this.project.createdAt.substr(0, 10);
-        this.project.isApprove = res.data.object.isApprove
-        let PARAMS =
-          "?nickname=" +
-          localStorage.getItem("username") +
-          "&gameId=" +
-          this.project.gameId;
-        axios
-          .get(SERVER.BASE + SERVER.ISLIKE + PARAMS, this.headersConfig)
-          .then((res) => {
-            console.log(res);
-            if (res.data.status) {
-              
-              this.isLike = true;
-              this.iconColor = "primary";
-            } else this.iconColor = "white";
-          });
-        axios.get(SERVER.BASE + SERVER.REWARDS + this.project.gameId)
-        .then(res => {
-          console.log(res.data)
-          this.rewards = res.data.object
-        })
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-    if (localStorage.getItem("username") === "admin") {
-      // console.log(localStorage.getItem("username"))
-      this.isAdmin = true;
-      // console.log(this.isAdmin)
-      // console.log(this.project.isApprove)
-    }
-  },
+  name: 'GameDetail',
+
   components: {
     GameCommunity,
     QuestionandAnswer,
@@ -210,12 +168,53 @@ export default {
       rewards: [],
     };
   },
+
+  mounted() {
+    axios.get(SERVER.BASE + SERVER.GAME + this.$route.params.id, this.headersConfig)
+      .then((res) => {
+        this.project = res.data.object;
+        // console.log(this.project)
+        this.render = true;
+        this.project.deadline = this.project.deadline.substr(0, 10);
+        this.project.createdAt = this.project.createdAt.substr(0, 10);
+        this.project.isApprove = res.data.object.isApprove
+        let PARAMS =
+          "?nickname=" +
+          localStorage.getItem("username") +
+          "&gameId=" +
+          this.project.gameId;
+        axios.get(SERVER.BASE + SERVER.ISLIKE + PARAMS, this.headersConfig)
+          .then((res) => {
+            console.log(res);
+            if (res.data.status) {    
+              this.isLike = true;
+              this.iconColor = "primary";
+            } else this.iconColor = "white";
+          });
+        axios.get(SERVER.BASE + SERVER.REWARDS + this.project.gameId)
+        .then(res => {
+          console.log(res.data)
+          this.rewards = res.data.object
+        })
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    if (localStorage.getItem("username") === "admin") {
+      // console.log(localStorage.getItem("username"))
+      this.isAdmin = true;
+      // console.log(this.isAdmin)
+      // console.log(this.project.isApprove)
+    }
+  },
+
   methods: {
     ...mapActions(["getProject"]),
 
     rewardBuy(id) {
       router.push("/fund/" + id);
     },
+
     likeButton() {
       if (this.iconColor === "white") {
         axios.post(
@@ -228,7 +227,7 @@ export default {
         );
         this.iconColor = "primary";
       } else {
-        const deleteLike =
+        const deleteLike = 
           SERVER.BASE +
           SERVER.LIKE +
           "?nickname=" +
@@ -239,21 +238,23 @@ export default {
         this.iconColor = "white";
       }
     },
+
     shareButton() {
       this.shareIcon = "primary";
     },
+
     copy() {
       this.$clipboard(this.url);
       this.$alert("url이 복사되었습니다.");
       this.menu = false;
       this.shareIcon = "white";
     },
+
     approve() {
-      axios
-        .put(SERVER.BASE + SERVER.APPROVE, {
-          gameId: this.$route.params.id,
-          isApprove: 1,
-        })
+      axios.put(SERVER.BASE + SERVER.APPROVE, {
+        gameId: this.$route.params.id,
+        isApprove: 1,
+      })
         .then((res) => {
           console.log(res);
           router.push({ name: "GameMain" });
@@ -261,11 +262,10 @@ export default {
         .catch((err) => console.error(err));
     },
     disapprove() {
-      axios
-        .put(SERVER.BASE + SERVER.APPROVE, {
-          gameId: this.$route.params.id,
-          isApprove: -1,
-        })
+      axios.put(SERVER.BASE + SERVER.APPROVE, {
+        gameId: this.$route.params.id,
+        isApprove: -1,
+      })
         .then((res) => {
           console.log(res);
           router.push({ name: "GameMain" });

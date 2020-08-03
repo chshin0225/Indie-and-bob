@@ -1,113 +1,128 @@
 <template>
-  <v-row justify="center">
-    <v-col cols="12">
+  <v-container>
+
+      <!-- comment submit section -->
       <v-row class="justify-center">
-        <v-col cols="12" sm="10">
+        <v-col sm="10">
           <v-text-field
-            label="comment"
             v-model="communityComment"
             id="communityComment"
             outlined
             required
             hide-detail="true"
-            placeholder="한줄응원을 입력해주세요."
+            placeholder="응원의 한마디를 해주세요!"
           ></v-text-field>
         </v-col>
-        <v-col cols="12" sm="2">
-          <v-btn primary @click="onWriteButton">글쓰기</v-btn>
+        <v-col sm="2">
+          <v-btn 
+            color="accent" 
+            depressed 
+            large 
+            @click="submitComment"
+            class="mt-1"
+          >글쓰기</v-btn>
         </v-col>
       </v-row>
       <v-divider></v-divider>
-      <v-list v-if="commentRender&&community" two-line>
-        <template v-for="article in community">
+
+      <!-- comments -->
+      <v-list v-if="commentRender&&commentList" two-line>
+        <template v-for="article in commentList">
           <v-list-item :key="article.id">
             <v-list-item-content>
-              <v-row v-if="article.nickname===myName">
-                <v-col cols="11">
+              <!-- 내가 쓴 댓글일 경우 -->
+              <v-row v-if="article.nickname === myName">
+                <v-col cols="10">
                   <v-list-item-title>{{article.content}}</v-list-item-title>
                 </v-col>
-                <v-col cols="1">
-                  <v-btn @click="communityCommentDelete(article.commentId)" x-small outlined>X</v-btn>
+                <v-spacer></v-spacer>
+                <v-col>
+                  <v-btn @click="deleteComment(article.commentId)" icon x-small>
+                    <i class="fas fa-times fa-lg"></i>
+                  </v-btn>
                 </v-col>
               </v-row>
+
+              <!-- 내가 쓴 댓글 아닌 경우 -->
               <v-row v-else>
                 <v-col cols="11">
                   <v-list-item-title>{{article.content}}</v-list-item-title>
                 </v-col>
               </v-row>
 
-              <v-list-item-subtitle>{{article.createdAt}} by {{article.nickname}}</v-list-item-subtitle>
+              <!-- date/writer -->
+              <v-list-item-subtitle>
+                {{article.createdAt}} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span>
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </template>.
       </v-list>
-    </v-col>
-  </v-row>
+
+  </v-container>
 </template>
 
 <script>
 import axios from "axios";
 import SERVER from "../../api/base";
-export default {
-  props: ['project'],
-  name: "GameCommunity",
-  mounted() {
-    console.log(this.project)
-    axios
-      .get(SERVER.BASE + SERVER.GAMECOMMUNITY +'/'+ this.project.gameId)
-      .then((res) => {
-        this.community = res.data.object;
-        this.commentRender = true;
-      })
 
-      .catch((err) => console.error(err));
-  },
+export default {
+  name: 'GameCommunity',
+
+  props: ['project'],
+
   data() {
     return {
       communityComment: "",
       myName: localStorage.getItem('username'),
       commentRender : false,
-    };
+      commentList: null,
+    }
   },
+
   methods: {
-    onWriteButton() {
+    fetchComments() {
+      axios.get(SERVER.BASE + SERVER.GAMECOMMUNITY + '/'+ this.$route.params.id)
+        .then((res) => {
+          // console.log(res.data.object)
+          this.commentList = res.data.object;
+        })
+        .catch((err) => console.error(err));
+    },
+
+    submitComment() {
       let PARAMS = {
         nickname: localStorage.getItem("username"),
         content: this.communityComment,
-        gameId : this.project.gameId
+        gameId : this.$route.params.id
       };
-      axios
-        .post(SERVER.BASE+SERVER.GAMECOMMUNITY, PARAMS, this.headersConfig)
-        .then((res) => {
-          console.log(res.data);
+      axios.post(SERVER.BASE + SERVER.GAMECOMMUNITY, PARAMS, this.headersConfig)
+        .then(() => {
+          // console.log(res.data);
           this.communityComment = '',
-          axios
-            .get(SERVER.BASE + SERVER.GAMECOMMUNITY + '/'+ this.project.gameId)
-            .then((res) => {
-              console.log(res.data.object)
-              this.community = res.data.object;
-            })
-            .catch((err) => console.error(err));
+          this.fetchComments()
         })
         .catch((err) => console.error(err.data));
     },
-    communityCommentDelete(ID) {
-      axios
-        .delete(SERVER.BASE+SERVER.GAMECOMMUNITY+'/' + ID, this.headersConfig)
-        .then((res) => {
-          console.log(res.data);
-          axios
-            .get(SERVER.BASE + SERVER.GAMECOMMUNITY + '/'+ this.project.gameId)
-            .then((res) => {
-              this.community = res.data.object;
-            })
-            .catch((err) => console.error(err));
+
+    deleteComment(id) {
+      axios.delete(SERVER.BASE + SERVER.GAMECOMMUNITY + '/' + id, this.headersConfig)
+        .then(() => {
+          // console.log(res.data);
+          this.fetchComments()
         })
         .catch((err) => console.error(err.data));
     },
+  },
+
+  mounted() {
+    // console.log(this.project)
+    this.fetchComments()
+    this.commentRender = true
   },
 };
 </script>
 
-<style>
+<style scoped>
+
 </style>
