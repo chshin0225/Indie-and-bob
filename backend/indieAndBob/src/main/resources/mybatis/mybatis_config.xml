@@ -19,7 +19,7 @@
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameComment" alias="gamecomment"/>
 		<typeAlias type="com.ssafy.indieAndBob.reward.dto.Reward" alias="reward"/>
 		<typeAlias type="com.ssafy.indieAndBob.alarm.dto.Alarm" alias="alarm"/>
-		
+		<typeAlias type="com.ssafy.indieAndBob.kakaopay.dto.Funding" alias="funding"/>
 		
 	</typeAliases>
 
@@ -29,6 +29,7 @@
 		<mapper resource="mybatis/mapper/gameMapper.xml" />
 		<mapper resource="mybatis/mapper/gameCommentMapper.xml" />
 		<mapper resource="mybatis/mapper/rewardMapper.xml" />
+		<mapper resource="mybatis/mapper/fundingMapper.xml" />
 		
 	</mappers>
 </configuration>

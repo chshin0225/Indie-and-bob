@@ -38,6 +38,7 @@ export default new Vuex.Store({
 
     // like
     likedProjectList: [],
+    likedUserList: [],
 
     // error
     errorDetail: null,
@@ -56,7 +57,10 @@ export default new Vuex.Store({
 
     // user
     isLoggedIn: state => !!state.jwtToken,
-    dataFetched: state => !!state.userInfo,
+    userDataFetched: state => !!state.userInfo,
+
+    // project
+    projectDataFetched: state => !!state.project,
   },
 
   mutations: {
@@ -122,6 +126,9 @@ export default new Vuex.Store({
     },
     setLikedProjectList(state, val) {
       state.likedProjectList = val
+    },
+    setLikedUserList(state, val) {
+      state.likedUserList = val
     },
 
     // search
@@ -261,14 +268,24 @@ export default new Vuex.Store({
 
 
     // follow 
-    follow({ getters, state }, following) {
-      console.log(following)
+    follow({ getters, state, dispatch }, following) {
       axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
-        .then(res => {
-          console.log(res.data)
+        .then(() => {
+          // console.log(res.data)
+          dispatch('fetchFollowers', following.following)
           state.websocket.send('follow,'+state.username+','+following.following)
         })
         .catch(err => console.error(err))
+    },
+
+    unfollow({ getters, dispatch }, unfollow) {
+      axios.delete(SERVER.BASE + SERVER.UNFOLLOW + unfollow, getters.headersConfig)
+        .then(() => {
+          // console.log(res.data)
+          dispatch('fetchFollowers', unfollow)
+        })
+        .catch(err => console.error(err))
+
     },
 
     fetchFollowers({ commit, getters }, username) {
@@ -294,11 +311,11 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
-    getProject({ commit }, gameId) {
-      axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`)
+    getProject({ commit, getters }, gameId) {
+      commit('setProject', null)
+      axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`, getters.headersConfig)
       .then(res => {
-        console.log(res.data.object[0])
-        commit('setProject', res.data.object[0])
+        commit('setProject', res.data.object)
       })
       .catch(err => console.error(err))
     },
@@ -311,6 +328,15 @@ export default new Vuex.Store({
           commit('setLikedProjectList', res.data.object)
         })
         .catch(err => console.error(err))
+    },
+
+    fetchLikedUsers({ commit }, gameId) {
+      axios.get(SERVER.BASE + SERVER.LIKEBYGAME + gameId)
+      .then((res) => {
+        console.log(res.data)
+        commit('setLikedUserList', res.data.object)
+      })
+      .catch((err) => console.error(err));  
     },
 
 
@@ -340,11 +366,6 @@ export default new Vuex.Store({
       })
       .catch(err => console.error(err))
     },  
-
-    // 기타
-    goBack() {
-      router.go('-1')
-    },
   },
   modules: {
   }

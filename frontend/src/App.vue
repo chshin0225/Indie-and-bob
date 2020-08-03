@@ -31,9 +31,6 @@
             </v-list-item>
           </v-list>
         </v-menu>
-
-        <!-- back btn -->
-        <v-btn @click="goBack" color="secondary" class="black--text" depressed>back</v-btn>
       </v-app-bar>
 
       <!-- nav drawer -->
@@ -53,8 +50,8 @@
           <!-- 로그인 했을 때 -->
           <router-link :to="`/user/mypage/${ userInfo.nickname }`" class="text-decoration-none black--text" v-if="isLoggedIn && dataFetched">
             <div class="pa-2 d-flex">
-              <v-avatar color="secondary">
-                <v-icon dark>mdi-account-circle</v-icon>
+              <v-avatar>
+                <img src="./assets/default_profile.png" :alt="userInfo.nickname" />
               </v-avatar>
               <h3 class="ml-4 align-self-center">{{ userInfo.nickname }}</h3>
             </div>
@@ -187,8 +184,6 @@ export default {
       return !!this.userInfo
     },
   },
-
-
 };
 </script>
 
