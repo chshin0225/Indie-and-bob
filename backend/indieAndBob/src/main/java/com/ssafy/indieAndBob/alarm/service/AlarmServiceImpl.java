@@ -22,7 +22,6 @@ public class AlarmServiceImpl implements AlarmService {
 
 	@Override
 	public List<Alarm> getAlarms(String nickname) {
-		System.out.println("get alarms");
 		return alarmDao.getAlarms(nickname);
 	}
 

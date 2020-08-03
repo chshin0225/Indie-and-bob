@@ -212,12 +212,12 @@ public class UserController {
 	@ApiOperation(value = "언팔하기")
 	public Object unFollow(HttpServletRequest request) {
 		logger.info("==========unFollow==========");
+		String follower = jwtService.getNickname(request);
 		String following = request.getParameter("following");
-		String follower = request.getParameter("follower");
 		Follow deleteFollow = new Follow();
 		deleteFollow.setFollower(follower);
 		deleteFollow.setFollower(following);
-		logger.info("follow : " + request);
+		logger.info("unfollow : " + request);
 		ResponseEntity response = null;
 		if(userService.deleteFollowing(deleteFollow) == 1) {
 			final BasicResponse result = new BasicResponse();
