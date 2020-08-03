@@ -30,9 +30,6 @@
             </v-list-item>
           </v-list>
         </v-menu>
-
-        <!-- back btn -->
-        <v-btn @click="goBack" color="secondary" class="black--text" depressed>back</v-btn>
       </v-app-bar>
 
       <!-- nav drawer -->
@@ -52,8 +49,8 @@
           <!-- 로그인 했을 때 -->
           <router-link :to="`/user/mypage/${ userInfo.nickname }`" class="text-decoration-none black--text" v-if="isLoggedIn && dataFetched">
             <div class="pa-2 d-flex">
-              <v-avatar color="secondary">
-                <v-icon dark>mdi-account-circle</v-icon>
+              <v-avatar>
+                <img src="./assets/default_profile.png" :alt="userInfo.nickname" />
               </v-avatar>
               <h3 class="ml-4 align-self-center">{{ userInfo.nickname }}</h3>
             </div>
@@ -152,7 +149,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['goBack', 'logout', 'search']),
+    ...mapActions(['logout', 'search']),
 
     getUserInfo() {
       this.userInfo = null
@@ -188,7 +185,7 @@ export default {
       if (this.isLoggedIn) {
         if (this.websocket === null) {
           this.websocket = new WebSocket(this.wsUri)
-          state.websocket.onopen = () => this.websocket.send('login,' + localStorage.getItem('username'));
+          this.websocket.onopen = () => this.websocket.send('login,' + localStorage.getItem('username'));
         }
         if (this.websocket !== null) {
           this.websocket.onmessage = function(e){ console.log(e.data); }
@@ -204,8 +201,6 @@ export default {
       return !!this.userInfo
     },
   },
-
-
 };
 </script>
 

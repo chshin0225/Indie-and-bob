@@ -121,7 +121,7 @@ export default new Vuex.Store({
 
   actions: {
     // user
-    login({ commit, state }, loginData) {
+    login({ commit }, loginData) {
       axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
           commit('setEmail', res.data.object.email)
@@ -224,10 +224,9 @@ export default new Vuex.Store({
 
     // follow 
     follow({ getters, state, dispatch }, following) {
-      console.log(following)
       axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
-        .then(res => {
-          console.log(res.data)
+        .then(() => {
+          // console.log(res.data)
           dispatch('fetchFollowers', following.following)
           state.websocket.send('follow,'+state.username+','+following.following)
         })
@@ -235,10 +234,9 @@ export default new Vuex.Store({
     },
 
     unfollow({ getters, dispatch }, unfollow) {
-      console.log(unfollow)
       axios.delete(SERVER.BASE + SERVER.UNFOLLOW + unfollow, getters.headersConfig)
-        .then(res => {
-          console.log(res.data)
+        .then(() => {
+          // console.log(res.data)
           dispatch('fetchFollowers', unfollow)
         })
         .catch(err => console.error(err))
@@ -323,11 +321,6 @@ export default new Vuex.Store({
       })
       .catch(err => console.error(err))
     },  
-
-    // 기타
-    goBack() {
-      router.go('-1')
-    },
   },
   modules: {
   }

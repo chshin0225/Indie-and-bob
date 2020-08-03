@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <h2 class="text-center mb-3">내 개인정보</h2>
-    <p>{{ userInfo }}</p>
     <div>
       <h3 class="my-2">이름 <span class="text-body-1 ml-2 my-auto">{{ userInfo.name }}</span></h3>
       <h3 class="my-2">닉네임 <span class="text-body-1 ml-2 my-auto">{{ userInfo.nickname }}</span></h3>

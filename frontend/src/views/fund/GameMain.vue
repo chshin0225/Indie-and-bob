@@ -12,7 +12,7 @@
                 <v-list-item-avatar color="secondary"></v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title class="headline">{{ game.name }}</v-list-item-title>
-                  <v-list-item-subtitle>개발자 이름</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{ game.nickname }}</v-list-item-subtitle>
                   <v-list-item-subtitle>{{ $moment(game.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
                   <v-list-item-subtitle>목표액: {{ game.aim }}</v-list-item-subtitle>
                 </v-list-item-content>
@@ -23,9 +23,6 @@
             <v-spacer></v-spacer>
             <v-btn icon>
               <v-icon>mdi-heart</v-icon>
-            </v-btn>
-            <v-btn icon>
-              <v-icon>mdi-share-variant</v-icon>
             </v-btn>
           </v-card-actions>
         </v-card>
