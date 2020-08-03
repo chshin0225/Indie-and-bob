@@ -22,7 +22,6 @@ public class AlarmDaoImpl implements AlarmDao {
 
 	@Override
 	public List<Alarm> getAlarms(String nickname) {
-		System.out.println("get alarm2");
 		return temp.selectList(ns + "getAlarm", nickname);
 	}
 
