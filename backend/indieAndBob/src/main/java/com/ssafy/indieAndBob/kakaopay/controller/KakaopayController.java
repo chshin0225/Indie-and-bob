@@ -1,6 +1,7 @@
 package com.ssafy.indieAndBob.kakaopay.controller;
 
 
+import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayApprovalVO;
 import com.ssafy.indieAndBob.kakaopay.service.FundingService;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +42,20 @@ public class KakaopayController {
 
 	@Autowired
 	FundingService fservice;
+	@Autowired
+	JwtService jservice;
 
 	@PostMapping("/kakaoPay")
 	@ApiOperation(value = "결제하기")
-	public Object kakaoPay(@RequestBody Funding request) {
+	public Object kakaoPay(@RequestBody Funding request, HttpServletRequest req) {
 		log.info("kakaoPay post............................................");
 		log.info("funding : " + request);
 		ResponseEntity response = null;
 		int fundingId = fservice.registerFunding(request);
+		
+		//String nickname = jservice.getNickname(req);
+		//request.setNickname(nickname);
+		
 		request.setFundingId(fundingId);
 		if(fundingId==0) {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -89,7 +97,8 @@ public class KakaopayController {
 		}
 		//return response;
 		try {
-			res.sendRedirect("http://i3a105.p.ssafy.io:3000/home");
+			//res.sendRedirect("http://i3a105.p.ssafy.io:3000/home");
+			res.sendRedirect("http://i3a105.p.ssafy.io:3000/user/mypage");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
