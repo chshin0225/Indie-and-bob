@@ -125,14 +125,14 @@ public class KakaopayController {
 		return response;
 	}
 
-	@GetMapping("/fundingByGameId")
+	@GetMapping("/fundingByRewardId")
 	@ApiOperation(value = "게임아이디로 해당 펀딩리스트찾기")
-	public Object selectFundingByGameId(@RequestParam("gameId") int gameId) {
-		log.info("-------------selectFundingByGameId-----------------");
-		log.info("gameId : " + gameId);
+	public Object selectFundingByRewardId(@RequestParam("rewardId") int rewardId) {
+		log.info("-------------selectFundingByRewardId-----------------");
+		log.info("rewardId : " + rewardId);
 		ResponseEntity response = null;
 
-		List<Funding> fundinglist = fservice.selectFundingByGameId(gameId);
+		List<Funding> fundinglist = fservice.selectFundingByRewardId(rewardId);
 
 		if(fundinglist.size()>=0) {
 			final BasicResponse result = new BasicResponse();

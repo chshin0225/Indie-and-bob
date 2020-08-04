@@ -7,7 +7,7 @@ import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 public interface FundingDao {
 
 	Funding selectFundingByFundingId(int fundingId);
-	List<Funding> selectFundingByGameId(int gameId);
+	List<Funding> selectFundingByRewardId(int rewardId);
 	int registerFunding(Funding funding);
 	int deleteFundingByFundingId(int fundingId);
 	List<Funding> selectFundingByNickname(String nickname);
