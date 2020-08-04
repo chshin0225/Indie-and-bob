@@ -30,18 +30,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int registerUser(User user) {
-		try {
-			firebaseT.insert();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return userDao.registerUser(user);
 	}
 
