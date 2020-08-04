@@ -1,6 +1,7 @@
 package com.ssafy.indieAndBob.user.controller;
 
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
+import com.ssafy.indieAndBob.user.service.EmailService;
 import com.ssafy.indieAndBob.user.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +38,8 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	UserService userService;
+	@Autowired
+	EmailService emailService;
 	@Autowired
 	JwtService jwtService;
 
@@ -76,6 +80,21 @@ public class UserController {
 					result.status = true;
 					result.data = "success";
 					response = new ResponseEntity<>(result, HttpStatus.OK);
+					final String host = "smtp.gmail.com";
+					final String accountId = "wnsgnldl2";
+					final String accountPw = "2dlgmlwns!!";
+					final int port = 465;
+					
+					String receiver = request.getEmail();
+					String sender = "ssafy@multicampus.com";
+					
+					Properties props = System.getProperties();
+					props.put("mail.smtp.host", host);
+					props.put("mail.smtp.port", port);
+					props.put("mail.smtp.auth", "true");
+					props.put("mail.smtp.ssl.enable", "true");
+					props.put("mail.smtp.ssl.trust", host);
+					emailService.sendSimpleMessage("wnsgnldl2@gmail.com", "test", "가입 완료");
 				} else {
 					response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 				}
