@@ -89,7 +89,7 @@ public class KakaopayController {
 		}
 		//return response;
 		try {
-			res.sendRedirect("/");
+			res.sendRedirect("/home");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
