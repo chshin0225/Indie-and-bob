@@ -43,7 +43,7 @@ public class KakaoPay {
         params.add("cid", "TC0ONETIME");//테스트용 cid지정되어있음
         params.add("partner_order_id", Integer.toString(request.getFundingId()));//주문아이디
         params.add("partner_user_id", request.getNickname());//유저아이디
-        params.add("item_name", request.getGameName());//제품명
+        params.add("item_name", request.getRewardName());//제품명
         params.add("quantity", "1");//수량
         params.add("total_amount", Integer.toString(request.getMoney()));//가격
         params.add("tax_free_amount", "100");//세금
