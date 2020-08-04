@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Funding {
 	private int fundingId;
-	private String gameName;
-	private int gameId;
+	private String rewardName;
+	private int rewardId;
 	private String nickname;
 	private int money;
 	private Date fundedAt;

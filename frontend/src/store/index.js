@@ -30,6 +30,7 @@ export default new Vuex.Store({
     // follow
     followerList: null,
     followingList: null,
+    isFollowing: false,
     
     // community
     articleList: [],
@@ -115,6 +116,9 @@ export default new Vuex.Store({
     },
     setFollowingList(state, val) {
       state.followingList = val
+    },
+    setIsFollowing(state, val) {
+      state.isFollowing = val
     },
 
     // community
@@ -305,6 +309,7 @@ export default new Vuex.Store({
         .then(() => {
           // console.log(res.data)
           dispatch('fetchFollowers', following.following)
+          dispatch('checkFollowing', following.following)
           state.websocket.send('follow,'+state.username+','+following.following)
         })
         .catch(err => console.error(err))
@@ -315,9 +320,19 @@ export default new Vuex.Store({
         .then(() => {
           // console.log(res.data)
           dispatch('fetchFollowers', unfollow)
+          dispatch('checkFollowing', unfollow)
         })
         .catch(err => console.error(err))
 
+    },
+
+    checkFollowing({ commit, getters }, following) {
+      axios.get(SERVER.BASE + SERVER.ISFOLLOWING + following, getters.headersConfig)
+        .then(res => {
+          // console.log(res.data.object)
+          commit('setIsFollowing', res.data.object)
+        })
+        .catch(err => console.error(err))
     },
 
     fetchFollowers({ commit, getters }, username) {

@@ -18,7 +18,7 @@
                     color="primary"
                     class="align-self-center ml-3"
                     @click="follow({'following': userInfo.nickname,})"
-       
+                    v-if="!isFollowing"
                   >follow</v-btn>
 
                   <v-btn
@@ -27,7 +27,7 @@
                     color="accent"
                     class="align-self-center ml-3"
                     @click="unfollow(userInfo.nickname)"
-                    
+                    v-if="isFollowing"
                   >unfollow</v-btn>
                 </div>
                 
@@ -169,8 +169,9 @@ export default {
   },
 
   computed: {
-    ...mapState(["userInfo", "followerList", "followingList",]),
+    ...mapState(["userInfo", "followerList", "followingList", "isFollowing",]),
     ...mapGetters(["userDataFetched"]),
+
     isSelf: function() {
       return this.userInfo.nickname === localStorage.getItem("username");
     },
@@ -185,10 +186,6 @@ export default {
     followingCount: function() {
       return this.followingList.length;
     },
-    // isFollowing: function() {
-    //   currentUser = localStorage.getItem("username")
-    //   return 
-    // },
   },
 
   watch: {
@@ -206,7 +203,8 @@ export default {
       "follow",
       "unfollow",
       "fetchFollowers",
-      "fetchFollowings"
+      "fetchFollowings",
+      "checkFollowing"
     ]),
     ...mapMutations(["setUserInfo"]),
   },
@@ -216,6 +214,7 @@ export default {
     this.getUserInfo(username);
     this.fetchFollowers(username);
     this.fetchFollowings(username);
+    this.checkFollowing(username)
   }
 };
 </script>

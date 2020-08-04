@@ -5,11 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.annotation.DeterminableImports;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,6 +23,7 @@ import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
+import com.ssafy.indieAndBob.user.service.EmailService;
 import com.ssafy.indieAndBob.user.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +35,8 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	UserService userService;
+	@Autowired
+	EmailService emailService;
 	@Autowired
 	JwtService jwtService;
 
@@ -76,6 +77,7 @@ public class UserController {
 					result.status = true;
 					result.data = "success";
 					response = new ResponseEntity<>(result, HttpStatus.OK);
+					emailService.sendSimpleMessage(request.getEmail(), "Indie And Bob 가입 환영 메일", "가입을 환영합니다~~!!");
 				} else {
 					response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 				}
@@ -234,13 +236,13 @@ public class UserController {
 	@GetMapping("/isfollowing")
 	@ApiOperation(value="해당사람을 팔로우 하고 있는지 아닌지")
 	public Object isFollowing(HttpServletRequest request) {
-		String follower = request.getParameter("follower");
+		String follower = jwtService.getNickname(request);
 		String following = request.getParameter("following");
 		logger.info("==========isFollowing==========");
 		Follow follow = new Follow();
 		follow.setFollower(follower);
 		follow.setFollowing(following);
-		logger.info("follow : " + follow);
+		logger.info("isfollow : " + follow);
 		ResponseEntity response = null;
 		if(userService.isFollowing(follow)) {
 			final BasicResponse result = new BasicResponse();
@@ -253,7 +255,7 @@ public class UserController {
 			result.status = true;
 			result.data = "success";
 			result.object = false;
-			response = new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		return response;
 	}

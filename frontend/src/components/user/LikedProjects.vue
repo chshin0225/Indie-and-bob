@@ -8,15 +8,17 @@
         <v-card>
           <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
               <v-list-item>
-                <v-list-item-avatar color="secondary"></v-list-item-avatar>
-                <v-list-item-content>
+                <v-avatar>
+                  <img src="../../assets/default_profile.png" :alt="project.nickname" />
+                </v-avatar>
+                <v-list-item-content class="ml-4">
                   <v-list-item-title class="headline">{{ project.name }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ project.nickname }}</v-list-item-subtitle>
+                  <router-link class="text-decoration-none" :to="`/user/mypage/${project.nickname}`">{{ project.nickname }}</router-link>
                   <v-list-item-subtitle>{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
                   <v-list-item-subtitle>목표액: {{ project.aim }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" height="194"></v-img>
+              <v-img src="../../assets/default_project.png" height="194"></v-img>
           </router-link>
           <v-card-actions>
             <v-spacer></v-spacer>

@@ -108,7 +108,7 @@
 <script>
 // import { mapState } from "vuex";
 import axios from "axios";
-// import SERVER from '../../api/base'
+import SERVER from '../../api/base'
 
 export default {
   // created() {
@@ -124,23 +124,29 @@ export default {
   methods: {
     // ...mapActions(["getUserInfo"]),
     kakaoPay() {
-      const PARAMS = {
-        cid : "TCONETIME",
-        partner_order_id: '',
-        partner_user_id: '',
-        item_name: this.reward.title,
-        item_code : this.reward.rewardId,
-        quantity: 1,
-        total_amount : this.reward.price,
-        tax_free_amount: this.reward.price,
+      // const PARAMS = {
+      //   cid : "TCONETIME",
+      //   partner_order_id: '',
+      //   partner_user_id: '',
+      //   item_name: this.reward.title,
+      //   item_code : this.reward.rewardId,
+      //   quantity: 1,
+      //   total_amount : this.reward.price,
+      //   tax_free_amount: this.reward.price,
 
-      }
-      const HEADER = {
-        'Authorization': 'KakaoAK 0fe306a5da3f90e0d081a31a9dab6bdf'
-      }
-      axios.post('https://kapi.kakao.com/v1/payment/ready', PARAMS, HEADER)
-      .then(res => {
-        console.log(res.data)
+      // }
+      // const HEADER = {
+      //   'Authorization': 'KakaoAK 0fe306a5da3f90e0d081a31a9dab6bdf'
+      // }
+      // axios.post('https://kapi.kakao.com/v1/payment/ready', PARAMS, HEADER)
+      // .then(res => {
+      //   console.log(res.data)
+      // })
+      axios.post(SERVER.BASE + '/kakaoPay', {
+        "money": 660,
+        "nickname": '이희준',
+        "rewardId": 3,
+        "rewardName": 'dkdkdkdkdk',
       })
     },
 

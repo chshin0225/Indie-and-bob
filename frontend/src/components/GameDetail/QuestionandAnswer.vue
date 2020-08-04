@@ -1,5 +1,5 @@
 <template>
-<v-expansion-panels>
+  <v-expansion-panels>
     <v-expansion-panel
       v-for="question in questions"
       :key="question.id"
@@ -23,17 +23,17 @@
 <script>
 import axios from 'axios';
 import SERVER from '../../api/base';
+
 export default {
     name:'QuestionandAnswer',
+
     created() {
       axios.get(SERVER.BASE + "QuestionandAnswer")
       .then(res => {
           this.questions = res.data.questions
       })
-      .catch(err =>
-      console.error(err))
+      .catch(err => console.error(err))
     },
-
 }
 </script>
 
