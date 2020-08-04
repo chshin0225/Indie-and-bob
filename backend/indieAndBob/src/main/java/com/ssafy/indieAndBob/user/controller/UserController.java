@@ -3,14 +3,19 @@ package com.ssafy.indieAndBob.user.controller;
 import java.util.List;
 import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.annotation.DeterminableImports;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -94,7 +99,33 @@ public class UserController {
 					props.put("mail.smtp.auth", "true");
 					props.put("mail.smtp.ssl.enable", "true");
 					props.put("mail.smtp.ssl.trust", host);
-					emailService.sendSimpleMessage("wnsgnldl2@gmail.com", "test", "가입 완료");
+					
+					Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			            protected javax.mail.PasswordAuthentication getPasswordAuthentication(){
+			                return new javax.mail.PasswordAuthentication(accountId, accountPw);
+			            }
+			        });
+					session.setDebug(true);
+					
+					Message mimeMessage = new MimeMessage(session);
+					
+					try {
+				        mimeMessage.setFrom(new InternetAddress(sender));
+				         mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receiver)); 
+				            
+				           // Message Setting
+				           mimeMessage.setSubject("test mail");
+				           mimeMessage.setText("success");
+				           Transport.send(mimeMessage); // Transfer
+				           
+				     } catch (AddressException e) {
+				        // TODO Auto-generated catch block
+				        e.printStackTrace();
+				     } catch (MessagingException e) {
+				        // TODO Auto-generated catch block
+				        e.printStackTrace();
+				     } // 보내는 EMAIL (정확히 적어야 SMTP 서버에서 인증 실패되지 않음)
+//					emailService.sendSimpleMessage("wnsgnldl2@gmail.com", "test", "가입 완료");
 				} else {
 					response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 				}
