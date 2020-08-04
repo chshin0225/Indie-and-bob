@@ -105,6 +105,21 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+
+		<!-- firebase -->
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>6.11.0</version>
+		</dependency>
+		
+		
+		<!-- email 전송 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>1.4.3.RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<build>
