@@ -47,7 +47,7 @@ public class KakaopayController {
 
 	@PostMapping("/kakaoPay")
 	@ApiOperation(value = "결제하기")
-	public void kakaoPay(@RequestBody Funding request, HttpServletResponse res) {
+	public Object kakaoPay(@RequestBody Funding request, HttpServletResponse res) {
 		log.info("kakaoPay post............................................");
 		log.info("funding : " + request);
 		ResponseEntity response = null;
@@ -59,7 +59,7 @@ public class KakaopayController {
 		request.setFundingId(fundingId);
 		if(fundingId==0) {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-			//return response;
+			return response;
 		}
 		String toPay = kakaopay.kakaoPayReady(request);
 		if( toPay != null) {
@@ -70,13 +70,8 @@ public class KakaopayController {
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		//return response;
-		try {
-			res.sendRedirect(toPay);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		return response;
+
 	}
 
 	@GetMapping("/kakaoPaySuccess")//결제가된다면 url에 pg_token이 포함되어있을것이다
@@ -103,7 +98,7 @@ public class KakaopayController {
 		//return response;
 		try {
 			//res.sendRedirect("http://i3a105.p.ssafy.io:3000/home");
-			res.sendRedirect("http://i3a105.p.ssafy.io:3000/user/mypage");
+			res.sendRedirect("http://i3a105.p.ssafy.io:3000/user/mypage/"+nickname);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
