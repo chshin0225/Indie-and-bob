@@ -433,6 +433,7 @@ export default {
           document.getElementById("extraAddress")[0].focus();
           document.body.scrollTop = currentScroll;
         },
+        
         onResize: (size) => {
           this.searchWindow.height = `${size.height}px`;
         },
