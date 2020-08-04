@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.indieAndBob.user.dao.UserDao;
-import com.ssafy.indieAndBob.user.dao.firebaseT;
 import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
 
