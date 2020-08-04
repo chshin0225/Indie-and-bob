@@ -5,6 +5,7 @@ import axios from 'axios'
 import cookies from 'vue-cookies'
 import SERVER from '../api/base'
 import router from '../router'
+import firebase from 'firebase'
 
 Vue.use(Vuex)
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     oriPassword: "",
     username: localStorage.getItem('username'),
     userInfo: null,
+    picture: null,
               
     // notification
     wsUri : "ws://localhost:8080/websocket",
@@ -86,6 +88,9 @@ export default new Vuex.Store({
     setUserInfo(state, val) {
       state.userInfo = val
     },
+    setPicture(state, val) {
+      state.picture = val
+    },
 
     // connection
     setWebsocket(state, val) {
@@ -133,6 +138,9 @@ export default new Vuex.Store({
     },
     setLikedUserList(state, val) {
       state.likedUserList = val
+    },
+    setContent(state, val) {
+      state.project.content = val
     },
 
     // search
@@ -193,11 +201,17 @@ export default new Vuex.Store({
       }///
     },
 
-    SignUp({ commit }, signupData) {
+    SignUp({ commit, }, signupData) {
       if (signupData.email.charAt(0) >= 'A' && signupData.email.charAt(0) <= 'Z') {
         signupData.email = signupData.email.substring(0, 1).toLowerCase() + signupData.email.substring(1)
       }
-      axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
+      if (signupData.profile !== null) {
+        commit('setPicture', null)
+        console.log(signupData.profile)
+        console.log(signupData.profile.name)
+        firebase.storage().ref(`user/${signupData.nickname}/${signupData.profile.name}`).put(signupData.profile)
+        signupData.profile = `user/${signupData.nickname}/${signupData.profile.name}`
+        axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
         .then(res => {
           console.log(res)
           if (res.data.status) {
@@ -212,6 +226,24 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err.response)
         })
+      }
+      else {
+        axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
+          .then(res => {
+            console.log(res)
+            if (res.data.status) {
+              alert("회원가입 인증 메일이 발송되었습니다. 이메일을 확인해주세요.")
+              router.push({ name: "Login" });
+            } else {
+              console.log(res.data.status)
+              commit('setErrorDetail', res.data.data)
+              router.push({ name: "ErrorPage" })
+            }
+          })
+          .catch(err => {
+            console.log(err.response)
+          })
+      }
     },
 
     logout({ commit, state }) {
@@ -330,7 +362,26 @@ export default new Vuex.Store({
       commit('setProject', null)
       axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`, getters.headersConfig)
       .then(res => {
-        commit('setProject', res.data.object)
+        const storageRef = firebase.storage().ref()
+        storageRef.child(`game/두두/content/두두`).getDownloadURL().then(url => {
+          var xhr = new XMLHttpRequest();
+          console.log(xhr)
+          // xhr.responseType = 'blob';
+          if (xhr) {
+            console.log('1')
+            xhr.open('GET', url, false)
+            xhr.send();
+            var result = (xhr.response)
+            // commit('setContent', 'aaa')
+            // console.log(state.project.content)
+          }
+          console.log('send', xhr)
+          console.log(res.data.object)
+          res.data.object.content = result
+          commit('setProject', res.data.object)
+        }).catch(function(error) {
+          console.log(error)
+        })
       })
       .catch(err => console.error(err))
     },

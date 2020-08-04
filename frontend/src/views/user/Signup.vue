@@ -102,7 +102,7 @@
         <label for="profile-image">이미지</label>
         <v-file-input
           class="my-3"
-          accept="image/png, image/jpeg, image/bmp"
+          accept="image/*"
           hide-details="true"
           v-model="profileImage"
           id="profile-image"
