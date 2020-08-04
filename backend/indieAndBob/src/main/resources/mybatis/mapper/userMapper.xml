@@ -42,7 +42,7 @@
    <delete id="deleteFollowing" parameterType="follow">
       delete from follow where follower=#{follower} and following=#{following}
    </delete>
-   <select id="isFollowing" parameterType="follow">
+   <select id="isFollowing" parameterType="follow" resultType="follow">
       select * from follow where follower=#{follower} and following=#{following}
    </select>
 </mapper>
