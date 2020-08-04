@@ -20,8 +20,8 @@ public class FundingServiceImpl implements FundingService {
 	}
 
 	@Override
-	public List<Funding> selectFundingByGameId(int gameId) {
-		return fundingdao.selectFundingByGameId(gameId);
+	public List<Funding> selectFundingByRewardId(int rewardId) {
+		return fundingdao.selectFundingByRewardId(rewardId);
 	}
 
 	@Override

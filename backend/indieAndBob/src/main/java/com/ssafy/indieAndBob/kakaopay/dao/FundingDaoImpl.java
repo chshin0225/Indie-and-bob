@@ -21,8 +21,8 @@ public class FundingDaoImpl implements FundingDao{
 	}
 
 	@Override
-	public List<Funding> selectFundingByGameId(int gameId) {
-		return temp.selectList(ns+"selectFundingByGameId", gameId);
+	public List<Funding> selectFundingByRewardId(int rewardId) {
+		return temp.selectList(ns+"selectFundingByRewardId", rewardId);
 	}
 
 	@Override
