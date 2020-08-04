@@ -48,9 +48,9 @@ public class KakaoPay {
         params.add("total_amount", Integer.toString(request.getMoney()));//가격
         params.add("tax_free_amount", "100");//세금
         //params.add("approval_url", "http://i3a105.p.ssafy.io:3000/login");//승인시갈곳
-        params.add("approval_url", "http://i3a105.p.ssafy.io:3000/kakaoPaySuccess?nickname="+request.getNickname()+"&orderId="+Integer.toString(request.getFundingId())+"&amount="+Integer.toString(request.getMoney()));
-        params.add("cancel_url", "http://i3a105.p.ssafy.io:3000");//취소시갈곳
-        params.add("fail_url", "http://i3a105.p.ssafy.io:3000");//실패시갈곳
+        params.add("approval_url", "http://i3a105.p.ssafy.io:8080/kakaoPaySuccess?nickname="+request.getNickname()+"&orderId="+Integer.toString(request.getFundingId())+"&amount="+Integer.toString(request.getMoney()));
+        params.add("cancel_url", "http://i3a105.p.ssafy.io:8080");//취소시갈곳
+        params.add("fail_url", "http://i3a105.p.ssafy.io:8080");//실패시갈곳
  
          HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
  
