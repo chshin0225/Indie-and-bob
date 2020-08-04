@@ -234,13 +234,13 @@ public class UserController {
 	@GetMapping("/isfollowing")
 	@ApiOperation(value="해당사람을 팔로우 하고 있는지 아닌지")
 	public Object isFollowing(HttpServletRequest request) {
-		String follower = request.getParameter("follower");
+		String follower = jwtService.getNickname(request);
 		String following = request.getParameter("following");
 		logger.info("==========isFollowing==========");
 		Follow follow = new Follow();
 		follow.setFollower(follower);
 		follow.setFollowing(following);
-		logger.info("follow : " + follow);
+		logger.info("isfollow : " + follow);
 		ResponseEntity response = null;
 		if(userService.isFollowing(follow)) {
 			final BasicResponse result = new BasicResponse();
