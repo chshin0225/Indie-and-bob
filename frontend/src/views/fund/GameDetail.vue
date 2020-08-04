@@ -65,7 +65,7 @@
               <v-card flat>
                 <v-card-text>
                   <v-card outlined>
-                    <Viewer :initialValue="project.content"/>
+                    <Viewer :initialValue='project.content'/>
                   </v-card>
                 </v-card-text>
               </v-card>
@@ -161,7 +161,7 @@
 import axios from "axios";
 import router from "../../router";
 import SERVER from "../../api/base";
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 
 import GameCommunity from "../../components/GameDetail/GameCommunity.vue";
 import QuestionandAnswer from "../../components/GameDetail/QuestionandAnswer.vue";
@@ -171,6 +171,8 @@ import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 import _ from 'lodash'
+
+// import firebase from 'firebase'
 
 export default {
   name: 'GameDetail',
@@ -209,6 +211,7 @@ export default {
 
   methods: {
     ...mapActions(['getProject', 'fetchLikedUsers',]),
+    ...mapMutations(['setContent']),
 
     rewardBuy(id) {
       router.push("/fund/" + id);
@@ -300,7 +303,7 @@ export default {
     
     if (localStorage.getItem("username") === "admin") {
       this.isAdmin = true;
-    }
+    }    
   },
 };
 </script>

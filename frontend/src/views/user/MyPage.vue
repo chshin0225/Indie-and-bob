@@ -186,10 +186,6 @@ export default {
     followingCount: function() {
       return this.followingList.length;
     },
-    // isFollowing: function() {
-    //   currentUser = localStorage.getItem("username")
-    //   return 
-    // },
   },
 
   watch: {
@@ -218,9 +214,7 @@ export default {
     this.getUserInfo(username);
     this.fetchFollowers(username);
     this.fetchFollowings(username);
-    
     this.checkFollowing(username)
-    
   }
 };
 </script>
