@@ -89,7 +89,7 @@ public class KakaopayController {
 		}
 		//return response;
 		try {
-			res.sendRedirect("/home");
+			res.sendRedirect("http://i3a105.p.ssafy.io:3000/home");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
