@@ -277,6 +277,7 @@ export default new Vuex.Store({
         .then(() => {
           // console.log(res.data)
           dispatch('fetchFollowers', following.following)
+          dispatch('checkFollowing', following.following)
           state.websocket.send('follow,'+state.username+','+following.following)
         })
         .catch(err => console.error(err))
@@ -287,6 +288,7 @@ export default new Vuex.Store({
         .then(() => {
           // console.log(res.data)
           dispatch('fetchFollowers', unfollow)
+          dispatch('checkFollowing', unfollow)
         })
         .catch(err => console.error(err))
 
@@ -295,8 +297,8 @@ export default new Vuex.Store({
     checkFollowing({ commit, getters }, following) {
       axios.get(SERVER.BASE + SERVER.ISFOLLOWING + following, getters.headersConfig)
         .then(res => {
-          console.log(res.data)
-          commit('setIsFollowing', res.data)
+          // console.log(res.data.object)
+          commit('setIsFollowing', res.data.object)
         })
         .catch(err => console.error(err))
     },

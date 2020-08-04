@@ -1,6 +1,7 @@
 package com.ssafy.indieAndBob.kakaopay.controller;
 
 
+import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayApprovalVO;
 import com.ssafy.indieAndBob.kakaopay.service.FundingService;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +42,24 @@ public class KakaopayController {
 
 	@Autowired
 	FundingService fservice;
+	@Autowired
+	JwtService jservice;
 
 	@PostMapping("/kakaoPay")
 	@ApiOperation(value = "결제하기")
-	public Object kakaoPay(@RequestBody Funding request) {
+	public void kakaoPay(@RequestBody Funding request, HttpServletResponse res) {
 		log.info("kakaoPay post............................................");
 		log.info("funding : " + request);
 		ResponseEntity response = null;
 		int fundingId = fservice.registerFunding(request);
+		
+		//String nickname = jservice.getNickname(req);
+		//request.setNickname(nickname);
+		
 		request.setFundingId(fundingId);
 		if(fundingId==0) {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-			return response;
+			//return response;
 		}
 		String toPay = kakaopay.kakaoPayReady(request);
 		if( toPay != null) {
@@ -62,8 +70,13 @@ public class KakaopayController {
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
-
+		//return response;
+		try {
+			res.sendRedirect(toPay);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@GetMapping("/kakaoPaySuccess")//결제가된다면 url에 pg_token이 포함되어있을것이다
@@ -89,7 +102,8 @@ public class KakaopayController {
 		}
 		//return response;
 		try {
-			res.sendRedirect("http://i3a105.p.ssafy.io:3000/home");
+			//res.sendRedirect("http://i3a105.p.ssafy.io:3000/home");
+			res.sendRedirect("http://i3a105.p.ssafy.io:3000/user/mypage");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,14 +130,14 @@ public class KakaopayController {
 		return response;
 	}
 
-	@GetMapping("/fundingByGameId")
+	@GetMapping("/fundingByRewardId")
 	@ApiOperation(value = "게임아이디로 해당 펀딩리스트찾기")
-	public Object selectFundingByGameId(@RequestParam("gameId") int gameId) {
-		log.info("-------------selectFundingByGameId-----------------");
-		log.info("gameId : " + gameId);
+	public Object selectFundingByRewardId(@RequestParam("rewardId") int rewardId) {
+		log.info("-------------selectFundingByRewardId-----------------");
+		log.info("rewardId : " + rewardId);
 		ResponseEntity response = null;
 
-		List<Funding> fundinglist = fservice.selectFundingByGameId(gameId);
+		List<Funding> fundinglist = fservice.selectFundingByRewardId(rewardId);
 
 		if(fundinglist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
