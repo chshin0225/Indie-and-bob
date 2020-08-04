@@ -1,11 +1,14 @@
 package com.ssafy.indieAndBob.user.service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.indieAndBob.user.dao.UserDao;
+import com.ssafy.indieAndBob.user.dao.firebaseT;
 import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
 
@@ -27,6 +30,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int registerUser(User user) {
+		try {
+			firebaseT.insert();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return userDao.registerUser(user);
 	}
 
