@@ -59,7 +59,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean isFollowing(Follow follow) {
 		Follow f = temp.selectOne(ns + "isFollowing", follow);
-		if(f.equals(null)) return false;
+		if(f == null) return false;
 		return true;
 	}
 
