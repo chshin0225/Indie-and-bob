@@ -5,18 +5,31 @@
       <v-container v-if="projectDataFetched">
         <h1>{{ project.name }}</h1>
         <v-row>
-          <v-col cols="12" sm="6">
-            <p>개발자: {{ project.nickname }}</p>
+          <v-col cols="12" sm="7">
+            <p>장르정보</p>
+            <p>개발자: <span><router-link class="text-decoration-none" :to="`user/mypage/${project.nickname}`">{{ project.nickname }}</router-link></span></p>
             <p>기간: {{ $moment(project.createdAt).format("YYYY.MM.DD") }} ~ {{ $moment(project.deadline).format("YYYY.MM.DD") }}</p>
-            <p>목표: {{ project.aim }}원</p>
+            <!-- {{ project }} -->
+            <v-container class="pb-0">
+              <v-row>
+                <p> {{ this.fundingProgress }}% 달성</p>
+                <v-spacer></v-spacer>
+                <p>목표: {{ project.aim }}원</p>
+              </v-row>
+            </v-container>
+
+            
+            <v-progress-linear v-model="fundingProgress"></v-progress-linear>
           </v-col>
-          
+          <v-spacer></v-spacer>
+
           <!-- likes -->
-          <v-col cols="12" sm="6">
-            <h4>이 프로젝트를 좋아한 사람들</h4>
+          <v-col cols="12" sm="4">
+            <!-- <h4>이 프로젝트를 좋아한 사람들</h4> -->
             <v-dialog v-model="likeDialog" scrollable max-width="400">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="accent" x-small depressed v-bind="attrs" v-on="on">더보기</v-btn>
+                <h4>이 프로젝트를 좋아한 사람들 <span class="ml-1"><v-btn color="accent" x-small depressed v-bind="attrs" v-on="on">더보기</v-btn></span></h4>
+                <!-- <v-btn color="accent" x-small depressed v-bind="attrs" v-on="on">더보기</v-btn> -->
               </template>
               <v-card>
                 <v-card-title class="headline">이 프로젝트를 좋아한 사람들</v-card-title>
@@ -51,7 +64,6 @@
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
-                  <h2>프로젝트 소개</h2>
                   <v-card outlined>
                     <Viewer :initialValue="project.content"/>
                   </v-card>
@@ -77,7 +89,7 @@
           <v-card tile>
             <v-list flat>
               <!-- header -->
-              <v-subheader>리워드</v-subheader>
+              <v-subheader>Rewards</v-subheader>
               <v-divider></v-divider>
 
               <!-- rewards -->
@@ -100,37 +112,7 @@
         </v-col>
       </v-row>
 
-      <div fixed bottom left class="mr-5 mb-5">
-        <!-- like button -->
-        <v-btn cols="auto" fab large @click="likeButton()" color="accent" class="mr-3">
-          <v-icon :color="iconColor">fas fa-heart</v-icon>
-        </v-btn>
-
-        <!-- share button -->
-        <v-menu v-model="menu" :close-on-content-click="false" nudge-width="200" nudge-right="20" offset-x>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="accent" v-bind="attrs" v-on="on" fab large cols="auto" class="ml-3">
-              <v-icon :color="shareIcon">fas fa-share-alt</v-icon>
-            </v-btn>
-          </template>
-
-          <!-- share button popup -->
-          <v-card>
-            <v-container>
-              <h3>이 프로젝트를 널리널리 소문내주세요!</h3>
-              <p ref="shareUrl" class="my-3">{{url}}</p>
-              <v-spacer></v-spacer>
-              <div>
-                <v-btn small depressed color="accent" @click="copy()">복사하기</v-btn>
-              </div>
-              <!-- <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text @click="menu = false; shareIcon='white';">close</v-btn>
-              </v-card-actions> -->
-            </v-container>
-          </v-card>
-        </v-menu>
-      </div>
+ 
       
       <!-- admin -->
       <div v-if="isAdmin && project.isApprove === 0">
@@ -139,6 +121,39 @@
       </div>  
 
     </v-container>
+
+    <div class="like-and-share">
+      <!-- like button -->
+      <v-btn cols="auto" fab large @click="likeButton()" color="accent" class="mr-3">
+        <v-icon :color="iconColor">fas fa-heart</v-icon>
+      </v-btn>
+
+      <!-- share button -->
+      <v-menu v-model="menu" :close-on-content-click="false" nudge-width="200" nudge-right="20" offset-x>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="accent" v-bind="attrs" v-on="on" fab large cols="auto" class="ml-3">
+            <v-icon :color="shareIcon">fas fa-share-alt</v-icon>
+          </v-btn>
+        </template>
+
+        <!-- share button popup -->
+        <v-card>
+          <v-container>
+            <h3>이 프로젝트를 널리널리 소문내주세요!</h3>
+            <p ref="shareUrl" class="my-3">{{url}}</p>
+            <v-spacer></v-spacer>
+            <div>
+              <v-btn small depressed color="accent" @click="copy()">복사하기</v-btn>
+            </div>
+            <!-- <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="menu = false; shareIcon='white';">close</v-btn>
+            </v-card-actions> -->
+          </v-container>
+        </v-card>
+      </v-menu>
+    </div>
+
   </div>
 </template>
 
@@ -155,6 +170,7 @@ import GameLike from "../../components/GameDetail/GameLike.vue";
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
+import _ from 'lodash'
 
 export default {
   name: 'GameDetail',
@@ -181,7 +197,14 @@ export default {
 
   computed: {
     ...mapState(['project']),
-    ...mapGetters(['headersConfig', 'projectDataFetched'])
+    ...mapGetters(['headersConfig', 'projectDataFetched']),
+    fundingProgress: function() {
+      if (this.project.aim === this.project.leftPrice) {
+        return 0
+      } else {
+        return _.round((this.project.aim - this.project.leftPrice) / this.project.aim * 100)
+      }
+    },
   },
 
   methods: {
@@ -274,7 +297,7 @@ export default {
     this.getProject(this.$route.params.id)
     this.isLiked()
     this.fetchRewards()
-
+    
     if (localStorage.getItem("username") === "admin") {
       this.isAdmin = true;
     }
@@ -285,5 +308,11 @@ export default {
 <style scoped>
 .header {
   background-color: #e4dfda;
+}
+
+.like-and-share {
+  position: fixed;
+  bottom: 50px;
+  left: 30px;
 }
 </style>
