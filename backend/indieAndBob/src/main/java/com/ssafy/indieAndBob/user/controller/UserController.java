@@ -1,15 +1,7 @@
 package com.ssafy.indieAndBob.user.controller;
 
 import java.util.List;
-import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -85,47 +77,7 @@ public class UserController {
 					result.status = true;
 					result.data = "success";
 					response = new ResponseEntity<>(result, HttpStatus.OK);
-					final String host = "smtp.gmail.com";
-					final String accountId = "wnsgnldl2";
-					final String accountPw = "2dlgmlwns!!";
-					final int port = 465;
-					
-					String receiver = request.getEmail();
-					String sender = "ssafy@multicampus.com";
-					
-					Properties props = System.getProperties();
-					props.put("mail.smtp.host", host);
-					props.put("mail.smtp.port", port);
-					props.put("mail.smtp.auth", "true");
-					props.put("mail.smtp.ssl.enable", "true");
-					props.put("mail.smtp.ssl.trust", host);
-					
-					Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-			            protected javax.mail.PasswordAuthentication getPasswordAuthentication(){
-			                return new javax.mail.PasswordAuthentication(accountId, accountPw);
-			            }
-			        });
-					session.setDebug(true);
-					
-					Message mimeMessage = new MimeMessage(session);
-					
-					try {
-				        mimeMessage.setFrom(new InternetAddress(sender));
-				         mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receiver)); 
-				            
-				           // Message Setting
-				           mimeMessage.setSubject("test mail");
-				           mimeMessage.setText("success");
-				           Transport.send(mimeMessage); // Transfer
-				           
-				     } catch (AddressException e) {
-				        // TODO Auto-generated catch block
-				        e.printStackTrace();
-				     } catch (MessagingException e) {
-				        // TODO Auto-generated catch block
-				        e.printStackTrace();
-				     } // 보내는 EMAIL (정확히 적어야 SMTP 서버에서 인증 실패되지 않음)
-//					emailService.sendSimpleMessage("wnsgnldl2@gmail.com", "test", "가입 완료");
+					emailService.sendSimpleMessage(request.getEmail(), "Indie And Bob 가입 환영 메일", "가입을 환영합니다~~!!");
 				} else {
 					response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 				}
@@ -303,7 +255,7 @@ public class UserController {
 			result.status = true;
 			result.data = "success";
 			result.object = false;
-			response = new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		return response;
 	}
