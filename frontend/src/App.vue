@@ -138,6 +138,7 @@ export default {
       currentUser: localStorage.getItem('username'),
     };
   },
+  
   methods: {
     ...mapActions(['goBack', 'logout', 'search', 'socketConnect']),
 
@@ -154,6 +155,7 @@ export default {
           .catch(err => console.error(err))
       }
     },
+
     sendSearch(searchKeyword) {
       this.search(searchKeyword)
       this.searchKeyword = ''
@@ -163,6 +165,7 @@ export default {
   created() {
     this.getUserInfo()
   },
+
   watch: {
     $route: function() {
       // console.log('log', this.isLoggedIn)
