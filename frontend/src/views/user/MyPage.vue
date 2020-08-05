@@ -54,7 +54,7 @@
           </v-tab>
           <v-tab>
             <i class="fas fa-money-check-alt mr-3"></i>
-            후원한 프로젝트
+            펀딩한 프로젝트
           </v-tab>
           <v-tab>
             <i class="fas fa-edit mr-3"></i>
@@ -83,7 +83,7 @@
             </v-card>
           </v-tab-item>
 
-          <!-- 내가 후원한 프로젝트들 -->
+          <!-- 내가 펀딩한 프로젝트들 -->
           <v-tab-item class="myFundings">
             <v-card flat>
               <v-card-text>

@@ -3,30 +3,30 @@
     <h1 class="text-center">Signup</h1>
 
     <!-- id -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="nickname">닉네임</label>
         <v-text-field
           hide-details="true"
-          class="my-3"
+          class=""
           v-model="nickName"
           id="nickname"
           outlined
           placeholder="닉네임을 입력해주세요."
           type="text"
         />
-        <small class="d-block" v-if="error.nickName">{{ error.nickName }}</small>
+        <small class="d-block primary--text" v-if="error.nickName">{{ error.nickName }}</small>
       </v-col>
     </v-row>
 
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="usertype">주 사용자 유형</label>
         <v-select
           hide-details="true"
           :items="userTypes"
           id="usertype"
-          placeholder="주 사용자 유형을 입력해주세요."
+          placeholder="주 사용자 유형을 선택해주세요."
           v-model="usertype"
           outlined
         ></v-select>
@@ -35,11 +35,11 @@
 
     <!-- bank account -->
     <div class="bank-info" v-if="usertype=='개발자'">
-      <v-row class="justify-center">
+      <v-row class="justify-center my-4">
         <v-col class="py-0" sm="2">
           <label for="bankname">은행명</label>
           <v-select
-            class="my-3"
+            class=""
             hide-details="true"
             :items="banks"
             id="bankname"
@@ -51,73 +51,73 @@
           <label for="accountnumber">계좌번호</label>
           <v-text-field
             hide-details="true"
-            class="my-3"
+            class=""
             v-model="accountnumber"
             id="accountnumber"
             outlined
-            placeholder="(-)를 제외한 숫자만 입력해주세요"
-            type="number"
+            placeholder="(-)를 제외한 숫자만 입력해주세요."
+            type="text"
           />
-          <small class="d-block" v-if="error.accountnumber">{{ error.accountnumber }}</small>
+          <small class="d-block primary--text" v-if="error.accountnumber">{{ error.accountnumber }}</small>
         </v-col>
       </v-row>
     </div>
 
     <!-- email -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="email">이메일</label>
         <v-text-field
-          class="my-3"
+          class=""
           hide-details="true"
           v-model="email"
           id="email"
           outlined
-          placeholder="이메일 형식을 지켜주세요(첫자리는 소문자입니다)"
+          placeholder="이메일 형식을 지켜주세요."
           type="text"
         />
-        <small class="d-block" v-if="error.email">{{ error.email }}</small>
+        <small class="d-block primary--text" v-if="error.email">{{ error.email }}</small>
       </v-col>
     </v-row>
 
     <!-- name -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="name">이름</label>
         <v-text-field
-          class="my-3"
+          class=""
           hide-details="true"
           v-model="name"
           id="name"
           outlined
-          placeholder="홍길동"
+          placeholder="이름을 입력해주세요."
           type="text"
         />
       </v-col>
     </v-row>
 
     <!-- profile image -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="profile-image">이미지</label>
         <v-file-input
-          class="my-3"
+          class=""
           accept="image/*"
           hide-details="true"
           v-model="profileImage"
           id="profile-image"
           outlined
-          placeholder="없어도 됩니다."
+          placeholder="없어도됩니다."
         />
       </v-col>
     </v-row>
 
     <!-- password -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="password">비밀번호</label>
         <v-text-field
-          class="my-3"
+          class=""
           hide-details="true"
           v-model="password"
           :append-icon="showPw ? 'mdi-eye' : 'mdi-eye-off'"
@@ -127,16 +127,16 @@
           placeholder="영소문자와 숫자를 합쳐 8글자 이상 가능합니다."
           @click:append="showPw = !showPw"
         />
-        <small class="d-block" v-if="error.password">{{ error.password }}</small>
+        <small class="d-block primary--text" v-if="error.password">{{ error.password }}</small>
       </v-col>
     </v-row>
 
     <!-- password confirmation -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="password-confirm">비밀번호 확인</label>
         <v-text-field
-          class="my-3"
+          class=""
           hide-details="true"
           v-model="passwordConfirm"
           :append-icon="showPwc ? 'mdi-eye' : 'mdi-eye-off'"
@@ -146,33 +146,33 @@
           placeholder="비밀번호와 일치해야합니다."
           @click:append="showPwc = !showPwc"
         />
-        <small class="d-block" v-if="error.passwordConfirm">{{ error.passwordConfirm }}</small>
+        <small class="d-block primary--text" v-if="error.passwordConfirm">{{ error.passwordConfirm }}</small>
       </v-col>
     </v-row>
 
     <!-- phone number -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="phonenumber">핸드폰 번호('-' 제외)</label>
         <v-text-field
           hide-details="true"
-          class="my-3"
+          class=""
           v-model="phonenumber"
           id="phonenumber"
           outlined
-          placeholder="휴대폰 번호를 입력해주세요"
+          placeholder="휴대폰 번호를 입력해주세요."
           type="text"
         />
-        <small class="d-block" v-if="error.phonenumber">{{ error.phonenumber }}</small>
+        <small class="d-block primary--text" v-if="error.phonenumber">{{ error.phonenumber }}</small>
       </v-col>
     </v-row>
 
     <!-- introduction -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="introduction">한 줄 소개</label>
         <v-text-field
-          class="my-3"
+          class=""
           hide-details="true"
           v-model="introduction"
           id="introduction"
@@ -183,11 +183,12 @@
       </v-col>
     </v-row>
 
-    <!-- address -->
+    <!-- daum address -->
     <v-row
       ref="searchWindow"
       :style="searchWindow"
       style="border:1px solid;width:100%;margin:5px 0;position:relative"
+      class="my-4"
     >
       <v-col class="py-0" sm="6">
         <img
@@ -199,9 +200,10 @@
         />
       </v-col>
     </v-row>
-
-    <v-row class="justify-center">
-      <v-col class="py-0 mt-3" sm="3">
+    
+    <!-- 우편번호 -->
+    <v-row class="justify-center my-4">
+      <v-col class="py-0" sm="3">
         <label for="postcode">우편번호</label>
         <v-text-field
           v-model="postcode"
@@ -212,11 +214,13 @@
           required
         ></v-text-field>
       </v-col>
-      <v-col class="my-2 d-flex align-content-center" sm="3">
+      <v-col class="my-3 py-0 d-flex align-end" sm="3">
         <v-btn @click="execDaumPostcode" depressed color="accent">우편번호 찾기</v-btn>
       </v-col>
     </v-row>
-    <v-row class="justify-center">
+    
+    <!-- 주소 -->
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="address">주소</label>
         <v-text-field
@@ -225,20 +229,21 @@
           outlined
           hide-details="true"
           id="address"
-          placeholder="자동으로 입력됩니다"
+          placeholder="자동으로 입력됩니다."
           required
         ></v-text-field>
       </v-col>
     </v-row>
     
-    <v-row class="justify-center">
+    <!-- 상세 주소 -->
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="extraAddress">상세주소</label>
         <v-text-field
           ref="extraAddress"
           v-model="extraAddress"
           id="extraAddress"
-          placeholder="상세주소를 입력해주세요"
+          placeholder="상세주소를 입력해주세요."
           type="text"
           hide-details="true"
           outlined
@@ -248,21 +253,21 @@
     </v-row>
 
     <!-- term -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col sm="6">
         <v-row class="justify-space-between">
           <v-col class="py-0">
             <v-switch class="ml-2" v-model="isTerm" label="약관에 동의합니다."></v-switch>
             <v-dialog v-model="dialog" persistent max-width="290">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn text v-bind="attrs" v-on="on">약관보기</v-btn>
+                <v-btn text v-bind="attrs" v-on="on" color="primary">약관보기</v-btn>
               </template>
               <v-card>
                 <v-card-title class="headline">Indie And Bob 약관</v-card-title>
                 <v-card-text>회원가입 약관입니다</v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="dialog = false">닫기</v-btn>
+                  <v-btn color="primary" text @click="dialog = false">닫기</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -289,7 +294,7 @@
               :class="{disabled : !isSubmit}"
               depressed
               large
-              color="primary"
+              color="accent"
             >회원가입</v-btn>
           </v-col>
         </v-row>
@@ -369,12 +374,13 @@ export default {
         this.password.length >= 0 &&
         !this.passwordSchema.validate(this.password)
       )
-        this.error.password = "";
+        this.error.password = "영문,숫자 포함 8 자리이상이어야 합니다.";
       else this.error.password = false;
 
       if (this.passwordConfirm != this.password)
         this.error.passwordConfirm = "비밀번호가 일치하지 않습니다.";
       else this.error.passwordConfirm = false;
+      
       if ((this.phonenumber + "").length != 11)
         this.error.phonenumber = "올바른 휴대폰번호 형식이 아닙니다.";
       else this.error.phonenumber = false;
@@ -446,7 +452,7 @@ export default {
       is_developer: false,
       is_admin: false,
       userTypes: ["일반 사용자", "개발자"],
-      banks: ["하나은행", "우리은행", "국민은행"],
+      banks: ["하나", "우리", "국민", "농협", "카카오뱅크", "신한", "IBK기업", "SC제일", "씨티"],
       bankname: "",
       accountnumber: "",
       isTerm: false,
@@ -475,10 +481,6 @@ export default {
       postcode: "",
       address: "",
       extraAddress: "",
-      // rules: {
-      //   required: value => !!value || 'Required.',
-      //   min: v => v.length >= 8 || 'Min 8 characters',
-      // }
     };
   },
 };
