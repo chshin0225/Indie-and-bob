@@ -102,7 +102,7 @@
         <label for="profile-image">이미지</label>
         <v-file-input
           class="my-3"
-          accept="image/png, image/jpeg, image/bmp"
+          accept="image/*"
           hide-details="true"
           v-model="profileImage"
           id="profile-image"
@@ -433,6 +433,7 @@ export default {
           document.getElementById("extraAddress")[0].focus();
           document.body.scrollTop = currentScroll;
         },
+        
         onResize: (size) => {
           this.searchWindow.height = `${size.height}px`;
         },

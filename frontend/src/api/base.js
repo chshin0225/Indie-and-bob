@@ -10,6 +10,8 @@ export default {
     // follow
     'FOLLOWING': "/following",
     'FOLLOWER': "/follower",
+    'UNFOLLOW': "/unfollow?following=",
+    'ISFOLLOWING': "/isfollowing?following=",
 
     // project
     'UNAPPROVED' : "/admin/gamelist/",

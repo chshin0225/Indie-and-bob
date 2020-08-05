@@ -5,6 +5,7 @@ import axios from 'axios'
 import cookies from 'vue-cookies'
 import SERVER from '../api/base'
 import router from '../router'
+import firebase from 'firebase'
 
 Vue.use(Vuex)
 
@@ -18,14 +19,18 @@ export default new Vuex.Store({
     oriPassword: "",
     username: localStorage.getItem('username'),
     userInfo: null,
-    
+    picture: null,
+              
     // notification
     wsUri : "ws://localhost:8080/websocket",
     websocket : null,
+    message: 0,
+    items: [],
 
     // follow
     followerList: null,
     followingList: null,
+    isFollowing: false,
     
     // community
     articleList: [],
@@ -36,6 +41,7 @@ export default new Vuex.Store({
 
     // like
     likedProjectList: [],
+    likedUserList: [],
 
     // error
     errorDetail: null,
@@ -54,7 +60,10 @@ export default new Vuex.Store({
 
     // user
     isLoggedIn: state => !!state.jwtToken,
-    dataFetched: state => !!state.userInfo,
+    userDataFetched: state => !!state.userInfo,
+
+    // project
+    projectDataFetched: state => !!state.project,
   },
 
   mutations: {
@@ -79,10 +88,26 @@ export default new Vuex.Store({
     setUserInfo(state, val) {
       state.userInfo = val
     },
+    setPicture(state, val) {
+      state.picture = val
+    },
 
-    // notification
+    // connection
     setWebsocket(state, val) {
+      console.log(val)
       state.websocket = val
+      console.log(state.websocket)
+    },
+
+    setMessage(state) {
+      state.message += 1
+      console.log(state.message)
+    },
+
+    setItems(state, val) {
+      var followArray = val.split(',')
+      state.items.push(followArray[1] + '님이' + followArray[2] + '님을' + followArray[0] + '했습니다.')
+      console.log('1', state.items)
     },
 
     // follow
@@ -91,6 +116,9 @@ export default new Vuex.Store({
     },
     setFollowingList(state, val) {
       state.followingList = val
+    },
+    setIsFollowing(state, val) {
+      state.isFollowing = val
     },
 
     // community
@@ -108,6 +136,12 @@ export default new Vuex.Store({
     setLikedProjectList(state, val) {
       state.likedProjectList = val
     },
+    setLikedUserList(state, val) {
+      state.likedUserList = val
+    },
+    setContent(state, val) {
+      state.project.content = val
+    },
 
     // search
     setSearchResult(state, val) {
@@ -123,7 +157,7 @@ export default new Vuex.Store({
 
   actions: {
     // user
-    login({ commit, state }, loginData) {
+    login({ commit }, loginData) {
       axios.post(SERVER.BASE + SERVER.LOGIN, loginData)
         .then(res => {
           commit('setEmail', res.data.object.email)
@@ -134,10 +168,6 @@ export default new Vuex.Store({
 
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
-
-          // 웹소켓 생성
-          commit('setWebsocket', new WebSocket(state.wsUri))
-          state.websocket.onopen = () => state.websocket.send('login,'+res.data.object.nickname);
           
           router.push('/home')
         })
@@ -150,11 +180,38 @@ export default new Vuex.Store({
         })
     },
 
-    SignUp({ commit }, signupData) {
+    socketConnect({commit, getters, state}) {
+      console.log('socketconnect')
+      console.log(getters.isLoggedIn)
+      if (getters.isLoggedIn) {
+        console.log('isLoggedin = true')
+        if (state.websocket === null) {
+          console.log('socket open')
+          commit('setWebsocket', new WebSocket(state.wsUri))
+          console.log(state.websocket)
+          state.websocket.onopen = () => state.websocket.send('login,' + localStorage.getItem('username'));
+        }
+        if (state.websocket !== null) {
+          state.websocket.onmessage = function(e){ 
+            commit('setMessage')
+            commit('setItems', e.data)
+            console.log(e.data);
+           }
+        }
+      }///
+    },
+
+    SignUp({ commit, }, signupData) {
       if (signupData.email.charAt(0) >= 'A' && signupData.email.charAt(0) <= 'Z') {
         signupData.email = signupData.email.substring(0, 1).toLowerCase() + signupData.email.substring(1)
       }
-      axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
+      if (signupData.profile !== null) {
+        commit('setPicture', null)
+        console.log(signupData.profile)
+        console.log(signupData.profile.name)
+        firebase.storage().ref(`user/${signupData.nickname}/${signupData.profile.name}`).put(signupData.profile)
+        signupData.profile = `user/${signupData.nickname}/${signupData.profile.name}`
+        axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
         .then(res => {
           console.log(res)
           if (res.data.status) {
@@ -169,6 +226,24 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err.response)
         })
+      }
+      else {
+        axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
+          .then(res => {
+            console.log(res)
+            if (res.data.status) {
+              alert("회원가입 인증 메일이 발송되었습니다. 이메일을 확인해주세요.")
+              router.push({ name: "Login" });
+            } else {
+              console.log(res.data.status)
+              commit('setErrorDetail', res.data.data)
+              router.push({ name: "ErrorPage" })
+            }
+          })
+          .catch(err => {
+            console.log(err.response)
+          })
+      }
     },
 
     logout({ commit, state }) {
@@ -229,12 +304,33 @@ export default new Vuex.Store({
 
 
     // follow 
-    follow({ getters, state }, following) {
-      console.log(following)
+    follow({ getters, state, dispatch }, following) {
       axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
-        .then(res => {
-          console.log(res.data)
+        .then(() => {
+          // console.log(res.data)
+          dispatch('fetchFollowers', following.following)
+          dispatch('checkFollowing', following.following)
           state.websocket.send('follow,'+state.username+','+following.following)
+        })
+        .catch(err => console.error(err))
+    },
+
+    unfollow({ getters, dispatch }, unfollow) {
+      axios.delete(SERVER.BASE + SERVER.UNFOLLOW + unfollow, getters.headersConfig)
+        .then(() => {
+          // console.log(res.data)
+          dispatch('fetchFollowers', unfollow)
+          dispatch('checkFollowing', unfollow)
+        })
+        .catch(err => console.error(err))
+
+    },
+
+    checkFollowing({ commit, getters }, following) {
+      axios.get(SERVER.BASE + SERVER.ISFOLLOWING + following, getters.headersConfig)
+        .then(res => {
+          // console.log(res.data.object)
+          commit('setIsFollowing', res.data.object)
         })
         .catch(err => console.error(err))
     },
@@ -262,11 +358,30 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
-    getProject({ commit }, gameId) {
-      axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`)
+    getProject({ commit, getters }, gameId) {
+      commit('setProject', null)
+      axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`, getters.headersConfig)
       .then(res => {
-        console.log(res.data.object[0])
-        commit('setProject', res.data.object[0])
+        const storageRef = firebase.storage().ref()
+        storageRef.child(`game/두두/content/두두`).getDownloadURL().then(url => {
+          var xhr = new XMLHttpRequest();
+          console.log(xhr)
+          // xhr.responseType = 'blob';
+          if (xhr) {
+            console.log('1')
+            xhr.open('GET', url, false)
+            xhr.send();
+            var result = (xhr.response)
+            // commit('setContent', 'aaa')
+            // console.log(state.project.content)
+          }
+          console.log('send', xhr)
+          console.log(res.data.object)
+          res.data.object.content = result
+          commit('setProject', res.data.object)
+        }).catch(function(error) {
+          console.log(error)
+        })
       })
       .catch(err => console.error(err))
     },
@@ -279,6 +394,15 @@ export default new Vuex.Store({
           commit('setLikedProjectList', res.data.object)
         })
         .catch(err => console.error(err))
+    },
+
+    fetchLikedUsers({ commit }, gameId) {
+      axios.get(SERVER.BASE + SERVER.LIKEBYGAME + gameId)
+      .then((res) => {
+        console.log(res.data)
+        commit('setLikedUserList', res.data.object)
+      })
+      .catch((err) => console.error(err));  
     },
 
 
@@ -308,11 +432,6 @@ export default new Vuex.Store({
       })
       .catch(err => console.error(err))
     },  
-
-    // 기타
-    goBack() {
-      router.go('-1')
-    },
   },
   modules: {
   }
