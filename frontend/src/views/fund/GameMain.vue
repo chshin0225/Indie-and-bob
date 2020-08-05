@@ -10,7 +10,7 @@
           <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
               <v-list-item>
                 <v-avatar>
-                  <img src="../../assets/default_profile.png" :alt="game.nickname" />
+                  <img :src="game.thumbnail" :alt="game.nickname" />
                 </v-avatar>
                 <v-list-item-content class="ml-4">
                   <v-list-item-title class="headline">{{ game.name }}</v-list-item-title>
@@ -56,6 +56,7 @@ export default {
 
   methods: {
     infiniteHandler($state) {
+      const storageRef = firebase.storage().ref()
       axios.get(SERVER.BASE + SERVER.GAMELIST + this.gameNum + "/")
         .then(res => {
           // console.log(res);
@@ -63,6 +64,7 @@ export default {
             this.gameNum += 10;
             // console.log(res.data);
             res.data.object.forEach(item => {
+              item.thumbnail = storageRef.child(`game/${item.id}/thumbnail/${item.thumbnail}`).getDownloadUrl().getResult()
               this.games.push(item);
             });
             // console.log("게임즈");
