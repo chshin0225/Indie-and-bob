@@ -19,7 +19,7 @@
                   <v-list-item-subtitle>목표액: {{ game.aim }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-img src="../../assets/default_project.png" height="194"></v-img>
+              <v-img :src="game.thumbnail" height="194"></v-img>
           </router-link>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -39,6 +39,7 @@ import axios from "axios";
 import SERVER from "../../api/base";
 
 import InfiniteLoading from "vue-infinite-loading";
+import firebase from "firebase"
 
 export default {
   name: "GameMain",
@@ -64,7 +65,10 @@ export default {
             this.gameNum += 10;
             // console.log(res.data);
             res.data.object.forEach(item => {
-              item.thumbnail = storageRef.child(`game/${item.id}/thumbnail/${item.thumbnail}`).getDownloadUrl().getResult()
+              console.log(item.thumbnail)
+              storageRef.child("game/15/thumbnail/15.jpg").getDownloadURL().then(url => {
+                item.thumbnail = url
+              })
               this.games.push(item);
             });
             // console.log("게임즈");
