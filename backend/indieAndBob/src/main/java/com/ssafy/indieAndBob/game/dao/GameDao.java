@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
+import com.ssafy.indieAndBob.game.dto.GameGenre;
 import com.ssafy.indieAndBob.game.dto.GameLike;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.game.dto.GameAll;
@@ -25,4 +26,5 @@ public interface GameDao {
 	GameLike isLike(GameLike like);
 	int updateApprove(Game game);
 	int fundingGame(Funding funding);
+	int insertGameGenre(GameGenre gameGenre);
 }
