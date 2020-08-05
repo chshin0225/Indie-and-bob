@@ -25,6 +25,7 @@ export default {
     'ALLREWARD': "/reward/",
     'REWARDS' : "/rewards/bygameid/",
     'REWARDDETAIL': "/reward/hj/",
+    'FUNDEDPROJECT': "/fundingByNickname?nickname=",
 
     // kakaopay
     'KAKAOPAY': "/kakaoPay",

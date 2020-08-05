@@ -185,10 +185,9 @@ export default {
       }
       axios.post(SERVER.BASE + SERVER.KAKAOPAY, PARAMS, this.headersConfig)
         .then(res => {
-          // console.log('res', res.data.data)
           const QRCode = res.data.data
-          window.open(QRCode, "_blank")
-          // window.location.href = QRCode
+          // window.open(QRCode, "_blank")
+          window.location.href = QRCode
         })
         .catch(err => console.error(err))
     },
