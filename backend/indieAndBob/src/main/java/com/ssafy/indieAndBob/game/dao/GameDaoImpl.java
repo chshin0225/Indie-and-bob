@@ -22,15 +22,19 @@ public class GameDaoImpl implements GameDao{
 	SqlSessionTemplate temp;
 	
 	@Override
-	public int registerGame(GameAll game) {
+	public int registerGame(GameAll game, String extension) {
 		if(temp.insert(ns + "registerGame", game) != 1) {
 			return 0;
 		}
+		String thumbnail = "game/" + game.getGameId() + "/thumbnail/" + game.getGameId() + "." + extension;
+		game.setThumbnail(thumbnail);
+		temp.update(ns + "injectThumbnail", game);
 		return game.getGameId();
 	}
 	
 	@Override
 	public int registerDetail(GameAll detail) {
+		detail.setContent("game/"+detail.getGameId()+"/detail/"+detail.getGameId());
 		return temp.insert(ns + "registerGameDetail", detail);
 	}
 
@@ -97,6 +101,11 @@ public class GameDaoImpl implements GameDao{
 	@Override
 	public int insertGameGenre(GameGenre gameGenre) {
 		return temp.insert(ns + "insertGameGenre", gameGenre);
+	}
+
+	@Override
+	public List<GameAll> selectMadeGameByNickname(String nickname) {
+		return temp.selectList(ns + "selectMadeGameByNickname", nickname);
 	}
 
 	

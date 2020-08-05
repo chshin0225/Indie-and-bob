@@ -87,10 +87,10 @@
 <script>
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
-// import axios from "axios";
+import axios from "axios";
 // import router from "../../router";
 import { Editor } from "@toast-ui/vue-editor";
-// import SERVER from "../../api/base";
+import SERVER from "../../api/base";
 import { mapGetters } from 'vuex';
 import firebase from 'firebase'
 export default {
@@ -131,14 +131,15 @@ export default {
         content: null,
         name: this.title,
         deadline: this.date,
+        genre: [1],
         aim: this.aim,
         thumbnail: this.thumbnail.name,
       };
       axios.post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
         .then(res => {
-          console.log(res)
-          firebase.storage().ref(`game/${PARAMS.name}/content/${PARAMS.name}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
-          firebase.storage().ref(`game/${PARAMS.name}/thumbnail/${PARAMS.name}`).put(this.thumbnail)
+          console.log(res.data.object)
+          firebase.storage().ref(`game/${res.data.object.gameId}/content/${res.data.object.gameId}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
+          firebase.storage().ref(`game/${res.data.object.gameId}/thumbnail/${res.data.object.gameId}.${res.data.object.extension}`).put(this.thumbnail)
         })
         .catch((err) => console.error(err));
     },

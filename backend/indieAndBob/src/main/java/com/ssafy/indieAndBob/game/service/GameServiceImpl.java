@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.indieAndBob.game.dao.GameDao;
+import com.ssafy.indieAndBob.game.dao.GenreDao;
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameGenre;
@@ -19,10 +20,12 @@ public class GameServiceImpl implements GameService{
 
 	@Autowired
 	GameDao gamedao;
+	@Autowired
+	GenreDao genredao;
 	
 	@Override
-	public int registerGame(GameAll game) {
-		int gameId = gamedao.registerGame(game);
+	public int registerGame(GameAll game, String extension) {
+		int gameId = gamedao.registerGame(game, extension);
 		gamedao.registerDetail(game);
 		for(int genre : game.getGenre()) {
 			GameGenre gameGenre = new GameGenre(game.getGameId(), genre);
@@ -43,7 +46,10 @@ public class GameServiceImpl implements GameService{
 
 	@Override
 	public GameAll selectGameById(String gameId) {
-		return gamedao.selectGameById(gameId);
+		GameAll gameAll = gamedao.selectGameById(gameId);
+		List<String> genreName = genredao.selectGenreNameByGameId(gameAll.getGameId());
+		gameAll.setGenreName(genreName);
+		return gameAll;
 	}
 
 	@Override
@@ -89,6 +95,16 @@ public class GameServiceImpl implements GameService{
 	@Override
 	public int fundingGame(Funding funding) {
 		return gamedao.fundingGame(funding);
+	}
+
+	@Override
+	public List<GameAll> selectMadeGameByNickname(String nickname) {
+		List<GameAll> games = gamedao.selectMadeGameByNickname(nickname);
+		for(GameAll game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
 	}
 
 	

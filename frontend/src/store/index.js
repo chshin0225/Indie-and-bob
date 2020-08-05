@@ -371,7 +371,7 @@ export default new Vuex.Store({
       axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`, getters.headersConfig)
       .then(res => {
         const storageRef = firebase.storage().ref()
-        storageRef.child(`game/두두/content/두두`).getDownloadURL().then(url => {
+        storageRef.child(`game/15/content/15`).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
           // console.log(xhr)
           // xhr.responseType = 'blob';
