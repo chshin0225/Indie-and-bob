@@ -151,6 +151,7 @@ public class GameController {
 		logger.info("==========registerGame==========");
 		logger.info("Game : " + request);
 		logger.info("nickname = " + nickname);
+		logger.info("img = " + request.getThumbnail());
 		ResponseEntity response = null;
 		request.setNickname(nickname);
 		String img = request.getThumbnail();
