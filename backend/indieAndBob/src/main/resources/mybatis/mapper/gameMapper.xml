@@ -62,4 +62,12 @@
     <insert id="insertGameGenre" parameterType="gamegenre">
     	insert into game_genre (game_id,genre_id) values(#{gameId},#{genreId})
     </insert>
+    
+    <select id="selectMadeGameByNickname" parameterType="String" resultType="gameall">
+    	select * from game where nickname=#{nickname}
+    </select>
+    
+    <update id="injectThumbnail" parameterType="gameall">
+    	update game set thumbnail=#{thumbnail} where game_id=#{gameId}
+    </update>
 </mapper>

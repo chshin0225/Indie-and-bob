@@ -13,7 +13,7 @@ import com.ssafy.indieAndBob.user.dto.User;
 public interface GameDao {
 
 	GameAll selectGameById(String gameId);
-	int registerGame(GameAll game);
+	int registerGame(GameAll game, String extension);
 	int registerDetail(GameAll detail);
 	int updateGame(Game game);
 	int deleteGameById(int gameId);
@@ -27,4 +27,5 @@ public interface GameDao {
 	int updateApprove(Game game);
 	int fundingGame(Funding funding);
 	int insertGameGenre(GameGenre gameGenre);
+	List<GameAll> selectMadeGameByNickname(String nickname);
 }

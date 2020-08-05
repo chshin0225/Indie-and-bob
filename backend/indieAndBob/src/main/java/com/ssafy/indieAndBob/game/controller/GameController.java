@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.game.controller;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -152,12 +154,19 @@ public class GameController {
 		logger.info("nickname = " + nickname);
 		ResponseEntity response = null;
 		request.setNickname(nickname);
-		int gameId = gservice.registerGame(request);
+		String img = request.getThumbnail();
+		String[] extensions = img.split("\\.");
+		String extension = extensions[extensions.length-1];
+		
+		int gameId = gservice.registerGame(request, extension);
 		if (gameId != 0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
-			result.object = gameId;
+			Map<String,Object> obj = new HashMap<>();
+			obj.put("extension", extension);
+			obj.put("gameId", gameId);
+			result.object = obj;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -285,4 +294,24 @@ public class GameController {
 		}
 		return response;
 	}
+	
+	@GetMapping("/madegame/{nickname}")
+	@ApiOperation(value = "내가 만든 프로젝트 리스트 조회")
+	public Object selectMadeGameByNickname(@PathVariable String nickname) {
+		logger.info("==========gameByNickname==========");
+		logger.info("gameByNickname : " + nickname);
+		ResponseEntity response = null;
+		List<GameAll> games = gservice.selectMadeGameByNickname(nickname);
+		if (games != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = games;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
 }

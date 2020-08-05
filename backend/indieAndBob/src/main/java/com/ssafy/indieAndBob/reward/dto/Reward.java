@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Reward {
 
-	public int rewardId;
-	public int gameId;
-	public String rewardName;
-	public String rImg;
-	public int leftCount;
-	public int price;
-	public String content;
+	private int rewardId;
+	private int gameId;
+	private String rewardName;
+	private String rImg;
+	private int leftCount;
+	private int price;
+	private String content;
 }
