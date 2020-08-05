@@ -6,4 +6,5 @@ import com.ssafy.indieAndBob.game.dto.Genre;
 
 public interface GenreDao {
 	List<Genre> selectAllGenre();
+	List<String> selectGenreNameByGameId(int gameId);
 }
