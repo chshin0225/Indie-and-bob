@@ -51,7 +51,7 @@ public class RewardController {
 
 	@GetMapping("/reward/hj/{rewardId}")
 	@ApiOperation(value = "리워드아이디로 리워드찾기")
-	public Object selectRewardById(@PathVariable String rewardId) {
+	public Object selectRewardById(@PathVariable int rewardId) {
 
 		logger.info("===========selectRewardById==========");
 		logger.info("rewardId : " + rewardId);
@@ -71,7 +71,7 @@ public class RewardController {
 	}
 	@GetMapping("/rewards/bygameid/{gameId}")
 	@ApiOperation(value = "게임아이디에 해당하는 리워드 찾기")
-	public Object selectRewardByGameId(@PathVariable String gameId) {
+	public Object selectRewardByGameId(@PathVariable int gameId) {
 		logger.info("===========selectRewardByGameId==========");
 		logger.info("gameId : " + gameId);
 		ResponseEntity response = null;

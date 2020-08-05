@@ -51,16 +51,7 @@ public class KakaopayController {
 		log.info("kakaoPay post............................................");
 		log.info("funding : " + request);
 		ResponseEntity response = null;
-		int fundingId = fservice.registerFunding(request);
 		
-		//String nickname = jservice.getNickname(req);
-		//request.setNickname(nickname);
-		
-		request.setFundingId(fundingId);
-		if(fundingId==0) {
-			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-			return response;
-		}
 		String toPay = kakaopay.kakaoPayReady(request);
 		if( toPay != null) {
 			final BasicResponse result = new BasicResponse();
@@ -77,15 +68,34 @@ public class KakaopayController {
 	@GetMapping("/kakaoPaySuccess")//결제가된다면 url에 pg_token이 포함되어있을것이다
 	@ApiOperation(value = "결제내역")
 	public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token,@RequestParam("nickname") String nickname,
-			@RequestParam("orderId") int orderId,
-			@RequestParam("amount") int amount,Model model, HttpServletResponse res) {
+			@RequestParam("gameId") int gameId,
+			@RequestParam("rewardId") int rewardId,
+			@RequestParam("money") int money,Model model, HttpServletResponse res) {
 		log.info("kakaoPaySuccess get............................................");
 		log.info("kakaoPaySuccess pg_token : " + pg_token);
-		KakaoPayApprovalVO info = kakaopay.kakaoPayInfo(pg_token,nickname,orderId,amount);
+		KakaoPayApprovalVO info = kakaopay.kakaoPayInfo(pg_token,nickname,rewardId,money);
 		model.addAttribute("info", info);
 		// model.addAttribute("info",kakaopay.kakaoPayInfo(pg_token));//정보들
 		ResponseEntity response = null;
-
+		
+		if(info == null) {
+			return;
+		}
+		Funding funding = new Funding();
+		funding.setGameId(gameId);
+		funding.setRewardId(rewardId);
+		funding.setNickname(nickname);
+		funding.setMoney(money);
+		int fundingId = fservice.registerFunding(funding);
+		
+		//String nickname = jservice.getNickname(req);
+		//request.setNickname(nickname);
+		
+		funding.setFundingId(fundingId);
+		if(fundingId==0) {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 		if( info != null) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.kakaopay.dao.FundingDao;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 
@@ -13,6 +14,9 @@ public class FundingServiceImpl implements FundingService {
 
 	@Autowired
 	FundingDao fundingdao;
+	
+	@Autowired
+	GameService gameService;
 	
 	@Override
 	public Funding selectFundingByFundingId(int fundingId) {
@@ -27,6 +31,7 @@ public class FundingServiceImpl implements FundingService {
 	@Override
 	public int registerFunding(Funding funding) {
 		int fundingId = fundingdao.registerFunding(funding);
+		gameService.fundingGame(funding);
 		return fundingId;
 	}
 
