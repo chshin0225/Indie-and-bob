@@ -21,7 +21,7 @@ public class RewardServiceImpl implements RewardService{
 	}
 
 	@Override
-	public Reward selectRewardById(String rewardId) {
+	public Reward selectRewardById(int rewardId) {
 		return rewarddao.selectRewardById(rewardId);
 	}
 
@@ -31,7 +31,7 @@ public class RewardServiceImpl implements RewardService{
 	}
 
 	@Override
-	public List<Reward> selectRewardByGameId(String gameId) {
+	public List<Reward> selectRewardByGameId(int gameId) {
 		return rewarddao.selectRewardByGameId(gameId);
 	}
 

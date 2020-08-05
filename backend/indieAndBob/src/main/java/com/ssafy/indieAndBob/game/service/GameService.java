@@ -5,6 +5,7 @@ import java.util.List;
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.user.dto.User;
 
@@ -22,4 +23,5 @@ public interface GameService {
 	int deleteGameLike(GameLike like);
 	GameLike isLike(GameLike like);
 	int updateApprove(Game game);
+	int fundingGame(Funding funding);
 }
