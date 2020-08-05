@@ -11,14 +11,14 @@ import firebase from 'firebase'
 Vue.config.productionTip = false
 
 var firebaseConfig = {
-  apiKey: "AIzaSyDJz4DN61FoYsQI0RcoxdeMfkn_SA0AwNI",
-  authDomain: "indie-and-bob.firebaseapp.com",
-  databaseURL: "https://indie-and-bob.firebaseio.com",
-  projectId: "indie-and-bob",
-  storageBucket: "indie-and-bob.appspot.com",
-  messagingSenderId: "120944517686",
-  appId: "1:120944517686:web:e5f5df23ad868b92326e97",
-  measurementId: "G-1PNFCL0KCM"
+  apiKey: "AIzaSyACWrxR9heY92esve4NY-psUsxn1gNpMxI",
+  authDomain: "indie-and-bob-47b93.firebaseapp.com",
+  databaseURL: "https://indie-and-bob-47b93.firebaseio.com",
+  projectId: "indie-and-bob-47b93",
+  storageBucket: "indie-and-bob-47b93.appspot.com",
+  messagingSenderId: "1094373037550",
+  appId: "1:1094373037550:web:55fedc824a7627130faaff",
+  measurementId: "G-4E1QQMS2GD"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
