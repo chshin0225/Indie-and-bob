@@ -47,11 +47,12 @@ public class KakaopayController {
 
 	@PostMapping("/kakaoPay")
 	@ApiOperation(value = "결제하기")
-	public Object kakaoPay(@RequestBody Funding request, HttpServletResponse res) {
+	public Object kakaoPay(@RequestBody Funding request, HttpServletResponse res, HttpServletRequest req) {
 		log.info("kakaoPay post............................................");
 		log.info("funding : " + request);
 		ResponseEntity response = null;
-		
+		String nickname = jservice.getNickname(req);
+		request.setNickname(nickname);
 		String toPay = kakaopay.kakaoPayReady(request);
 		if( toPay != null) {
 			final BasicResponse result = new BasicResponse();

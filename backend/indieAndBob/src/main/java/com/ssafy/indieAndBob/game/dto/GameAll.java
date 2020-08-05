@@ -1,6 +1,7 @@
 package com.ssafy.indieAndBob.game.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,17 +11,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameAll {
-	public int gameId;
-	public String name;
-	public Date deadline;
-	public int aim;
-	public int leftPrice;
-	public boolean isEnd;
-	public int isApprove;
-	public String nickname;
-	public String thumbnail;
-	public Date createdAt;
-	public Date updatedAt;
-	public Date startedAt;
+	private int gameId;
+	private String name;
+	private Date deadline;
+	private int aim;
+	private int leftPrice;
+	private boolean isEnd;
+	private int isApprove;
+	private String nickname;
+	private String thumbnail;
+	private Date createdAt;
+	private Date updatedAt;
+	private Date startedAt;
     private String content;
+    private List<Integer> genre;
+    private List<String> genreName;
 }
