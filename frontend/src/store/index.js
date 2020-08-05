@@ -365,18 +365,18 @@ export default new Vuex.Store({
         const storageRef = firebase.storage().ref()
         storageRef.child(`game/두두/content/두두`).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
-          console.log(xhr)
+          // console.log(xhr)
           // xhr.responseType = 'blob';
           if (xhr) {
-            console.log('1')
+            // console.log('1')
             xhr.open('GET', url, false)
             xhr.send();
             var result = (xhr.response)
             // commit('setContent', 'aaa')
             // console.log(state.project.content)
           }
-          console.log('send', xhr)
-          console.log(res.data.object)
+          // console.log('send', xhr)
+          // console.log(res.data.object)
           res.data.object.content = result
           commit('setProject', res.data.object)
         }).catch(function(error) {
@@ -386,7 +386,10 @@ export default new Vuex.Store({
       .catch(err => console.error(err))
     },
 
+    getReward() {},
+
     
+    // like
     fetchLikedProjects({ commit }, username) {
       axios.get(SERVER.BASE + SERVER.LIKEDPROJECT + `/${username}`)
         .then(res => {
