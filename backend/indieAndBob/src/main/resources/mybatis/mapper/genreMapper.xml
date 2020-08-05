@@ -7,4 +7,8 @@
    	<select id="selectAllGenre" resultType="genre">
 		select * from genre
     </select>
+    
+    <select id="selectGenreNameByGameId" resultType="String" parameterType="int">
+    	select genre_name from game_genre natural join genre where game_id=#{gameId}
+    </select>
 </mapper>

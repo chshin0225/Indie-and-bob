@@ -12,7 +12,7 @@ import com.ssafy.indieAndBob.user.dto.User;
 public interface GameService {
 
 	GameAll selectGameById(String gameId);
-	int registerGame(GameAll game);
+	int registerGame(GameAll game, String extension);
 	int updateGame(Game game);
 	int deleteGameById(int gameId);
 	List<Game> selectAllGame(int page);
@@ -24,4 +24,5 @@ public interface GameService {
 	GameLike isLike(GameLike like);
 	int updateApprove(Game game);
 	int fundingGame(Funding funding);
+	List<GameAll> selectMadeGameByNickname(String nickname);
 }
