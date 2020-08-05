@@ -22,17 +22,15 @@
         <!-- notifications(login했을 때만) -->
         <v-menu v-if="isLoggedIn" transition="slide-y-transition" :close-on-click="closeOnClick" nudge-bottom=50 bottom left>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on"><i class="fas fa-bell white--text"></i></v-btn>
+            <v-btn v-if="message===0" icon v-bind="attrs" v-on="on"><i class="fas fa-bell white--text"></i></v-btn>
+            <v-btn v-else icon v-bind="attrs" v-on="on"><i class="fas fa-bell red--text"></i></v-btn>
           </template>
           <v-list>
             <v-list-item v-for="(item, i) in items" :key="i">
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title>{{ item }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
-
-        <!-- back btn -->
-        <v-btn @click="goBack" color="secondary" class="black--text" depressed>back</v-btn>
       </v-app-bar>
 
       <!-- nav drawer -->
@@ -52,8 +50,8 @@
           <!-- 로그인 했을 때 -->
           <router-link :to="`/user/mypage/${ userInfo.nickname }`" class="text-decoration-none black--text" v-if="isLoggedIn && dataFetched">
             <div class="pa-2 d-flex">
-              <v-avatar color="secondary">
-                <v-icon dark>mdi-account-circle</v-icon>
+              <v-avatar>
+                <img src="./assets/default_profile.png" :alt="userInfo.nickname" />
               </v-avatar>
               <h3 class="ml-4 align-self-center">{{ userInfo.nickname }}</h3>
             </div>
@@ -124,7 +122,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from "vuex"
+import { mapActions, mapGetters, mapState } from "vuex"
 import axios from 'axios'
 import SERVER from './api/base'
 
@@ -136,18 +134,13 @@ export default {
       userInfo: null,
       drawer: false,
       searchKeyword: '',
-      items: [
-        { title: 'Notification1' },
-        { title: 'Notification2' },
-        { title: 'Notification3' },
-        { title: 'Notification4' },
-      ],
       closeOnClick: true,
       currentUser: localStorage.getItem('username'),
     };
   },
+  
   methods: {
-    ...mapActions(['goBack', 'logout', 'search']),
+    ...mapActions(['goBack', 'logout', 'search', 'socketConnect']),
 
     getUserInfo() {
       this.userInfo = null
@@ -162,6 +155,7 @@ export default {
           .catch(err => console.error(err))
       }
     },
+
     sendSearch(searchKeyword) {
       this.search(searchKeyword)
       this.searchKeyword = ''
@@ -170,29 +164,29 @@ export default {
 
   created() {
     this.getUserInfo()
-    if (this.websocket !== null) {
-      this.websocket.onmessage = function(e){ console.log(e.data); }
-    }
   },
+
   watch: {
     $route: function() {
       // console.log('log', this.isLoggedIn)
       this.getUserInfo()
     },  
+    isLoggedIn() {
+      console.log('loggedin')
+      this.socketConnect()
+    },
     items() {
-
-    }
+    },
+    message() {},
   },
 
   computed: {
-    ...mapGetters(['isLoggedIn',]),
-    ...mapState(['websocket']),
+    ...mapGetters(['isLoggedIn']),
+    ...mapState(['message', 'items']),
     dataFetched: function() {
       return !!this.userInfo
     },
   },
-
-
 };
 </script>
 
