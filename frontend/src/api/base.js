@@ -22,8 +22,12 @@ export default {
     'GAMECOMMUNITY' : "/game/comment",
 
     // fund
-    'REWARD': "/reward/",
-    'REWARDS' :"/rewards/bygameid/",
+    'ALLREWARD': "/reward/",
+    'REWARDS' : "/rewards/bygameid/",
+    'REWARDDETAIL': "/reward/hj/",
+
+    // kakaopay
+    'KAKAOPAY': "/kakaoPay",
 
     // like
     'LIKE': "/game/like",

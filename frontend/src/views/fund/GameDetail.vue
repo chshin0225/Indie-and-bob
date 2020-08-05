@@ -4,6 +4,7 @@
     <div class="header">
       <v-container v-if="projectDataFetched">
         <h1>{{ project.name }}</h1>
+        <p>{{ rewards }}</p>
         <v-row>
           <v-col cols="12" sm="7">
             <p>장르정보</p>
@@ -95,13 +96,13 @@
               <!-- rewards -->
               <v-expansion-panels>
                 <v-expansion-panel v-for="reward in rewards" :key="reward.id">
-                  <v-expansion-panel-header>{{reward.rewardName}}</v-expansion-panel-header>
+                  <v-expansion-panel-header>{{ reward.rewardName }}</v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    {{reward.content}}
+                    {{ reward.content }}
                     <br />
-                    가격:{{reward.price}}원
+                    가격:{{ reward.price }}원
                     <br />
-                    남은 수량 : {{reward.leftCount}}
+                    남은 수량 : {{ reward.leftCount }}
                     <br />
                     <v-btn @click="rewardBuy(reward.rewardId)" color="primary" depressed>구매하러 가기</v-btn>
                   </v-expansion-panel-content>

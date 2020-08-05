@@ -161,7 +161,7 @@
           id="phonenumber"
           outlined
           placeholder="휴대폰 번호를 입력해주세요"
-          type="number"
+          type="text"
         />
         <small class="d-block" v-if="error.phonenumber">{{ error.phonenumber }}</small>
       </v-col>
@@ -230,6 +230,7 @@
         ></v-text-field>
       </v-col>
     </v-row>
+    
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
         <label for="extraAddress">상세주소</label>
@@ -246,18 +247,6 @@
       </v-col>
     </v-row>
 
-    <!-- <v-text-field
-      v-model="passwordConfirm"
-      :append-icon="showPwc ? 'mdi-eye' : 'mdi-eye-off'"
-      :rules="[rules.required, rules.min]"
-      :type="showPwc ? 'text' : 'password'"
-      name="input-10-1"
-      label="Password Confirmation"
-      hint="It must match the password."
-      counter
-      @click:append="showPwc = !showPwc"
-    ></v-text-field>-->
-
     <!-- term -->
     <v-row class="justify-center">
       <v-col sm="6">
@@ -269,8 +258,8 @@
                 <v-btn text v-bind="attrs" v-on="on">약관보기</v-btn>
               </template>
               <v-card>
-                <v-card-title class="headline">IndieAndBob 약관</v-card-title>
-                <v-card-text>게임을 게임ㅁ게임 밥알을 밥알바알</v-card-text>
+                <v-card-title class="headline">Indie And Bob 약관</v-card-title>
+                <v-card-text>회원가입 약관입니다</v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="green darken-1" text @click="dialog = false">닫기</v-btn>
