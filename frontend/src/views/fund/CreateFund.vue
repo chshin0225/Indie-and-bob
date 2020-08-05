@@ -174,38 +174,21 @@ export default {
           // console.log(res.data.object)
           this.reward = res.data.object;
         })
-        .error(err => console.error(err));
+        .catch(err => console.error(err));
     },
 
     kakaoPay() {
-      // const PARAMS = {
-      //   cid : "TCONETIME",
-      //   partner_order_id: '',
-      //   partner_user_id: '',
-      //   item_name: this.reward.title,
-      //   item_code : this.reward.rewardId,
-      //   quantity: 1,
-      //   total_amount : this.reward.price,
-      //   tax_free_amount: this.reward.price,
-
-      // }
-      // const HEADER = {
-      //   'Authorization': 'KakaoAK 0fe306a5da3f90e0d081a31a9dab6bdf'
-      // }
-      // axios.post('https://kapi.kakao.com/v1/payment/ready', PARAMS, HEADER)
-      // .then(res => {
-      //   console.log(res.data)
-      // })
-
       const PARAMS = {
         "rewardId": this.reward.rewardId,
         "gameId": this.reward.gameId,
         "money": this.reward.price,
       }
-          console.log(PARAMS)
       axios.post(SERVER.BASE + SERVER.KAKAOPAY, PARAMS, this.headersConfig)
         .then(res => {
-          console.log('res', res.data)
+          // console.log('res', res.data.data)
+          const QRCode = res.data.data
+          window.open(QRCode, "_blank")
+          // window.location.href = QRCode
         })
         .catch(err => console.error(err))
     },
