@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.dto.GameGenre;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.user.dto.User;
 
 @Repository
@@ -85,6 +87,16 @@ public class GameDaoImpl implements GameDao{
 	@Override
 	public int updateApprove(Game game) {
 		return temp.update(ns + "updateApprove", game);
+	}
+
+	@Override
+	public int fundingGame(Funding funding) {
+		return temp.update(ns + "fundingGame", funding);
+	}
+
+	@Override
+	public int insertGameGenre(GameGenre gameGenre) {
+		return temp.insert(ns + "insertGameGenre", gameGenre);
 	}
 
 	

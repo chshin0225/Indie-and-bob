@@ -6,9 +6,9 @@ import com.ssafy.indieAndBob.reward.dto.Reward;
 
 public interface RewardService {
 	int registerReward(Reward reward);
-	Reward selectRewardById(String rewardId);
+	Reward selectRewardById(int rewardId);
 	List<Reward> selectAllReward();
-	List<Reward> selectRewardByGameId(String gameId);
+	List<Reward> selectRewardByGameId(int gameId);
 	int updateRewardByRewardId(Reward reward);
 	int deleteRewardByRewardId(int rewardId);
 }

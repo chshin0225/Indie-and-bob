@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import com.ssafy.indieAndBob.game.dao.GameDao;
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
+import com.ssafy.indieAndBob.game.dto.GameGenre;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.user.dto.User;
 
@@ -22,6 +24,10 @@ public class GameServiceImpl implements GameService{
 	public int registerGame(GameAll game) {
 		int gameId = gamedao.registerGame(game);
 		gamedao.registerDetail(game);
+		for(int genre : game.getGenre()) {
+			GameGenre gameGenre = new GameGenre(game.getGameId(), genre);
+			gamedao.insertGameGenre(gameGenre);
+		}
 		return gameId;
 	}
 	
@@ -78,6 +84,11 @@ public class GameServiceImpl implements GameService{
 	@Override
 	public int updateApprove(Game game) {
 		return gamedao.updateApprove(game);
+	}
+
+	@Override
+	public int fundingGame(Funding funding) {
+		return gamedao.fundingGame(funding);
 	}
 
 	

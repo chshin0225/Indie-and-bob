@@ -38,6 +38,8 @@ export default new Vuex.Store({
     // project
     projectList: [],
     project: null,
+    myProjectList: [],
+    fundedProjectList: [],
 
     // like
     likedProjectList: [],
@@ -141,6 +143,12 @@ export default new Vuex.Store({
     },
     setContent(state, val) {
       state.project.content = val
+    },
+    setMyProjectList(state, val) {
+      state.myProjectList = val
+    },
+    setFundedProjectList(state, val) {
+      state.fundedProjectList = val
     },
 
     // search
@@ -386,9 +394,17 @@ export default new Vuex.Store({
       .catch(err => console.error(err))
     },
 
-    getReward() {},
+    fetchMyProjects() {},
 
-    
+    fetchFundedProjects({ commit, getters }, username) {
+      axios.get(SERVER.BASE + SERVER.FUNDEDPROJECT + username, getters.headersConfig)
+        .then(res => {
+          console.log(res.data)
+          commit('setFundedProjectList', res.data.object)
+        })
+        .catch(err => console.log(err))
+    },
+
     // like
     fetchLikedProjects({ commit }, username) {
       axios.get(SERVER.BASE + SERVER.LIKEDPROJECT + `/${username}`)

@@ -54,4 +54,12 @@
     <update id="updateApprove" parameterType="game">
     	update game set is_approve=#{isApprove} where game_id=#{gameId}
     </update>
+    
+    <update id="fundingGame" parameterType="funding">
+    	update game set left_price=left_price-#{money} where game_id=#{gameId}
+    </update>
+    
+    <insert id="insertGameGenre" parameterType="gamegenre">
+    	insert into game_genre (game_id,genre_id) values(#{gameId},#{genreId})
+    </insert>
 </mapper>

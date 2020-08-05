@@ -3,11 +3,11 @@
     <h1 class="text-center">Login</h1>
 
     <!-- email -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-3">
       <v-col class="py-0" sm=6>
         <label for="email">이메일</label>
         <v-text-field
-          class="my-3"
+          class="mt-1"
           hide-details=true
           v-model="email"
           @keyup.enter="login({email: email, password: password})"
@@ -16,16 +16,16 @@
           placeholder="이메일을 입력하세요."
           type="text"
         />
-        <div class="error-text" v-if="error.email">{{error.email}}</div>
+        <small class="error-text primary--text" v-if="error.email">{{error.email}}</small>
       </v-col>
     </v-row>
 
     <!-- password -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-3">
       <v-col class="py-0" sm=6>
         <label for="password">비밀번호</label>
           <v-text-field
-          class="my-3"
+          class="mt-1"
           hide-details=true
           v-model="password"
           id="password"
@@ -34,7 +34,7 @@
           placeholder="비밀번호를 입력하세요."
           type="password"
         />
-        <div class="error-text" v-if="error.password">{{error.password}}</div>
+        <small class="error-text primary--text" v-if="error.password">{{error.password}}</small>
       </v-col>
     </v-row>
 
@@ -47,19 +47,19 @@
           :class="{disabled : !isSubmit}"
           depressed
           large
-          color="primary"
+          color="accent"
         >로그인</v-btn>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols=12 class="text-center">
-        <div class="wrap">
+        <!-- <div class="wrap">
           <p>혹시 비밀번호를 잊으셨나요?</p>
-        </div>
+        </div> -->
 
         <div class="wrap">
-          <p>아직 회원이 아니신가요?</p>
+          <p class="mb-2">아직 회원이 아니신가요?</p>
           <router-link :to="{ name: 'Signup' }" class="v-btn">가입하기</router-link>
         </div>
       </v-col>

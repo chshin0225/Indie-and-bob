@@ -145,10 +145,11 @@ public class GameController {
 	@PostMapping("/game/registergame")
 	@ApiOperation(value = "게임 등록")
 	public Object registerGame(@RequestBody GameAll request, HttpServletRequest req) {
-		String nickname = jwtService.getNickname(req);
+//		String nickname = jwtService.getNickname(req);
+		String nickname = "aa";
 		logger.info("==========registerGame==========");
 		logger.info("Game : " + request);
-		logger.info("email = " + nickname);
+		logger.info("nickname = " + nickname);
 		ResponseEntity response = null;
 		request.setNickname(nickname);
 		int gameId = gservice.registerGame(request);

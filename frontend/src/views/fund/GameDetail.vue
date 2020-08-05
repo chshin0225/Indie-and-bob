@@ -4,18 +4,20 @@
     <div class="header">
       <v-container v-if="projectDataFetched">
         <h1>{{ project.name }}</h1>
-        <p>{{ rewards }}</p>
+        <!-- <p>{{ rewards }}</p> -->
+        <!-- <p>{{ project }}</p> -->
         <v-row>
           <v-col cols="12" sm="7">
-            <p>장르정보</p>
+            <p>장르: {{ project.genreName }}</p>
             <p>개발자: <span><router-link class="text-decoration-none" :to="`user/mypage/${project.nickname}`">{{ project.nickname }}</router-link></span></p>
             <p>기간: {{ $moment(project.createdAt).format("YYYY.MM.DD") }} ~ {{ $moment(project.deadline).format("YYYY.MM.DD") }}</p>
+            <p>목표: {{ project.aim }}원</p>
             <!-- {{ project }} -->
             <v-container class="pb-0">
               <v-row>
                 <p> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
-                <p>목표: {{ project.aim }}원</p>
+                <p>남은 금액: {{ project.leftPrice }}원</p>
               </v-row>
             </v-container>
 
@@ -88,27 +90,36 @@
         <!-- rewards section -->
         <v-col cols=12 sm="4">
           <v-card tile>
-            <v-list flat>
-              <!-- header -->
-              <v-subheader>Rewards</v-subheader>
-              <v-divider></v-divider>
 
-              <!-- rewards -->
-              <v-expansion-panels>
-                <v-expansion-panel v-for="reward in rewards" :key="reward.id">
-                  <v-expansion-panel-header>{{ reward.rewardName }}</v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    {{ reward.content }}
-                    <br />
-                    가격:{{ reward.price }}원
-                    <br />
-                    남은 수량 : {{ reward.leftCount }}
-                    <br />
-                    <v-btn @click="rewardBuy(reward.rewardId)" color="primary" depressed>구매하러 가기</v-btn>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-            </v-list>
+            <!-- header -->
+            <v-subheader><h3>리워드 종류</h3></v-subheader>
+            <v-divider></v-divider>
+
+            <!-- rewards -->
+            <v-expansion-panels accordion multiple>
+              <v-expansion-panel v-for="reward in rewards" :key="reward.rewardId">
+                <v-expansion-panel-header>
+                  <div>
+                    <h3 class="font-weight-medium">{{ reward.rewardName }}</h3>
+                    <p class="mb-0 mt-1 text-subtitle-2 font-weight-regular">{{ reward.price }}원</p>
+                  </div>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  {{ reward.content }}
+                  <v-divider class="mt-3"></v-divider>
+                  <v-row>
+                    <v-col class="d-flex align-center">
+                      <h4 class="font-weight-medium">{{ reward.leftCount }}개 남음</h4>
+                    </v-col>
+                    <v-spacer></v-spacer>
+                    <v-col class="d-flex justify-end">
+                      <v-btn @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
+                    </v-col>
+                  </v-row>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+
           </v-card>
         </v-col>
       </v-row>

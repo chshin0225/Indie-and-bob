@@ -4,10 +4,10 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.indieAndBob.mapper.reward">
 
-   <select id="selectRewardById" parameterType="String" resultType="reward">
+   <select id="selectRewardById" parameterType="int" resultType="reward">
    	  select * from reward where reward_id=#{rewardId}
    </select>
-   <select id="selectRewardByGameId" parameterType="String" resultType="reward">
+   <select id="selectRewardByGameId" parameterType="int" resultType="reward">
    	  select * from reward where game_id=#{gameId}
    </select>
    <select id="selectAllReward" resultType="reward">
