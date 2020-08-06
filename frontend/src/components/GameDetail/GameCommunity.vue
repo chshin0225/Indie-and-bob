@@ -3,7 +3,7 @@
 
       <!-- comment submit section -->
       <v-row class="justify-center">
-        <v-col sm="10">
+        <v-col cols=12 sm="10" class="pb-0">
           <v-text-field
             v-model="communityComment"
             id="communityComment"
@@ -11,9 +11,10 @@
             required
             hide-detail="true"
             placeholder="응원의 한마디를 해주세요!"
+            class="align-self-end"
           ></v-text-field>
         </v-col>
-        <v-col sm="2">
+        <v-col cols=12 sm="2" class="pt-0 pt-sm-3 d-flex justify-end justify-sm-start">
           <v-btn 
             color="accent" 
             depressed 

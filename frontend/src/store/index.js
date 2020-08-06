@@ -305,10 +305,14 @@ export default new Vuex.Store({
     },
 
     changeUserInfo({ getters, commit }, changedData) {
-      var extension = changedData.profile.name.split('.').reverse()[0];
-      firebase.storage().ref(`user/${changedData.nickname}/${changedData.nickname}.${extension}`).put(changedData.profile)
-      changedData.profile = `user/${changedData.nickname}/${changedData.nickname}.${extension}`
-      axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
+      if (changedData.profile !== null) {
+        var extension = changedData.profile.name.split('.').reverse()[0];
+        firebase.storage().ref(`user/${changedData.nickname}/${changedData.nickname}.${extension}`).put(changedData.profile)
+        changedData.profile = `user/${changedData.nickname}/${changedData.nickname}.${extension}`
+      } else {
+        changedData.profile = changedData.profileURL
+      }
+      axios.put(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
         .then(res => {
           commit('setUser', res.data)
           alert('회원 정보가 변경되었습니다.')
