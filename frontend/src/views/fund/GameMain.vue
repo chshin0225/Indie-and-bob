@@ -10,7 +10,7 @@
           <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
               <v-list-item>
                 <v-avatar>
-                  <img :src="game.thumbnail" :alt="game.nickname" />
+                  <img :src="game.profile" :alt="game.nickname" />
                 </v-avatar>
                 <v-list-item-content class="ml-4">
                   <v-list-item-title class="headline">{{ game.name }}</v-list-item-title>
@@ -65,8 +65,11 @@ export default {
             this.gameNum += 10;
             // console.log(res.data);
             res.data.object.forEach(item => {
+              storageRef.child(item.profile).getDownloadURL().then(url => {
+                item.profile = url
+              })
               console.log(item.thumbnail)
-              storageRef.child("game/15/thumbnail/15.jpg").getDownloadURL().then(url => {
+              storageRef.child(item.thumbnail).getDownloadURL().then(url => {
                 item.thumbnail = url
               })
               this.games.push(item);
