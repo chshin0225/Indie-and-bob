@@ -218,8 +218,9 @@ export default new Vuex.Store({
         commit('setPicture', null)
         console.log(signupData.profile)
         console.log(signupData.profile.name)
-        firebase.storage().ref(`user/${signupData.nickname}/${signupData.profile.name}`).put(signupData.profile)
-        signupData.profile = `user/${signupData.nickname}/${signupData.profile.name}`
+        var extension = signupData.profile.name.split('.').reverse()[0];
+        firebase.storage().ref(`user/${signupData.nickname}/${signupData.nickname}.${extension}`).put(signupData.profile)
+        signupData.profile = `user/${signupData.nickname}/${signupData.nickname}.${extension}`
         axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
         .then(res => {
           console.log(res)
@@ -303,6 +304,9 @@ export default new Vuex.Store({
     },
 
     changeUserInfo({ getters, commit }, changedData) {
+      var extension = changedDataData.profile.name.split('.').reverse()[0];
+      firebase.storage().ref(`user/${changedData.nickname}/${changedData.nickname}.${extension}`).put(changedData.profile)
+      changedData.profile = `user/${changedData.nickname}/${changedData.nickname}.${extension}`
       axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
         .then(res => {
           commit('setUser', res.data)
