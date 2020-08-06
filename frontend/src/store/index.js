@@ -304,7 +304,7 @@ export default new Vuex.Store({
     },
 
     changeUserInfo({ getters, commit }, changedData) {
-      var extension = changedDataData.profile.name.split('.').reverse()[0];
+      var extension = changedData.profile.name.split('.').reverse()[0];
       firebase.storage().ref(`user/${changedData.nickname}/${changedData.nickname}.${extension}`).put(changedData.profile)
       changedData.profile = `user/${changedData.nickname}/${changedData.nickname}.${extension}`
       axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
