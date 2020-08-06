@@ -53,7 +53,7 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<Game> selectAllGame(int page) {
+	public List<GameAll> selectAllGame(int page) {
 		return gamedao.selectAllGame(page);
 	}
 
