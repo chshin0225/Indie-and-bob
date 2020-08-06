@@ -10,7 +10,7 @@
           <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
               <v-list-item>
                 <v-avatar>
-                  <img src="../../assets/default_profile.png" :alt="game.nickname" />
+                  <img :src="game.thumbnail" :alt="game.nickname" />
                 </v-avatar>
                 <v-list-item-content class="ml-4">
                   <v-list-item-title class="headline">{{ game.name }}</v-list-item-title>
@@ -19,7 +19,7 @@
                   <v-list-item-subtitle>목표액: {{ game.aim }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-img src="../../assets/default_project.png" height="194"></v-img>
+              <v-img :src="game.thumbnail" height="194"></v-img>
           </router-link>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -39,6 +39,7 @@ import axios from "axios";
 import SERVER from "../../api/base";
 
 import InfiniteLoading from "vue-infinite-loading";
+import firebase from "firebase"
 
 export default {
   name: "GameMain",
@@ -56,6 +57,7 @@ export default {
 
   methods: {
     infiniteHandler($state) {
+      const storageRef = firebase.storage().ref()
       axios.get(SERVER.BASE + SERVER.GAMELIST + this.gameNum + "/")
         .then(res => {
           // console.log(res);
@@ -63,6 +65,10 @@ export default {
             this.gameNum += 10;
             // console.log(res.data);
             res.data.object.forEach(item => {
+              console.log(item.thumbnail)
+              storageRef.child("game/15/thumbnail/15.jpg").getDownloadURL().then(url => {
+                item.thumbnail = url
+              })
               this.games.push(item);
             });
             // console.log("게임즈");

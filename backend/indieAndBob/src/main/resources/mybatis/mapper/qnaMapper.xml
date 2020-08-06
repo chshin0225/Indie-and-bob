@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.indieAndBob.mapper.qna">
+
+   	<insert id="create" parameterType="QnaVO">
+		 insert into qna (qna_id, game_id, nickname, title, content, is_secret, answer) 
+		 values(#{qnaId}, #{gameId}, #{nickname}, #{title}, #{content}, #{isSecret}, #{answer})
+	 </insert>
+   	
+   	<select id="read" parameterType="Integer" resultType="QnaVO">
+		select * from qna where qna_id = #{qnaId}
+	</select>
+	
+	<update id="update">
+		update qna set qna_id=#{qnaId}, game_id=#{gameId}, nickname=#{nickname}, title=#{title}, content=#{content}, is_secret=#{isSecret}, answer=#{answer} where qna_id=#{qnaId}
+ 	</update>
+ 	
+	<delete id="delete">
+		delete from qna where qna_id=#{qnaId}
+	</delete>
+	
+	<select id="listAll" resultType="QnaVO">
+		select * from qna
+	</select>
+ 	
+ 	
+</mapper>

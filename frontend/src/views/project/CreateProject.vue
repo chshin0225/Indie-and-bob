@@ -69,10 +69,10 @@
           <label for="thumbnail">썸네일</label>
           <v-file-input
             id="thumbnail"
-            @change="uploadImage"
             accept="image/*"
             label="썸네일 이미지를 입력해주세요"
             prepend-icon="mdi-camera"
+            v-model="thumbnail"
           ></v-file-input>
         </v-col>
       </v-row>
@@ -87,10 +87,10 @@
 <script>
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
-// import axios from "axios";
+import axios from "axios";
 // import router from "../../router";
 import { Editor } from "@toast-ui/vue-editor";
-// import SERVER from "../../api/base";
+import SERVER from "../../api/base";
 import { mapGetters } from 'vuex';
 import firebase from 'firebase'
 export default {
@@ -119,7 +119,7 @@ export default {
       },
       content: "",
       aim: 0,
-      thumbnailUrl: "",
+      thumbnail: null,
     };
   },
   computed: {
@@ -128,23 +128,20 @@ export default {
   methods: {
     onButtonClick() {
       let PARAMS = {
-        content: this.$refs.toastuiEditor.invoke("getHtml"),
+        content: null,
         name: this.title,
         deadline: this.date,
+        genre: [1],
         aim: this.aim,
-        thumbnail: this.thumbnailUrl,
+        thumbnail: this.thumbnail.name,
       };
-      firebase.storage().ref(`game/${PARAMS.name}/content/${PARAMS.name}`).put(new Blob([PARAMS.content]))
-      PARAMS.content = `game/${PARAMS.name}/content/${PARAMS.name}`
-
-      // console.log(PARAMS.content)
-      // axios
-      //   .post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
-      //   .then((res) => {
-      //     console.log(res)
-      //     router.push("/project/" + res.data.object);
-      //   })
-      //   .catch((err) => console.error(err));
+      axios.post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
+        .then(res => {
+          console.log(res.data.object)
+          firebase.storage().ref(`game/${res.data.object.gameId}/content/${res.data.object.gameId}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
+          firebase.storage().ref(`game/${res.data.object.gameId}/thumbnail/${res.data.object.gameId}.${res.data.object.extension}`).put(this.thumbnail)
+        })
+        .catch((err) => console.error(err));
     },
     uploadImage() {
       let fileInfo = document.getElementById("thumbnail").files[0];
