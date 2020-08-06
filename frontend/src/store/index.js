@@ -304,18 +304,19 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
-    changeUserInfo({ getters, commit }, changedData) {
+    changeUserInfo({ getters }, changedData) {
       if (changedData.profile !== null) {
         var extension = changedData.profile.name.split('.').reverse()[0];
         firebase.storage().ref(`user/${changedData.nickname}/${changedData.nickname}.${extension}`).put(changedData.profile)
         changedData.profile = `user/${changedData.nickname}/${changedData.nickname}.${extension}`
       } else {
+        console.log(changedData.profile)
         changedData.profile = changedData.profileURL
       }
       axios.put(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
-        .then(res => {
-          commit('setUser', res.data)
+        .then(() => {
           alert('회원 정보가 변경되었습니다.')
+          router.push({name: "MyPage", params: {username: changedData.nickname}})
         })
         .catch(err => console.error(err))
     },
