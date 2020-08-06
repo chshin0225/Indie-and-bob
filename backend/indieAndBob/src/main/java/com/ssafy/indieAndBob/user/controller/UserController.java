@@ -72,13 +72,6 @@ public class UserController {
 			u = userService.selectByNickname(request.getNickname());
 			logger.info(" " + u);
 			if(u == null) {
-				String img = request.getProfile();
-				if(img != null) {
-					String[] extensions = img.split("\\.");
-					String extension = extensions[extensions.length-1];
-					String url = "user/" + request.getNickname() + "/" + request.getNickname() + "." + extension;
-					request.setProfile(url);
-				}
 				if (userService.registerUser(request) == 1) {
 					final BasicResponse result = new BasicResponse();
 					result.status = true;

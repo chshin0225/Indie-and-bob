@@ -1,59 +1,39 @@
 <template>
   <div>
-    <!-- header -->
+    <!-- header 부분 -->
     <div class="header">
       <v-container v-if="projectDataFetched">
-        <h1>{{ project.name }}</h1>
-        <!-- <p>{{ rewards }}</p> -->
-        <!-- <p>{{ project }}</p> -->
         <v-row>
-          <v-col cols="12" sm="7">
-            <p>장르: {{ project.genreName }}</p>
+          <!-- 프로젝트 정보 -->
+          <v-col cols="12" sm="6">
+            <h1>{{ project.name }}</h1>
+            <!-- <p>{{ rewards }}</p> -->
+            <!-- <p>{{ project }}</p> -->
+            <p>장르: {{ genreData }}</p>
             <p>개발자: <span><router-link class="text-decoration-none" :to="`user/mypage/${project.nickname}`">{{ project.nickname }}</router-link></span></p>
             <p>기간: {{ $moment(project.createdAt).format("YYYY.MM.DD") }} ~ {{ $moment(project.deadline).format("YYYY.MM.DD") }}</p>
             <p>목표: {{ project.aim }}원</p>
-            <!-- {{ project }} -->
             <v-container class="pb-0">
               <v-row>
                 <p> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
-                <p>남은 금액: {{ project.leftPrice }}원</p>
+                <p>남은 금액: {{ leftPriceData }}원</p>
               </v-row>
             </v-container>
 
-            
             <v-progress-linear v-model="fundingProgress"></v-progress-linear>
           </v-col>
           <v-spacer></v-spacer>
 
-          <!-- likes -->
-          <v-col cols="12" sm="4">
-            <!-- <h4>이 프로젝트를 좋아한 사람들</h4> -->
-            <v-dialog v-model="likeDialog" scrollable max-width="400">
-              <template v-slot:activator="{ on, attrs }">
-                <h4>이 프로젝트를 좋아한 사람들 <span class="ml-1"><v-btn color="accent" x-small depressed v-bind="attrs" v-on="on">더보기</v-btn></span></h4>
-                <!-- <v-btn color="accent" x-small depressed v-bind="attrs" v-on="on">더보기</v-btn> -->
-              </template>
-              <v-card>
-                <v-card-title class="headline">이 프로젝트를 좋아한 사람들</v-card-title>
-                <v-card-text>
-                  <GameLike />
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="dark" text @click="likeDialog = false">닫기</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-
-            <!-- 좋아하는 사람들 프로필 사진을 앞에 30개 정도만 작게 올리고 ... + 이런식으로 할까봐요 -->
+          <!-- thumbnail -->
+          <v-col cols="12" sm="6">
+            <v-img :src="project.thumbnail" contain></v-img>
           </v-col>
-
         </v-row>
       </v-container>
     </div>
 
-    <!-- content -->
+    <!-- content 부분 -->
     <v-container v-if="projectDataFetched">
       <v-row>
         <!-- tab section -->
@@ -76,8 +56,7 @@
 
             <!-- Q&A -->
             <v-tab-item>
-              <h2>Q&A</h2>
-              <QuestionandAnswer v-bind:project="project" />
+              <QuestionandAnswer />
             </v-tab-item>
 
             <!-- 응원하기 -->
@@ -87,10 +66,62 @@
           </v-tabs>
         </v-col>
 
-        <!-- rewards section -->
         <v-col cols=12 sm="4">
-          <v-card tile>
 
+          <!-- 좋아요/공유하기 btn -->
+          <v-card tile class="pa-4 mb-4">
+            <v-row>
+
+              <v-col class="d-flex justify-center">
+                <v-btn @click="likeButton()" color="primary" outlined class="mr-2">
+                  <i :color="iconColor" class="fas fa-heart fa-lg mr-2" v-if="isLike"></i> 
+                  <i :color="iconColor" class="far fa-heart fa-lg mr-2" v-if="!isLike"></i> 
+                  좋아요
+                </v-btn>
+
+                <v-menu v-model="menu" :close-on-content-click="false" nudge-width="200" nudge-bottom=20 nudge-left=100 offset-y bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="accent" outlined v-bind="attrs" v-on="on">
+                      공유하기
+                    </v-btn>
+                  </template>
+
+                  <v-card>
+                    <v-container>
+                      <h3>이 프로젝트를 널리널리 소문내주세요!</h3>
+                      <p ref="shareUrl" class="my-3">{{url}}</p>
+                      <v-spacer></v-spacer>
+                      <div>
+                        <v-btn small depressed color="accent" @click="copy()">복사하기</v-btn>
+                      </div>
+                    </v-container>
+                  </v-card>
+                </v-menu>
+              </v-col>
+
+              <v-col cols=12 class="d-flex justify-center">
+                <v-dialog v-model="likeDialog" scrollable max-width="400">
+                  <template v-slot:activator="{ on, attrs }">
+                    <h4 class="font-weight-medium">{{ likedPeopleCount }}명이 이 프로젝트를 좋아합니다<span class="ml-1"><v-btn color="accent" x-small depressed v-bind="attrs" v-on="on">더보기</v-btn></span></h4>
+                  </template>
+                  <v-card>
+                    <v-card-title class="headline">이 프로젝트를 좋아한 사람들</v-card-title>
+                    <v-card-text>
+                      <GameLike />
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="dark" text @click="likeDialog = false">닫기</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-col>
+
+            </v-row>
+          </v-card>
+
+          <!-- rewards section -->
+          <v-card tile>
             <!-- header -->
             <v-subheader><h3>리워드 종류</h3></v-subheader>
             <v-divider></v-divider>
@@ -125,7 +156,6 @@
       </v-row>
 
  
-      
       <!-- admin -->
       <div v-if="isAdmin && project.isApprove === 0">
         <v-btn cols="auto" @click="approve" class="mr-3">승인</v-btn>
@@ -133,38 +163,6 @@
       </div>  
 
     </v-container>
-
-    <div class="like-and-share">
-      <!-- like button -->
-      <v-btn cols="auto" fab large @click="likeButton()" color="accent" class="mr-3">
-        <v-icon :color="iconColor">fas fa-heart</v-icon>
-      </v-btn>
-
-      <!-- share button -->
-      <v-menu v-model="menu" :close-on-content-click="false" nudge-width="200" nudge-right="20" offset-x>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn color="accent" v-bind="attrs" v-on="on" fab large cols="auto" class="ml-3">
-            <v-icon :color="shareIcon">fas fa-share-alt</v-icon>
-          </v-btn>
-        </template>
-
-        <!-- share button popup -->
-        <v-card>
-          <v-container>
-            <h3>이 프로젝트를 널리널리 소문내주세요!</h3>
-            <p ref="shareUrl" class="my-3">{{url}}</p>
-            <v-spacer></v-spacer>
-            <div>
-              <v-btn small depressed color="accent" @click="copy()">복사하기</v-btn>
-            </div>
-            <!-- <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn text @click="menu = false; shareIcon='white';">close</v-btn>
-            </v-card-actions> -->
-          </v-container>
-        </v-card>
-      </v-menu>
-    </div>
 
   </div>
 </template>
@@ -183,8 +181,7 @@ import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 import _ from 'lodash'
-
-// import firebase from 'firebase'
+import firebase from 'firebase'
 
 export default {
   name: 'GameDetail',
@@ -201,7 +198,8 @@ export default {
       isLike: false,
       likeDialog: false,
       shareIcon: "white",
-      iconColor: "white",
+      // iconColor: "white",
+      iconColor: "accent",
       menu: false,
       url: "http://i3a105.p.ssafy.io:3000" + window.location.pathname,
       rewards: [],
@@ -211,12 +209,22 @@ export default {
 
   computed: {
     ...mapState(['project']),
-    ...mapGetters(['headersConfig', 'projectDataFetched']),
+    ...mapGetters(['headersConfig', 'projectDataFetched', 'likedPeopleCount',]),
     fundingProgress: function() {
       if (this.project.aim === this.project.leftPrice) {
         return 0
       } else {
-        return _.round((this.project.aim - this.project.leftPrice) / this.project.aim * 100)
+        return _.round((this.project.aim - this.leftPriceData) / this.project.aim * 100)
+      }
+    },
+    genreData: function() {
+      return this.project.genreName.join()
+    },
+    leftPriceData: function() {
+      if (this.project.leftPrice > 0) {
+        return this.project.leftPrice
+      } else {
+        return 0
       }
     },
   },
@@ -237,7 +245,7 @@ export default {
             this.isLike = true;
             this.iconColor = "primary";
           } else {
-            this.iconColor = "white"
+            this.iconColor = "accent"
           }
         })
         .catch(err => console.error(err))
@@ -252,7 +260,7 @@ export default {
     },
 
     likeButton() {
-      if (this.iconColor === "white") {
+      if (this.iconColor === "accent") {
         axios.post(SERVER.BASE + SERVER.LIKE,
           {
             nickname: localStorage.getItem("username"),
@@ -262,6 +270,7 @@ export default {
           )
           .then(() => {
             this.iconColor = "primary"
+            this.isLike = true
             this.fetchLikedUsers(this.project.gameId)
           })
           .catch(err => console.error(err))
@@ -269,7 +278,8 @@ export default {
         const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.project.gameId;
         axios.delete(deleteLike, this.headersConfig)
           .then(() => {
-            this.iconColor = "white"
+            this.iconColor = "accent"
+            this.isLike = false
             this.fetchLikedUsers(this.project.gameId)
           })
           .catch(err => console.error(err))
@@ -312,10 +322,22 @@ export default {
     this.getProject(this.$route.params.id)
     this.isLiked()
     this.fetchRewards()
+    this.fetchLikedUsers(this.$route.params.id)
     
     if (localStorage.getItem("username") === "admin") {
       this.isAdmin = true;
     }    
+  },
+
+  updated() {
+    if (this.projectDataFetched) {
+      const storageRef = firebase.storage().ref()
+      const ref = this.project.thumbnail
+      storageRef.child(ref).getDownloadURL()
+        .then(url => {
+          this.project.thumbnail = url
+        })
+    }
   },
 };
 </script>
@@ -323,11 +345,5 @@ export default {
 <style scoped>
 .header {
   background-color: #e4dfda;
-}
-
-.like-and-share {
-  position: fixed;
-  bottom: 50px;
-  left: 30px;
 }
 </style>
