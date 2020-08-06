@@ -27,7 +27,7 @@
    <update id="changeUserInfo" parameterType="user">
    	  update user set  name=#{name}, postcode=#{postcode},address=#{address},
    	  extra_address=#{extraAddress},bank_name=#{bankName},bank_account=#{bankAccount},
-      is_developer=#{isDeveloper},phone_number=#{phoneNumber},introduction=#{introduction}
+      is_developer=#{isDeveloper},phone_number=#{phoneNumber},profile=#{profile},introduction=#{introduction}
       where email={#email}
    </update>
    <insert id="registerFollow" parameterType="follow">
