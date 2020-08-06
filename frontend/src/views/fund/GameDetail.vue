@@ -13,7 +13,6 @@
             <p>개발자: <span><router-link class="text-decoration-none" :to="`user/mypage/${project.nickname}`">{{ project.nickname }}</router-link></span></p>
             <p>기간: {{ $moment(project.createdAt).format("YYYY.MM.DD") }} ~ {{ $moment(project.deadline).format("YYYY.MM.DD") }}</p>
             <p>목표: {{ project.aim }}원</p>
-            <!-- {{ project }} -->
             <v-container class="pb-0">
               <v-row>
                 <p> {{ this.fundingProgress }}% 달성</p>
@@ -28,22 +27,6 @@
 
           <!-- thumbnail -->
           <v-col cols="12" sm="6">
-            <!-- <v-dialog v-model="likeDialog" scrollable max-width="400">
-              <template v-slot:activator="{ on, attrs }">
-                <h4>{{ likedPeopleCount }}명이 이 프로젝트를 좋아합니다 <span class="ml-1"><v-btn color="accent" x-small depressed v-bind="attrs" v-on="on">더보기</v-btn></span></h4>
-              </template>
-              <v-card>
-                <v-card-title class="headline">이 프로젝트를 좋아한 사람들</v-card-title>
-                <v-card-text>
-                  <GameLike />
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="dark" text @click="likeDialog = false">닫기</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog> -->
-
             <v-img :src="project.thumbnail" contain></v-img>
           </v-col>
         </v-row>
@@ -73,8 +56,7 @@
 
             <!-- Q&A -->
             <v-tab-item>
-              <h2>Q&A</h2>
-              <QuestionandAnswer v-bind:project="project" />
+              <QuestionandAnswer />
             </v-tab-item>
 
             <!-- 응원하기 -->
@@ -92,20 +74,15 @@
 
               <v-col class="d-flex justify-center">
                 <v-btn @click="likeButton()" color="primary" outlined class="mr-2">
-                  <v-icon :color="iconColor" class="mr-2">fas fa-heart</v-icon> 좋아요
-                  <!-- <i :color="iconColor" class="fas fa-heart fa-lg mr-2" v-if="isLike"></i> 
-                  <i :color="iconColor" class="far fa-heart fa-lg mr-2" v-if="!isLike"></i>  -->
-
+                  <i :color="iconColor" class="fas fa-heart fa-lg mr-2" v-if="isLike"></i> 
+                  <i :color="iconColor" class="far fa-heart fa-lg mr-2" v-if="!isLike"></i> 
+                  좋아요
                 </v-btn>
 
-                <!-- <v-btn @click="likeButton()" color="primary" outlined class="mr-2">
-                  <i class="far fa-heart"></i>
-                </v-btn> -->
-
-                <v-menu v-model="menu" :close-on-content-click="false" nudge-width="200" nudge-right="20" offset-x>
+                <v-menu v-model="menu" :close-on-content-click="false" nudge-width="200" nudge-bottom=20 nudge-left=100 offset-y bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn color="accent" outlined v-bind="attrs" v-on="on">
-                      <v-icon color="accent" class="mr-2">fas fa-share-alt</v-icon> 공유하기
+                      공유하기
                     </v-btn>
                   </template>
 
@@ -125,7 +102,7 @@
               <v-col cols=12 class="d-flex justify-center">
                 <v-dialog v-model="likeDialog" scrollable max-width="400">
                   <template v-slot:activator="{ on, attrs }">
-                    <h4 class="font-weight-medium">{{ likedPeopleCount }}명이 이 프로젝트를 좋아합니다 <span class="ml-1"><v-btn color="accent" x-small depressed v-bind="attrs" v-on="on">더보기</v-btn></span></h4>
+                    <h4 class="font-weight-medium">{{ likedPeopleCount }}명이 이 프로젝트를 좋아합니다<span class="ml-1"><v-btn color="accent" x-small depressed v-bind="attrs" v-on="on">더보기</v-btn></span></h4>
                   </template>
                   <v-card>
                     <v-card-title class="headline">이 프로젝트를 좋아한 사람들</v-card-title>
@@ -141,33 +118,6 @@
               </v-col>
 
             </v-row>
-
-
-          <!-- <div class="like-and-share">
-            <v-btn cols="auto" fab large @click="likeButton()" color="accent" class="mr-3">
-              <v-icon :color="iconColor">fas fa-heart</v-icon>
-            </v-btn>
-
-            <v-menu v-model="menu" :close-on-content-click="false" nudge-width="200" nudge-right="20" offset-x>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn color="accent" v-bind="attrs" v-on="on" fab large cols="auto" class="ml-3">
-                  <v-icon :color="shareIcon">fas fa-share-alt</v-icon>
-                </v-btn>
-              </template>
-
-              <v-card>
-                <v-container>
-                  <h3>이 프로젝트를 널리널리 소문내주세요!</h3>
-                  <p ref="shareUrl" class="my-3">{{url}}</p>
-                  <v-spacer></v-spacer>
-                  <div>
-                    <v-btn small depressed color="accent" @click="copy()">복사하기</v-btn>
-                  </div>
-                </v-container>
-              </v-card>
-            </v-menu>
-          </div>  -->
-
           </v-card>
 
           <!-- rewards section -->
@@ -295,7 +245,6 @@ export default {
             this.isLike = true;
             this.iconColor = "primary";
           } else {
-            // this.iconColor = "white"
             this.iconColor = "accent"
           }
         })
@@ -311,7 +260,6 @@ export default {
     },
 
     likeButton() {
-      // if (this.iconColor === "white") {
       if (this.iconColor === "accent") {
         axios.post(SERVER.BASE + SERVER.LIKE,
           {
@@ -322,6 +270,7 @@ export default {
           )
           .then(() => {
             this.iconColor = "primary"
+            this.isLike = true
             this.fetchLikedUsers(this.project.gameId)
           })
           .catch(err => console.error(err))
@@ -329,8 +278,8 @@ export default {
         const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.project.gameId;
         axios.delete(deleteLike, this.headersConfig)
           .then(() => {
-            // this.iconColor = "white"
             this.iconColor = "accent"
+            this.isLike = false
             this.fetchLikedUsers(this.project.gameId)
           })
           .catch(err => console.error(err))
@@ -397,10 +346,4 @@ export default {
 .header {
   background-color: #e4dfda;
 }
-
-/* .like-and-share {
-  position: fixed;
-  bottom: 50px;
-  left: 30px;
-} */
 </style>

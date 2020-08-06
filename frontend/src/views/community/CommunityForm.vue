@@ -3,10 +3,9 @@
     <h1 class="text-center">New</h1>
 
     <!-- title -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-3">
       <v-col class="py-0" sm="10">
         <v-text-field
-          class="my-3"
           hide-details="true"
           v-model="articleData.title"
           id="title"
@@ -14,15 +13,14 @@
           type="text"
           outlined
         />
-        <div class="error-text primary--text" v-if="error.title">{{error.title}}</div>
+        <small class="error-text primary--text" v-if="error.title">{{error.title}}</small>
       </v-col>
     </v-row>
 
     <!-- content -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-3">
       <v-col class="py-0" sm="10">
         <v-textarea
-          class="my-3"
           hide-details="true"
           v-model="articleData.content"
           id="content"
@@ -30,7 +28,7 @@
           type="text"
           outlined
         ></v-textarea>
-        <div class="error-text primary--text" v-if="error.content">{{error.content}}</div>
+        <small class="error-text primary--text" v-if="error.content">{{error.content}}</small>
       </v-col>
     </v-row>
 
