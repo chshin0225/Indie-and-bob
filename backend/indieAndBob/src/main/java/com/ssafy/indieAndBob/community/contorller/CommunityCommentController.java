@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.indieAndBob.community.dto.Community;
-import com.ssafy.indieAndBob.community.service.CommunityService;
+import com.ssafy.indieAndBob.community.dto.CommunityComment;
+import com.ssafy.indieAndBob.community.service.CommunityCommentService;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 
@@ -27,25 +28,25 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "http://i3a105.p.ssafy.io:3000" })
 @RestController
-public class CommunityController {
+public class CommunityCommentController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CommunityController.class);
+	private static final Logger logger = LoggerFactory.getLogger(CommunityCommentController.class);
 	
 	@Autowired
 	JwtService jwtService;
 	
 	@Autowired
-	CommunityService communityService;
+	CommunityCommentService commentService;
 	
-	@PostMapping("/community")
-	@ApiOperation(value="커뮤니티 글 작성")
-	public Object registerCommunity(@RequestBody Community community,
+	@PostMapping("/community/comment")
+	@ApiOperation(value="커뮤니티 댓글 작성")
+	public Object registerCommunityComment(@RequestBody CommunityComment comment,
 			HttpServletRequest request) {
-		logger.info("==========registerCommunity==========");
+		logger.info("==========registerCommunityComment==========");
 		String nickname = jwtService.getNickname(request);
-		community.setNickname(nickname);
+		comment.setNickname(nickname);
 		ResponseEntity response = null;
-		if(communityService.insertCommunity(community) == 1) {
+		if(commentService.insertCommunityComment(comment) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -56,12 +57,12 @@ public class CommunityController {
 		return response;
 	}
 	
-	@GetMapping("/community")
-	@ApiOperation(value="커뮤니티 글 전부 조회")
-	public Object listCommunity() {
-		logger.info("==========listCommunity==========");
+	@GetMapping("/community/comment/{communityId}")
+	@ApiOperation(value="커뮤니티 댓글 조회")
+	public Object listCommunityComment(@PathVariable int communityId) {
+		logger.info("==========listCommunityComment==========");
 		ResponseEntity response = null;
-		List<Community> list = communityService.listCommunity();
+		List<Community> list = commentService.listCommunityComment(communityId);
 		if(list != null) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
@@ -74,30 +75,12 @@ public class CommunityController {
 		return response;
 	}
 	
-	@GetMapping("/community/{communityId}")
-	@ApiOperation(value="커뮤니티 글 세부 조회")
-	public Object communityDetail(@PathVariable int communityId) {
-		logger.info("==========communityDetail==========");
+	@PutMapping("/community/comment")
+	@ApiOperation(value="커뮤니티 댓글 수정")
+	public Object updateCommunityComment(@RequestBody CommunityComment comment) {
+		logger.info("==========updateCommunityComment==========");
 		ResponseEntity response = null;
-		Community community = communityService.communityDetail(communityId);
-		if(community != null) {
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-			result.object = community;
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-		} else {
-			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
-		return response;
-	}
-	
-	@PutMapping("/community")
-	@ApiOperation(value="커뮤니티 글 수정")
-	public Object updateCommunity(@RequestBody Community community) {
-		logger.info("==========updateCommunity==========");
-		ResponseEntity response = null;
-		if(communityService.updateCommunity(community) == 1) {
+		if(commentService.updateCommunityComment(comment) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -108,12 +91,12 @@ public class CommunityController {
 		return response;
 	}
 	
-	@DeleteMapping("/community/{communityId}")
-	@ApiOperation(value="커뮤니티 글 삭제")
-	public Object deleteCommunity(@PathVariable int communityId) {
-		logger.info("==========deleteCommunity==========");
+	@DeleteMapping("/community/comment/{ccId}")
+	@ApiOperation(value="커뮤니티 댓글 삭제")
+	public Object deleteCommunityComment(@PathVariable int ccId) {
+		logger.info("==========deleteCommunityComment==========");
 		ResponseEntity response = null;
-		if(communityService.deleteCommunity(communityId) == 1) {
+		if(commentService.deleteCommunityComment(ccId) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
