@@ -6,7 +6,7 @@
         <v-container class="ml-5">
           <v-row>
             <v-avatar size=100 class="mr-5 mr-sm-9">
-              <img :src="profileImage" :alt="userInfo.nickname" />
+              <img :src="profileImage" alt="실패" />
             </v-avatar>
             <v-col>
               <v-row>
@@ -199,11 +199,14 @@ export default {
       this.getUserInfo(username);
       this.fetchFollowers(username);
       this.fetchFollowings(username);
+    },
+    userDataFetched() {
       const storageRef = firebase.storage().ref()
+      console.log('프사 가져오기')
       storageRef.child(this.userInfo.profile).getDownloadURL().then(url => {
         this.profileImage = url
       }) 
-    },
+    }
   },
 
   methods: {

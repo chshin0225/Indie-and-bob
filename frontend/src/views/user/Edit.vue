@@ -4,13 +4,13 @@
 
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
-        <p>이름 : {{ userInfo.name }}</p>
+        <p>이름 : {{ name }}</p>
       </v-col>
     </v-row>
     <!-- id -->
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
-        <p>닉네임 : {{ userInfo.nickname }}</p>
+        <p>닉네임 : {{ nickname }}</p>
         <small class="d-block" v-if="error.nickName">{{ error.nickName }}</small>
       </v-col>
     </v-row>
@@ -25,7 +25,7 @@
     <!-- email -->
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
-        <p>이메일 : {{ userInfo.email }}</p>
+        <p>이메일 : {{ email }}</p>
       </v-col>
     </v-row>
 
@@ -41,7 +41,6 @@
           id="profile-image"
           outlined
           placeholder="프로필 사진을 등록해주세요."
-          type="text"
         />
         <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
@@ -50,7 +49,7 @@
     <v-row v-if="originalProfile" class="justify-center">
       <v-col class="py-0" sm="6">
         <label for="profile-image">기존에 사용하던 이미지</label>
-        <img :src="originalProfile" :alt="userinfo.nickname">
+        <img :src="originalProfile" :alt="nickname">
         <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
@@ -159,7 +158,7 @@
           hide-details="true"
           :items="banks"
           id="bankname"
-          v-model="bank"
+          v-model="bankname"
           outlined
         ></v-select>
       </v-col>
@@ -200,7 +199,7 @@
 
           <v-col class="text-right py-0">
             <v-btn
-              @click="changeUserInfo({email: email, profile:profileImage, password: password, nickname: nickName, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, postcode: postcode, address: address, extraAddress: extraAddress})"
+              @click="changeUserInfo({email: email, profile:profileImage, profileURL: profileURL, password: password, nickname: nickname, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, postcode: postcode, address: address, extraAddress: extraAddress})"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
@@ -219,22 +218,27 @@
 import axios from "axios"
 import { mapActions, mapState } from "vuex"
 import firebase from "firebase"
+import SERVER from "../../api/base";
 
 export default {
   name: 'Edit',
 
   created() {
+    console.log('1')
     this.component = this
-    this.getUserInfo(this.$route.params.username)
+    console.log('2')
+    this.getUser()
   },
 
   data() {
     return {
       email: "",
-      profileImage: "",
+      password: "",
+      profileImage: null,
       originalProfile: null,
+      profileURL: null,
       phonenumber: "",
-      nickName: "",
+      nickname: "",
       name: "",
       usertype: "",
       userTypes: ["일반 사용자", "개발자"],
@@ -267,7 +271,7 @@ export default {
   },
 
   watch: {
-    nickName: function() {
+    nickname: function() {
       this.checkForm();
     },
     email: function() {
@@ -293,33 +297,40 @@ export default {
     ...mapActions(['changeUserInfo', 'getUserInfo']),
 
     getUser() {
+      console.log('getuser')
       axios
-        .유저정보가져오기()
+        .get(SERVER.BASE + SERVER.USERINFO + `/${this.$route.params.username}`)
         .then(res => {
-          this.email = res.data.email;
-          this.password = res.data.password;
-          this.name = res.data.name;
-          this.introduction = res.data.introduction;
-          this.phonenumber = res.data.phonenumber;
-          this.nickName = res.data.nickName;
-          this.usertype = res.data.usertype;
-          this.bankname = res.data.bankname;
-          this.accountnumber = res.data.accountnumber;
-          this.postcode = res.data.postcode;
-          this.address = res.data.address;
-          this.extraAddress = res.data.extraAddress;
+          console.log(res)
+          this.email = res.data.object.email;
+          this.password = res.data.object.password;
+          this.name = res.data.object.name;
+          this.introduction = res.data.object.introduction;
+          this.phonenumber = res.data.object.phoneNumber;
+          this.nickname = res.data.object.nickname;
+          if (res.data.object.developer) {
+            this.usertype = "개발자"
+          } else {
+            this.usertype = "일반 사용자"
+          }
+          this.bankname = res.data.object.bankName;
+          this.accountnumber = res.data.object.bankAccount;
+          this.postcode = res.data.object.postcode;
+          this.address = res.data.object.address;
+          this.extraAddress = res.data.object.extraAddress;
           if (res.data.profile !== null) {
             const storageRef = firebase.storage().ref()
-            storageRef.child(res.data.profile).getDownloadURL().then(url => {
+            storageRef.child(res.data.object.profile).getDownloadURL().then(url => {
             this.originalProfile = url
             }) 
           }
+          this.profileURL = res.data.profile
         })
         .catch(err => console.error(err));
     },
 
     checkForm() {
-      if (this.nickName.length <= 0)
+      if (this.nickname.length <= 0)
         this.error.nickName = "왜 지웠어요? 다시 쓰세요";
       else this.error.nickName = false;
 
