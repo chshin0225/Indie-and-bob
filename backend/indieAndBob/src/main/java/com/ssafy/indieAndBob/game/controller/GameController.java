@@ -50,7 +50,7 @@ public class GameController {
 	public Object selectAllGame(@PathVariable int page) {
 		logger.info("==========selectAllGame==========");
 		ResponseEntity response = null;
-		List<Game> gamelist = gservice.selectAllGame(page);
+		List<GameAll> gamelist = gservice.selectAllGame(page);
 		if(gamelist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
