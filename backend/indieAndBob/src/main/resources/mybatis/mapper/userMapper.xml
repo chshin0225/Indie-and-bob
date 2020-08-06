@@ -28,7 +28,7 @@
    	  update user set email=#{email}, name=#{name}, nickname=#{nickname}, password=#{password}, postcode=#{postcode},address=#{address},
    	  extra_address=#{extraAddress},bank_name=#{bankName},bank_account=#{bankAccount},
       is_developer=#{isDeveloper},phone_number=#{phoneNumber},profile=#{profile},introduction=#{introduction}
-      where email={#email}
+      where email=#{email}
    </update>
    <insert id="registerFollow" parameterType="follow">
    	  insert into follow (follower, following) values (#{follower},#{following})
