@@ -5,10 +5,12 @@
 <mapper namespace="com.ssafy.indieAndBob.mapper.game">
 
    	<select id="selectGameById" parameterType="String" resultType="gameall">
-		select * from game left outer join game_detail using(game_id) where game_id=#{game_id};
+		select g.*, gd.*, u.profile from game g left outer join game_detail gd using(game_id) left outer join user u using(nickname)
+		where game_id=#{game_id}
     </select>
-    <select id="selectAllGame" parameterType="int" resultType="game">
-   	    select * from game where is_approve=1 and is_end=false order by game_id desc limit #{page},10
+    <select id="selectAllGame" parameterType="int" resultType="gameall">
+   	    select g.*, u.profile from game g left outer join user u using(nickname)
+   	    where is_approve=1 and is_end=false order by game_id desc limit #{page},10
     </select>
     <select id="selectAllGameAdmin" parameterType="int" resultType="game">
     	select * from game where is_approve=0 and is_end=false limit #{page},10
