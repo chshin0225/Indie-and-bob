@@ -26,14 +26,14 @@
       <v-divider></v-divider>
 
       <!-- comments -->
-      <v-list v-if="commentRender&&commentList" two-line>
+      <v-list v-if="commentRender && commentList.length > 0" two-line>
         <template v-for="article in commentList">
           <v-list-item :key="article.id">
             <v-list-item-content>
               <!-- 내가 쓴 댓글일 경우 -->
               <v-row v-if="article.nickname === myName">
                 <v-col cols="10">
-                  <v-list-item-title>{{article.content}}</v-list-item-title>
+                  <p class="my-0">{{article.content}}</p>
                 </v-col>
                 <v-spacer></v-spacer>
                 <v-col>
@@ -59,6 +59,10 @@
         </template>.
       </v-list>
 
+      <div v-else>
+        <p class="py-6 text-center">아직 응원이 없네요. 첫 응원자가 되어주세요!</p>
+      </div>
+
   </v-container>
 </template>
 
@@ -75,7 +79,7 @@ export default {
       communityComment: "",
       myName: localStorage.getItem('username'),
       commentRender : false,
-      commentList: null,
+      commentList: [],
     }
   },
 
@@ -106,7 +110,10 @@ export default {
 
     deleteComment(id) {
       axios.delete(SERVER.BASE + SERVER.GAMECOMMUNITY + '?gcId=' + id, this.headersConfig)
-        .then(() => this.fetchComments())
+        .then(() => {
+          // console.log('delete')
+          this.fetchComments()
+        })
         .catch((err) => console.error(err.data));
     },
   },
