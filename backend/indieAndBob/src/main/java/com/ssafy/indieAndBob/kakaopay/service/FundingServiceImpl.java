@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.indieAndBob.game.dao.GenreDao;
+import com.ssafy.indieAndBob.game.dto.FundingGame;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.kakaopay.dao.FundingDao;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
@@ -17,6 +19,9 @@ public class FundingServiceImpl implements FundingService {
 	
 	@Autowired
 	GameService gameService;
+	
+	@Autowired
+	GenreDao genredao;
 	
 	@Override
 	public Funding selectFundingByFundingId(int fundingId) {
@@ -41,8 +46,18 @@ public class FundingServiceImpl implements FundingService {
 	}
 
 	@Override
-	public List<Funding> selectFundingByNickname(String nickname) {
-		return fundingdao.selectFundingByNickname(nickname);
+	public List<FundingGame> selectFundingByNickname(String nickname) {
+		List<FundingGame> games = fundingdao.selectFundingByNickname(nickname);
+		for(FundingGame game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
+	}
+
+	@Override
+	public List<Funding> selectFundingByGameId(int gameId) {
+		return fundingdao.selectFundingByGameId(gameId);
 	}
 
 }
