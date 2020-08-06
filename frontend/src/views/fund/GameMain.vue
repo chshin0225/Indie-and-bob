@@ -10,7 +10,8 @@
           <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
               <v-list-item>
                 <v-avatar>
-                  <img :src="game.thumbnail" :alt="game.nickname" />
+                  <v-img v-if="game.profile" :src="game.profile" :alt="game.nickname"></v-img>
+                  <v-img v-else src="../../assets/default_profile.png"></v-img>
                 </v-avatar>
                 <v-list-item-content class="ml-4">
                   <v-list-item-title class="headline">{{ game.name }}</v-list-item-title>
@@ -19,7 +20,8 @@
                   <v-list-item-subtitle>목표액: {{ game.aim }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-img :src="game.thumbnail" height="194"></v-img>
+              <v-img v-if="game.thumbnail" :src="game.thumbnail" height="194"></v-img>
+              <v-img v-else src="../../assets/default_project.png"></v-img>
           </router-link>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -65,10 +67,16 @@ export default {
             this.gameNum += 10;
             // console.log(res.data);
             res.data.object.forEach(item => {
-              console.log(item.thumbnail)
-              storageRef.child("game/15/thumbnail/15.jpg").getDownloadURL().then(url => {
-                item.thumbnail = url
-              })
+              if (item.profile !== null) {
+                storageRef.child(item.profile).getDownloadURL().then(url => {
+                  item.profile = url
+                })
+              }
+              if (item.thumbnail !== null) {
+                storageRef.child(item.thumbnail).getDownloadURL().then(url => {
+                  item.thumbnail = url
+                })
+              } 
               this.games.push(item);
             });
             // console.log("게임즈");

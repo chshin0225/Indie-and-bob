@@ -66,6 +66,7 @@ export default new Vuex.Store({
 
     // project
     projectDataFetched: state => !!state.project,
+    likedPeopleCount: state => state.likedUserList.length,
   },
 
   mutations: {
@@ -217,8 +218,9 @@ export default new Vuex.Store({
         commit('setPicture', null)
         console.log(signupData.profile)
         console.log(signupData.profile.name)
-        firebase.storage().ref(`user/${signupData.nickname}/${signupData.profile.name}`).put(signupData.profile)
-        signupData.profile = `user/${signupData.nickname}/${signupData.profile.name}`
+        var extension = signupData.profile.name.split('.').reverse()[0];
+        firebase.storage().ref(`user/${signupData.nickname}/${signupData.nickname}.${extension}`).put(signupData.profile)
+        signupData.profile = `user/${signupData.nickname}/${signupData.nickname}.${extension}`
         axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
         .then(res => {
           console.log(res)
@@ -296,16 +298,25 @@ export default new Vuex.Store({
       commit('setUserInfo', null)
       axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
         .then(res => {
+          console.log("getUserInfo")
           commit('setUserInfo', res.data.object)
         })
         .catch(err => console.error(err))
     },
 
-    changeUserInfo({ getters, commit }, changedData) {
-      axios.POST(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
-        .then(res => {
-          commit('setUser', res.data)
+    changeUserInfo({ getters }, changedData) {
+      if (changedData.profile !== null) {
+        var extension = changedData.profile.name.split('.').reverse()[0];
+        firebase.storage().ref(`user/${changedData.nickname}/${changedData.nickname}.${extension}`).put(changedData.profile)
+        changedData.profile = `user/${changedData.nickname}/${changedData.nickname}.${extension}`
+      } else {
+        console.log(changedData.profile)
+        changedData.profile = changedData.profileURL
+      }
+      axios.put(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
+        .then(() => {
           alert('회원 정보가 변경되었습니다.')
+          router.push({name: "MyPage", params: {username: changedData.nickname}})
         })
         .catch(err => console.error(err))
     },
@@ -408,19 +419,13 @@ export default new Vuex.Store({
     // like
     fetchLikedProjects({ commit }, username) {
       axios.get(SERVER.BASE + SERVER.LIKEDPROJECT + `/${username}`)
-        .then(res => {
-          console.log(res.data.object)
-          commit('setLikedProjectList', res.data.object)
-        })
+        .then(res => commit('setLikedProjectList', res.data.object))
         .catch(err => console.error(err))
     },
 
     fetchLikedUsers({ commit }, gameId) {
       axios.get(SERVER.BASE + SERVER.LIKEBYGAME + gameId)
-      .then((res) => {
-        console.log(res.data)
-        commit('setLikedUserList', res.data.object)
-      })
+      .then((res) => commit('setLikedUserList', res.data.object))
       .catch((err) => console.error(err));  
     },
 

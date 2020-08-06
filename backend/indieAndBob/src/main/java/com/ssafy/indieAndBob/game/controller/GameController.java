@@ -155,11 +155,8 @@ public class GameController {
 		ResponseEntity response = null;
 		request.setNickname(nickname);
 		String img = request.getThumbnail();
-		String extension = null;
-		if(img != null) {
-			String[] extensions = img.split("\\.");
-			extension = extensions[extensions.length-1];
-		}
+		String[] extensions = img.split("\\.");
+		String extension = extensions[extensions.length-1];
 		
 		int gameId = gservice.registerGame(request, extension);
 		if (gameId != 0) {
