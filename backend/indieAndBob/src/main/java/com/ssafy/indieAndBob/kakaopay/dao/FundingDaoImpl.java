@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.indieAndBob.game.dto.FundingGame;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 
 @Repository
@@ -39,8 +40,13 @@ public class FundingDaoImpl implements FundingDao{
 	}
 
 	@Override
-	public List<Funding> selectFundingByNickname(String nickname) {
+	public List<FundingGame> selectFundingByNickname(String nickname) {
 		return temp.selectList(ns+"selectFundingByNickname", nickname);
+	}
+
+	@Override
+	public List<Funding> selectFundingByGameId(int gameId) {
+		return temp.selectList(ns + "selectFundingByGameId", gameId);
 	}
 	
 	

@@ -1,15 +1,6 @@
 package com.ssafy.indieAndBob.kakaopay.controller;
 
 
-import com.ssafy.indieAndBob.jwt.service.JwtService;
-import com.ssafy.indieAndBob.kakaopay.dto.Funding;
-import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayApprovalVO;
-import com.ssafy.indieAndBob.kakaopay.service.FundingService;
-import com.ssafy.indieAndBob.kakaopay.service.KakaoPay;
-import com.ssafy.indieAndBob.response.dto.BasicResponse;
-
-import io.swagger.annotations.ApiOperation;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -29,6 +20,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.indieAndBob.game.dto.FundingGame;
+import com.ssafy.indieAndBob.jwt.service.JwtService;
+import com.ssafy.indieAndBob.kakaopay.dto.Funding;
+import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayApprovalVO;
+import com.ssafy.indieAndBob.kakaopay.service.FundingService;
+import com.ssafy.indieAndBob.kakaopay.service.KakaoPay;
+import com.ssafy.indieAndBob.response.dto.BasicResponse;
+
+import io.swagger.annotations.ApiOperation;
 import lombok.Setter;
 import lombok.extern.java.Log;
 
@@ -136,9 +136,30 @@ public class KakaopayController {
 		return response;
 	}
 
-	@GetMapping("/fundingByRewardId")
-	@ApiOperation(value = "게임아이디로 해당 펀딩리스트찾기")
-	public Object selectFundingByRewardId(@RequestParam("rewardId") int rewardId) {
+	@GetMapping("/fundingByRewardId/{gameId}")
+	@ApiOperation(value = "게임 아이디로 해당 펀딩리스트찾기")
+	public Object selectFundingByGameId(@PathVariable int gameId) {
+		log.info("-------------selectFundingByRewardId-----------------");
+		log.info("rewardId : " + gameId);
+		ResponseEntity response = null;
+
+		List<Funding> fundinglist = fservice.selectFundingByGameId(gameId);
+
+		if(fundinglist.size()>=0) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = fundinglist;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return response;
+	}
+	
+	@GetMapping("/fundingByRewardId/{rewardId}")
+	@ApiOperation(value = "리워드 아이디로 해당 펀딩리스트찾기")
+	public Object selectFundingByRewardId(@PathVariable int rewardId) {
 		log.info("-------------selectFundingByRewardId-----------------");
 		log.info("rewardId : " + rewardId);
 		ResponseEntity response = null;
@@ -156,20 +177,19 @@ public class KakaopayController {
 		}
 		return response;
 	}
-	@GetMapping("/fundingByNickname")
+	@GetMapping("/fundingByNickname/{nickname}")
 	@ApiOperation(value = "닉네임으로 펀딩리스트 찾기")
-	public Object selectFundingByNickname(@RequestParam("nickname") String nickname) {
+	public Object selectFundingByNickname(@PathVariable String nickname) {
 		log.info("-------------selectFundingByNickname-----------------");
 		log.info("nickname : " + nickname);
 		ResponseEntity response = null;
 
-		List<Funding> fundinglist = fservice.selectFundingByNickname(nickname);
-		
-		if(fundinglist.size()>=0) {
+		List<FundingGame> fundingGames = fservice.selectFundingByNickname(nickname);
+		if(fundingGames.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
-			result.object = fundinglist;
+			result.object = fundingGames;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
