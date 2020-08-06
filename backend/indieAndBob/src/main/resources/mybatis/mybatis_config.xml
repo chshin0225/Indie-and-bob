@@ -23,6 +23,9 @@
 		<typeAlias type="com.ssafy.indieAndBob.alarm.dto.Alarm" alias="alarm"/>
 		<typeAlias type="com.ssafy.indieAndBob.kakaopay.dto.Funding" alias="funding"/>
 		
+		<!--권성완-->
+		<typeAlias type="com.ssafy.indieAndBob.qna.dto.QnaVO" alias="QnaVO"/>
+		
 	</typeAliases>
 
 	<mappers>
@@ -33,6 +36,9 @@
 		<mapper resource="mybatis/mapper/rewardMapper.xml" />
 		<mapper resource="mybatis/mapper/fundingMapper.xml" />
 		<mapper resource="mybatis/mapper/genreMapper.xml" />
+		
+		<!--권성완-->
+		<mapper resource="mybatis/mapper/qnaMapper.xml"/>
 		
 	</mappers>
 </configuration>
