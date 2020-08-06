@@ -49,7 +49,7 @@
     <v-row v-if="originalProfile" class="justify-center">
       <v-col class="py-0" sm="6">
         <label for="profile-image">기존에 사용하던 이미지</label>
-        <img :src="originalProfile" :alt="nickname">
+        <v-img contain :src="originalProfile" :alt="nickname"></v-img>
         <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
@@ -199,7 +199,7 @@
 
           <v-col class="text-right py-0">
             <v-btn
-              @click="changeUserInfo({email: email, profile:profileImage, profileURL: profileURL, password: password, nickname: nickname, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, postcode: postcode, address: address, extraAddress: extraAddress})"
+              @click="changeUserInfo({name:name, email: email, profile:profileImage, profileURL: profileURL, password: password, nickname: nickname, isDeveloper: is_developer, phoneNumber: phonenumber, bankName: bankname, bankAccount: accountnumber, postcode: postcode, address: address, extraAddress: extraAddress, introduction: introduction})"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
@@ -242,6 +242,7 @@ export default {
       name: "",
       usertype: "",
       userTypes: ["일반 사용자", "개발자"],
+      is_developer: false,
       banks: ["하나은행", "우리은행", "국민은행"],
       bankname: "",
       accountnumber: "",
@@ -290,7 +291,14 @@ export default {
     },
     profileImage() {
       this.originalProfile = null
-    }
+    },
+    usertype: function () {
+      if (this.usertype === "개발자") {
+        this.is_developer = true;
+      } else {
+        this.is_developer = false;
+      }
+    },
   },
 
   methods: {
@@ -308,6 +316,7 @@ export default {
           this.introduction = res.data.object.introduction;
           this.phonenumber = res.data.object.phoneNumber;
           this.nickname = res.data.object.nickname;
+          this.is_developer = res.data.object.developer;
           if (res.data.object.developer) {
             this.usertype = "개발자"
           } else {
@@ -324,7 +333,7 @@ export default {
             this.originalProfile = url
             }) 
           }
-          this.profileURL = res.data.profile
+          this.profileURL = res.data.object.profile
         })
         .catch(err => console.error(err));
     },
