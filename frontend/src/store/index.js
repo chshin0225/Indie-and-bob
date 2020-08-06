@@ -66,6 +66,7 @@ export default new Vuex.Store({
 
     // project
     projectDataFetched: state => !!state.project,
+    likedPeopleCount: state => state.likedUserList.length,
   },
 
   mutations: {
@@ -408,19 +409,13 @@ export default new Vuex.Store({
     // like
     fetchLikedProjects({ commit }, username) {
       axios.get(SERVER.BASE + SERVER.LIKEDPROJECT + `/${username}`)
-        .then(res => {
-          console.log(res.data.object)
-          commit('setLikedProjectList', res.data.object)
-        })
+        .then(res => commit('setLikedProjectList', res.data.object))
         .catch(err => console.error(err))
     },
 
     fetchLikedUsers({ commit }, gameId) {
       axios.get(SERVER.BASE + SERVER.LIKEBYGAME + gameId)
-      .then((res) => {
-        console.log(res.data)
-        commit('setLikedUserList', res.data.object)
-      })
+      .then((res) => commit('setLikedUserList', res.data.object))
       .catch((err) => console.error(err));  
     },
 
