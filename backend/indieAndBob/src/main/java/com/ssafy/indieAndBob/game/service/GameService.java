@@ -15,7 +15,7 @@ public interface GameService {
 	int registerGame(GameAll game, String extension);
 	int updateGame(Game game);
 	int deleteGameById(int gameId);
-	List<Game> selectAllGame(int page);
+	List<GameAll> selectAllGame(int page);
 	List<Game> selectAllGameAdmin(int page);
 	int gameLike(GameLike like);
 	List<Game> selectGameByNickname(String nickname);

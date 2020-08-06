@@ -17,7 +17,7 @@ public interface GameDao {
 	int registerDetail(GameAll detail);
 	int updateGame(Game game);
 	int deleteGameById(int gameId);
-	List<Game> selectAllGame(int page);
+	List<GameAll> selectAllGame(int page);
 	List<Game> selectAllGameAdmin(int page);
 	int gameLike(GameLike like);
 	List<Game> selectGameByNickname(String nickname);

@@ -26,4 +26,5 @@ public class GameAll {
     private String content;
     private List<Integer> genre;
     private List<String> genreName;
+    private String profile;
 }

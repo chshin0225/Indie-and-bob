@@ -44,7 +44,7 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public List<Game> selectAllGame(int page) {
+	public List<GameAll> selectAllGame(int page) {
 		return temp.selectList(ns + "selectAllGame",page);
 	}
 
