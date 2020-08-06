@@ -24,8 +24,8 @@
       values (#{email}, #{name}, #{nickname}, #{password}, #{postcode},#{address},#{extraAddress},#{bankName},#{bankAccount},
       #{isDeveloper},#{phoneNumber},#{profile},#{introduction})
    </insert>
-   <update id="changeUserInfo">
-   	  update user set email=#{email}, name=#{name}, nickname=#{nickname}, password=#{password}, postcode=#{postcode},address=#{address},
+   <update id="changeUserInfo" parameterType="user">
+   	  update user set  name=#{name}, postcode=#{postcode},address=#{address},
    	  extra_address=#{extraAddress},bank_name=#{bankName},bank_account=#{bankAccount},
       is_developer=#{isDeveloper},phone_number=#{phoneNumber},profile=#{profile},introduction=#{introduction}
       where email={#email}
