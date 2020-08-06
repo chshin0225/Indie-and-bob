@@ -199,7 +199,7 @@
 
           <v-col class="text-right py-0">
             <v-btn
-              @click="changeUserInfo({email: email, profile:profileImage, password: password, nickname: nickName, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, postcode: postcode, address: address, extraAddress: extraAddress})"
+              @click="changeUserInfo({email: email, profile:profileImage, profileURL: profileURL, password: password, nickname: nickname, usertype: usertype, phonenumber: phonenumber, bankaccount: bankname+accountnumber, postcode: postcode, address: address, extraAddress: extraAddress})"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
@@ -234,8 +234,9 @@ export default {
     return {
       email: "",
       password: "",
-      profileImage: "",
+      profileImage: null,
       originalProfile: null,
+      profileURL: null,
       phonenumber: "",
       nickname: "",
       name: "",
@@ -323,6 +324,7 @@ export default {
             this.originalProfile = url
             }) 
           }
+          this.profileURL = res.data.profile
         })
         .catch(err => console.error(err));
     },
