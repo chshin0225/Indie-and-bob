@@ -35,7 +35,7 @@
         <label for="profile-image">이미지</label>
         <v-file-input
           class="my-3"
-          accept="image/png, image/jpeg, image/bmp"
+          accept="image/*"
           hide-details="true"
           v-model="profileImage"
           id="profile-image"
@@ -43,6 +43,14 @@
           placeholder="프로필 사진을 등록해주세요."
           type="text"
         />
+        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
+      </v-col>
+    </v-row>
+    <!-- original profile image -->
+    <v-row v-if="originalProfile" class="justify-center">
+      <v-col class="py-0" sm="6">
+        <label for="profile-image">기존에 사용하던 이미지</label>
+        <img :src="originalProfile" :alt="userinfo.nickname">
         <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
@@ -210,6 +218,7 @@
 <script>
 import axios from "axios"
 import { mapActions, mapState } from "vuex"
+import firebase from "firebase"
 
 export default {
   name: 'Edit',
@@ -223,6 +232,7 @@ export default {
     return {
       email: "",
       profileImage: "",
+      originalProfile: null,
       phonenumber: "",
       nickName: "",
       name: "",
@@ -274,6 +284,9 @@ export default {
     phonenumber: function() {
       this.checkForm();
     },
+    profileImage() {
+      this.originalProfile = null
+    }
   },
 
   methods: {
@@ -284,7 +297,6 @@ export default {
         .유저정보가져오기()
         .then(res => {
           this.email = res.data.email;
-          this.profileImage = res.data.profile;
           this.password = res.data.password;
           this.name = res.data.name;
           this.introduction = res.data.introduction;
@@ -296,6 +308,12 @@ export default {
           this.postcode = res.data.postcode;
           this.address = res.data.address;
           this.extraAddress = res.data.extraAddress;
+          if (res.data.profile !== null) {
+            const storageRef = firebase.storage().ref()
+            storageRef.child(res.data.profile).getDownloadURL().then(url => {
+            this.originalProfile = url
+            }) 
+          }
         })
         .catch(err => console.error(err));
     },

@@ -6,7 +6,7 @@
         <v-container class="ml-5">
           <v-row>
             <v-avatar size=100 class="mr-5 mr-sm-9">
-              <img src="../../assets/default_profile.png" :alt="userInfo.nickname" />
+              <img :src="profileImage" :alt="userInfo.nickname" />
             </v-avatar>
             <v-col>
               <v-row>
@@ -156,6 +156,7 @@ import FundedProjects from '../../components/user/FundedProjects.vue'
 import LikedProjects from "../../components/user/LikedProjects.vue";
 import FollowInfo from "../../components/user/FollowInfo.vue";
 import MyInfo from "../../components/user/MyInfo.vue";
+import firebase from "firebase"
 
 export default {
   name: "MyPage",
@@ -167,7 +168,11 @@ export default {
     FollowInfo,
     MyInfo
   },
-
+  data() {
+    return {
+      profileImage: null,
+    }
+  },
   computed: {
     ...mapState(["userInfo", "followerList", "followingList", "isFollowing",]),
     ...mapGetters(["userDataFetched"]),
@@ -194,6 +199,10 @@ export default {
       this.getUserInfo(username);
       this.fetchFollowers(username);
       this.fetchFollowings(username);
+      const storageRef = firebase.storage().ref()
+      storageRef.child(this.userInfo.profile).getDownloadURL().then(url => {
+        this.profileImage = url
+      }) 
     },
   },
 
