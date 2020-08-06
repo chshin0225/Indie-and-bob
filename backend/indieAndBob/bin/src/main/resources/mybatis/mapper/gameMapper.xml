@@ -4,33 +4,33 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.indieAndBob.mapper.game">
 
-   	<select id="selectGameById" parameterType="String" resultType="game">
-		select * from game where game_id=#{gameId}
+   	<select id="selectGameById" parameterType="String" resultType="gameall">
+		select * from game left outer join game_detail using(game_id) where game_id=#{game_id};
     </select>
     <select id="selectAllGame" parameterType="int" resultType="game">
-   	    select * from game where is_approve=1 and is_end=false limit #{page},10
+   	    select * from game where is_approve=1 and is_end=false order by game_id desc limit #{page},10
     </select>
     <select id="selectAllGameAdmin" parameterType="int" resultType="game">
     	select * from game where is_approve=0 and is_end=false limit #{page},10
     </select>
-    <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameregister">
-        insert into game (name, deadline, aim,left_price, is_end, is_approve, email,
+    <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameall">
+        insert into game (name, deadline, aim,left_price, is_end, is_approve, nickname,
         thumbnail)
-        values (#{name}, #{deadline}, #{aim},#{aim},#{isEnd},#{isApprove},#{email},
+        values (#{name}, #{deadline}, #{aim},#{aim},#{isEnd},#{isApprove},#{nickname},
         #{thumbnail})
     </insert>
     <update id="updateGame" parameterType="game">
-    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, left_price=#{leftPrice}, is_end=#{isEnd}, is_approve=#{isApprove}, email=#{email}
+    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, left_price=#{leftPrice}, is_end=#{isEnd}, is_approve=#{isApprove}, nickname=#{nickname}
         where game_id=#{gameId}
     </update>
     <delete id="deleteGameById" parameterType="int">
     	delete from game where game_id=#{gameId}
     </delete>
-    <insert id="registerGameDetail" parameterType="gameregister">
+    <insert id="registerGameDetail" parameterType="gameall">
     	insert into game_detail (game_id, content) values(#{gameId}, #{content})
     </insert>
     <insert id="gameLike" parameterType="gamelike">
-    	insert into game_like (email,game_id) values(#{email},#{gameId})
+    	insert into game_like (nickname,game_id) values(#{nickname},#{gameId})
     </insert>
     
     <select id="selectGameByNickname" parameterType="String" resultType="game">
@@ -40,18 +40,34 @@
     
     <select id="selectUserByGameId" parameterType="String" resultType="user">
     	select * from user 
-    	where email in (select email from game_like where game_id=#{gameId});
+    	where nickname in (select nickname from game_like where game_id=#{gameId});
     </select>
     
     <delete id="deleteGameLike" parameterType="gameLike">
-    	delete from game_like where email=#{email} and game_id=#{gameId}
+    	delete from game_like where nickname=#{nickname} and game_id=#{gameId}
     </delete>
     
     <select id="isLike" parameterType="gamelike" resultType="gamelike">
-    	select * from game_like where email=#{email} and game_id=#{gameId}
+    	select * from game_like where nickname=#{nickname} and game_id=#{gameId}
     </select>
     
-    <update id="gameApprove" parameterType="game">
+    <update id="updateApprove" parameterType="game">
     	update game set is_approve=#{isApprove} where game_id=#{gameId}
+    </update>
+    
+    <update id="fundingGame" parameterType="funding">
+    	update game set left_price=left_price-#{money} where game_id=#{gameId}
+    </update>
+    
+    <insert id="insertGameGenre" parameterType="gamegenre">
+    	insert into game_genre (game_id,genre_id) values(#{gameId},#{genreId})
+    </insert>
+    
+    <select id="selectMadeGameByNickname" parameterType="String" resultType="gameall">
+    	select * from game where nickname=#{nickname}
+    </select>
+    
+    <update id="injectThumbnail" parameterType="gameall">
+    	update game set thumbnail=#{thumbnail} where game_id=#{gameId}
     </update>
 </mapper>
