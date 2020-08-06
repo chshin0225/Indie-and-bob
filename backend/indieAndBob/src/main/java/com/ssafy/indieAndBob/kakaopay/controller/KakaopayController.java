@@ -27,6 +27,7 @@ import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayApprovalVO;
 import com.ssafy.indieAndBob.kakaopay.service.FundingService;
 import com.ssafy.indieAndBob.kakaopay.service.KakaoPay;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
+import com.ssafy.indieAndBob.reward.service.RewardService;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.Setter;
@@ -43,6 +44,8 @@ public class KakaopayController {
 	@Autowired
 	FundingService fservice;
 	@Autowired
+	RewardService rewardService;
+	@Autowired
 	JwtService jservice;
 
 	@PostMapping("/kakaoPay")
@@ -51,6 +54,13 @@ public class KakaopayController {
 		log.info("kakaoPay post............................................");
 		log.info("funding : " + request);
 		ResponseEntity response = null;
+		if(rewardService.buyReward(request.getRewardId()) != 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "sold out";
+			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+			return response;
+		}
 		String nickname = jservice.getNickname(req);
 		request.setNickname(nickname);
 		String toPay = kakaopay.kakaoPayReady(request);
