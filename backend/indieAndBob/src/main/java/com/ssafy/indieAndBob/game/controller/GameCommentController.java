@@ -64,7 +64,7 @@ public class GameCommentController {
 		logger.info("selectCommentByGameId : " + gameId);
 		ResponseEntity response = null;
 		List<GameComment> comments = gcservice.selectCommentByGameId(gameId);
-		if (comments.size() != 0) {
+		if (comments != null) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
