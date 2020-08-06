@@ -11,4 +11,5 @@ public interface RewardDao {
 	List<Reward> selectRewardByGameId(int gameId);
 	int updateRewardByRewardId(Reward reward);
 	int deleteRewardByRewardId(int rewardId);
+	int buyReward(int rewardId);
 }

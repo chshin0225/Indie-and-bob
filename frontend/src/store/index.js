@@ -38,6 +38,8 @@ export default new Vuex.Store({
     // project
     projectList: [],
     project: null,
+    myProjectList: [],
+    fundedProjectList: [],
 
     // like
     likedProjectList: [],
@@ -141,6 +143,12 @@ export default new Vuex.Store({
     },
     setContent(state, val) {
       state.project.content = val
+    },
+    setMyProjectList(state, val) {
+      state.myProjectList = val
+    },
+    setFundedProjectList(state, val) {
+      state.fundedProjectList = val
     },
 
     // search
@@ -363,20 +371,20 @@ export default new Vuex.Store({
       axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`, getters.headersConfig)
       .then(res => {
         const storageRef = firebase.storage().ref()
-        storageRef.child(`game/두두/content/두두`).getDownloadURL().then(url => {
+        storageRef.child(`game/15/content/15`).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
-          console.log(xhr)
+          // console.log(xhr)
           // xhr.responseType = 'blob';
           if (xhr) {
-            console.log('1')
+            // console.log('1')
             xhr.open('GET', url, false)
             xhr.send();
             var result = (xhr.response)
             // commit('setContent', 'aaa')
             // console.log(state.project.content)
           }
-          console.log('send', xhr)
-          console.log(res.data.object)
+          // console.log('send', xhr)
+          // console.log(res.data.object)
           res.data.object.content = result
           commit('setProject', res.data.object)
         }).catch(function(error) {
@@ -386,7 +394,18 @@ export default new Vuex.Store({
       .catch(err => console.error(err))
     },
 
-    
+    fetchMyProjects() {},
+
+    fetchFundedProjects({ commit, getters }, username) {
+      axios.get(SERVER.BASE + SERVER.FUNDEDPROJECT + username, getters.headersConfig)
+        .then(res => {
+          console.log(res.data)
+          commit('setFundedProjectList', res.data.object)
+        })
+        .catch(err => console.log(err))
+    },
+
+    // like
     fetchLikedProjects({ commit }, username) {
       axios.get(SERVER.BASE + SERVER.LIKEDPROJECT + `/${username}`)
         .then(res => {
