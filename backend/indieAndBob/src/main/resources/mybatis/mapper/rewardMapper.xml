@@ -25,6 +25,6 @@
       delete from reward where reward_id=#{rewardId}
    </delete>
    <update id="buyReward" parameterType="int">
-   	   update reward set left_count=left_count-1 where reward_id=#{rewardId}
+   	   update reward set left_count=left_count-1 where reward_id=#{rewardId} and left_count > 0
    </update>
 </mapper>

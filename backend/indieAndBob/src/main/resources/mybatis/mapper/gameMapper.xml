@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.indieAndBob.mapper.game">
 
-   	<select id="selectGameById" parameterType="String" resultType="gameall">
+   	<select id="selectGameById" parameterType="int" resultType="gameall">
 		select g.*, gd.*, u.profile from game g left outer join game_detail gd using(game_id) left outer join user u using(nickname)
 		where game_id=#{game_id}
     </select>

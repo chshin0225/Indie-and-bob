@@ -39,7 +39,7 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public GameAll selectGameById(String gameId) {
+	public GameAll selectGameById(int gameId) {
 		return temp.selectOne(ns+ "selectGameById", gameId);
 	}
 
