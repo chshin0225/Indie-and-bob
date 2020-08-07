@@ -41,9 +41,10 @@ public class QnaController {
 	
 	@PostMapping("/qna/create")
 	@ApiOperation(value = "Q&A 등록")
-	public Object create(@RequestBody QnaVO vo) {
+	public Object create(@RequestBody QnaVO vo, HttpServletRequest req) {
 		logger.info("==========[qna create]==========");
 		ResponseEntity response = null;
+		vo.setNickname(jwtService.getNickname(req));
 		int res = qnaService.create(vo);
 		if(res == 0) {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -80,9 +81,10 @@ public class QnaController {
 	
 	@PutMapping("/qna/update")
 	@ApiOperation("Q&A 수정")
-	public Object update(@RequestBody QnaVO vo) {
+	public Object update(@RequestBody QnaVO vo, HttpServletRequest req) {
 		logger.info("==========[qna read]==========");
 		ResponseEntity response = null;
+		vo.setNickname(jwtService.getNickname(req));
 		int res = qnaService.update(vo);
 		if(res == 0) {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
