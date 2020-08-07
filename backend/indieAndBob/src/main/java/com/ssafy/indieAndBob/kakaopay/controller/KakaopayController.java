@@ -54,17 +54,14 @@ public class KakaopayController {
 		log.info("kakaoPay post............................................");
 		log.info("funding : " + request);
 		ResponseEntity response = null;
-		try {
-			rewardService.buyReward(request.getRewardId());
-		} catch (Exception e) {
+		
+		if(rewardService.buyReward(request.getRewardId()) == 0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = false;
 			result.data = "sold out";
 			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 			return response;
 		}
-		
-			
 
 		String nickname = jservice.getNickname(req);
 		request.setNickname(nickname);

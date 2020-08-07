@@ -45,7 +45,7 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public GameAll selectGameById(String gameId) {
+	public GameAll selectGameById(int gameId) {
 		GameAll gameAll = gamedao.selectGameById(gameId);
 		List<String> genreName = genredao.selectGenreNameByGameId(gameAll.getGameId());
 		gameAll.setGenreName(genreName);

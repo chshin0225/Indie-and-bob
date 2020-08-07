@@ -3,6 +3,8 @@ package com.ssafy.indieAndBob.kakaopay.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayApprovalVO;
 import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayReadyVO;
@@ -30,6 +32,8 @@ public class KakaoPay {
     private KakaoPayReadyVO kakaoPayReadyVO;
     @Autowired
     RewardService rewardService;
+    @Autowired
+    GameService gameService;
     
     //결제화면
     @SuppressWarnings("deprecation")
@@ -49,8 +53,10 @@ public class KakaoPay {
         params.add("partner_order_id", Integer.toString(request.getRewardId()));//주문아이디
         params.add("partner_user_id", request.getNickname());//유저아이디
         Reward reward = rewardService.selectRewardById(request.getRewardId());
+        GameAll game = gameService.selectGameById(request.getGameId());
         String rewardName = reward.getRewardName();
-        params.add("item_name", rewardName);//제품명
+        String gameName = game.getName();
+        params.add("item_name", gameName + " - " + rewardName);//제품명
         params.add("quantity", "1");//수량
         params.add("total_amount", Integer.toString(request.getMoney()));//가격
         params.add("tax_free_amount", "100");//세금
