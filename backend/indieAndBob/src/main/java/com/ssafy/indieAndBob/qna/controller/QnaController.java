@@ -116,7 +116,7 @@ public class QnaController {
 		return response;		
 	}
 	
-	@GetMapping("/qna/readByGameID{gameId}")
+	@GetMapping("/qna/readByGameID/{gameId}")
 	@ApiOperation("게임ID로 조회하기")
 	public Object readByGameId(@PathVariable int gameId, HttpServletRequest req) {
 		logger.info("==========[qna read]==========");
