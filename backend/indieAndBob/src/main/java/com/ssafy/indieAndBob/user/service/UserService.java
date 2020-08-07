@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
+import com.ssafy.indieAndBob.user.dto.UserAll;
 
 public interface UserService {
 	User selectByEmailAndPassword(User user);
 	User selectByEmail(String user);
 	User selectByNickname(String nickname);	
-	int registerUser(User user);
+	int registerUser(UserAll user);
 	int changeUserInfo(User user);
 	
 	int registerFollow(Follow follow);

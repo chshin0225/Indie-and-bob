@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
+import com.ssafy.indieAndBob.user.dto.UserAll;
+import com.ssafy.indieAndBob.user.dto.UserGenre;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -27,7 +29,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public int registerUser(User user) {
+	public int registerUser(UserAll user) {
 		return temp.insert(ns + "registerUser", user);
 	}
 
@@ -71,6 +73,11 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public List<User> searchUser(String keyword) {
 		return temp.selectList(ns + "searchUser", keyword);
+	}
+
+	@Override
+	public int registerUserGenre(UserGenre userGenre) {
+		return temp.insert(ns + "registerUserGenre", userGenre);
 	}
 
 }
