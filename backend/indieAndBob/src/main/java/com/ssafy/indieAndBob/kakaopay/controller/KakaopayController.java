@@ -66,8 +66,7 @@ public class KakaopayController {
 		
 			
 
-//		String nickname = jservice.getNickname(req);
-		String nickname="aa";
+		String nickname = jservice.getNickname(req);
 		request.setNickname(nickname);
 		String toPay = kakaopay.kakaoPayReady(request);
 		if( toPay != null) {
@@ -104,9 +103,6 @@ public class KakaopayController {
 		funding.setNickname(nickname);
 		funding.setMoney(money);
 		int fundingId = fservice.registerFunding(funding);
-		
-		//String nickname = jservice.getNickname(req);
-		//request.setNickname(nickname);
 		
 		funding.setFundingId(fundingId);
 		if(fundingId==0) {
@@ -145,6 +141,22 @@ public class KakaopayController {
 		// model.addAttribute("info",kakaopay.kakaoPayInfo(pg_token));//정보들
 		ResponseEntity response = null;
 	} 
+	
+	@GetMapping("/kakaoPayCancel")
+	@ApiOperation(value = "카카오페이 결제 취소")
+	public void kakaoPayCancel(@RequestParam("pg_token") String pg_token,@RequestParam("nickname") String nickname,
+			@RequestParam("gameId") int gameId,
+			@RequestParam("rewardId") int rewardId,
+			@RequestParam("money") int money,Model model, HttpServletResponse res) {
+		log.info("kakaoPayCancel get............................................");
+		log.info("kakaoPayCancel pg_token : " + pg_token);
+		KakaoPayApprovalVO info = kakaopay.kakaoPayInfo(pg_token,nickname,rewardId,money);
+		model.addAttribute("info", info);
+		// model.addAttribute("info",kakaopay.kakaoPayInfo(pg_token));//정보들
+		ResponseEntity response = null;
+	} 
+	
+	
 	
 	
 	

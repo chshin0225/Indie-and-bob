@@ -56,8 +56,9 @@ public class KakaoPay {
         params.add("tax_free_amount", "100");//세금
         //params.add("approval_url", "http://i3a105.p.ssafy.io:3000/home");//승인시갈곳
         params.add("approval_url", "http://i3a105.p.ssafy.io:8080/kakaoPaySuccess?nickname="+request.getNickname()+"&gameId="+Integer.toString(request.getGameId())+"&rewardId="+Integer.toString(request.getRewardId())+"&money="+Integer.toString(request.getMoney()));
-        params.add("cancel_url", "http://i3a105.p.ssafy.io:8080");//취소시갈곳
+//        params.add("cancel_url", "http://i3a105.p.ssafy.io:8080");//취소시갈곳
         params.add("fail_url", "http://i3a105.p.ssafy.io:8080/kakaoPayFail?nickname="+request.getNickname()+"&gameId="+Integer.toString(request.getGameId())+"&rewardId="+Integer.toString(request.getRewardId())+"&money="+Integer.toString(request.getMoney()));//실패시갈곳
+        params.add("cancel_url", "http://i3a105.p.ssafy.io:8080/kakaoPayCancel?nickname="+request.getNickname()+"&gameId="+Integer.toString(request.getGameId())+"&rewardId="+Integer.toString(request.getRewardId())+"&money="+Integer.toString(request.getMoney()));//실패시갈곳
  
          HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
  
