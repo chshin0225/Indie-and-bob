@@ -24,7 +24,7 @@ import ProjectSettings from '../views/project/ProjectSettings.vue'
 // project + funding
 import GameMain from '../views/fund/GameMain.vue'
 import CreateFund from '../views/fund/CreateFund.vue'
-import CreateFundDone from '../views/fund/CreateFundDone.vue'
+import PurchaseSuccess from '../views/fund/PurchaseSuccess.vue'
 import GameDetail from '../views/fund/GameDetail.vue'
 
 
@@ -113,7 +113,7 @@ const routes = [
     name : 'CreateProject',
     component: CreateProject,
     meta: {
-      title: 'Create Project'
+      title: '새 프로젝트'
     },
   },
   {
@@ -121,7 +121,7 @@ const routes = [
     name: 'ProjectDetail',
     component: ProjectDetail,
     meta: {
-      title: 'Create Rewards'
+      title: '새 프로젝트'
     },
   },
   { 
@@ -137,7 +137,7 @@ const routes = [
     name: 'CreateProjectDone',
     component: CreateProjectDone,
     meta: {
-      title: 'Create Project'
+      title: '프로젝트 등록 완료'
     },
   }, 
   {
@@ -145,7 +145,7 @@ const routes = [
     name: 'EditProject',
     component : EditProject,
     meta: {
-      title: 'Edit Project'
+      title: '프로젝트 수정'
     }
   },
 
@@ -163,15 +163,15 @@ const routes = [
     name: 'CreateFund',
     component: CreateFund,
     meta: {
-      title: 'Fund Project',
+      title: '펀딩하기',
     },
   },
   {
-    path: '/complete/:id',
-    name: 'CreateFundDone',
-    component: CreateFundDone,
+    path: '/purchase/:rewardId',
+    name: 'PurchaseSuccess',
+    component: PurchaseSuccess,
     meta: {
-      title: 'Purchase Complete'
+      title: '결제 완료'
     }
   },
   {

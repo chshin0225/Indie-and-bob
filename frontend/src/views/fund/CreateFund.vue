@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div v-if="rewardFetched && userDataFetched">
+    <div v-if="rewardDataFetched && userDataFetched">
       <h1 class="text-center">리워드 구매</h1>
 
       <!-- 리워드 정보 -->
@@ -9,9 +9,9 @@
           <h2 class="pb-1">리워드 정보</h2>
           <v-card class="mx-auto" outlined>
             <div class="overline px-4 pt-3">프로젝트 이름</div>
-            <v-card-title class="headline pt-1">{{ reward.rewardName }}</v-card-title>
-            <v-card-text>{{ reward.content }}</v-card-text>
-            <v-card-text class="subtitle-1 text-right pt-0 black--text">{{ reward.price }} 원</v-card-text>
+            <v-card-title class="headline pt-1">{{ rewardData.rewardName }}</v-card-title>
+            <v-card-text>{{ rewardData.content }}</v-card-text>
+            <v-card-text class="subtitle-1 text-right pt-0 black--text">{{ rewardData.price }} 원</v-card-text>
           </v-card>
         </v-col>
       </v-row>
@@ -148,7 +148,6 @@ export default {
 
   data() {
     return {
-      reward: null,
       searchWindow: {
         display: "none",
         height: "300px"
@@ -157,31 +156,18 @@ export default {
   },
 
   computed: {
-    ...mapState(["userInfo",]),
-    ...mapGetters(['headersConfig', 'userDataFetched']),
-
-    rewardFetched: function() {
-      return !!this.reward
-    },
+    ...mapState(["userInfo", 'rewardData']),
+    ...mapGetters(['headersConfig', 'userDataFetched', 'rewardDataFetched']),
   },
 
   methods: {
-    ...mapActions(["getUserInfo"]),
-
-    getReward(gameId) {
-      axios.get(SERVER.BASE + SERVER.REWARDDETAIL + gameId, this.headersConfig)
-        .then(res => {
-          // console.log(res.data.object)
-          this.reward = res.data.object;
-        })
-        .catch(err => console.error(err));
-    },
+    ...mapActions(["getUserInfo", 'getReward',]),
 
     kakaoPay() {
       const PARAMS = {
-        "rewardId": this.reward.rewardId,
-        "gameId": this.reward.gameId,
-        "money": this.reward.price,
+        "rewardId": this.rewardData.rewardId,
+        "gameId": this.rewardData.gameId,
+        "money": this.rewardData.price,
       }
       axios.post(SERVER.BASE + SERVER.KAKAOPAY, PARAMS, this.headersConfig)
         .then(res => {
