@@ -34,6 +34,7 @@ export default new Vuex.Store({
     
     // community
     articleList: [],
+    article: null,
     
     // project
     projectList: [],
@@ -69,6 +70,9 @@ export default new Vuex.Store({
     projectDataFetched: state => !!state.project,
     likedPeopleCount: state => state.likedUserList.length,
     rewardDataFetched: state => !!state.rewardData,
+
+    // community
+    articleDataFetched: state => !!state.article,
   },
 
   mutations: {
@@ -129,6 +133,9 @@ export default new Vuex.Store({
     // community
     setArticleList(state, val) {
       state.articleList = val
+    },
+    setArticle(state, val) {
+      state.article = val
     },
 
     // project
@@ -446,20 +453,36 @@ export default new Vuex.Store({
 
 
     // community
-    // fetchArticles({ commit }) {
-    //   axios.get(게시글들 가져오기)
-    //     .then(res => {
-    //       commit('setArticleList', res.data)
-    //     })
-    //     .catch(err => console.error(err))
-    // },
+    fetchArticles({ commit }) {
+      axios.get(SERVER.BASE + SERVER.COMMUNITY)
+        .then(res => commit('setArticleList', res.data.object))
+        .catch(err => console.error(err))
+    },
 
-    // createArticle(context, articleData) {
-    //   axios.post(새 게시글 작성)
-    //     .then(res => console.log(res.data))
-    //     .catch(err => console.error(err))
-    //   router.push({ name: 'CommunityMain' })
-    // },
+    getArticle({ commit }, communityId) {
+      commit('setArticle', null)
+      axios.get(SERVER.BASE + SERVER.COMMUNITY + `/${communityId}`)
+        .then(res => commit('setArticle', res.data.object))
+        .catch(err => console.error(err))
+    },
+
+    createArticle({ getters }, articleData) {
+      axios.post(SERVER.BASE + SERVER.COMMUNITY, articleData, getters.headersConfig)
+        .then(() => router.push({ name: 'CommunityMain' }))
+        .catch(err => console.error(err))
+    },
+
+    editArticle(context, articleData) {
+      axios.put(SERVER.BASE + SERVER.COMMUNITY, articleData)
+        .then(() => router.push(`/community/${articleData.communityId}`))
+        .catch(err => console.log(err))
+    },
+
+    deleteArticle(context, communityId) {
+      axios.delete(SERVER.BASE + SERVER.COMMUNITY + `/${communityId}`)
+        .then(() => router.push(`/community`))
+        .catch(err => console.error(err))
+    },
 
 
     // search

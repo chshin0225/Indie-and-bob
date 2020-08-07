@@ -32,6 +32,7 @@ import GameDetail from '../views/fund/GameDetail.vue'
 import CommunityMain from '../views/community/CommunityMain.vue'
 import CommunityForm from '../views/community/CommunityForm.vue'
 import CommunityArticle from '../views/community/CommunityArticle.vue'
+import CommunityEdit from '../views/community/CommunityEdit.vue'
 
 // search
 import SearchResult from '../views/project/SearchResult.vue'
@@ -207,6 +208,14 @@ const routes = [
     meta: {
       title: '커뮤니티'
     },
+  },
+  {
+    path: '/community/edit/:articleId',
+    name: 'CommunityEdit',
+    component: CommunityEdit,
+    meta: {
+      title: '글 수정',
+    }
   },
 
   // search
