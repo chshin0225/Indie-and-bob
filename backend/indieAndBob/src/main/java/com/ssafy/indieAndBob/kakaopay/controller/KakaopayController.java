@@ -27,6 +27,7 @@ import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayApprovalVO;
 import com.ssafy.indieAndBob.kakaopay.service.FundingService;
 import com.ssafy.indieAndBob.kakaopay.service.KakaoPay;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
+import com.ssafy.indieAndBob.reward.service.RewardService;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.Setter;
@@ -43,6 +44,8 @@ public class KakaopayController {
 	@Autowired
 	FundingService fservice;
 	@Autowired
+	RewardService rewardService;
+	@Autowired
 	JwtService jservice;
 
 	@PostMapping("/kakaoPay")
@@ -51,7 +54,20 @@ public class KakaopayController {
 		log.info("kakaoPay post............................................");
 		log.info("funding : " + request);
 		ResponseEntity response = null;
-		String nickname = jservice.getNickname(req);
+		try {
+			rewardService.buyReward(request.getRewardId());
+		} catch (Exception e) {
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "sold out";
+			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+			return response;
+		}
+		
+			
+
+//		String nickname = jservice.getNickname(req);
+		String nickname="aa";
 		request.setNickname(nickname);
 		String toPay = kakaopay.kakaoPayReady(request);
 		if( toPay != null) {
@@ -115,6 +131,23 @@ public class KakaopayController {
 			e.printStackTrace();
 		}
 	}
+	
+	@GetMapping("/kakaoPayFail")
+	@ApiOperation(value = "카카오페이 결제 실패")
+	public void kakaoPayFail(@RequestParam("pg_token") String pg_token,@RequestParam("nickname") String nickname,
+			@RequestParam("gameId") int gameId,
+			@RequestParam("rewardId") int rewardId,
+			@RequestParam("money") int money,Model model, HttpServletResponse res) {
+		log.info("kakaoPayFail get............................................");
+		log.info("kakaoPayFail pg_token : " + pg_token);
+		KakaoPayApprovalVO info = kakaopay.kakaoPayInfo(pg_token,nickname,rewardId,money);
+		model.addAttribute("info", info);
+		// model.addAttribute("info",kakaopay.kakaoPayInfo(pg_token));//정보들
+		ResponseEntity response = null;
+	} 
+	
+	
+	
 	@GetMapping("/fundingByFundingId")
 	@ApiOperation(value = "펀딩아이디로 펀딩찾기")
 	public Object selectFundingByFundingId(@RequestParam("fundingId") int fundingId) {

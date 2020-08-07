@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.indieAndBob.mapper.funding">
+
+
+    <select id="selectFundingByFundingId" parameterType="int" resultType="funding">
+		select * from funding where funding_id=#{fundingId}
+    </select>
+   	<select id="selectFundingByRewardId" parameterType="int" resultType="funding">
+		select * from funding where reward_id=#{rewardId}
+    </select>
+<!--     <select id="selectAllFunding" parameterType="int" resultType="funding"> -->
+<!--    	    select * from funding order by game_id desc limit #{page},10 -->
+<!--     </select> -->
+    <insert id="registerFunding" useGeneratedKeys="true" keyProperty="fundingId" parameterType="funding">
+        insert into funding (game_id, reward_id, nickname,money)
+        values (#{gameId}, #{rewardId}, #{nickname},#{money})
+    </insert>
+    <delete id="deleteFundingByFundingId" parameterType="int">
+    	delete from funding where funding_id=#{fundingId}
+    </delete>
+    <select id="selectFundingByNickname" parameterType="String" resultType="funding">
+    	select * from funding 
+    	where nickname=#{nickname};
+    </select>
+</mapper>
