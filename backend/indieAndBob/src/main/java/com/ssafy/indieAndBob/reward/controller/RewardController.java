@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.reward.controller;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.reward.dto.Reward;
 import com.ssafy.indieAndBob.reward.service.RewardService;
@@ -28,6 +32,8 @@ public class RewardController {
 
 	@Autowired
 	RewardService rservice;
+	@Autowired
+	GameService gameService;
 	private static final Logger logger = LoggerFactory.getLogger(RewardController.class);
 
 	@GetMapping("/reward")
@@ -58,11 +64,15 @@ public class RewardController {
 
 		ResponseEntity response = null;
 		Reward reward = rservice.selectRewardById(rewardId);
+		GameAll game = gameService.selectGameById(reward.getGameId());
 		if(!reward.equals(null)) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
-			result.object = reward;
+			Map<String, Object> map = new HashMap<>();
+			map.put("reward", reward);
+			map.put("game", game);
+			result.object = map;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -76,6 +86,7 @@ public class RewardController {
 		logger.info("gameId : " + gameId);
 		ResponseEntity response = null;
 		List<Reward> rewardlist = rservice.selectRewardByGameId(gameId);
+		
 		if(rewardlist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;

@@ -7,10 +7,13 @@ import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.indieAndBob.game.dto.GameGenre;
 import com.ssafy.indieAndBob.user.dao.UserDao;
 import com.ssafy.indieAndBob.user.dao.firebaseT;
 import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
+import com.ssafy.indieAndBob.user.dto.UserAll;
+import com.ssafy.indieAndBob.user.dto.UserGenre;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,8 +32,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int registerUser(User user) {
-		return userDao.registerUser(user);
+	public int registerUser(UserAll user) {
+		int register = userDao.registerUser(user);
+		if(user.getGenreId() == null) {
+			return register;
+		}
+		for(int genre : user.getGenreId()) {
+			UserGenre userGenre = new UserGenre(user.getNickname(), genre);
+			userDao.registerUserGenre(userGenre);
+		}
+		return register;
 	}
 
 	@Override
