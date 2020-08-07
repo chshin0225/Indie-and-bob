@@ -89,7 +89,7 @@ public class GameController {
 	
 	@GetMapping("/game/{gameId}")
 	@ApiOperation(value = "게임 아이디로 게임찾기")
-	public Object selectGameById(@PathVariable String gameId) {
+	public Object selectGameById(@PathVariable int gameId) {
 		logger.info("==========selectGameById==========");
 		logger.info("gameid : " + gameId);
 		ResponseEntity response = null;

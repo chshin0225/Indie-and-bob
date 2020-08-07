@@ -12,7 +12,7 @@ import com.ssafy.indieAndBob.user.dto.User;
 
 public interface GameDao {
 
-	GameAll selectGameById(String gameId);
+	GameAll selectGameById(int gameId);
 	int registerGame(GameAll game, String extension);
 	int registerDetail(GameAll detail);
 	int updateGame(Game game);
