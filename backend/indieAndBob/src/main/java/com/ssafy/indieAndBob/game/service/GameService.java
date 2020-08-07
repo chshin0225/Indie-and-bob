@@ -11,7 +11,7 @@ import com.ssafy.indieAndBob.user.dto.User;
 
 public interface GameService {
 
-	GameAll selectGameById(String gameId);
+	GameAll selectGameById(int gameId);
 	int registerGame(GameAll game, String extension);
 	int updateGame(Game game);
 	int deleteGameById(int gameId);

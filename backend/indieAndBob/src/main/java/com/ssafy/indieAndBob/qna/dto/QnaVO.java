@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QnaVO {
-	private int quaId;
+	private int qnaId;
 	private int gameId;
 	private String nickname;
 	private String title;
