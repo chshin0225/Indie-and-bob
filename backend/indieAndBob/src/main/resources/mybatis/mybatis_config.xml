@@ -25,6 +25,7 @@
 		
 		<!--권성완-->
 		<typeAlias type="com.ssafy.indieAndBob.qna.dto.QnaVO" alias="QnaVO"/>
+		<typeAlias type="com.ssafy.indieAndBob.qna.dto.QnaGameVO" alias="QnaGameVO"/>
 		
 	</typeAliases>
 
