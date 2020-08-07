@@ -51,7 +51,8 @@
           <router-link :to="`/user/mypage/${ userInfo.nickname }`" class="text-decoration-none black--text" v-if="isLoggedIn && dataFetched">
             <div class="pa-2 d-flex">
               <v-avatar>
-                <img src="./assets/default_profile.png" :alt="userInfo.nickname" />
+                <v-img v-if="profileURL!==null" :src="profileURL" :alt="userInfo.nickname"></v-img>
+                <v-img v-else src="./assets/default_profile.png" :alt="userInfo.nickname"></v-img>
               </v-avatar>
               <h3 class="ml-4 align-self-center">{{ userInfo.nickname }}</h3>
             </div>
@@ -125,6 +126,7 @@
 import { mapActions, mapGetters, mapState } from "vuex"
 import axios from 'axios'
 import SERVER from './api/base'
+import firebase from 'firebase'
 
 export default {
   name: "app",
@@ -136,6 +138,7 @@ export default {
       searchKeyword: '',
       closeOnClick: true,
       currentUser: localStorage.getItem('username'),
+      profileURL: null,
     };
   },
   
@@ -178,6 +181,16 @@ export default {
     items() {
     },
     message() {},
+    userInfo() {
+      if (this.userInfo !== null) {
+        const storageRef = firebase.storage().ref()
+        if (this.userInfo.profile !== null) {
+          storageRef.child(this.userInfo.profile).getDownloadURL().then(url => {
+          this.profileURL = url
+          })
+        }
+      }
+    }
   },
 
   computed: {
