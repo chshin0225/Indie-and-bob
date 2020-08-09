@@ -144,7 +144,8 @@
                     </v-col>
                     <v-spacer></v-spacer>
                     <v-col class="d-flex justify-end">
-                      <v-btn @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
+                      <v-btn v-if="reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
+                      <v-btn v-else color="accent" disabled rounded>매진</v-btn>
                     </v-col>
                   </v-row>
                 </v-expansion-panel-content>

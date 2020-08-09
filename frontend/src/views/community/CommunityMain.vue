@@ -1,15 +1,16 @@
 <template>
   <v-container>
     <h1 class="text-center">Community</h1>
+    <!-- <p>{{ articleList }}</p> -->
 
     <!-- article list (v-for 적용해야함) -->
-    <v-row class="justify-center">
-      <v-col cols=10>
-        <v-card class="mx-auto" to="/community/1" outlined>
+    <v-row class="justify-center" v-for="article in articleList" :key="article.communityId">
+      <v-col class="py-1" cols=10>
+        <v-card class="mx-auto" :to="`/community/${article.communityId}`" outlined>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="headline mb-1">Lorem ipsum dolor sit amet</v-list-item-title>
-              <v-list-item-subtitle class="pa-0 col-10 text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec leo sed arcu mattis mollis sodales ac neque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam vel pharetra leo, sed placerat mi. Curabitur nec pulvinar orci, nec luctus urna. Sed porttitor tempus lacus, sit amet vulputate est pulvinar in. Vestibulum condimentum nibh mi, vel pulvinar ligula fermentum non. Donec sollicitudin aliquet tempor. Cras egestas egestas metus, ut iaculis nisl vestibulum non. Nullam euismod tortor in quam commodo sollicitudin.</v-list-item-subtitle>
+              <v-list-item-title class="headline mb-1">{{ article.title }}</v-list-item-title>
+              <v-list-item-subtitle class="pa-0 col-10">{{ $moment(article.updatedAt).format('YYYY.MM.DD HH:MM') }} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-card>
