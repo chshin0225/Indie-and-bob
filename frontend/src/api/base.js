@@ -36,6 +36,10 @@ export default {
     'LIKEBYUSER' : "/game/like/gamelist/",
     'LIKEBYGAME' : "/game/like/userlist/",
     'LIKEDPROJECT': "/game/like/gamelist",
+
+    // community
+    'COMMUNITY': '/community',
+    'COMMUNITYCOMMENT': '/community/comment',
     
     // search
     'SEARCH': "/user/search?keyword=",

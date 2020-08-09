@@ -99,7 +99,7 @@
     <!-- profile image -->
     <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
-        <label for="profile-image">이미지</label>
+        <label for="profile-image">프로필 사진</label>
         <v-file-input
           class=""
           accept="image/*"
