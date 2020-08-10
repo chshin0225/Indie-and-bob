@@ -22,8 +22,8 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public List<Community> listCommunity() {
-		return temp.selectList(ns + "listCommunity");
+	public List<Community> listCommunity(int page) {
+		return temp.selectList(ns + "listCommunity", page);
 	}
 
 	@Override

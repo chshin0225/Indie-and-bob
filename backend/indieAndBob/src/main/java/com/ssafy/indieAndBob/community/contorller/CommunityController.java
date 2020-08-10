@@ -57,12 +57,13 @@ public class CommunityController {
 		return response;
 	}
 	
-	@GetMapping("/community")
+	@GetMapping("/community/{page}")
 	@ApiOperation(value="커뮤니티 글 전부 조회")
-	public Object listCommunity() {
+	public Object listCommunity(@PathVariable int page) {
 		logger.info("==========listCommunity==========");
 		ResponseEntity response = null;
-		List<Community> list = communityService.listCommunity();
+		page = (page - 1) * 1;
+		List<Community> list = communityService.listCommunity(page);
 		if(list != null) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;

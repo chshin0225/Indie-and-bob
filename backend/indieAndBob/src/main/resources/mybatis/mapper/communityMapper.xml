@@ -8,8 +8,9 @@
 		values(#{nickname},#{title},#{content})
 	</insert>
 	
-	<select id="listCommunity" resultType="community">
+	<select id="listCommunity" parameterType="int" resultType="community">
 		select community_id, nickname, title, created_at, updated_at from community
+		order by community_id limit #{page},10
 	</select>
 	
 	<select id="communityDetail" parameterType="int" resultType="community">

@@ -7,7 +7,7 @@ import com.ssafy.indieAndBob.community.dto.MyCommunitySearch;
 
 public interface CommunityService {
 	int insertCommunity(Community community);
-	List<Community> listCommunity();
+	List<Community> listCommunity(int page);
 	Community communityDetail(int communityId);
 	int updateCommunity(Community community);
 	int deleteCommunity(int communityId);

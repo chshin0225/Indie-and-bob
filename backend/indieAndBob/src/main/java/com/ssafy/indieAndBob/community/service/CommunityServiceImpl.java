@@ -21,8 +21,8 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public List<Community> listCommunity() {
-		return communityDao.listCommunity();
+	public List<Community> listCommunity(int page) {
+		return communityDao.listCommunity(page);
 	}
 
 	@Override
