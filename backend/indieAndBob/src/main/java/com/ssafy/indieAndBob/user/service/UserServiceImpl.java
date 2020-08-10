@@ -45,7 +45,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int changeUserInfo(User user) {
+	public int changeUserInfo(UserAll user) {
+		userDao.deleteUserGenre(user.getNickname());
+		if(user.getGenreId() == null) {
+			return 1;
+		}
+		for(int genre : user.getGenreId()) {
+			UserGenre userGenre = new UserGenre(user.getNickname(), genre);
+			userDao.registerUserGenre(userGenre);
+		}
 		return userDao.changeUserInfo(user);
 	}
 

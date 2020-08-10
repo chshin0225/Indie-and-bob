@@ -417,7 +417,11 @@ export default new Vuex.Store({
       .catch(err => console.error(err))
     },
 
-    fetchMyProjects() {},
+    fetchMyProjects({ commit }, username) {
+      axios.get(SERVER.BASE + SERVER.MYPROJECT + username)
+        .then(res => commit('setMyProjectList', res.data.object))
+        .catch(err => console.error(err))
+    },
 
     fetchFundedProjects({ commit, getters }, username) {
       axios.get(SERVER.BASE + SERVER.FUNDEDPROJECT + username, getters.headersConfig)

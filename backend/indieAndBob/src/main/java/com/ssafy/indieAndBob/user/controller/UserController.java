@@ -73,6 +73,12 @@ public class UserController {
 			u = userService.selectByNickname(request.getNickname());
 			logger.info(" " + u);
 			if(u == null) {
+				if(request.getProfile() != null) {
+					String img = request.getProfile();
+					String[] extensions = img.split("\\.");
+					String extension = extensions[extensions.length-1];
+					request.setProfile("user/" + request.getNickname() + "/" + request.getNickname() + "." + extension);
+				}
 				if (userService.registerUser(request) == 1) {
 					final BasicResponse result = new BasicResponse();
 					result.status = true;
@@ -138,7 +144,7 @@ public class UserController {
 
 	@PutMapping("/account/userinfo")
 	@ApiOperation(value = "회원 정보 수정")
-	public Object changeUserInfo(@RequestBody User request) {
+	public Object changeUserInfo(@RequestBody UserAll request) {
 		logger.info("==========changeUserInfo==========");
 		ResponseEntity response = null;
 		if (userService.changeUserInfo(request) == 1) {

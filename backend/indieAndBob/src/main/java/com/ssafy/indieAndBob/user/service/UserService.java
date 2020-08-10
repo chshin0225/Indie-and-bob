@@ -11,7 +11,7 @@ public interface UserService {
 	User selectByEmail(String user);
 	User selectByNickname(String nickname);	
 	int registerUser(UserAll user);
-	int changeUserInfo(User user);
+	int changeUserInfo(UserAll user);
 	
 	int registerFollow(Follow follow);
 	List<User> getFollower(String userId);

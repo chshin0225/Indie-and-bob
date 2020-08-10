@@ -35,7 +35,12 @@ public class GameServiceImpl implements GameService{
 	}
 	
 	@Override
-	public int updateGame(Game game) {
+	public int updateGame(GameAll game) {
+		gamedao.deleteGameGenre(game.getGameId());
+		for(int genre : game.getGenre()) {
+			GameGenre gameGenre = new GameGenre(game.getGameId(), genre);
+			gamedao.insertGameGenre(gameGenre);
+		}
 		return gamedao.updateGame(game);
 	}
 	

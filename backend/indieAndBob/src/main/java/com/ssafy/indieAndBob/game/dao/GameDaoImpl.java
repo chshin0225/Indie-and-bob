@@ -26,15 +26,17 @@ public class GameDaoImpl implements GameDao{
 		if(temp.insert(ns + "registerGame", game) != 1) {
 			return 0;
 		}
-		String thumbnail = "game/" + game.getGameId() + "/thumbnail/" + game.getGameId() + "." + extension;
-		game.setThumbnail(thumbnail);
+		if(extension != null) {
+			String thumbnail = "game/" + game.getGameId() + "/thumbnail/" + game.getGameId() + "." + extension;
+			game.setThumbnail(thumbnail);
+		}
 		temp.update(ns + "injectThumbnail", game);
 		return game.getGameId();
 	}
 	
 	@Override
 	public int registerDetail(GameAll detail) {
-		detail.setContent("game/"+detail.getGameId()+"/detail/"+detail.getGameId());
+		detail.setContent("game/"+detail.getGameId()+"/content/"+detail.getGameId());
 		return temp.insert(ns + "registerGameDetail", detail);
 	}
 
@@ -74,7 +76,8 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public int updateGame(Game game) {
+	public int updateGame(GameAll game) {
+		
 		return temp.update(ns + "updateGame", game);
 	}
 
@@ -108,5 +111,9 @@ public class GameDaoImpl implements GameDao{
 		return temp.selectList(ns + "selectMadeGameByNickname", nickname);
 	}
 
+	@Override
+	public int deleteGameGenre(int gameId) {
+		return temp.delete(ns + "deleteGameGenre", gameId);
+	}
 	
 }
