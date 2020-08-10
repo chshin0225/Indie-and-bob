@@ -21,8 +21,8 @@
         values (#{name}, #{deadline}, #{aim},#{aim},#{isEnd},#{isApprove},#{nickname},
         #{thumbnail})
     </insert>
-    <update id="updateGame" parameterType="game">
-    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, left_price=#{leftPrice}, is_end=#{isEnd}, is_approve=#{isApprove}, nickname=#{nickname}
+    <update id="updateGame" parameterType="gameall">
+    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, updated_at=now()
         where game_id=#{gameId}
     </update>
     <delete id="deleteGameById" parameterType="int">
@@ -72,4 +72,8 @@
     <update id="injectThumbnail" parameterType="gameall">
     	update game set thumbnail=#{thumbnail} where game_id=#{gameId}
     </update>
+    
+    <delete id="deleteGameGenre" parameterType="int">
+    	delete from game_genre where game_id=#{gameId}
+    </delete>
 </mapper>

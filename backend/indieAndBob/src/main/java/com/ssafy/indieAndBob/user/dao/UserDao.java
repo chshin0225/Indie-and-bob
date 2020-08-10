@@ -14,11 +14,12 @@ public interface UserDao {
 	List<User> searchUser(String keyword);
 	int registerUser(UserAll user);
 	int registerUserGenre(UserGenre userGenre);
-	int changeUserInfo(User user);
+	int changeUserInfo(UserAll user);
 	
 	int registerFollow(Follow follow);
 	List<User> getFollower(String userId);
 	List<User> getFollowing(String userId);
 	int deleteFollowing(Follow follow);
 	boolean isFollowing(Follow follow);
+	int deleteUserGenre(String nickname);
 }
