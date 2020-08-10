@@ -182,7 +182,6 @@ import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 import _ from 'lodash'
-import firebase from 'firebase'
 
 export default {
   name: 'GameDetail',
@@ -330,16 +329,16 @@ export default {
     }    
   },
 
-  updated() {
-    if (this.projectDataFetched) {
-      const storageRef = firebase.storage().ref()
-      const ref = this.project.thumbnail
-      storageRef.child(ref).getDownloadURL()
-        .then(url => {
-          this.project.thumbnail = url
-        })
-    }
-  },
+  // updated() {
+  //   if (this.projectDataFetched) {
+  //     const storageRef = firebase.storage().ref()
+  //     const ref = this.project.thumbnail
+  //     storageRef.child(ref).getDownloadURL()
+  //       .then(url => {
+  //         this.project.thumbnail = url
+  //       })
+  //   }
+  // },
 };
 </script>
 
