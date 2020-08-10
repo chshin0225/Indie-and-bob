@@ -13,14 +13,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>질문질문</td>
-                <td>사람ㅅ람</td>
+              <tr v-for="question in questionList" :key="question.qnaId">
+                <td><i class="fas fa-lock mr-2" v-if="question.secret"></i>{{ question.title }}</td>
+                <td><span><router-link :to="`/user/mypage/${question.nickname}`" class="text-decoration-none">{{question.nickname}}</router-link></span></td>
                 <td>날짜날짜</td>
               </tr>
             </tbody>
           </template>
         </v-simple-table>
+        <p>{{ questionList }}</p>
 
       </v-col>
     </v-row>
@@ -74,7 +75,7 @@
 
                 <v-col class="py-0" cols=12>
                   <v-checkbox
-                    v-model="questionData.isSecret"
+                    v-model="questionData.secret"
                     label="비밀글로 하기"
                   ></v-checkbox>
                 </v-col>
@@ -127,19 +128,19 @@ export default {
           gameId: this.$route.params.id,
           title: '',
           content: '',
-          isSecret: false,
+          secret: false,
         },
         error: {
           title: false,
           content: false,
         },
-        questions: [],
+        questionList: [],
       }
     },
 
     computed: {
       ...mapState(['project',]),
-      ...mapGetters(['headersConfig',])
+      ...mapGetters(['headersConfig', 'isLoggedIn'])
     },
 
     methods: {
@@ -159,28 +160,35 @@ export default {
               alert('문의사항을 개발자에게 보냈습니다.')
               this.questionData.title = ''
               this.questionData.content = ''
-              this.questionData.isSecret = false
+              this.questionData.secret = false
               this.questionForm = false
+              this.fetchQuestions()
             })
             .catch(err => console.error(err))
         }
       },
 
       fetchQuestions() {
-        axios.get(SERVER.BASE + "QuestionandAnswer")
-          .then(res => {
-            this.questions = res.data.questions
-          })
-        .catch(err => console.error(err))
+        if (this.isLoggedIn) {
+          axios.get(SERVER.BASE + SERVER.QNA + this.$route.params.id, this.headersConfig)
+            .then(res => {
+              console.log('Login', this.isLoggedIn)
+              this.questionList = res.data.object
+            })
+            .catch(err => console.error(err))
+        } else {
+          axios.get(SERVER.BASE + SERVER.NOSECRETQNA + this.$route.params.id)
+            .then(res => {
+              console.log('Login', this.isLoggedIn)
+              this.questionList = res.data.object
+            })
+            .catch(err => console.error(err))
+        }
       },
     },
 
     created() {
-      axios.get(SERVER.BASE + "QuestionandAnswer")
-      .then(res => {
-          this.questions = res.data.object
-      })
-      .catch(err => console.error(err))
+      this.fetchQuestions()
     },
 }
 </script>

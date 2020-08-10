@@ -18,17 +18,20 @@ export default {
     'APPROVE' : "/game/approve",
     'GAMELIST' : "/gamelist/",
     'GAME': "/game/",
+    'GAMEEDIT': "/game/",
     'GAMEREGISTER' : "/game/registergame",
     'GAMECOMMUNITY' : "/game/comment",
+    'MYPROJECT': "/madegame/",
 
     // fund
     'ALLREWARD': "/reward/",
     'REWARDS' : "/rewards/bygameid/",
     'REWARDDETAIL': "/reward/hj/",
-    'FUNDEDPROJECT': "/fundingByNickname?nickname=",
+    'FUNDEDPROJECT': "/fundingByNickname/",
 
     // game community
-    'QNA': "/qna/readByGameId/",
+    'QNA': "/qna/readByGameID/",
+    'NOSECRETQNA': "/qna/readByGameIDNoSecret/",
     'CREATEQNA': "/qna/create",
     'UPDATEQNA': "/qna/update",
     'DELETEQNA': "/qna/delete/",
