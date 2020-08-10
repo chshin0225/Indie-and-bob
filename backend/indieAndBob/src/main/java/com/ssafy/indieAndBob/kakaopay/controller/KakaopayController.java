@@ -120,7 +120,7 @@ public class KakaopayController {
 		try {
 			//res.sendRedirect("http://i3a105.p.ssafy.io:3000/home");
 			String encodedNickname = URLEncoder.encode(nickname, "UTF-8");
-			res.sendRedirect("i3a105.p.ssafy.io:3000/purchase/" + rewardId);
+			res.sendRedirect("http://i3a105.p.ssafy.io:3000/purchase/" + rewardId);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
