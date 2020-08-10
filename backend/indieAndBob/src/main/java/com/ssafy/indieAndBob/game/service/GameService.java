@@ -13,7 +13,7 @@ public interface GameService {
 
 	GameAll selectGameById(int gameId);
 	int registerGame(GameAll game, String extension);
-	int updateGame(Game game);
+	int updateGame(GameAll game, String extension);
 	int deleteGameById(int gameId);
 	List<GameAll> selectAllGame(int page);
 	List<Game> selectAllGameAdmin(int page);

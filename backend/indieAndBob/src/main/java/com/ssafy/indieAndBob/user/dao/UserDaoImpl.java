@@ -34,7 +34,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public int changeUserInfo(User user) {
+	public int changeUserInfo(UserAll user) {
 		return temp.update(ns + "changeUserInfo", user);
 	}
 
@@ -78,6 +78,11 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public int registerUserGenre(UserGenre userGenre) {
 		return temp.insert(ns + "registerUserGenre", userGenre);
+	}
+
+	@Override
+	public int deleteUserGenre(String nickname) {
+		return temp.delete(ns + "deleteUserGenre", nickname);
 	}
 
 }

@@ -15,7 +15,7 @@ public interface GameDao {
 	GameAll selectGameById(int gameId);
 	int registerGame(GameAll game, String extension);
 	int registerDetail(GameAll detail);
-	int updateGame(Game game);
+	int updateGame(GameAll game, String extension);
 	int deleteGameById(int gameId);
 	List<GameAll> selectAllGame(int page);
 	List<Game> selectAllGameAdmin(int page);
@@ -28,4 +28,5 @@ public interface GameDao {
 	int fundingGame(Funding funding);
 	int insertGameGenre(GameGenre gameGenre);
 	List<GameAll> selectMadeGameByNickname(String nickname);
+	int deleteGameGenre(int gameId);
 }

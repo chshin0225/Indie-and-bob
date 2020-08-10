@@ -48,4 +48,7 @@
    <select id="isFollowing" parameterType="follow" resultType="follow">
       select * from follow where follower=#{follower} and following=#{following}
    </select>
+   <delete id="deleteUserGenre" parameterType="String">
+   		delete from user_genre where nickname=#{nickname}
+   </delete>
 </mapper>
