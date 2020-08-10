@@ -216,15 +216,16 @@ public class GameController {
 		return response;
 	}
 	
-	@GetMapping("/game/like/gamelist/{nickname}")
+	@GetMapping("/game/like/gamelist/{nickname}/{page}")
 	@ApiOperation(value = "좋아요한 게임 리스트")
-	public Object gameLikeList(@PathVariable String nickname) {
+	public Object gameLikeList(@PathVariable String nickname, @PathVariable int page) {
 		logger.info("==========gameLikeList==========");
 		logger.info("gameLikeList : " + nickname);
 		ResponseEntity response = null;
 		List<Game> games = new LinkedList<>();
-		games = gservice.selectGameByNickname(nickname);
-		if (games.size() >= 0) {
+		MyGameSearch search = new MyGameSearch(nickname, page);
+		games = gservice.selectGameByNickname(search);
+		if (games != null) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";

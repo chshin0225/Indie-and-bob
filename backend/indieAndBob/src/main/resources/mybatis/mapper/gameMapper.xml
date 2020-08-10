@@ -35,9 +35,11 @@
     	insert into game_like (nickname,game_id) values(#{nickname},#{gameId})
     </insert>
     
-    <select id="selectGameByNickname" parameterType="String" resultType="game">
+    <select id="selectGameByNickname" parameterType="mygame" resultType="game">
     	select * from game 
-    	where game_id in (select game_id from game_like where nickname=#{nickname});
+    	where game_id in (select game_id from game_like where nickname=#{nickname})
+    	order by game_id desc
+    	limit #{page},9
     </select>
     
     <select id="selectUserByGameId" parameterType="String" resultType="user">

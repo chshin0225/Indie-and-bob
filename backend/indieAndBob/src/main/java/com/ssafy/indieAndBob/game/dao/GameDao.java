@@ -21,7 +21,7 @@ public interface GameDao {
 	List<GameAll> selectAllGame(int page);
 	List<Game> selectAllGameAdmin(int page);
 	int gameLike(GameLike like);
-	List<Game> selectGameByNickname(String nickname);
+	List<Game> selectGameByNickname(MyGameSearch search);
 	List<User> selectUserByGameId(String gameId);
 	int deleteGameLike(GameLike like);
 	GameLike isLike(GameLike like);

@@ -69,8 +69,8 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<Game> selectGameByNickname(String nickname) {
-		return gamedao.selectGameByNickname(nickname);
+	public List<Game> selectGameByNickname(MyGameSearch search) {
+		return gamedao.selectGameByNickname(search);
 	}
 
 	@Override
