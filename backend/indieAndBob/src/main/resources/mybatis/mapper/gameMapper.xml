@@ -22,7 +22,7 @@
         #{thumbnail})
     </insert>
     <update id="updateGame" parameterType="gameall">
-    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, updated_at=now()
+    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, updated_at=now(), thumbnail=#{thumbnail}
         where game_id=#{gameId}
     </update>
     <delete id="deleteGameById" parameterType="int">
