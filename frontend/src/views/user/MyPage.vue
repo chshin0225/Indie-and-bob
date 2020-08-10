@@ -33,7 +33,7 @@
                 
               </v-row>
               <v-row>
-                <p class="mb-0">introduction: {{ userInfo.introduction }}</p>
+                <p class="mb-0">{{ userInfo.introduction }}</p>
                 <!-- <p class="mb-0">following: {{ this.followerCount }}</p><br>
                 <p class="mb-0 pb-3">followers: {{ this.followingCount }}</p><br> -->
               </v-row>
@@ -184,12 +184,6 @@ export default {
       return {
         following: this.userInfo.username
       };
-    },
-    followerCount: function() {
-      return this.followerList.length;
-    },
-    followingCount: function() {
-      return this.followingList.length;
     },
   },
 
