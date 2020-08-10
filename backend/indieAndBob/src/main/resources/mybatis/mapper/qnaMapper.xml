@@ -5,8 +5,8 @@
 <mapper namespace="com.ssafy.indieAndBob.mapper.qna">
 
    	<insert id="create" parameterType="QnaVO">
-		 insert into qna (qna_id, game_id, nickname, title, content, is_secret, answer) 
-		 values(#{qnaId}, #{gameId}, #{nickname}, #{title}, #{content}, #{isSecret}, #{answer})
+		 insert into qna (game_id, nickname, title, content, is_secret, answer) 
+		 values(#{gameId}, #{nickname}, #{title}, #{content}, #{isSecret}, #{answer})
 	 </insert>
    	
    	<select id="read" parameterType="int" resultType="QnaVO">
