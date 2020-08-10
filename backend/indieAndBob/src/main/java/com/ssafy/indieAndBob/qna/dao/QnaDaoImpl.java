@@ -33,6 +33,11 @@ public class QnaDaoImpl implements QnaDao {
 	public int delete(int qna_id) {
 		return temp.delete(ns + "delete", qna_id);
 	}
+	
+	@Override
+	public int updateAnswer(QnaVO qna_vo) {
+		return temp.update(ns + "updateAnswer", qna_vo);
+	}
 
 	@Override
 	public boolean isDeveloper(QnaGameVO qna_game_vo) {

@@ -38,6 +38,11 @@ public class QnaServiceImpl implements QnaService{
 		// TODO Auto-generated method stub
 		return qnaDao.delete(qna_id);
 	}
+	
+	@Override
+	public int updateAnswer(QnaVO qna_vo) {
+		return qnaDao.updateAnswer(qna_vo);
+	}
 
 	@Override
 	public boolean isDeveloper(QnaGameVO qna_game_vo) {
