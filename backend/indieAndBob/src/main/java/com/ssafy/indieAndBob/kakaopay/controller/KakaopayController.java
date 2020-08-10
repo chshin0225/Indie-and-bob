@@ -2,6 +2,7 @@ package com.ssafy.indieAndBob.kakaopay.controller;
 
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -118,7 +119,8 @@ public class KakaopayController {
 		//return response;
 		try {
 			//res.sendRedirect("http://i3a105.p.ssafy.io:3000/home");
-			res.sendRedirect("http://i3a105.p.ssafy.io:3000/user/mypage/"+nickname);
+			String encodedNickname = URLEncoder.encode(nickname, "UTF-8");
+			res.sendRedirect("http://i3a105.p.ssafy.io:3000/purchase/" + rewardId);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -152,10 +154,6 @@ public class KakaopayController {
 		// model.addAttribute("info",kakaopay.kakaoPayInfo(pg_token));//정보들
 		ResponseEntity response = null;
 	} 
-	
-	
-	
-	
 	
 	@GetMapping("/fundingByFundingId")
 	@ApiOperation(value = "펀딩아이디로 펀딩찾기")

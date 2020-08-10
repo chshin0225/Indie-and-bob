@@ -4,13 +4,16 @@ import java.util.List;
 
 import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
+import com.ssafy.indieAndBob.user.dto.UserAll;
+import com.ssafy.indieAndBob.user.dto.UserGenre;
 
 public interface UserDao {
 	User selectByEmailAndPassword(User user);
 	User selectByEmail(String email);
 	User selectByNickname(String nickname);
 	List<User> searchUser(String keyword);
-	int registerUser(User user);
+	int registerUser(UserAll user);
+	int registerUserGenre(UserGenre userGenre);
 	int changeUserInfo(User user);
 	
 	int registerFollow(Follow follow);

@@ -23,6 +23,7 @@ import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
+import com.ssafy.indieAndBob.user.dto.UserAll;
 import com.ssafy.indieAndBob.user.service.EmailService;
 import com.ssafy.indieAndBob.user.service.UserService;
 
@@ -63,7 +64,7 @@ public class UserController {
 
 	@PostMapping("/account/signup")
 	@ApiOperation(value = "가입하기")
-	public Object signup(@RequestBody User request) {
+	public Object signup(@RequestBody UserAll request) {
 		logger.info("==========signup==========");
 		logger.info("user : " + request);
 		ResponseEntity response = null;

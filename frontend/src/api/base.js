@@ -27,6 +27,12 @@ export default {
     'REWARDDETAIL': "/reward/hj/",
     'FUNDEDPROJECT': "/fundingByNickname?nickname=",
 
+    // game community
+    'QNA': "/qna/readByGameId/",
+    'CREATEQNA': "/qna/create",
+    'UPDATEQNA': "/qna/update",
+    'DELETEQNA': "/qna/delete/",
+
     // kakaopay
     'KAKAOPAY': "/kakaoPay",
 

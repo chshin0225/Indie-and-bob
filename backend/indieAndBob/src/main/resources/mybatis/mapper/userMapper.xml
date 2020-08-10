@@ -24,6 +24,9 @@
       values (#{email}, #{name}, #{nickname}, #{password}, #{postcode},#{address},#{extraAddress},#{bankName},#{bankAccount},
       #{isDeveloper},#{phoneNumber},#{profile},#{introduction})
    </insert>
+   <insert id="registerUserGenre" parameterType="usergenre">
+		insert into user_genre (nickname, genre_id) values(#{nickname},#{genreId})
+   </insert>
    <update id="changeUserInfo" parameterType="user">
    	  update user set name=#{name}, postcode=#{postcode},address=#{address},
    	  extra_address=#{extraAddress},bank_name=#{bankName},bank_account=#{bankAccount},

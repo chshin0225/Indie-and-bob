@@ -11,7 +11,9 @@
 		<!-- 사용할 DTO들을 예약어로 등록 -->
 		<!-- typeAlias type="com.example.core.dto.Board" alias="board" /-->
 		<typeAlias type="com.ssafy.indieAndBob.user.dto.User" alias="user"/>
+		<typeAlias type="com.ssafy.indieAndBob.user.dto.UserAll" alias="userall"/>
 		<typeAlias type="com.ssafy.indieAndBob.user.dto.Follow" alias="follow"/>
+		<typeAlias type="com.ssafy.indieAndBob.user.dto.UserGenre" alias="usergenre"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.Game" alias="game"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameDetail" alias="gamedetail"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameAll" alias="gameall"/>
@@ -28,6 +30,7 @@
 		
 		<!--권성완-->
 		<typeAlias type="com.ssafy.indieAndBob.qna.dto.QnaVO" alias="QnaVO"/>
+		<typeAlias type="com.ssafy.indieAndBob.qna.dto.QnaGameVO" alias="QnaGameVO"/>
 		
 	</typeAliases>
 
