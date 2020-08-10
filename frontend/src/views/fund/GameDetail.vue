@@ -26,7 +26,7 @@
           <v-spacer></v-spacer>
 
           <!-- thumbnail -->
-          <v-col cols="12" sm="6">
+          <v-col cols="12" sm="6" class="d-flex justify-center align-center">
             <v-img :src="project.thumbnail" contain></v-img>
           </v-col>
         </v-row>
@@ -328,17 +328,6 @@ export default {
       this.isAdmin = true;
     }    
   },
-
-  // updated() {
-  //   if (this.projectDataFetched) {
-  //     const storageRef = firebase.storage().ref()
-  //     const ref = this.project.thumbnail
-  //     storageRef.child(ref).getDownloadURL()
-  //       .then(url => {
-  //         this.project.thumbnail = url
-  //       })
-  //   }
-  // },
 };
 </script>
 

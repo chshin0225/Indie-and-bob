@@ -432,8 +432,8 @@ export default new Vuex.Store({
 
 
     // community
-    fetchArticles({ commit }) {
-      axios.get(SERVER.BASE + SERVER.COMMUNITY)
+    fetchArticles({ commit }, page) {
+      axios.get(SERVER.BASE + SERVER.COMMUNITY + page)
         .then(res => commit('setArticleList', res.data.object))
         .catch(err => console.error(err))
     },

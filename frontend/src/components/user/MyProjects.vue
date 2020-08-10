@@ -26,21 +26,69 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- <infinite-loading @infinite="fetchMyProjects"></infinite-loading> -->
   </v-container>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+// import SERVER from '../../api/base'
+// import axios from 'axios'
+
+// import InfiniteLoading from "vue-infinite-loading"
+// import firebase from 'firebase'
 
 export default {
   name: 'MyProjects',
+
+  // components: {
+  //   InfiniteLoading,
+  // },
+
+  data() {
+    return {
+      projectNum: 0,
+      // myProjectList: [],
+    }
+  },
 
   computed: {
     ...mapState(['myProjectList'])
   },
 
   methods: {
-    ...mapActions(['fetchMyProjects',])
+    ...mapActions(['fetchMyProjects',]),
+
+    // fetchMyProjects($state) {
+    //   const storageRef = firebase.storage().ref()
+    //   axios.get(SERVER.BASE + SERVER.MYPROJECT + `${this.$route.params.username}/${this.projectNum}`)
+    //     .then(res => {
+    //       console.log('fetch', res.data)
+    //       if (res.data.object.length > 0) {
+    //         this.projectNum += 9;
+    //         console.log(res.data);
+    //         res.data.object.forEach(item => {
+    //           console.log(item)
+    //           if (item.profile !== null) {
+    //             storageRef.child(item.profile).getDownloadURL().then(url => {
+    //               item.profile = url
+    //             })
+    //           }
+    //           if (item.thumbnail !== null) {
+    //             storageRef.child(item.thumbnail).getDownloadURL().then(url => {
+    //               item.thumbnail = url
+    //             })
+    //           } 
+    //           this.myProjectList.push(item);
+    //         });
+    //         $state.loaded();
+    //       } else {
+    //         $state.complete();
+    //       }
+    //     })
+    //     .catch(err => console.error(err))
+    // },
   },
 
   created() {

@@ -3,6 +3,13 @@
     <h1 class="text-center">Community</h1>
     <!-- <p>{{ articleList }}</p> -->
 
+    <!-- new btn -->
+    <v-row class="justify-center">
+      <v-col class="text-right" cols=10>
+        <v-btn depressed color="accent" to="/community/new">New</v-btn>
+      </v-col>
+    </v-row>
+
     <!-- article list (v-for 적용해야함) -->
     <v-row class="justify-center" v-for="article in articleList" :key="article.communityId">
       <v-col class="py-1" cols=10>
@@ -17,12 +24,14 @@
       </v-col>
     </v-row>
 
-    <!-- new btn -->
-    <v-row class="justify-center">
-      <v-col class="text-right" cols=10>
-        <v-btn depressed color="accent" to="/community/new">New</v-btn>
-      </v-col>
-    </v-row>
+    <!-- pagination -->
+    <div class="text-center">
+      <v-pagination
+        v-model="page"
+        :length="5"
+        color="accent"
+      ></v-pagination>
+    </div>
 
   </v-container>
 </template>
@@ -32,6 +41,12 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
   name: "CommunityMain",
+
+  data() {
+    return {
+      page: 1,
+    }
+  },
   
   computed: {
     ...mapState(['articleList',])
@@ -43,7 +58,7 @@ export default {
 
   created() {
     // 모든 글 가져오기 
-    this.fetchArticles()
+    this.fetchArticles(this.page)
   },
 };
 </script>
