@@ -9,7 +9,7 @@
         </v-col>
         <v-col class="d-flex justify-end align-end">
           <p class="mb-0">
-            {{ $moment(article.createdAt).format('YYYY.MM.DD HH:MM') }} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span>
+            {{ $moment(article.createdAt).format('YYYY.MM.DD hh:mm') }} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span>
           </p>
         </v-col>
       </v-row>
@@ -88,7 +88,7 @@
 
                 <!-- date/writer -->
                 <v-list-item-subtitle>
-                  {{ $moment(comment.createdAt).format('YYYY.MM.DD HH:MM') }} by <span><router-link :to="`/user/mypage/${comment.nickname}`" class="text-decoration-none">{{comment.nickname}}</router-link></span>
+                  {{ $moment(comment.createdAt).format('YYYY.MM.DD hh:mm') }} by <span><router-link :to="`/user/mypage/${comment.nickname}`" class="text-decoration-none">{{comment.nickname}}</router-link></span>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>

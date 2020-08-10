@@ -46,14 +46,18 @@
           <v-card-text class="pb-0">
             <v-container class="pt-0">
               <v-row>
-                <v-col cols="12">
+                <!-- title -->
+                <v-col cols="12" class="mb-5">
                   <v-text-field 
                     label="제목" 
                     required
                     v-model="questionData.title"
+                    hide-details="true"
                   ></v-text-field>
+                  <small class="error-text primary--text" v-if="error.title">{{error.title}}</small>
                 </v-col>
 
+                <!-- content -->
                 <v-col class="py-0" cols=12>
                   <v-textarea
                     label="내용" 
@@ -65,7 +69,7 @@
                     placeholder="개발자에게 문의사항을 남겨주세요."
                     type="text"
                   ></v-textarea>
-                  <!-- <small class="error-text primary--text" v-if="error.content">{{error.content}}</small> -->
+                  <small class="error-text primary--text" v-if="error.content">{{error.content}}</small>
                 </v-col>
 
                 <v-col class="py-0" cols=12>
@@ -82,7 +86,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="dialog = false">문의하기</v-btn>
+            <v-btn color="accent" depressed @click="submitQuestion()">문의하기</v-btn>
             <v-btn color="primary" text @click="questionForm = false">닫기</v-btn>
           </v-card-actions>
         </v-card>
@@ -111,7 +115,7 @@
 <script>
 import axios from 'axios';
 import SERVER from '../../api/base';
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
     name:'QuestionandAnswer',
@@ -121,21 +125,60 @@ export default {
         questionForm: false,
         questionData: {
           gameId: this.$route.params.id,
-          title: null,
-          content: null,
+          title: '',
+          content: '',
           isSecret: false,
-        }
+        },
+        error: {
+          title: false,
+          content: false,
+        },
+        questions: [],
       }
     },
 
     computed: {
-      ...mapState(['project',])
+      ...mapState(['project',]),
+      ...mapGetters(['headersConfig',])
+    },
+
+    methods: {
+      submitQuestion() {
+        if (this.questionData.title.length <= 0) {
+          this.error.title = "제목이 있어야 합니다."
+        } else this.error.title = false
+
+        if (this.questionData.content.length <= 0) {
+          this.error.content = "내용이 있어야 합니다."
+        } else this.error.content = false
+
+        if (!this.error.title && !this.error.content) {
+          axios.post(SERVER.BASE + SERVER.CREATEQNA, this.questionData, this.headersConfig)
+            .then(res => {
+              console.log(res)
+              alert('문의사항을 개발자에게 보냈습니다.')
+              this.questionData.title = ''
+              this.questionData.content = ''
+              this.questionData.isSecret = false
+              this.questionForm = false
+            })
+            .catch(err => console.error(err))
+        }
+      },
+
+      fetchQuestions() {
+        axios.get(SERVER.BASE + "QuestionandAnswer")
+          .then(res => {
+            this.questions = res.data.questions
+          })
+        .catch(err => console.error(err))
+      },
     },
 
     created() {
       axios.get(SERVER.BASE + "QuestionandAnswer")
       .then(res => {
-          this.questions = res.data.questions
+          this.questions = res.data.object
       })
       .catch(err => console.error(err))
     },

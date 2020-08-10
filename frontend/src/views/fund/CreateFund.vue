@@ -5,13 +5,13 @@
 
       <!-- 리워드 정보 -->
       <v-row class="justify-center">
-        <v-col sm=8> 
+        <v-col sm=8 class="py-0"> 
           <h2 class="pb-1">리워드 정보</h2>
           <v-card class="mx-auto" outlined>
-            <div class="overline px-4 pt-3">프로젝트 이름</div>
-            <v-card-title class="headline pt-1">{{ rewardData.rewardName }}</v-card-title>
-            <v-card-text>{{ rewardData.content }}</v-card-text>
-            <v-card-text class="subtitle-1 text-right pt-0 black--text">{{ rewardData.price }} 원</v-card-text>
+            <div class="overline px-4 pt-3">{{ rewardData.game.name }}</div>
+            <v-card-title class="headline pt-1">{{ rewardData.reward.rewardName }}</v-card-title>
+            <v-card-text>{{ rewardData.reward.content }}</v-card-text>
+            <v-card-text class="subtitle-1 text-right pt-0 black--text">{{ rewardData.reward.price }} 원</v-card-text>
           </v-card>
         </v-col>
       </v-row>
@@ -165,9 +165,9 @@ export default {
 
     kakaoPay() {
       const PARAMS = {
-        "rewardId": this.rewardData.rewardId,
-        "gameId": this.rewardData.gameId,
-        "money": this.rewardData.price,
+        "rewardId": this.rewardData.reward.rewardId,
+        "gameId": this.rewardData.reward.gameId,
+        "money": this.rewardData.reward.price,
       }
       axios.post(SERVER.BASE + SERVER.KAKAOPAY, PARAMS, this.headersConfig)
         .then(res => {
