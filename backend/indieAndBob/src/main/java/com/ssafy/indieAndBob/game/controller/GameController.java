@@ -109,11 +109,17 @@ public class GameController {
 	
 	@PutMapping("/game")
 	@ApiOperation(value = "게임 아이디로 게임 수정")
-	public Object updateGameById(@RequestBody Game game) {
+	public Object updateGameById(@RequestBody GameAll game) {
 		logger.info("==========updateGameById==========");
 		logger.info("gameid : " + game);
 		ResponseEntity response = null;
-		if(gservice.updateGame(game) == 1) {
+		String extension = null;
+		if(game.getThumbnail() != null) {
+			String img = game.getThumbnail();
+			String[] extensions = img.split("\\.");
+			extension = extensions[extensions.length-1];
+		}
+		if(gservice.updateGame(game, extension) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -154,10 +160,12 @@ public class GameController {
 		logger.info("img = " + request.getThumbnail());
 		ResponseEntity response = null;
 		request.setNickname(nickname);
-		String img = request.getThumbnail();
-		String[] extensions = img.split("\\.");
-		String extension = extensions[extensions.length-1];
-		
+		String extension = null;
+		if(request.getThumbnail() != null) {
+			String img = request.getThumbnail();
+			String[] extensions = img.split("\\.");
+			extension = extensions[extensions.length-1];
+		}
 		int gameId = gservice.registerGame(request, extension);
 		if (gameId != 0) {
 			final BasicResponse result = new BasicResponse();
