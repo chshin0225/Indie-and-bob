@@ -10,7 +10,7 @@
             <!-- <p>{{ rewards }}</p> -->
             <!-- <p>{{ project }}</p> -->
             <p>장르: {{ genreData }}</p>
-            <p>개발자: <span><router-link class="text-decoration-none" :to="`user/mypage/${project.nickname}`">{{ project.nickname }}</router-link></span></p>
+            <p>개발자: <span><router-link class="text-decoration-none" :to="`/user/mypage/${project.nickname}`">{{ project.nickname }}</router-link></span></p>
             <p>기간: {{ $moment(project.createdAt).format("YYYY.MM.DD") }} ~ {{ $moment(project.deadline).format("YYYY.MM.DD") }}</p>
             <p>목표: {{ project.aim }}원</p>
             <v-container class="pb-0">
@@ -144,7 +144,8 @@
                     </v-col>
                     <v-spacer></v-spacer>
                     <v-col class="d-flex justify-end">
-                      <v-btn @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
+                      <v-btn v-if="reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
+                      <v-btn v-else color="accent" disabled rounded>매진</v-btn>
                     </v-col>
                   </v-row>
                 </v-expansion-panel-content>

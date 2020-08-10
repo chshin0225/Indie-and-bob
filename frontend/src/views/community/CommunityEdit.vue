@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <h1 class="text-center">새 글 작성</h1>
+    <h1 class="text-center">글 수정</h1>
 
     <!-- title -->
     <v-row class="justify-center my-3">
       <v-col class="py-0" sm="10">
         <v-text-field
           hide-details="true"
-          v-model="articleData.title"
+          v-model="article.title"
           id="title"
           placeholder="제목"
           type="text"
@@ -22,7 +22,7 @@
       <v-col class="py-0" sm="10">
         <v-textarea
           hide-details="true"
-          v-model="articleData.content"
+          v-model="article.content"
           id="content"
           placeholder="내용"
           type="text"
@@ -36,7 +36,7 @@
     <v-row class="justify-center">
       <v-col class="py-0 text-right" sm=10>
         <v-btn
-          @click="submit({title: articleData.title, content: articleData.content})"
+          @click="submit({title: article.title, content: article.content})"
           depressed
           large
           color="accent"
@@ -47,17 +47,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
-  name: 'CommunityForm',
+  name: 'CommunityEdit',
 
   data() {
     return {
-      articleData: {
-        title: '',
-        content: ''
-      },
       error: {
         title: false,
         content: false,
@@ -65,23 +61,31 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState(['article',])
+  },
+
   methods: {
-    ...mapActions(['createArticle',]),
-    submit(articleData) {
+    ...mapActions(['editArticle', 'getArticle']),
+    submit(article) {
       // form check
-      if (articleData.title.length <= 0)
+      if (article.title.length <= 0)
         this.error.title = "제목이 있어야 합니다.";
       else this.error.title = false;
 
-      if (articleData.content.length <= 0)
+      if (article.content.length <= 0)
         this.error.content = "내용이 있어야 합니다.";
       else this.error.content = false;
 
       // submit
       if (!this.error.title && !this.error.content) {
-        this.createArticle(articleData)
+        this.editArticle(this.article)
       }
     },
+  },
+
+  created() {
+    this.getArticle(this.$route.params.articleId)
   },
 };
 </script>

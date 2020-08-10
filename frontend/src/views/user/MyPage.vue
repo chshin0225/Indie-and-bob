@@ -202,10 +202,12 @@ export default {
     },
     userDataFetched() {
       const storageRef = firebase.storage().ref()
-      console.log('프사 가져오기')
-      storageRef.child(this.userInfo.profile).getDownloadURL().then(url => {
-        this.profileImage = url
-      }) 
+      if (this.userInfo.profile !== null) {
+        console.log('프사 가져오기')
+        storageRef.child(this.userInfo.profile).getDownloadURL().then(url => {
+          this.profileImage = url
+        }) 
+      }
     }
   },
 

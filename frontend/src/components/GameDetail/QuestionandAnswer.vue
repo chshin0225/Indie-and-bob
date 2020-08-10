@@ -1,7 +1,31 @@
 <template>
   <v-container>
-    
+
     <v-row>
+      <v-col cols=12>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">제목</th>
+                <th class="text-left">작성자</th>
+                <th class="text-left">작성일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>질문질문</td>
+                <td>사람ㅅ람</td>
+                <td>날짜날짜</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+
+      </v-col>
+    </v-row>
+
+    <v-row class="justify-end">
       <v-dialog v-model="questionForm" persistent max-width="600px">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -9,6 +33,7 @@
             depressed
             v-bind="attrs"
             v-on="on"
+            class="mr-3"
           >
             문의하기
           </v-btn>
