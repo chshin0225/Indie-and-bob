@@ -27,6 +27,7 @@
 		<typeAlias type="com.ssafy.indieAndBob.alarm.dto.Alarm" alias="alarm"/>
 		<typeAlias type="com.ssafy.indieAndBob.kakaopay.dto.Funding" alias="funding"/>
 		<typeAlias type="com.ssafy.indieAndBob.community.dto.Community" alias="community"/>
+		<typeAlias type="com.ssafy.indieAndBob.community.dto.MyCommunitySearch" alias="mycommunitysearch"/>
 		<typeAlias type="com.ssafy.indieAndBob.community.dto.CommunityComment" alias="communitycomment"/>
 		
 		<!--권성완-->

@@ -25,4 +25,7 @@
 		delete from community where community_id=#{communityId}
 	</delete>
     
+    <select id="listMyCommunity" parameterType="mycommunitysearch" resultType="community">
+    	select * from community where nickname=#{nickname} order by community_id limit #{page},10
+    </select>
 </mapper>

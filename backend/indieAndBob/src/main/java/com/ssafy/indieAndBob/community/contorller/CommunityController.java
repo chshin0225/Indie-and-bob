@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.indieAndBob.community.dto.Community;
+import com.ssafy.indieAndBob.community.dto.MyCommunitySearch;
 import com.ssafy.indieAndBob.community.service.CommunityService;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
@@ -117,6 +118,26 @@ public class CommunityController {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return response;
+	}
+	
+	@GetMapping("/community/{nickname}/{page}")
+	@ApiOperation(value="내가 작성한 글 조회")
+	public Object listMyCommunity(@PathVariable String nickname, @PathVariable int page) {
+		logger.info("==========listMyCommunity==========");
+		ResponseEntity response = null;
+		page = (page - 1) * 10;
+		MyCommunitySearch search = new MyCommunitySearch(nickname, page);
+		List<Community> list = communityService.listMyCommunity(search);
+		if(list != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = list;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
