@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.indieAndBob.game.dao.GenreDao;
 import com.ssafy.indieAndBob.game.dto.FundingGame;
+import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.kakaopay.dao.FundingDao;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
@@ -46,8 +47,8 @@ public class FundingServiceImpl implements FundingService {
 	}
 
 	@Override
-	public List<FundingGame> selectFundingByNickname(String nickname) {
-		List<FundingGame> games = fundingdao.selectFundingByNickname(nickname);
+	public List<FundingGame> selectFundingByNickname(MyGameSearch search) {
+		List<FundingGame> games = fundingdao.selectFundingByNickname(search);
 		for(FundingGame game : games) {
 			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
 			game.setGenreName(genreName);

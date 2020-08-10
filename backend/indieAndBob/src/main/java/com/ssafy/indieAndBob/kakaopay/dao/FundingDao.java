@@ -3,6 +3,7 @@ package com.ssafy.indieAndBob.kakaopay.dao;
 import java.util.List;
 
 import com.ssafy.indieAndBob.game.dto.FundingGame;
+import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 
 public interface FundingDao {
@@ -12,6 +13,6 @@ public interface FundingDao {
 	List<Funding> selectFundingByGameId(int gameId);
 	int registerFunding(Funding funding);
 	int deleteFundingByFundingId(int fundingId);
-	List<FundingGame> selectFundingByNickname(String nickname);
+	List<FundingGame> selectFundingByNickname(MyGameSearch search);
 	
 }
