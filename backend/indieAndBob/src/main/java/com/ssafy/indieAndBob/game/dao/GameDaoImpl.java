@@ -10,6 +10,7 @@ import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.game.dto.GameGenre;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.user.dto.User;
 
@@ -56,8 +57,8 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public List<Game> selectGameByNickname(String nickname) {
-		return temp.selectList(ns+"selectGameByNickname",nickname);
+	public List<Game> selectGameByNickname(MyGameSearch search) {
+		return temp.selectList(ns+"selectGameByNickname",search);
 	}
 
 	@Override
@@ -107,8 +108,8 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public List<GameAll> selectMadeGameByNickname(String nickname) {
-		return temp.selectList(ns + "selectMadeGameByNickname", nickname);
+	public List<GameAll> selectMadeGameByNickname(MyGameSearch search) {
+		return temp.selectList(ns + "selectMadeGameByNickname", search);
 	}
 
 	@Override

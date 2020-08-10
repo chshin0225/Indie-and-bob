@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.indieAndBob.game.dto.FundingGame;
+import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.kakaopay.dto.KakaoPayApprovalVO;
@@ -217,14 +218,14 @@ public class KakaopayController {
 		}
 		return response;
 	}
-	@GetMapping("/fundingByNickname/{nickname}")
+	@GetMapping("/fundingByNickname/{nickname}/{page}")
 	@ApiOperation(value = "닉네임으로 펀딩리스트 찾기")
-	public Object selectFundingByNickname(@PathVariable String nickname) {
+	public Object selectFundingByNickname(@PathVariable String nickname, @PathVariable int page) {
 		log.info("-------------selectFundingByNickname-----------------");
 		log.info("nickname : " + nickname);
 		ResponseEntity response = null;
-
-		List<FundingGame> fundingGames = fservice.selectFundingByNickname(nickname);
+		MyGameSearch search = new MyGameSearch(nickname, page);
+		List<FundingGame> fundingGames = fservice.selectFundingByNickname(search);
 		if(fundingGames.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
