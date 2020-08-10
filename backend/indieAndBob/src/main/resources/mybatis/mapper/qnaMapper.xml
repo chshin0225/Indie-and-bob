@@ -5,15 +5,15 @@
 <mapper namespace="com.ssafy.indieAndBob.mapper.qna">
 
    	<insert id="create" parameterType="QnaVO">
-		 insert into qna (qna_id, game_id, nickname, title, content, is_secret, answer) 
-		 values(#{qnaId}, #{gameId}, #{nickname}, #{title}, #{content}, #{isSecret}, #{answer})
+		 insert into qna (game_id, nickname, title, content, is_secret, answer) 
+		 values(#{gameId}, #{nickname}, #{title}, #{content}, #{isSecret}, #{answer})
 	 </insert>
    	
-   	<select id="read" parameterType="Integer" resultType="QnaVO">
+   	<select id="read" parameterType="int" resultType="QnaVO">
 		select * from qna where qna_id = #{qnaId}
 	</select>
 	
-	<update id="update">
+	<update id="update" parameterType="QnaVO">
 		update qna set qna_id=#{qnaId}, game_id=#{gameId}, nickname=#{nickname}, title=#{title}, content=#{content}, is_secret=#{isSecret}, answer=#{answer} where qna_id=#{qnaId}
  	</update>
  	
@@ -21,9 +21,20 @@
 		delete from qna where qna_id=#{qnaId}
 	</delete>
 	
-	<select id="listAll" resultType="QnaVO">
-		select * from qna
+	<select id="isDeveloper" parameterType="QnaGameVO" resultType="QnaVO">
+		select * from game where game_id=#{gameId} and nickname=#{nickname}
 	</select>
  	
+ 	<select id="readByGameIdNoSecret" parameterType="int" resultType="QnaVO">
+ 		select * from qna where game_id=#{gameId} and is_Secret=false
+ 	</select>
+ 	
+ 	<select id="readByGameIdAllSecret" parameterType="int" resultType="QnaVO">
+ 		select * from qna where game_id=#{gameId} and is_Secret=true
+ 	</select>
+ 	
+ 	<select id="readByGameIdMySecret" parameterType="QnaGameVO" resultType="QnaVO">
+ 		select * from qna where game_id=#{gameId} and nickname=#{nickname}
+ 	</select>
  	
 </mapper>
