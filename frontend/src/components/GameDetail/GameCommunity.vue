@@ -53,7 +53,7 @@
 
               <!-- date/writer -->
               <v-list-item-subtitle>
-                {{ $moment(article.createdAt).format('YYYY.MM.DD HH:MM') }} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span>
+                {{ $moment(article.createdAt).format('YYYY.MM.DD hh:mm') }} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span>
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
