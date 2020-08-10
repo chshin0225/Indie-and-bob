@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
@@ -297,13 +298,14 @@ public class GameController {
 		return response;
 	}
 	
-	@GetMapping("/madegame/{nickname}")
+	@GetMapping("/madegame/{nickname}/{page}")
 	@ApiOperation(value = "내가 만든 프로젝트 리스트 조회")
-	public Object selectMadeGameByNickname(@PathVariable String nickname) {
+	public Object selectMadeGameByNickname(@PathVariable String nickname, @PathVariable int page) {
 		logger.info("==========gameByNickname==========");
 		logger.info("gameByNickname : " + nickname);
 		ResponseEntity response = null;
-		List<GameAll> games = gservice.selectMadeGameByNickname(nickname);
+		MyGameSearch search = new MyGameSearch(nickname, page);
+		List<GameAll> games = gservice.selectMadeGameByNickname(search);
 		if (games != null) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;

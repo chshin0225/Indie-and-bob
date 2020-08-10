@@ -11,6 +11,7 @@ import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameGenre;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.user.dto.User;
@@ -103,8 +104,8 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<GameAll> selectMadeGameByNickname(String nickname) {
-		List<GameAll> games = gamedao.selectMadeGameByNickname(nickname);
+	public List<GameAll> selectMadeGameByNickname(MyGameSearch search) {
+		List<GameAll> games = gamedao.selectMadeGameByNickname(search);
 		for(GameAll game : games) {
 			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
 			game.setGenreName(genreName);

@@ -65,8 +65,8 @@
     	insert into game_genre (game_id,genre_id) values(#{gameId},#{genreId})
     </insert>
     
-    <select id="selectMadeGameByNickname" parameterType="String" resultType="gameall">
-    	select * from game where nickname=#{nickname}
+    <select id="selectMadeGameByNickname" parameterType="mygamesearch" resultType="gameall">
+    	select * from game where nickname=#{nickname} order by game_id desc limit #{page},9 
     </select>
     
     <update id="injectThumbnail" parameterType="gameall">
