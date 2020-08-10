@@ -82,10 +82,30 @@ public class QnaController {
 	@PutMapping("/qna/update")
 	@ApiOperation("Q&A 수정")
 	public Object update(@RequestBody QnaVO vo, HttpServletRequest req) {
-		logger.info("==========[qna read]==========");
+		logger.info("==========[qna update]==========");
 		ResponseEntity response = null;
 		vo.setNickname(jwtService.getNickname(req));
 		int res = qnaService.update(vo);
+		if(res == 0) {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.info("fail to create");
+		}else {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+			logger.info("success");
+		}
+		return response;
+	}
+	
+	@PutMapping("/qna/updateAnswer")
+	@ApiOperation("Answer 수정")
+	public Object updateAnswer(@RequestBody QnaVO vo, HttpServletRequest req) {
+		logger.info("==========[qna update]==========");
+		ResponseEntity response = null;
+		vo.setNickname(jwtService.getNickname(req));
+		int res = qnaService.updateAnswer(vo);
 		if(res == 0) {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 			logger.info("fail to create");
