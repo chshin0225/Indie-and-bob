@@ -76,12 +76,8 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public int updateGame(GameAll game, String extension) {
-		if(extension != null) {
-			String thumbnail = "game/" + game.getGameId() + "/thumbnail/" + game.getGameId() + "." + extension;
-			game.setThumbnail(thumbnail);
-		}
-		temp.update(ns + "injectThumbnail", game);
+	public int updateGame(GameAll game) {
+		
 		return temp.update(ns + "updateGame", game);
 	}
 

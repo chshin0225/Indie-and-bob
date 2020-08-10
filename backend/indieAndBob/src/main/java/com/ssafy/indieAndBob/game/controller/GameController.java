@@ -113,13 +113,7 @@ public class GameController {
 		logger.info("==========updateGameById==========");
 		logger.info("gameid : " + game);
 		ResponseEntity response = null;
-		String extension = null;
-		if(game.getThumbnail() != null) {
-			String img = game.getThumbnail();
-			String[] extensions = img.split("\\.");
-			extension = extensions[extensions.length-1];
-		}
-		if(gservice.updateGame(game, extension) == 1) {
+		if(gservice.updateGame(game) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";

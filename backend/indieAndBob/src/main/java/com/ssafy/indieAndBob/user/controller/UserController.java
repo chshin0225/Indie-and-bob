@@ -147,13 +147,6 @@ public class UserController {
 	public Object changeUserInfo(@RequestBody UserAll request) {
 		logger.info("==========changeUserInfo==========");
 		ResponseEntity response = null;
-		if(request.getProfile() != null) {
-			String img = request.getProfile();
-			String[] extensions = img.split("\\.");
-			String extension = extensions[extensions.length-1];
-			request.setProfile("user/" + request.getNickname() + "/" + request.getNickname() + "." + extension);
-		}
-		logger.info("set profile");
 		if (userService.changeUserInfo(request) == 1) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
@@ -162,7 +155,6 @@ public class UserController {
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		logger.info("end change");
 		return response;
 	}
 	
