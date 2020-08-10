@@ -3,6 +3,7 @@
 
     <v-row>
       <v-col cols=12>
+        <!-- questions -->
         <v-simple-table>
           <template v-slot:default>
             <thead>
@@ -21,7 +22,16 @@
             </tbody>
           </template>
         </v-simple-table>
-        <p>{{ questionList }}</p>
+        
+        <!-- pagination -->
+        <div class="text-center">
+          <v-pagination
+            v-model="page"
+            :length="5"
+            color="accent"
+          ></v-pagination>
+        </div>
+        <!-- <p>{{ questionList }}</p> -->
 
       </v-col>
     </v-row>
@@ -135,6 +145,7 @@ export default {
           content: false,
         },
         questionList: [],
+        page: 1,
       }
     },
 
@@ -155,8 +166,7 @@ export default {
 
         if (!this.error.title && !this.error.content) {
           axios.post(SERVER.BASE + SERVER.CREATEQNA, this.questionData, this.headersConfig)
-            .then(res => {
-              console.log(res)
+            .then(() => {
               alert('문의사항을 개발자에게 보냈습니다.')
               this.questionData.title = ''
               this.questionData.content = ''
@@ -170,14 +180,14 @@ export default {
 
       fetchQuestions() {
         if (this.isLoggedIn) {
-          axios.get(SERVER.BASE + SERVER.QNA + this.$route.params.id, this.headersConfig)
+          axios.get(SERVER.BASE + SERVER.QNA + this.$route.params.id + `/${this.page}`, this.headersConfig)
             .then(res => {
               console.log('Login', this.isLoggedIn)
               this.questionList = res.data.object
             })
             .catch(err => console.error(err))
         } else {
-          axios.get(SERVER.BASE + SERVER.NOSECRETQNA + this.$route.params.id)
+          axios.get(SERVER.BASE + SERVER.NOSECRETQNA + this.$route.params.id + `/${this.page}`)
             .then(res => {
               console.log('Login', this.isLoggedIn)
               this.questionList = res.data.object

@@ -20,7 +20,7 @@
         </v-btn>
 
         <!-- notifications(login했을 때만) -->
-        <v-menu v-if="isLoggedIn" transition="slide-y-transition" :close-on-click="closeOnClick" nudge-bottom=50 bottom left>
+        <!-- <v-menu v-if="isLoggedIn" transition="slide-y-transition" :close-on-click="closeOnClick" nudge-bottom=50 bottom left>
           <template v-slot:activator="{ on, attrs }">
             <v-btn v-if="message===0" icon v-bind="attrs" v-on="on"><i class="fas fa-bell white--text"></i></v-btn>
             <v-btn v-else icon v-bind="attrs" v-on="on"><i class="fas fa-bell red--text"></i></v-btn>
@@ -30,7 +30,7 @@
               <v-list-item-title>{{ item }}</v-list-item-title>
             </v-list-item>
           </v-list>
-        </v-menu>
+        </v-menu> -->
       </v-app-bar>
 
       <!-- nav drawer -->
@@ -150,11 +150,7 @@ export default {
       if (this.isLoggedIn) {
         let username = localStorage.getItem('username')
         axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
-          .then(res => {
-            // console.log('user',username)
-            // console.log(res.data)
-            this.userInfo = res.data.object
-          })
+          .then(res => this.userInfo = res.data.object)
           .catch(err => console.error(err))
       }
     },
@@ -171,12 +167,9 @@ export default {
 
   watch: {
     $route: function() {
-      // console.log('log', this.isLoggedIn)
       this.getUserInfo()
     },  
-    items() {
-    },
-    message() {},
+
     userInfo() {
       if (this.userInfo !== null) {
         const storageRef = firebase.storage().ref()
