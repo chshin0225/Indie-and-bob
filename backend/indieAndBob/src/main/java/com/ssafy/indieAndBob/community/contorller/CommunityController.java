@@ -1,6 +1,8 @@
 package com.ssafy.indieAndBob.community.contorller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -57,18 +59,22 @@ public class CommunityController {
 		return response;
 	}
 	
-	@GetMapping("/community/{page}")
+	@GetMapping("/communitylist/{page}")
 	@ApiOperation(value="커뮤니티 글 전부 조회")
 	public Object listCommunity(@PathVariable int page) {
 		logger.info("==========listCommunity==========");
 		ResponseEntity response = null;
-		page = (page - 1) * 1;
+		page = (page - 1) * 10;
 		List<Community> list = communityService.listCommunity(page);
+		int count = communityService.listCommunityCount();
+		Map<String, Object> map = new HashMap<>();
 		if(list != null) {
+			map.put("list", list);
+			map.put("count", count);
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
-			result.object = list;
+			result.object = map;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -134,11 +140,15 @@ public class CommunityController {
 		page = (page - 1) * 10;
 		MyCommunitySearch search = new MyCommunitySearch(nickname, page);
 		List<Community> list = communityService.listMyCommunity(search);
+		int count = communityService.listMyCommunityCount(nickname);
+		Map<String, Object> map = new HashMap<>();
 		if(list != null) {
+			map.put("list", list);
+			map.put("count", count);
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
-			result.object = list;
+			result.object = map;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

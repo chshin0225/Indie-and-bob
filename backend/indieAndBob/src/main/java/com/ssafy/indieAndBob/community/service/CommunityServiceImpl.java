@@ -45,4 +45,14 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.listMyCommunity(search);
 	}
 
+	@Override
+	public int listCommunityCount() {
+		return communityDao.listCommunityCount();
+	}
+
+	@Override
+	public int listMyCommunityCount(String nickname) {
+		return communityDao.listMyCommunityCount(nickname);
+	}
+
 }

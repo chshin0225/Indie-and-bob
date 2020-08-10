@@ -12,4 +12,6 @@ public interface CommunityService {
 	int updateCommunity(Community community);
 	int deleteCommunity(int communityId);
 	List<Community> listMyCommunity(MyCommunitySearch search);
+	int listCommunityCount();
+	int listMyCommunityCount(String nickname);
 }

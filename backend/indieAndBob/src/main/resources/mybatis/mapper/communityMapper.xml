@@ -10,7 +10,7 @@
 	
 	<select id="listCommunity" parameterType="int" resultType="community">
 		select community_id, nickname, title, created_at, updated_at from community
-		order by community_id limit #{page},10
+		order by community_id desc limit #{page},10
 	</select>
 	
 	<select id="communityDetail" parameterType="int" resultType="community">
@@ -27,6 +27,14 @@
 	</delete>
     
     <select id="listMyCommunity" parameterType="mycommunitysearch" resultType="community">
-    	select * from community where nickname=#{nickname} order by community_id limit #{page},10
+    	select * from community where nickname=#{nickname} order by community_id desc limit #{page},10
+    </select>
+    
+    <select id="listCommunityCount" resultType="int">
+    	select count(*) from community
+    </select>
+    
+    <select id="listMyCommunityCount" parameterType="String" resultType="int">
+    	select count(*) from community where nickname=#{nickname}
     </select>
 </mapper>

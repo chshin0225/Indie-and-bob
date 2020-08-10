@@ -46,4 +46,14 @@ public class CommunityDaoImpl implements CommunityDao {
 		return temp.selectList(ns + "listMyCommunity", search);
 	}
 
+	@Override
+	public int listCommunityCount() {
+		return temp.selectOne(ns + "listCommunityCount");
+	}
+
+	@Override
+	public int listMyCommunityCount(String nickname) {
+		return temp.selectOne(ns + "listMyCommunityCount", nickname);
+	}
+
 }
