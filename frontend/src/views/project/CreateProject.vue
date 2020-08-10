@@ -18,7 +18,7 @@
     <v-row class="justify-center">
       <v-col class="py-0 mt-5" sm="10">
         <label for="genres">장르선택(복수의 선택도 가능합니다)</label>
-        <v-select v-model="value" :items="genres" chips id="genres" multiple outlined></v-select>
+        <v-select v-model="genre" :items="genres" chips id="genres" multiple outlined></v-select>
       </v-col>
     </v-row>
     <v-row class="justify-center">
@@ -91,7 +91,7 @@ import axios from "axios";
 // import router from "../../router";
 import { Editor } from "@toast-ui/vue-editor";
 import SERVER from "../../api/base";
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import firebase from 'firebase'
 export default {
   components: {
@@ -100,16 +100,8 @@ export default {
   data() {
     return {
       text: "",
-      value: "",
-      genres: [
-        "판타지",
-        "캐쥬얼",
-        "보드게임",
-        "사행성",
-        "가챠",
-        "로또",
-        "이것저것",
-      ],
+      genre: "",
+      genreId: [],
       today: new Date().toISOString().substr(0, 10),
       date: new Date().toISOString().substr(0, 10),
       title: "",
@@ -123,15 +115,19 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([ 'headersConfig' ])
+    ...mapGetters([ 'headersConfig' ]),
+    ...mapState(['genres', 'genreToId'])
   },
   methods: {
     onButtonClick() {
+      this.genre.forEach(function(item) {
+        this.genreId.push(this.genreToId[item])
+      })
       let PARAMS = {
         content: null,
         name: this.title,
         deadline: this.date,
-        genre: [1],
+        genre: this.genreId,
         aim: this.aim,
         thumbnail: this.thumbnail.name,
       };

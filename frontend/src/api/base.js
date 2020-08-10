@@ -18,6 +18,7 @@ export default {
     'APPROVE' : "/game/approve",
     'GAMELIST' : "/gamelist/",
     'GAME': "/game/",
+    'GAMEEDIT': "/game/",
     'GAMEREGISTER' : "/game/registergame",
     'GAMECOMMUNITY' : "/game/comment",
     'MYPROJECT': "/madegame/",
