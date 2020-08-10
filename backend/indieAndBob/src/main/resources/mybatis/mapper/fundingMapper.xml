@@ -24,7 +24,7 @@
     <delete id="deleteFundingByFundingId" parameterType="int">
     	delete from funding where funding_id=#{fundingId}
     </delete>
-    <select id="selectFundingByNickname" parameterType="String" resultType="fundinggame">
-    	select g.*,r.* from funding f,game g,reward r where f.game_id=g.game_id and f.reward_id=r.reward_id and f.nickname=#{nickname};
+    <select id="selectFundingByNickname" parameterType="mygamesearch" resultType="fundinggame">
+    	select g.*,r.* from funding f,game g,reward r where f.game_id=g.game_id and f.reward_id=r.reward_id and f.nickname=#{nickname} order by funding_id desc limit #{page},9;
     </select>
 </mapper>
