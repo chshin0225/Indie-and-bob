@@ -155,8 +155,7 @@ export default {
 
         if (!this.error.title && !this.error.content) {
           axios.post(SERVER.BASE + SERVER.CREATEQNA, this.questionData, this.headersConfig)
-            .then(res => {
-              console.log(res)
+            .then(() => {
               alert('문의사항을 개발자에게 보냈습니다.')
               this.questionData.title = ''
               this.questionData.content = ''
