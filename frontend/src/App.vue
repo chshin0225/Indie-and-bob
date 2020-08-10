@@ -143,7 +143,7 @@ export default {
   },
   
   methods: {
-    ...mapActions(['goBack', 'logout', 'search', 'socketConnect']),
+    ...mapActions(['goBack', 'logout', 'search']),
 
     getUserInfo() {
       this.userInfo = null
@@ -174,10 +174,6 @@ export default {
       // console.log('log', this.isLoggedIn)
       this.getUserInfo()
     },  
-    isLoggedIn() {
-      console.log('loggedin')
-      this.socketConnect()
-    },
     items() {
     },
     message() {},

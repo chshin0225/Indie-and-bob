@@ -15,6 +15,22 @@
       </v-col>
     </v-row>
 
+    <v-row class="justify-center my-4">
+      <v-col class="py-0" sm="6">
+        <label for="usertype">가장 좋아하는 장르</label>
+        <v-select
+          hide-details="true"
+          :items="genres"
+          id="usertype"
+          placeholder="본인이 가장 좋아하는 게임 장르를 선택해주세요."
+          v-model="genre"
+          outlined
+          multiple
+          chips
+        ></v-select>
+      </v-col>
+    </v-row>
+
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
         <label for="usertype">주 사용자 유형</label>
@@ -199,7 +215,7 @@
 
           <v-col class="text-right py-0">
             <v-btn
-              @click="changeUserInfo({name:name, email: email, profile:profileImage, profileURL: profileURL, password: password, nickname: nickname, isDeveloper: is_developer, phoneNumber: phonenumber, bankName: bankname, bankAccount: accountnumber, postcode: postcode, address: address, extraAddress: extraAddress, introduction: introduction})"
+              @click="changeUserInfo({name:name, email: email, genre: genre, profile:profileImage, profileURL: profileURL, password: password, nickname: nickname, isDeveloper: is_developer, phoneNumber: phonenumber, bankName: bankname, bankAccount: accountnumber, postcode: postcode, address: address, extraAddress: extraAddress, introduction: introduction})"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
@@ -239,6 +255,7 @@ export default {
       profileURL: null,
       phonenumber: "",
       nickname: "",
+      genre: null,
       name: "",
       usertype: "",
       userTypes: ["일반 사용자", "개발자"],
@@ -268,7 +285,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo', "genres"])
   },
 
   watch: {
@@ -302,7 +319,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['changeUserInfo', 'getUserInfo']),
+    ...mapActions(['changeUserInfo']),
 
     getUser() {
       console.log('getuser')
@@ -316,6 +333,7 @@ export default {
           this.introduction = res.data.object.introduction;
           this.phonenumber = res.data.object.phoneNumber;
           this.nickname = res.data.object.nickname;
+          this.genre = res.data.object.genre;
           this.is_developer = res.data.object.developer;
           if (res.data.object.developer) {
             this.usertype = "개발자"
