@@ -151,4 +151,24 @@ public class QnaController {
 		}		
 		return response; 
 	}
+	
+	@GetMapping("/qna/readByGameIDNoSecret/{gameId}")
+	@ApiOperation("게임ID로 조회하기")
+	public Object readByGameIdNoSecret(@PathVariable int gameId) {
+		logger.info("==========[qna read]==========");
+		ResponseEntity response = null;
+		
+		//no secret 먼저 받고 -> 관리자인지 확인 -> 관리자이면 시크릿도 전부 추가 -> 아니면 시크릿 중에 자신의 id만 확인해서 한다.
+		List<QnaVO> qnaList = qnaService.readByGameIdNoSecret(gameId);
+		if(qnaList == null) {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}else {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = qnaList;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		}		
+		return response; 
+	}
 }
