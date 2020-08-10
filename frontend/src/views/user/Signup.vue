@@ -297,7 +297,7 @@
                 name:name,
                 profile: profileImage,
                 nickname: nickName,
-                genre: genre, 
+                genreId: genre, 
                 isDeveloper: is_developer, 
                 phoneNumber: phonenumber, 
                 bankName: bankname,
