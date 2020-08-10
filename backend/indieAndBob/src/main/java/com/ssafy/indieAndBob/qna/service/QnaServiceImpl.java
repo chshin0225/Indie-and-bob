@@ -67,5 +67,19 @@ public class QnaServiceImpl implements QnaService{
 		// TODO Auto-generated method stub
 		return qnaDao.readByGameIdMySecret(qna_game_vo);
 	}
+
+	@Override
+	public List<QnaVO> pagination(List<QnaVO> qnaList, int page) {
+		int numOfContents = qnaList.size();
+		int fromIndex = (page - 1) * 10;
+		int toIndex = page * 10 - 1;
+		
+		qnaList.sort(null);
+		if(toIndex > numOfContents) toIndex = numOfContents;
+		qnaList = qnaList.subList(fromIndex, toIndex);
+		qnaList.get(0).setNumOfContents(numOfContents);
+		return qnaList;
+	}
+	
 	
 }

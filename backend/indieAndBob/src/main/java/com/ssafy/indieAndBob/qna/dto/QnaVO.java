@@ -15,9 +15,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QnaVO {
+public class QnaVO{
 	private int qnaId;
 	private int gameId;
+	private int numOfContents;
 	private String nickname;
 	private String title;
 	private String content;

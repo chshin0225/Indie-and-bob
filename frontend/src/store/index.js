@@ -367,27 +367,29 @@ export default new Vuex.Store({
     getProject({ commit, getters }, gameId) {
       commit('setProject', null)
       axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`, getters.headersConfig)
-      .then(res => {
-        const storageRef = firebase.storage().ref()
-        storageRef.child(res.data.object.content).getDownloadURL().then(url => {
-          var xhr = new XMLHttpRequest();
-          if (xhr) {
-            xhr.open('GET', url, false)
-            xhr.send();
-            var result = (xhr.response)
-          }
-          res.data.object.content = result
-          storageRef.child(res.data.object.thumbnail).getDownloadURL()
-          .then(url => {
-            res.data.object.thumbnail = url
-            commit('setProject', res.data.object)
-          })
-          .catch(err => console.error(err))
-        }).catch(function(error) {
-          console.log(error)
+        .then(res => {
+          const storageRef = firebase.storage().ref()
+          storageRef.child(res.data.object.content).getDownloadURL()
+            .then(url => {
+              var xhr = new XMLHttpRequest()
+              if (xhr) {
+                xhr.open('GET', url, false)
+                xhr.send()
+                var result = (xhr.response)
+              }
+              res.data.object.content = result
+              storageRef.child(res.data.object.thumbnail).getDownloadURL()
+                .then(url => {
+                  res.data.object.thumbnail = url
+                  commit('setProject', res.data.object)
+                })
+                .catch(err => console.error(err))
+            })
+            .catch(function(error) {
+              console.log(error)
+            })
         })
-      })
-      .catch(err => console.error(err))
+        .catch(err => console.error(err))
     },
 
     fetchMyProjects({ commit }, username) {
@@ -430,8 +432,8 @@ export default new Vuex.Store({
 
 
     // community
-    fetchArticles({ commit }) {
-      axios.get(SERVER.BASE + SERVER.COMMUNITY)
+    fetchArticles({ commit }, page) {
+      axios.get(SERVER.BASE + SERVER.COMMUNITY + page)
         .then(res => commit('setArticleList', res.data.object))
         .catch(err => console.error(err))
     },

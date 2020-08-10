@@ -1,5 +1,6 @@
 package com.ssafy.indieAndBob.qna.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -138,9 +139,9 @@ public class QnaController {
 		return response;		
 	}
 	
-	@GetMapping("/qna/readByGameID/{gameId}")
+	@GetMapping("/qna/readByGameID/{gameId}/{page}")
 	@ApiOperation("게임ID로 조회하기")
-	public Object readByGameId(@PathVariable int gameId, HttpServletRequest req) {
+	public Object readByGameId(@PathVariable int gameId, @PathVariable int page, HttpServletRequest req) {
 		logger.info("==========[qna read]==========");
 		ResponseEntity response = null;
 		
@@ -166,19 +167,19 @@ public class QnaController {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
+			qnaList = qnaService.pagination(qnaList, page);
 			result.object = qnaList;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}		
 		return response; 
 	}
 	
-	@GetMapping("/qna/readByGameIDNoSecret/{gameId}")
+	@GetMapping("/qna/readByGameIDNoSecret/{gameId}/{page}")
 	@ApiOperation("게임ID로 조회하기")
-	public Object readByGameIdNoSecret(@PathVariable int gameId) {
+	public Object readByGameIdNoSecret(@PathVariable int gameId, @PathVariable int page) {
 		logger.info("==========[qna read]==========");
 		ResponseEntity response = null;
-		
-		//no secret 먼저 받고 -> 관리자인지 확인 -> 관리자이면 시크릿도 전부 추가 -> 아니면 시크릿 중에 자신의 id만 확인해서 한다.
+
 		List<QnaVO> qnaList = qnaService.readByGameIdNoSecret(gameId);
 		if(qnaList == null) {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -186,6 +187,7 @@ public class QnaController {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
+			qnaList = qnaService.pagination(qnaList, page);
 			result.object = qnaList;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}		
