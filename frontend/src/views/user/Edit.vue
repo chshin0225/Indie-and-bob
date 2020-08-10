@@ -215,7 +215,7 @@
 
           <v-col class="text-right py-0">
             <v-btn
-              @click="changeUserInfo({name:name, email: email, genre: genre, profile:profileImage, profileURL: profileURL, password: password, nickname: nickname, isDeveloper: is_developer, phoneNumber: phonenumber, bankName: bankname, bankAccount: accountnumber, postcode: postcode, address: address, extraAddress: extraAddress, introduction: introduction})"
+              @click="changeUserInfo({name:name, email: email, genreId: genre, profile:profileImage, profileURL: profileURL, password: password, nickname: nickname, isDeveloper: is_developer, phoneNumber: phonenumber, bankName: bankname, bankAccount: accountnumber, postcode: postcode, address: address, extraAddress: extraAddress, introduction: introduction})"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"

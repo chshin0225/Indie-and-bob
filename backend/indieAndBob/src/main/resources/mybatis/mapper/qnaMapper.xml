@@ -14,7 +14,11 @@
 	</select>
 	
 	<update id="update" parameterType="QnaVO">
-		update qna set qna_id=#{qnaId}, game_id=#{gameId}, nickname=#{nickname}, title=#{title}, content=#{content}, is_secret=#{isSecret}, answer=#{answer} where qna_id=#{qnaId}
+		update qna set qna_id=#{qnaId}, game_id=#{gameId}, nickname=#{nickname}, title=#{title}, content=#{content}, is_secret=#{isSecret} where qna_id=#{qnaId}
+ 	</update>
+ 	
+ 	<update id="updateAnswer" parameterType="QnaVO">
+ 		update qna set answer=#{answer}, answer_at=now() where qna_id=#{qnaId}
  	</update>
  	
 	<delete id="delete">
@@ -34,7 +38,7 @@
  	</select>
  	
  	<select id="readByGameIdMySecret" parameterType="QnaGameVO" resultType="QnaVO">
- 		select * from qna where game_id=#{gameId} and nickname=#{nickname}
+ 		select * from qna where game_id=#{gameId} and nickname=#{nickname} and is_Secret=true
  	</select>
  	
 </mapper>

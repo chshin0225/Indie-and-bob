@@ -207,8 +207,8 @@ export default new Vuex.Store({
         var extension = signupData.profile.name.split('.').reverse()[0];
         firebase.storage().ref(`user/${signupData.nickname}/${signupData.nickname}.${extension}`).put(signupData.profile)
         signupData.profile = `user/${signupData.nickname}/${signupData.nickname}.${extension}`
-        if (signupData.genre !== null) {
-          signupData.genre = state.genreToId[signupData.genre]
+        if (signupData.genreId !== null) {
+          signupData.genreId = state.genreToId[signupData.genreId]
         }
         axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
         .then(res => {
@@ -298,8 +298,8 @@ export default new Vuex.Store({
         console.log(changedData.profile)
         changedData.profile = changedData.profileURL
       }
-      if (changedData.genre !== null) {
-        changedData.genre = state.genreToId[changedData.genre]
+      if (changedData.genreId !== null) {
+        changedData.genreId = state.genreToId[changedData.genreId]
       }
       axios.put(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
         .then(() => {
@@ -369,22 +369,20 @@ export default new Vuex.Store({
       axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`, getters.headersConfig)
       .then(res => {
         const storageRef = firebase.storage().ref()
-        storageRef.child("game/15/content/15").getDownloadURL().then(url => {
+        storageRef.child(res.data.object.content).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
-          // console.log(xhr)
-          // xhr.responseType = 'blob';
           if (xhr) {
-            // console.log('1')
             xhr.open('GET', url, false)
             xhr.send();
             var result = (xhr.response)
-            // commit('setContent', 'aaa')
-            // console.log(state.project.content)
           }
-          // console.log('send', xhr)
-          // console.log(res.data.object)
           res.data.object.content = result
-          commit('setProject', res.data.object)
+          storageRef.child(res.data.object.thumbnail).getDownloadURL()
+          .then(url => {
+            res.data.object.thumbnail = url
+            commit('setProject', res.data.object)
+          })
+          .catch(err => console.error(err))
         }).catch(function(error) {
           console.log(error)
         })
