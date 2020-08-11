@@ -41,7 +41,7 @@ public class UserController {
 	@Autowired
 	JwtService jwtService;
 
-	@PostMapping("/account/login")
+	@PostMapping("/api/account/login")
 	@ApiOperation(value = "로그인")
 	public Object login(@RequestBody User user, HttpServletResponse res) {
 		logger.info("==========login==========");
@@ -62,7 +62,7 @@ public class UserController {
 		return response;
 	}
 
-	@PostMapping("/account/signup")
+	@PostMapping("/api/account/signup")
 	@ApiOperation(value = "가입하기")
 	public Object signup(@RequestBody UserAll request) {
 		logger.info("==========signup==========");
