@@ -70,9 +70,9 @@ public class UserController {
 		ResponseEntity response = null;
 		User u = userService.selectByEmail(request.getEmail());
 		if (u == null) {
-			u = userService.selectByNickname(request.getNickname());
+			UserAll u2 = userService.selectByNickname(request.getNickname());
 			logger.info(" " + u);
-			if(u == null) {
+			if(u2 == null) {
 				if(request.getProfile() != null) {
 					String img = request.getProfile();
 					String[] extensions = img.split("\\.");
@@ -109,7 +109,7 @@ public class UserController {
 	public Object selectUserByNickName(@PathVariable String nickname) {
 		logger.info("==========selectUserByNickName==========");
 		ResponseEntity response = null;
-		User u = userService.selectByNickname(nickname);
+		UserAll u = userService.selectByNickname(nickname);
 		if (u == null) {
 			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		} else {
