@@ -40,7 +40,7 @@ public class GameCommentController {
 	@Autowired
 	GameCommentService gcservice;
 	
-	@PostMapping("/game/comment")
+	@PostMapping("/api/game/comment")
 	@ApiOperation(value = "게임 댓글 등록")
 	public Object registerGameComment(@RequestBody GameComment comment) {
 		logger.info("==========registerGameComment==========");
@@ -57,7 +57,7 @@ public class GameCommentController {
 		return response;
 	}
 	
-	@GetMapping("/game/comment/{gameId}")
+	@GetMapping("/api/game/comment/{gameId}")
 	@ApiOperation(value = "게임에 등록된 댓글 조회")
 	public Object selectCommentByGameId(@PathVariable String gameId) {
 		logger.info("==========selectCommentByGameId==========");
@@ -76,7 +76,7 @@ public class GameCommentController {
 		return response;
 	}
 	
-	@DeleteMapping("/game/comment")
+	@DeleteMapping("/api/game/comment")
 	@ApiOperation(value = "게임에 등록된 댓글 삭제")
 	public Object deleteCommentByGcId(HttpServletRequest request) {
 		logger.info("==========deleteCommentByGcId==========");
