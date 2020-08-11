@@ -208,7 +208,11 @@ export default new Vuex.Store({
         firebase.storage().ref(`user/${signupData.nickname}/${signupData.nickname}.${extension}`).put(signupData.profile)
         signupData.profile = `user/${signupData.nickname}/${signupData.nickname}.${extension}`
         if (signupData.genreId !== null) {
-          signupData.genreId = state.genreToId[signupData.genreId]
+          let genreArray = []
+          signupData.genreId.forEach(item => {
+            genreArray.push(state.genreToId[item])
+          })
+          signupData.genreId = genreArray
         }
         axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
         .then(res => {
@@ -299,7 +303,11 @@ export default new Vuex.Store({
         changedData.profile = changedData.profileURL
       }
       if (changedData.genreId !== null) {
-        changedData.genreId = state.genreToId[changedData.genreId]
+        let genreArray = []
+        changedData.genreId.forEach(item => {
+          genreArray.push(state.genreToId[item])
+        })
+        changedData.genreId = genreArray
       }
       axios.put(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
         .then(() => {
