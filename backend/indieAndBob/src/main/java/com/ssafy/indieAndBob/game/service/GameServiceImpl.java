@@ -60,7 +60,12 @@ public class GameServiceImpl implements GameService{
 
 	@Override
 	public List<GameAll> selectAllGame(int page) {
-		return gamedao.selectAllGame(page);
+		List<GameAll> games = gamedao.selectAllGame(page);
+		for(GameAll game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
 	}
 
 	@Override
@@ -69,8 +74,13 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<Game> selectGameByNickname(MyGameSearch search) {
-		return gamedao.selectGameByNickname(search);
+	public List<GameAll> selectGameByNickname(MyGameSearch search) {
+		List<GameAll> games = gamedao.selectGameByNickname(search);
+		for(GameAll game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
 	}
 
 	@Override
