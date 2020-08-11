@@ -11,6 +11,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // admin
+    isAdmin: false,
+
     // user
     jwtToken: cookies.get('user'),
     isUser: false,
@@ -53,11 +56,9 @@ export default new Vuex.Store({
     // project
     projectList: [],
     project: null,
-    fundedProjectList: [],
     rewardData: null,
 
     // like
-    likedProjectList: [],
     likedUserList: [],
 
     // error
@@ -89,6 +90,11 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    // admin
+    setAdmin(state, val) {
+      state.isAdmin = val
+    },
+
     // user
     setToken(state, val) {
       state.jwtToken = val
@@ -143,17 +149,11 @@ export default new Vuex.Store({
     setProject(state, val) {
       state.project = val
     },
-    setLikedProjectList(state, val) {
-      state.likedProjectList = val
-    },
     setLikedUserList(state, val) {
       state.likedUserList = val
     },
     setContent(state, val) {
       state.project.content = val
-    },
-    setFundedProjectList(state, val) {
-      state.fundedProjectList = val
     },
     setRewardData(state, val) {
       state.rewardData = val
@@ -181,6 +181,11 @@ export default new Vuex.Store({
 
           // 로그인한 유저의 닉네임 저장 
           commit('setUsername', res.data.object.nickname)
+
+          // admin인지 확인
+          if (localStorage.getItem("username") === "admin") {
+            commit('setAdmin', true)
+          }  
 
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
@@ -260,6 +265,7 @@ export default new Vuex.Store({
       // local storage에 있는 username 정보 제거
       commit('setUsername', null)
       localStorage.removeItem('username')
+      commit('setAdmin', false)
       
       if (router.currentRoute.name !== 'Home') {
         router.push({ name: 'Home' })
@@ -287,7 +293,7 @@ export default new Vuex.Store({
       commit('setUserInfo', null)
       axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
         .then(res => {
-          console.log("getUserInfo")
+          // console.log("getUserInfo")
           commit('setUserInfo', res.data.object)
         })
         .catch(err => console.error(err))
@@ -399,15 +405,6 @@ export default new Vuex.Store({
         })
         .catch(err => console.error(err))
     },
-
-    fetchFundedProjects({ commit, getters }, username) {
-      axios.get(SERVER.BASE + SERVER.FUNDEDPROJECT + username, getters.headersConfig)
-        .then(res => {
-          console.log(res.data)
-          commit('setFundedProjectList', res.data.object)
-        })
-        .catch(err => console.log(err))
-    },
     
     getReward({ commit }, rewardId) {
       commit('setRewardData', null)
@@ -420,12 +417,6 @@ export default new Vuex.Store({
     },
 
     // like
-    fetchLikedProjects({ commit }, username) {
-      axios.get(SERVER.BASE + SERVER.LIKEDPROJECT + `/${username}`)
-        .then(res => commit('setLikedProjectList', res.data.object))
-        .catch(err => console.error(err))
-    },
-
     fetchLikedUsers({ commit }, gameId) {
       axios.get(SERVER.BASE + SERVER.LIKEBYGAME + gameId)
       .then((res) => commit('setLikedUserList', res.data.object))
