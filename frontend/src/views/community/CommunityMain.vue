@@ -10,7 +10,7 @@
       </v-col>
     </v-row>
 
-    <!-- article list (v-for 적용해야함) -->
+    <!-- article list -->
     <v-row class="justify-center" v-for="article in articleList" :key="article.communityId">
       <v-col class="py-1" cols=10>
         <v-card class="mx-auto" :to="`/community/${article.communityId}`" outlined>
@@ -28,7 +28,7 @@
     <div class="text-center">
       <v-pagination
         v-model="page"
-        :length="5"
+        :length="paginationLength"
         color="accent"
       ></v-pagination>
     </div>
@@ -49,15 +49,23 @@ export default {
   },
   
   computed: {
-    ...mapState(['articleList',])
+    ...mapState(['articleList', 'articleCount',]),
+    paginationLength() {
+      return Math.ceil(this.articleCount / 10)
+    },
+  },
+
+  watch: {
+    page: function() {
+      this.fetchArticles(this.page)
+    },
   },
 
   methods: {
-    ...mapActions(['fetchArticles',])
+    ...mapActions(['fetchArticles',]),
   },
 
   created() {
-    // 모든 글 가져오기 
     this.fetchArticles(this.page)
   },
 };
