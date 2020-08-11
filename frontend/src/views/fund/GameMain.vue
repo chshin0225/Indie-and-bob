@@ -17,7 +17,7 @@
                   <v-list-item-title class="headline">{{ game.name }}</v-list-item-title>
                   <router-link class="text-decoration-none" :to="`/user/mypage/${game.nickname}`">{{ game.nickname }}</router-link>
                   <v-list-item-subtitle>{{ $moment(game.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
-                  <v-list-item-subtitle>목표액: {{ game.aim }}</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{ game.genreName }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-img v-if="game.thumbnail" :src="game.thumbnail" height="194"></v-img>
@@ -60,6 +60,16 @@ export default {
     }
   },
 
+  // computed: {
+  //   genreData(genreName) {
+  //     let genres = ''
+  //     genreName.forEach(item => {
+  //       genres += item + ' | '
+  //     })
+  //     return genres.slice(0, this.genres.length-2)
+  //   },
+  // },
+
   methods: {
     infiniteHandler($state) {
       const storageRef = firebase.storage().ref()
@@ -82,6 +92,12 @@ export default {
                 })
               } 
               this.games.push(item);
+              
+              let genres = ''
+              item.genreName.forEach(genre => {
+                genres += genre + ' | '
+              })
+              item.genreName = genres.slice(0, genres.length-2)
             });
             // console.log("게임즈");
             // console.log(this.games);

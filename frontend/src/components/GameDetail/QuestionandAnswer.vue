@@ -1,7 +1,7 @@
 <template>
   <v-container>
 
-    <v-row>
+    <v-row v-if="questionList.length > 0">
       <v-col cols=12>
         <!-- questions -->
         <v-row>
@@ -44,6 +44,15 @@
                   <v-card-subtitle class="pb-1"><span class="font-weight-bold">A.</span></v-card-subtitle>
                   <v-card-text v-if="question.answer">{{ question.answer }}</v-card-text>
                   <v-card-text v-else>아직 답변이 없네요!</v-card-text>
+                  <v-card-actions class="pr-0 py-0">
+                      <v-spacer></v-spacer>
+                      <v-btn
+                       v-if = "question.nickname === currentUser"
+                        color="primary" 
+                        text 
+                        @click="deleteQuestion(question.qnaId)"
+                      >삭제</v-btn>
+                  </v-card-actions>
                 </v-card>
               </div>
 
@@ -56,7 +65,17 @@
                 <v-card flat>
                   <v-card-subtitle class="pb-1"><span class="font-weight-bold">A.</span></v-card-subtitle>
                   <!-- 답변 완료 -->
-                  <v-card-text v-if="question.answer">{{ question.answer }}</v-card-text>
+                  <v-card-text v-if="question.answer" class="pb-0">
+                    {{ question.answer }}
+                    <v-card-actions class="pr-0 py-0">
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="primary" 
+                        text 
+                        @click="deleteQuestion(question.qnaId)"
+                      >삭제</v-btn>
+                    </v-card-actions>
+                  </v-card-text>
 
                   <!-- 답변 작성해야함 -->
                   <v-card-text class="pb-0" v-else>
@@ -75,6 +94,11 @@
                         depressed 
                         @click="submitAnswer({'gameId': question.gameId, 'title': question.title, 'content': question.content, 'secret': question.secret, 'answer': answerToQuestion, 'qnaId': question.qnaId})"
                       >답변</v-btn>
+                      <v-btn
+                        color="primary" 
+                        text 
+                        @click="deleteQuestion(question.qnaId)"
+                      >삭제</v-btn>
                     </v-card-actions>
                   </v-card-text>
                 </v-card>
@@ -97,6 +121,10 @@
         </div>
       </v-col>
     </v-row>
+
+    <div v-else>
+      <p class="py-6 text-center">아직 문의사항이 없네요!</p>
+    </div>
 
     <v-row class="justify-end">
       <v-dialog v-model="questionForm" persistent max-width="600px">
@@ -197,6 +225,7 @@ export default {
         page: 1,
 
         isDeveloper: false,
+        currentUser: localStorage.getItem('username'),
       }
     },
 
@@ -249,8 +278,7 @@ export default {
         if (this.isLoggedIn) {
           axios.get(SERVER.BASE + SERVER.QNA + this.$route.params.id + `/${page}`, this.headersConfig)
             .then(res => {
-              // console.log('Login', this.isLoggedIn)
-              console.log(res.data.object)
+              // console.log(res.data.object)
               this.questionList = res.data.object
               this.questionCount = res.data.object.length
             })
@@ -271,6 +299,12 @@ export default {
             this.answerToQuestion = ''
             this.fetchQuestions(this.page)
           })
+          .catch(err => console.error(err))
+      },
+
+      deleteQuestion(qnaId) {
+        axios.delete(SERVER.BASE + SERVER.DELETEQNA + qnaId)
+          .then(() => this.fetchQuestions(this.page))
           .catch(err => console.error(err))
       },
     },
