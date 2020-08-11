@@ -255,7 +255,7 @@ export default {
       profileURL: null,
       phonenumber: "",
       nickname: "",
-      genre: null,
+      genre: [],
       name: "",
       usertype: "",
       userTypes: ["일반 사용자", "개발자"],
@@ -270,6 +270,7 @@ export default {
         phonenumber: false,
         nickName: "",
         accountnumber: false,
+        genre: false,
       },
       isSubmit: false,
       termPopup: false,
@@ -289,21 +290,11 @@ export default {
   },
 
   watch: {
-    nickname: function() {
+    genre: function() {
       this.checkForm();
-    },
-    email: function() {
-      this.checkForm();
-      if (
-        this.email.length > 0 &&
-        this.email.charAt(0) >= "A" &&
-        this.email.charAt(0) <= "Z"
-      ) {
-        this.email =
-          this.email.substring(0, 1).toLowerCase() + this.email.substring(1);
-      }
     },
     phonenumber: function() {
+      console.log(this.phonenumber)
       this.checkForm();
     },
     profileImage() {
@@ -357,9 +348,9 @@ export default {
     },
 
     checkForm() {
-      if (this.nickname.length <= 0)
-        this.error.nickName = "왜 지웠어요? 다시 쓰세요";
-      else this.error.nickName = false;
+      if (this.genre.length <= 0)
+        this.error.genre = "최소 1개의 장르를 선택해야합니다.";
+      else this.error.genre = false;
 
       if ((this.phonenumber + "").length != 11)
         this.error.phonenumber = "올바른 휴대폰번호 형식이ㅣ 아닙니다.";

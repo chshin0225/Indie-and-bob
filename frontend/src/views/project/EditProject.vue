@@ -132,7 +132,7 @@ export default {
   },
   computed: {
     ...mapGetters(['headersConfig']),
-    ...mapState(['genres', 'genreToId'])
+    ...mapState(['genres', 'genreToId', 'idToGenre'])
   },
   methods: {
     changeProjectInfo() {
@@ -184,7 +184,9 @@ export default {
         })
         this.aim = res.data.object.aim
         this.deadline = res.data.object.deadline.slice(0, 10)
-        this.genre = res.data.object.genreName
+        res.data.object.genreName.forEach(item => {
+          this.genre.push(this.idToGenre[item])
+        })
         this.originalThumbnailURL = res.data.object.thumbnail
         storageRef.child(res.data.object.thumbnail).getDownloadURL()
         .then(url => {

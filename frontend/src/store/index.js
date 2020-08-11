@@ -39,6 +39,24 @@ export default new Vuex.Store({
       "PC": 15, 
       "콘솔": 16
     },
+    idToGenre: {
+      1: "액션", 
+      2: "슈팅", 
+      3: "RPG", 
+      4: "시뮬레이션", 
+      5: "어드벤쳐", 
+      6: "스포츠", 
+      7: "레이싱", 
+      8: "추리", 
+      9: "퍼즐", 
+      10: "리듬", 
+      11: "턴제", 
+      12: "캐주얼", 
+      13: "디펜스", 
+      14: "모바일", 
+      15: "PC", 
+      16: "콘솔"
+    },
               
     // follow
     followerList: null,
@@ -207,24 +225,26 @@ export default new Vuex.Store({
         var extension = signupData.profile.name.split('.').reverse()[0];
         firebase.storage().ref(`user/${signupData.nickname}/${signupData.nickname}.${extension}`).put(signupData.profile)
         signupData.profile = `user/${signupData.nickname}/${signupData.nickname}.${extension}`
-        if (signupData.genreId !== null) {
-          let genreArray = []
-          signupData.genreId.forEach(item => {
-            genreArray.push(state.genreToId[item])
-          })
-          signupData.genreId = genreArray
+      }
+      if (signupData.genreId !== null) {
+        let genreArray = []
+        signupData.genreId.forEach(item => {
+          genreArray.push(state.genreToId[item])
+        })
+        signupData.genreId = genreArray
+      console.log(signupData)
+      axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
+      .then(res => {
+        console.log(signupData)
+        console.log(res)
+        if (res.data.status) {
+          alert("회원가입 인증 메일이 발송되었습니다. 이메일을 확인해주세요.")
+          router.push({ name: "Login" });
+        } else {
+          console.log(res.data.status)
+          commit('setErrorDetail', res.data.data)
+          router.push({ name: "ErrorPage" })
         }
-        axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
-        .then(res => {
-          console.log(res)
-          if (res.data.status) {
-            alert("회원가입 인증 메일이 발송되었습니다. 이메일을 확인해주세요.")
-            router.push({ name: "Login" });
-          } else {
-            console.log(res.data.status)
-            commit('setErrorDetail', res.data.data)
-            router.push({ name: "ErrorPage" })
-          }
         })
         .catch(err => {
           console.log(err.response)
