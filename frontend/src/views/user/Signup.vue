@@ -21,6 +21,22 @@
 
     <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
+        <label for="usertype">좋아하는 게임 장르</label>
+        <v-select
+          hide-details="true"
+          :items="genres"
+          id="genres"
+          placeholder="본인이 좋아하는 게임 장르를 선택해주세요.(복수선택 가능)"
+          v-model="genre"
+          outlined
+          multiple
+          chips
+        ></v-select>
+      </v-col>
+    </v-row>
+
+    <v-row class="justify-center my-4">
+      <v-col class="py-0" sm="6">
         <label for="usertype">주 사용자 유형</label>
         <v-select
           hide-details="true"
@@ -280,7 +296,8 @@
                 password: password, 
                 name:name,
                 profile: profileImage,
-                nickname: nickName, 
+                nickname: nickName,
+                genreId: genre, 
                 isDeveloper: is_developer, 
                 phoneNumber: phonenumber, 
                 bankName: bankname,
@@ -306,7 +323,7 @@
 <script>
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   created() {
@@ -317,7 +334,6 @@ export default {
       .is()
       .max(100)
       .has()
-
       .digits()
       .has()
       .letters();
@@ -448,6 +464,7 @@ export default {
       passwordConfirm: "",
       phonenumber: "",
       nickName: "",
+      genre: null,
       usertype: "",
       is_developer: false,
       is_admin: false,
@@ -483,6 +500,9 @@ export default {
       extraAddress: "",
     };
   },
+  computed: {
+    ...mapState(['genres'])
+  }
 };
 </script>
 

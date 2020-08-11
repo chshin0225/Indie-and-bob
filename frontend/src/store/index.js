@@ -20,13 +20,26 @@ export default new Vuex.Store({
     username: localStorage.getItem('username'),
     userInfo: null,
     picture: null,
+    genres: ["액션", "슈팅", "RPG", "시뮬레이션", "어드벤쳐", "스포츠", "레이싱", "추리", "퍼즐", "리듬", "턴제", "캐주얼", "디펜스", "모바일", "PC", "콘솔"],
+    genreToId: {
+      "액션": 1, 
+      "슈팅": 2, 
+      "RPG": 3, 
+      "시뮬레이션": 4, 
+      "어드벤쳐": 5, 
+      "스포츠": 6, 
+      "레이싱": 7, 
+      "추리": 8, 
+      "퍼즐": 9, 
+      "리듬": 10, 
+      "턴제": 11, 
+      "캐주얼": 12, 
+      "디펜스": 13, 
+      "모바일": 14, 
+      "PC": 15, 
+      "콘솔": 16
+    },
               
-    // notification
-    wsUri : "ws://localhost:8080/websocket",
-    websocket : null,
-    message: 0,
-    items: [],
-
     // follow
     followerList: null,
     followingList: null,
@@ -35,11 +48,11 @@ export default new Vuex.Store({
     // community
     articleList: [],
     article: null,
+    articleCount: null,
     
     // project
     projectList: [],
     project: null,
-    myProjectList: [],
     fundedProjectList: [],
     rewardData: null,
 
@@ -101,24 +114,6 @@ export default new Vuex.Store({
       state.picture = val
     },
 
-    // connection
-    setWebsocket(state, val) {
-      console.log(val)
-      state.websocket = val
-      console.log(state.websocket)
-    },
-
-    setMessage(state) {
-      state.message += 1
-      console.log(state.message)
-    },
-
-    setItems(state, val) {
-      var followArray = val.split(',')
-      state.items.push(followArray[1] + '님이' + followArray[2] + '님을' + followArray[0] + '했습니다.')
-      console.log('1', state.items)
-    },
-
     // follow
     setFollowerList(state, val) {
       state.followerList = val
@@ -137,6 +132,9 @@ export default new Vuex.Store({
     setArticle(state, val) {
       state.article = val
     },
+    setArticleCount(state, val) {
+      state.articleCount = val
+    },
 
     // project
     setProjectList(state, val) {
@@ -153,9 +151,6 @@ export default new Vuex.Store({
     },
     setContent(state, val) {
       state.project.content = val
-    },
-    setMyProjectList(state, val) {
-      state.myProjectList = val
     },
     setFundedProjectList(state, val) {
       state.fundedProjectList = val
@@ -201,28 +196,7 @@ export default new Vuex.Store({
         })
     },
 
-    socketConnect({commit, getters, state}) {
-      console.log('socketconnect')
-      console.log(getters.isLoggedIn)
-      if (getters.isLoggedIn) {
-        console.log('isLoggedin = true')
-        if (state.websocket === null) {
-          console.log('socket open')
-          commit('setWebsocket', new WebSocket(state.wsUri))
-          console.log(state.websocket)
-          state.websocket.onopen = () => state.websocket.send('login,' + localStorage.getItem('username'));
-        }
-        if (state.websocket !== null) {
-          state.websocket.onmessage = function(e){ 
-            commit('setMessage')
-            commit('setItems', e.data)
-            console.log(e.data);
-           }
-        }
-      }///
-    },
-
-    SignUp({ commit, }, signupData) {
+    SignUp({ commit, state }, signupData) {
       if (signupData.email.charAt(0) >= 'A' && signupData.email.charAt(0) <= 'Z') {
         signupData.email = signupData.email.substring(0, 1).toLowerCase() + signupData.email.substring(1)
       }
@@ -233,6 +207,13 @@ export default new Vuex.Store({
         var extension = signupData.profile.name.split('.').reverse()[0];
         firebase.storage().ref(`user/${signupData.nickname}/${signupData.nickname}.${extension}`).put(signupData.profile)
         signupData.profile = `user/${signupData.nickname}/${signupData.nickname}.${extension}`
+        if (signupData.genreId !== null) {
+          let genreArray = []
+          signupData.genreId.forEach(item => {
+            genreArray.push(state.genreToId[item])
+          })
+          signupData.genreId = genreArray
+        }
         axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
         .then(res => {
           console.log(res)
@@ -268,7 +249,7 @@ export default new Vuex.Store({
       }
     },
 
-    logout({ commit, state }) {
+    logout({ commit}) {
       commit('setEmail', '')
       commit('setPassword', '')
 
@@ -279,10 +260,6 @@ export default new Vuex.Store({
       // local storage에 있는 username 정보 제거
       commit('setUsername', null)
       localStorage.removeItem('username')
-
-      // 웹소켓 제거
-      state.websocket.close()
-      commit('setWebsocket', null)
       
       if (router.currentRoute.name !== 'Home') {
         router.push({ name: 'Home' })
@@ -316,7 +293,7 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
-    changeUserInfo({ getters }, changedData) {
+    changeUserInfo({ getters, state }, changedData) {
       if (changedData.profile !== null) {
         var extension = changedData.profile.name.split('.').reverse()[0];
         firebase.storage().ref(`user/${changedData.nickname}/${changedData.nickname}.${extension}`).put(changedData.profile)
@@ -324,6 +301,13 @@ export default new Vuex.Store({
       } else {
         console.log(changedData.profile)
         changedData.profile = changedData.profileURL
+      }
+      if (changedData.genreId !== null) {
+        let genreArray = []
+        changedData.genreId.forEach(item => {
+          genreArray.push(state.genreToId[item])
+        })
+        changedData.genreId = genreArray
       }
       axios.put(SERVER.BASE + SERVER.USERINFO, changedData, getters.headersConfig)
         .then(() => {
@@ -335,13 +319,12 @@ export default new Vuex.Store({
 
 
     // follow 
-    follow({ getters, state, dispatch }, following) {
+    follow({ getters, dispatch }, following) {
       axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
         .then(() => {
           // console.log(res.data)
           dispatch('fetchFollowers', following.following)
           dispatch('checkFollowing', following.following)
-          state.websocket.send('follow,'+state.username+','+following.following)
         })
         .catch(err => console.error(err))
     },
@@ -392,32 +375,30 @@ export default new Vuex.Store({
     getProject({ commit, getters }, gameId) {
       commit('setProject', null)
       axios.get(SERVER.BASE + SERVER.GAME + `/${gameId}`, getters.headersConfig)
-      .then(res => {
-        const storageRef = firebase.storage().ref()
-        storageRef.child(`game/15/content/15`).getDownloadURL().then(url => {
-          var xhr = new XMLHttpRequest();
-          // console.log(xhr)
-          // xhr.responseType = 'blob';
-          if (xhr) {
-            // console.log('1')
-            xhr.open('GET', url, false)
-            xhr.send();
-            var result = (xhr.response)
-            // commit('setContent', 'aaa')
-            // console.log(state.project.content)
-          }
-          // console.log('send', xhr)
-          // console.log(res.data.object)
-          res.data.object.content = result
-          commit('setProject', res.data.object)
-        }).catch(function(error) {
-          console.log(error)
+        .then(res => {
+          const storageRef = firebase.storage().ref()
+          storageRef.child(res.data.object.content).getDownloadURL()
+            .then(url => {
+              var xhr = new XMLHttpRequest()
+              if (xhr) {
+                xhr.open('GET', url, false)
+                xhr.send()
+                var result = (xhr.response)
+              }
+              res.data.object.content = result
+              storageRef.child(res.data.object.thumbnail).getDownloadURL()
+                .then(url => {
+                  res.data.object.thumbnail = url
+                  commit('setProject', res.data.object)
+                })
+                .catch(err => console.error(err))
+            })
+            .catch(function(error) {
+              console.log(error)
+            })
         })
-      })
-      .catch(err => console.error(err))
+        .catch(err => console.error(err))
     },
-
-    fetchMyProjects() {},
 
     fetchFundedProjects({ commit, getters }, username) {
       axios.get(SERVER.BASE + SERVER.FUNDEDPROJECT + username, getters.headersConfig)
@@ -453,9 +434,12 @@ export default new Vuex.Store({
 
 
     // community
-    fetchArticles({ commit }) {
-      axios.get(SERVER.BASE + SERVER.COMMUNITY)
-        .then(res => commit('setArticleList', res.data.object))
+    fetchArticles({ commit }, page) {
+      axios.get(SERVER.BASE + SERVER.COMMUNITYLIST + page)
+        .then(res =>{
+          commit('setArticleList', res.data.object.list)
+          commit('setArticleCount', res.data.object.count)
+        })
         .catch(err => console.error(err))
     },
 

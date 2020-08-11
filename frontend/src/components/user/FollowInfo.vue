@@ -3,7 +3,7 @@
     <v-row>
       <!-- 팔로워 리스트 -->
       <v-col cols=12 sm=5>
-        <h2 class="mb-3">나를 팔로우하는 사람들</h2>
+        <h2 class="mb-3">나를 팔로우하는 사람들 {{ followerCount }}명</h2>
         <v-list v-if="followerList.length > 0">
           <v-list-item
             v-for="follower in followerList"
@@ -29,7 +29,7 @@
 
       <!-- 팔로잉 리스트 -->
       <v-col cols=12 sm=5>
-        <h2 class="mb-3">내가 팔로우하는 사람들</h2>
+        <h2 class="mb-3">내가 팔로우하는 사람들 {{ followingCount }}명</h2>
         <v-list v-if="followingList.length > 0">
           <v-list-item
             v-for="following in followingList"
@@ -61,6 +61,14 @@ export default {
 
   computed: {
     ...mapState(['followerList', 'followingList']),
+
+    followerCount: function() {
+      return this.followerList.length;
+    },
+
+    followingCount: function() {
+      return this.followingList.length;
+    },
   },
 }
 </script>

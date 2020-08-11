@@ -15,9 +15,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QnaVO {
+public class QnaVO implements Comparable<QnaVO>{
 	private int qnaId;
 	private int gameId;
+	private int numOfContents;
 	private String nickname;
 	private String title;
 	private String content;
@@ -25,4 +26,9 @@ public class QnaVO {
 	private String answer;
 	private Date createAt;
 	private Date answerAt;
+	@Override
+	public int compareTo(QnaVO o) {
+		// TODO Auto-generated method stub
+		return o.getQnaId() - this.getQnaId();
+	}
 }

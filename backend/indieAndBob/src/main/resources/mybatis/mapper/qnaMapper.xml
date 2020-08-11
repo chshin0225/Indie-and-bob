@@ -38,7 +38,7 @@
  	</select>
  	
  	<select id="readByGameIdMySecret" parameterType="QnaGameVO" resultType="QnaVO">
- 		select * from qna where game_id=#{gameId} and nickname=#{nickname}
+ 		select * from qna where game_id=#{gameId} and nickname=#{nickname} and is_Secret=true
  	</select>
  	
 </mapper>
