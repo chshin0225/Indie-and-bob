@@ -27,7 +27,7 @@
         <div class="text-center">
           <v-pagination
             v-model="page"
-            :length="5"
+            :length="paginationLength"
             color="accent"
           ></v-pagination>
         </div>
@@ -145,6 +145,7 @@ export default {
           content: false,
         },
         questionList: [],
+        questionCount: null,
         page: 1,
       }
     },
@@ -183,6 +184,7 @@ export default {
           axios.get(SERVER.BASE + SERVER.QNA + this.$route.params.id + `/${this.page}`, this.headersConfig)
             .then(res => {
               console.log('Login', this.isLoggedIn)
+              console.log(res.data)
               this.questionList = res.data.object
             })
             .catch(err => console.error(err))

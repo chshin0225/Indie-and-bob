@@ -34,8 +34,6 @@
               </v-row>
               <v-row>
                 <p class="mb-0">{{ userInfo.introduction }}</p>
-                <!-- <p class="mb-0">following: {{ this.followerCount }}</p><br>
-                <p class="mb-0 pb-3">followers: {{ this.followingCount }}</p><br> -->
               </v-row>
 
             </v-col>
@@ -92,11 +90,11 @@
             </v-card>
           </v-tab-item>
 
+          <!-- 내가 작성한 글들 -->
           <v-tab-item class="myArticles">
             <v-card flat>
               <v-card-text>
-                <h2>내가 작성한 글들</h2>
-              
+                <MyArticles />
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -153,9 +151,11 @@ import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
 
 import MyProjects from '../../components/user/MyProjects.vue'
 import FundedProjects from '../../components/user/FundedProjects.vue'
+import MyArticles from '../../components/user/MyArticles.vue'
 import LikedProjects from "../../components/user/LikedProjects.vue";
 import FollowInfo from "../../components/user/FollowInfo.vue";
 import MyInfo from "../../components/user/MyInfo.vue";
+
 import firebase from "firebase"
 
 export default {
@@ -164,10 +164,12 @@ export default {
   components: {
     MyProjects,
     FundedProjects,
+    MyArticles,
     LikedProjects,
     FollowInfo,
     MyInfo
   },
+  
   data() {
     return {
       profileImage: null,
