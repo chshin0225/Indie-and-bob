@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     onButtonClick() {
-      this.genre.forEach(function(item) {
+      this.genre.forEach( item => {
         this.genreId.push(this.genreToId[item])
       })
       let PARAMS = {

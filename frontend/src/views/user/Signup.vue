@@ -21,12 +21,12 @@
 
     <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
-        <label for="usertype">가장 좋아하는 장르</label>
+        <label for="usertype">좋아하는 게임 장르</label>
         <v-select
           hide-details="true"
           :items="genres"
-          id="usertype"
-          placeholder="본인이 가장 좋아하는 게임 장르를 선택해주세요."
+          id="genres"
+          placeholder="본인이 좋아하는 게임 장르를 선택해주세요.(복수선택 가능)"
           v-model="genre"
           outlined
           multiple
@@ -465,7 +465,7 @@ export default {
       passwordConfirm: "",
       phonenumber: "",
       nickName: "",
-      genre: "",
+      genre: null,
       usertype: "",
       is_developer: false,
       is_admin: false,
