@@ -35,8 +35,8 @@
     	insert into game_like (nickname,game_id) values(#{nickname},#{gameId})
     </insert>
     
-    <select id="selectGameByNickname" parameterType="mygamesearch" resultType="game">
-    	select * from game 
+    <select id="selectGameByNickname" parameterType="mygamesearch" resultType="gameall">
+    	select g.*, u.profile from game g left outer join user u using(nickname)
     	where game_id in (select game_id from game_like where nickname=#{nickname})
     	order by game_id desc
     	limit #{page},9
@@ -68,7 +68,8 @@
     </insert>
     
     <select id="selectMadeGameByNickname" parameterType="mygamesearch" resultType="gameall">
-    	select * from game where nickname=#{nickname} order by game_id desc limit #{page},9 
+    	select g.*, u.profile from game g left outer join user u using(nickname)
+   	    where nickname=#{nickname} order by game_id desc limit #{page},9
     </select>
     
     <update id="injectThumbnail" parameterType="gameall">

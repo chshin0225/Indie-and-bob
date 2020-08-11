@@ -222,9 +222,8 @@ public class GameController {
 		logger.info("==========gameLikeList==========");
 		logger.info("gameLikeList : " + nickname);
 		ResponseEntity response = null;
-		List<Game> games = new LinkedList<>();
 		MyGameSearch search = new MyGameSearch(nickname, page);
-		games = gservice.selectGameByNickname(search);
+		List<GameAll> games = gservice.selectGameByNickname(search);
 		if (games != null) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;

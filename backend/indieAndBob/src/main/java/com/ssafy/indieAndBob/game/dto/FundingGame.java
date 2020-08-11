@@ -31,4 +31,5 @@ public class FundingGame {
 	private int leftCount;
 	private int price;
 	private String content;
+	private String profile;
 }
