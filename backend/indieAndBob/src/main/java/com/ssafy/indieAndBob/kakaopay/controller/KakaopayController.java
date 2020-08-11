@@ -50,7 +50,7 @@ public class KakaopayController {
 	@Autowired
 	JwtService jservice;
 
-	@PostMapping("/kakaoPay")
+	@PostMapping("/api/kakaoPay")
 	@ApiOperation(value = "결제하기")
 	public Object kakaoPay(@RequestBody Funding request, HttpServletResponse res, HttpServletRequest req) {
 		log.info("kakaoPay post............................................");
@@ -80,7 +80,7 @@ public class KakaopayController {
 
 	}
 
-	@GetMapping("/kakaoPaySuccess")//결제가된다면 url에 pg_token이 포함되어있을것이다
+	@GetMapping("/api/kakaoPaySuccess")//결제가된다면 url에 pg_token이 포함되어있을것이다
 	@ApiOperation(value = "결제내역")
 	public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token,@RequestParam("nickname") String nickname,
 			@RequestParam("gameId") int gameId,
@@ -128,7 +128,7 @@ public class KakaopayController {
 		}
 	}
 	
-	@GetMapping("/kakaoPayFail")
+	@GetMapping("/api/kakaoPayFail")
 	@ApiOperation(value = "카카오페이 결제 실패")
 	public void kakaoPayFail(@RequestParam("pg_token") String pg_token,@RequestParam("nickname") String nickname,
 			@RequestParam("gameId") int gameId,
@@ -142,7 +142,7 @@ public class KakaopayController {
 		ResponseEntity response = null;
 	} 
 	
-	@GetMapping("/kakaoPayCancel")
+	@GetMapping("/api/kakaoPayCancel")
 	@ApiOperation(value = "카카오페이 결제 취소")
 	public void kakaoPayCancel(@RequestParam("pg_token") String pg_token,@RequestParam("nickname") String nickname,
 			@RequestParam("gameId") int gameId,
@@ -156,7 +156,7 @@ public class KakaopayController {
 		ResponseEntity response = null;
 	} 
 	
-	@GetMapping("/fundingByFundingId")
+	@GetMapping("/api/fundingByFundingId")
 	@ApiOperation(value = "펀딩아이디로 펀딩찾기")
 	public Object selectFundingByFundingId(@RequestParam("fundingId") int fundingId) {
 		log.info("-------------selectFundingByFundingId-----------------");
@@ -177,7 +177,7 @@ public class KakaopayController {
 		return response;
 	}
 
-	@GetMapping("/fundingByRewardId/{gameId}")
+	@GetMapping("/api/fundingByRewardId/{gameId}")
 	@ApiOperation(value = "게임 아이디로 해당 펀딩리스트찾기")
 	public Object selectFundingByGameId(@PathVariable int gameId) {
 		log.info("-------------selectFundingByRewardId-----------------");
@@ -198,7 +198,7 @@ public class KakaopayController {
 		return response;
 	}
 	
-	@GetMapping("/fundingByRewardId/{rewardId}")
+	@GetMapping("/api/fundingByRewardId/{rewardId}")
 	@ApiOperation(value = "리워드 아이디로 해당 펀딩리스트찾기")
 	public Object selectFundingByRewardId(@PathVariable int rewardId) {
 		log.info("-------------selectFundingByRewardId-----------------");
@@ -218,7 +218,7 @@ public class KakaopayController {
 		}
 		return response;
 	}
-	@GetMapping("/fundingByNickname/{nickname}/{page}")
+	@GetMapping("/api/fundingByNickname/{nickname}/{page}")
 	@ApiOperation(value = "닉네임으로 펀딩리스트 찾기")
 	public Object selectFundingByNickname(@PathVariable String nickname, @PathVariable int page) {
 		log.info("-------------selectFundingByNickname-----------------");
@@ -238,7 +238,7 @@ public class KakaopayController {
 		return response;
 	}
 
-	@DeleteMapping("/deleteByFundingId/{fundingId}")
+	@DeleteMapping("/api/deleteByFundingId/{fundingId}")
 	@ApiOperation(value = "펀딩아이디로 삭제하기")
 	public Object deleteFundingByFundingId(@PathVariable int fundingId) {
 		log.info("-------------deleteFundingByFundingId-----------------");
