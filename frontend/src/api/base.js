@@ -1,5 +1,5 @@
 export default {
-    'BASE': "http://localhost:8080",
+    'BASE': "http://localhost:8080/api",
 
     // user
     'LOGIN': "/account/login",
@@ -58,3 +58,4 @@ export default {
 
 // "http://i3a105.p.ssafy.io:8080", 
 // "http://localhost:8080",
+// "http://i3a105.p.ssafy.io/api"

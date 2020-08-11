@@ -38,7 +38,7 @@ public class CommunityCommentController {
 	@Autowired
 	CommunityCommentService commentService;
 	
-	@PostMapping("/community/comment")
+	@PostMapping("/api/community/comment")
 	@ApiOperation(value="커뮤니티 댓글 작성")
 	public Object registerCommunityComment(@RequestBody CommunityComment comment,
 			HttpServletRequest request) {
@@ -57,7 +57,7 @@ public class CommunityCommentController {
 		return response;
 	}
 	
-	@GetMapping("/community/comment/{communityId}")
+	@GetMapping("/api/community/comment/{communityId}")
 	@ApiOperation(value="커뮤니티 댓글 조회")
 	public Object listCommunityComment(@PathVariable int communityId) {
 		logger.info("==========listCommunityComment==========");
@@ -75,7 +75,7 @@ public class CommunityCommentController {
 		return response;
 	}
 	
-	@PutMapping("/community/comment")
+	@PutMapping("/api/community/comment")
 	@ApiOperation(value="커뮤니티 댓글 수정")
 	public Object updateCommunityComment(@RequestBody CommunityComment comment) {
 		logger.info("==========updateCommunityComment==========");
@@ -91,7 +91,7 @@ public class CommunityCommentController {
 		return response;
 	}
 	
-	@DeleteMapping("/community/comment/{ccId}")
+	@DeleteMapping("/api/community/comment/{ccId}")
 	@ApiOperation(value="커뮤니티 댓글 삭제")
 	public Object deleteCommunityComment(@PathVariable int ccId) {
 		logger.info("==========deleteCommunityComment==========");

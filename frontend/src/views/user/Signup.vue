@@ -32,6 +32,7 @@
           multiple
           chips
         ></v-select>
+        <small class="d-block primary--text" v-if="error.genre">{{ error.genre }}</small>
       </v-col>
     </v-row>
 
@@ -291,7 +292,7 @@
 
           <v-col class="text-right py-0">
             <v-btn
-              @click="SignUp(
+              @click="IsLoading(); SignUp(
                 {email: email, 
                 password: password, 
                 name:name,
@@ -346,6 +347,9 @@ export default {
     nickName: function () {
       this.checkForm();
     },
+    genre: function() {
+      this.checkForm();
+    },
     usertype: function () {
       if (this.usertype === "개발자") {
         this.is_developer = true;
@@ -382,6 +386,14 @@ export default {
         this.error.nickName = "왜 지웠어요? 다시 쓰세요";
       else this.error.nickName = false;
 
+      if (this.genre.length <= 0)
+        this.error.genre = "최소 1개의 장르를 선택해야합니다.";
+      else this.error.genre = false;
+
+      if (this.passwordConfirm != this.password)
+        this.error.passwordConfirm = "비밀번호가 일치하지 않습니다.";
+      else this.error.passwordConfirm = false;
+
       if (this.email.length >= 0 && !EmailValidator.validate(this.email))
         this.error.email = "올바른 email 구조가 아닙니다.";
       else this.error.email = false;
@@ -409,6 +421,9 @@ export default {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
+    },
+    IsLoading() {
+      this.isSubmit = false
     },
     execDaumPostcode() {
       const currentScroll = Math.max(
@@ -464,7 +479,7 @@ export default {
       passwordConfirm: "",
       phonenumber: "",
       nickName: "",
-      genre: null,
+      genre: [],
       usertype: "",
       is_developer: false,
       is_admin: false,
@@ -482,6 +497,7 @@ export default {
         nickName: "",
         passwordConfirm: false,
         isTerm: false,
+        genre: false,
       },
       isSubmit: false,
       passwordType: "password",
