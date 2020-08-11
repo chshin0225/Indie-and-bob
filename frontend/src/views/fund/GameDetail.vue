@@ -28,7 +28,7 @@
 
           <!-- thumbnail -->
           <v-col cols="12" sm="6" class="d-flex justify-center align-center">
-            <v-img :src="project.thumbnail" contain></v-img>
+            <v-img :src="project.thumbnail" contain max-height="300"></v-img>
           </v-col>
         </v-row>
       </v-container>
@@ -160,8 +160,8 @@
  
       <!-- admin -->
       <div v-if="isAdmin && project.isApprove === 0">
-        <v-btn cols="auto" @click="approve" class="mr-3">승인</v-btn>
-        <v-btn cols="auto" @click="disapprove" class="mr-3">거절</v-btn>
+        <v-btn cols="auto" @click="approve" class="mr-3" color="accent" depressed>승인</v-btn>
+        <v-btn cols="auto" @click="disapprove" class="mr-3" color="accent" depressed>거절</v-btn>
       </div>  
 
     </v-container>
@@ -205,14 +205,13 @@ export default {
 
       genres: '',
       rewards: [],
-
-      isAdmin: false,
     };
   },
 
   computed: {
-    ...mapState(['project']),
+    ...mapState(['project', 'isAdmin',]),
     ...mapGetters(['headersConfig', 'projectDataFetched', 'likedPeopleCount',]),
+
     fundingProgress: function() {
       if (this.project.aim === this.project.leftPrice) {
         return 0
@@ -220,12 +219,14 @@ export default {
         return _.round((this.project.aim - this.project.leftPrice) / this.project.aim * 100)
       }
     },
+
     genreData: function() {
       this.project.genreName.forEach(item => {
         this.genres += item + ' | '
       })
       return this.genres.slice(0, this.genres.length-2)
     },
+
     leftPriceData: function() {
       if (this.project.leftPrice > 0) {
         return this.project.leftPrice
@@ -233,6 +234,7 @@ export default {
         return 0
       }
     },
+
   },
 
   methods: {
@@ -329,10 +331,6 @@ export default {
     this.isLiked()
     this.fetchRewards()
     this.fetchLikedUsers(this.$route.params.id)
-    
-    if (localStorage.getItem("username") === "admin") {
-      this.isAdmin = true;
-    }    
   },
 };
 </script>

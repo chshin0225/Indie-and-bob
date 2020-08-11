@@ -33,7 +33,10 @@
       </v-col>
     </v-row>
 
-    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+    <infinite-loading @infinite="infiniteHandler" spinner="waveDots">
+      <div slot="no-more"></div>
+      <div slot="no-results">프로젝트가 없네요!</div>
+    </infinite-loading>
   </v-container>
 </template>
 <script>

@@ -9,7 +9,8 @@
           <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
               <v-list-item>
                 <v-avatar>
-                  <img src="../../assets/default_profile.png" :alt="project.nickname" />
+                  <v-img v-if="project.profile" :src="project.profile" :alt="project.nickname"></v-img>
+                  <v-img v-else src="../../assets/default_profile.png"></v-img>
                 </v-avatar>
                 <v-list-item-content class="ml-4">
                   <v-list-item-title class="headline">{{ project.name }}</v-list-item-title>
@@ -18,7 +19,8 @@
                   <v-list-item-subtitle>목표액: {{ project.aim }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-img src="../../assets/default_project.png" height="194"></v-img>
+              <v-img v-if="project.thumbnail" :src="project.thumbnail" height="194"></v-img>
+              <v-img v-else src="../../assets/default_project.png"></v-img>
           </router-link>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -30,12 +32,14 @@
       </v-col>
     </v-row>
 
-    <infinite-loading @infinite="fetchLikedProjects"></infinite-loading>
+    <infinite-loading @infinite="fetchLikedProjects" spinner="waveDots">
+      <div slot="no-more"></div>
+      <div slot="no-results">아직 좋아요한 프로젝트가 없네요!</div>
+    </infinite-loading>
   </v-container>
 </template>
 
 <script>
-// import { mapState, mapActions } from 'vuex'
 import SERVER from '../../api/base'
 
 import axios from 'axios'
@@ -56,17 +60,11 @@ export default {
     }
   },
 
-  computed: {
-    // ...mapState(['likedProjectList',])
-  },
-
   methods: {
-    // ...mapActions(['fetchLikedProjects',])
     fetchLikedProjects($state) {
       const storageRef = firebase.storage().ref()
       axios.get(SERVER.BASE + SERVER.LIKEDPROJECT + `/${this.$route.params.username}/${this.projectNum}`)
         .then(res => {
-          console.log(res.data)
           if (res.data.object.length > 0) {
             this.projectNum += 9;
             res.data.object.forEach(item => {
@@ -84,7 +82,7 @@ export default {
                   })
                   .catch(err => console.error(err))
               } 
-              this.myProjectList.push(item);
+              this.likedProjectList.push(item);
             });
             $state.loaded();
           } else {

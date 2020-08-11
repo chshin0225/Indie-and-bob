@@ -50,7 +50,7 @@
             <i class="fas fa-laptop mr-3"></i>
             내 프로젝트
           </v-tab>
-          <v-tab>
+          <v-tab v-if="isSelf">
             <i class="fas fa-money-check-alt mr-3"></i>
             펀딩한 프로젝트
           </v-tab>
@@ -82,7 +82,7 @@
           </v-tab-item>
 
           <!-- 내가 펀딩한 프로젝트들 -->
-          <v-tab-item class="myFundings">
+          <v-tab-item class="myFundings" v-if="isSelf">
             <v-card flat>
               <v-card-text>
                 <FundedProjects />
