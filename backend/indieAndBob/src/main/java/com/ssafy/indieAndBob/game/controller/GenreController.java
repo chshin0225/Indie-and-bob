@@ -28,7 +28,7 @@ public class GenreController {
 	@Autowired
 	GenreService gservice;
 	
-	@GetMapping("/genre")
+	@GetMapping("/api/genre")
 	@ApiOperation(value="모든 게임 장르 조회")
 	public Object selectAllGenre() {
 		logger.info("==========selectAllGenre==========");

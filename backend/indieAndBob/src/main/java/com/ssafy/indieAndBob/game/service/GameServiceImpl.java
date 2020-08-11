@@ -11,6 +11,7 @@ import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameGenre;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.user.dto.User;
@@ -35,7 +36,12 @@ public class GameServiceImpl implements GameService{
 	}
 	
 	@Override
-	public int updateGame(Game game) {
+	public int updateGame(GameAll game) {
+		gamedao.deleteGameGenre(game.getGameId());
+		for(int genre : game.getGenre()) {
+			GameGenre gameGenre = new GameGenre(game.getGameId(), genre);
+			gamedao.insertGameGenre(gameGenre);
+		}
 		return gamedao.updateGame(game);
 	}
 	
@@ -45,7 +51,7 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public GameAll selectGameById(String gameId) {
+	public GameAll selectGameById(int gameId) {
 		GameAll gameAll = gamedao.selectGameById(gameId);
 		List<String> genreName = genredao.selectGenreNameByGameId(gameAll.getGameId());
 		gameAll.setGenreName(genreName);
@@ -53,8 +59,13 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<Game> selectAllGame(int page) {
-		return gamedao.selectAllGame(page);
+	public List<GameAll> selectAllGame(int page) {
+		List<GameAll> games = gamedao.selectAllGame(page);
+		for(GameAll game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
 	}
 
 	@Override
@@ -63,8 +74,13 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<Game> selectGameByNickname(String nickname) {
-		return gamedao.selectGameByNickname(nickname);
+	public List<GameAll> selectGameByNickname(MyGameSearch search) {
+		List<GameAll> games = gamedao.selectGameByNickname(search);
+		for(GameAll game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
 	}
 
 	@Override
@@ -98,8 +114,8 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<GameAll> selectMadeGameByNickname(String nickname) {
-		List<GameAll> games = gamedao.selectMadeGameByNickname(nickname);
+	public List<GameAll> selectMadeGameByNickname(MyGameSearch search) {
+		List<GameAll> games = gamedao.selectMadeGameByNickname(search);
 		for(GameAll game : games) {
 			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
 			game.setGenreName(genreName);

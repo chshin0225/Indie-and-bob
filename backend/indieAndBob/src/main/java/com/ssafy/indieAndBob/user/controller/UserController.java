@@ -23,6 +23,7 @@ import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.user.dto.Follow;
 import com.ssafy.indieAndBob.user.dto.User;
+import com.ssafy.indieAndBob.user.dto.UserAll;
 import com.ssafy.indieAndBob.user.service.EmailService;
 import com.ssafy.indieAndBob.user.service.UserService;
 
@@ -40,7 +41,7 @@ public class UserController {
 	@Autowired
 	JwtService jwtService;
 
-	@PostMapping("/account/login")
+	@PostMapping("/api/account/login")
 	@ApiOperation(value = "로그인")
 	public Object login(@RequestBody User user, HttpServletResponse res) {
 		logger.info("==========login==========");
@@ -61,9 +62,9 @@ public class UserController {
 		return response;
 	}
 
-	@PostMapping("/account/signup")
+	@PostMapping("/api/account/signup")
 	@ApiOperation(value = "가입하기")
-	public Object signup(@RequestBody User request) {
+	public Object signup(@RequestBody UserAll request) {
 		logger.info("==========signup==========");
 		logger.info("user : " + request);
 		ResponseEntity response = null;
@@ -72,6 +73,12 @@ public class UserController {
 			u = userService.selectByNickname(request.getNickname());
 			logger.info(" " + u);
 			if(u == null) {
+				if(request.getProfile() != null) {
+					String img = request.getProfile();
+					String[] extensions = img.split("\\.");
+					String extension = extensions[extensions.length-1];
+					request.setProfile("user/" + request.getNickname() + "/" + request.getNickname() + "." + extension);
+				}
 				if (userService.registerUser(request) == 1) {
 					final BasicResponse result = new BasicResponse();
 					result.status = true;
@@ -97,7 +104,7 @@ public class UserController {
 		return response;
 	}
 	
-	@GetMapping("/account/userinfo/{nickname}")
+	@GetMapping("/api/account/userinfo/{nickname}")
 	@ApiOperation(value = "특정 회원정보")
 	public Object selectUserByNickName(@PathVariable String nickname) {
 		logger.info("==========selectUserByNickName==========");
@@ -115,7 +122,7 @@ public class UserController {
 		return response;
 	}
 	
-	@GetMapping("/user/search")
+	@GetMapping("/api/user/search")
 	@ApiOperation(value = "유저 검색")
 	public Object userSearch(HttpServletRequest request) {
 		logger.info("==========userSearch==========");
@@ -135,9 +142,9 @@ public class UserController {
 		return response;
 	}
 
-	@PutMapping("/account/userinfo")
+	@PutMapping("/api/account/userinfo")
 	@ApiOperation(value = "회원 정보 수정")
-	public Object changeUserInfo(@RequestBody User request) {
+	public Object changeUserInfo(@RequestBody UserAll request) {
 		logger.info("==========changeUserInfo==========");
 		ResponseEntity response = null;
 		if (userService.changeUserInfo(request) == 1) {
@@ -151,7 +158,7 @@ public class UserController {
 		return response;
 	}
 	
-	@PostMapping("/following")
+	@PostMapping("/api/following")
 	@ApiOperation(value = "팔로우하기")
 	public Object following(@RequestBody Follow request, HttpServletRequest req) {
 		logger.info("==========following==========");
@@ -172,7 +179,7 @@ public class UserController {
 	}
 	
 
-	@GetMapping("/follower/{nickname}")
+	@GetMapping("/api/follower/{nickname}")
 	@ApiOperation(value = "팔로워리스트 불러오기")
 	public Object getFollower(@PathVariable String nickname) {
 		logger.info("==========getFollower==========");
@@ -192,7 +199,7 @@ public class UserController {
 		return response;
 	}
 	
-	@GetMapping("/following/{nickname}")
+	@GetMapping("/api/following/{nickname}")
 	@ApiOperation(value = "팔로잉리스트 불러오기")
 	public Object getFollowing(@PathVariable String nickname) {
 		logger.info("==========getFollowing==========");
@@ -211,7 +218,7 @@ public class UserController {
 		return response;
 	}
 	
-	@DeleteMapping("/unfollow")
+	@DeleteMapping("/api/unfollow")
 	@ApiOperation(value = "언팔하기")
 	public Object unFollow(HttpServletRequest request) {
 		logger.info("==========unFollow==========");
@@ -233,7 +240,7 @@ public class UserController {
 		return response;
 	}
 	
-	@GetMapping("/isfollowing")
+	@GetMapping("/api/isfollowing")
 	@ApiOperation(value="해당사람을 팔로우 하고 있는지 아닌지")
 	public Object isFollowing(HttpServletRequest request) {
 		String follower = jwtService.getNickname(request);

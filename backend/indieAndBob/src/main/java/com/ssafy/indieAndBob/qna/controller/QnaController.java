@@ -40,7 +40,7 @@ public class QnaController {
 	@Autowired
 	JwtService jwtService;
 	
-	@PostMapping("/qna/create")
+	@PostMapping("/api/qna/create")
 	@ApiOperation(value = "Q&A 등록")
 	public Object create(@RequestBody QnaVO vo, HttpServletRequest req) {
 		logger.info("==========[qna create]==========");
@@ -60,7 +60,7 @@ public class QnaController {
 		return response;
 	}
 	
-	@GetMapping("/qna/read/{qnaId}")
+	@GetMapping("/api/qna/read/{qnaId}")
 	@ApiOperation(value = "Q&A 조회")
 	public Object read(@PathVariable int qnaId) {
 		logger.info("==========[qna read]==========");
@@ -80,7 +80,7 @@ public class QnaController {
 		return response;
 	}
 	
-	@PutMapping("/qna/update")
+	@PutMapping("/api/qna/update")
 	@ApiOperation("Q&A 수정")
 	public Object update(@RequestBody QnaVO vo, HttpServletRequest req) {
 		logger.info("==========[qna update]==========");
@@ -100,7 +100,7 @@ public class QnaController {
 		return response;
 	}
 	
-	@PutMapping("/qna/updateAnswer")
+	@PutMapping("/api/qna/updateAnswer")
 	@ApiOperation("Answer 수정")
 	public Object updateAnswer(@RequestBody QnaVO vo, HttpServletRequest req) {
 		logger.info("==========[qna update]==========");
@@ -120,7 +120,7 @@ public class QnaController {
 		return response;
 	}
 	
-	@DeleteMapping("/qna/delete/{qnaId}")
+	@DeleteMapping("/api/qna/delete/{qnaId}")
 	@ApiOperation("Q&A 삭제")
 	public Object delete(@PathVariable int qnaId) {
 		logger.info("==========[qna read]==========");
@@ -139,7 +139,7 @@ public class QnaController {
 		return response;		
 	}
 	
-	@GetMapping("/qna/readByGameID/{gameId}/{page}")
+	@GetMapping("/api/qna/readByGameID/{gameId}/{page}")
 	@ApiOperation("게임ID로 조회하기")
 	public Object readByGameId(@PathVariable int gameId, @PathVariable int page, HttpServletRequest req) {
 		logger.info("==========[qna read]==========");
@@ -174,7 +174,7 @@ public class QnaController {
 		return response; 
 	}
 	
-	@GetMapping("/qna/readByGameIDNoSecret/{gameId}/{page}")
+	@GetMapping("/api/qna/readByGameIDNoSecret/{gameId}/{page}")
 	@ApiOperation("게임ID로 조회하기")
 	public Object readByGameIdNoSecret(@PathVariable int gameId, @PathVariable int page) {
 		logger.info("==========[qna read]==========");

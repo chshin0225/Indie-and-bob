@@ -45,5 +45,10 @@ public class RewardServiceImpl implements RewardService{
 		return rewarddao.deleteRewardByRewardId(rewardId);
 	}
 
+	@Override
+	public int buyReward(int rewardId) {
+		return rewarddao.buyReward(rewardId);
+	}
+
 	
 }

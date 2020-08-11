@@ -45,5 +45,10 @@ public class RewardDaoImpl implements RewardDao{
 	public int deleteRewardByRewardId(int rewardId) {
 		return temp.delete(ns + "deleteRewardByRewardId", rewardId);
 	}
+
+	@Override
+	public int buyReward(int rewardId) {
+		return temp.update(ns + "buyReward", rewardId);
+	}
 	
 }

@@ -11,7 +11,9 @@
 		<!-- 사용할 DTO들을 예약어로 등록 -->
 		<!-- typeAlias type="com.example.core.dto.Board" alias="board" /-->
 		<typeAlias type="com.ssafy.indieAndBob.user.dto.User" alias="user"/>
+		<typeAlias type="com.ssafy.indieAndBob.user.dto.UserAll" alias="userall"/>
 		<typeAlias type="com.ssafy.indieAndBob.user.dto.Follow" alias="follow"/>
+		<typeAlias type="com.ssafy.indieAndBob.user.dto.UserGenre" alias="usergenre"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.Game" alias="game"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameDetail" alias="gamedetail"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameAll" alias="gameall"/>
@@ -19,9 +21,14 @@
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameComment" alias="gamecomment"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.Genre" alias="genre"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameGenre" alias="gamegenre"/>
+		<typeAlias type="com.ssafy.indieAndBob.game.dto.FundingGame" alias="fundinggame"/>
+		<typeAlias type="com.ssafy.indieAndBob.game.dto.MyGameSearch" alias="mygamesearch"/>
 		<typeAlias type="com.ssafy.indieAndBob.reward.dto.Reward" alias="reward"/>
 		<typeAlias type="com.ssafy.indieAndBob.alarm.dto.Alarm" alias="alarm"/>
 		<typeAlias type="com.ssafy.indieAndBob.kakaopay.dto.Funding" alias="funding"/>
+		<typeAlias type="com.ssafy.indieAndBob.community.dto.Community" alias="community"/>
+		<typeAlias type="com.ssafy.indieAndBob.community.dto.MyCommunitySearch" alias="mycommunitysearch"/>
+		<typeAlias type="com.ssafy.indieAndBob.community.dto.CommunityComment" alias="communitycomment"/>
 		
 		<!--권성완-->
 		<typeAlias type="com.ssafy.indieAndBob.qna.dto.QnaVO" alias="QnaVO"/>
@@ -37,6 +44,8 @@
 		<mapper resource="mybatis/mapper/rewardMapper.xml" />
 		<mapper resource="mybatis/mapper/fundingMapper.xml" />
 		<mapper resource="mybatis/mapper/genreMapper.xml" />
+		<mapper resource="mybatis/mapper/communityMapper.xml" />
+		<mapper resource="mybatis/mapper/communityCommentMapper.xml" />
 		
 		<!--권성완-->
 		<mapper resource="mybatis/mapper/qnaMapper.xml"/>

@@ -1,5 +1,7 @@
 package com.ssafy.indieAndBob.reward.controller;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
 import com.ssafy.indieAndBob.reward.dto.Reward;
 import com.ssafy.indieAndBob.reward.service.RewardService;
@@ -28,9 +32,11 @@ public class RewardController {
 
 	@Autowired
 	RewardService rservice;
+	@Autowired
+	GameService gameService;
 	private static final Logger logger = LoggerFactory.getLogger(RewardController.class);
 
-	@GetMapping("/reward")
+	@GetMapping("/api/reward")
 	@ApiOperation(value = "모든리워드찾기")
 	public Object selectAllReward() {
 		logger.info("===========selectAllReward==========");
@@ -49,7 +55,7 @@ public class RewardController {
 		return response;
 	}
 
-	@GetMapping("/reward/hj/{rewardId}")
+	@GetMapping("/api/reward/hj/{rewardId}")
 	@ApiOperation(value = "리워드아이디로 리워드찾기")
 	public Object selectRewardById(@PathVariable int rewardId) {
 
@@ -58,24 +64,29 @@ public class RewardController {
 
 		ResponseEntity response = null;
 		Reward reward = rservice.selectRewardById(rewardId);
+		GameAll game = gameService.selectGameById(reward.getGameId());
 		if(!reward.equals(null)) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
-			result.object = reward;
+			Map<String, Object> map = new HashMap<>();
+			map.put("reward", reward);
+			map.put("game", game);
+			result.object = map;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
 		return response;
 	}
-	@GetMapping("/rewards/bygameid/{gameId}")
+	@GetMapping("/api/rewards/bygameid/{gameId}")
 	@ApiOperation(value = "게임아이디에 해당하는 리워드 찾기")
 	public Object selectRewardByGameId(@PathVariable int gameId) {
 		logger.info("===========selectRewardByGameId==========");
 		logger.info("gameId : " + gameId);
 		ResponseEntity response = null;
 		List<Reward> rewardlist = rservice.selectRewardByGameId(gameId);
+		
 		if(rewardlist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
@@ -89,7 +100,7 @@ public class RewardController {
 	}
 
 
-	@PostMapping("/reward")
+	@PostMapping("/api/reward")
 	@ApiOperation(value = "리워드등록")
 	public Object registerReward(@RequestBody Reward request) {
 		logger.info("===========registerGame==========");
@@ -105,7 +116,7 @@ public class RewardController {
 		}
 		return response;
 	}
-	@PutMapping("/reward")
+	@PutMapping("/api/reward")
 	@ApiOperation(value = "리워드수정")
 	public Object updateRewardByRewardId(@RequestBody Reward reqest) {
 		logger.info("===========updateRewardByRewardId==========");
@@ -122,7 +133,7 @@ public class RewardController {
 		return response;
 	}
 	
-	@DeleteMapping("/reward/{rewardId}")
+	@DeleteMapping("/api/reward/{rewardId}")
 	@ApiOperation(value = "리워드삭제")
 	public Object deleteRewardByRewardId(@PathVariable int rewardId) {
 		logger.info("===========deleteRewardByRewardId==========");

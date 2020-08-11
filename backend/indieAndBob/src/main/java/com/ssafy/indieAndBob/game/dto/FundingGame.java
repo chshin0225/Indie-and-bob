@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameAll {
+public class FundingGame {
 	private int gameId;
 	private String name;
 	private Date deadline;
@@ -23,8 +23,13 @@ public class GameAll {
 	private Date createdAt;
 	private Date updatedAt;
 	private Date startedAt;
-    private String content;
     private List<Integer> genre;
     private List<String> genreName;
-    private String profile;
+    private int rewardId;
+	private String rewardName;
+	private String rImg;
+	private int leftCount;
+	private int price;
+	private String content;
+	private String profile;
 }

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
@@ -45,12 +46,12 @@ public class GameController {
 	@Autowired
 	JwtService jwtService;
 	
-	@GetMapping("/gamelist/{page}")
+	@GetMapping("/api/gamelist/{page}")
 	@ApiOperation(value="모든게임리스트 조회")
 	public Object selectAllGame(@PathVariable int page) {
 		logger.info("==========selectAllGame==========");
 		ResponseEntity response = null;
-		List<Game> gamelist = gservice.selectAllGame(page);
+		List<GameAll> gamelist = gservice.selectAllGame(page);
 		if(gamelist.size()>=0) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
@@ -63,7 +64,7 @@ public class GameController {
 		return response;
 	}
 	
-	@GetMapping("/admin/gamelist/{page}")
+	@GetMapping("/api/admin/gamelist/{page}")
 	@ApiOperation(value="모든게임리스트 조회")
 	public Object selectAllGameAdmin(@PathVariable int page, HttpServletRequest req) {
 		String nickname = jwtService.getNickname(req);
@@ -87,9 +88,9 @@ public class GameController {
 		return response;
 	}
 	
-	@GetMapping("/game/{gameId}")
+	@GetMapping("/api/game/{gameId}")
 	@ApiOperation(value = "게임 아이디로 게임찾기")
-	public Object selectGameById(@PathVariable String gameId) {
+	public Object selectGameById(@PathVariable int gameId) {
 		logger.info("==========selectGameById==========");
 		logger.info("gameid : " + gameId);
 		ResponseEntity response = null;
@@ -107,9 +108,9 @@ public class GameController {
 		return response;
 	}
 	
-	@PutMapping("/game")
+	@PutMapping("/api/game")
 	@ApiOperation(value = "게임 아이디로 게임 수정")
-	public Object updateGameById(@RequestBody Game game) {
+	public Object updateGameById(@RequestBody GameAll game) {
 		logger.info("==========updateGameById==========");
 		logger.info("gameid : " + game);
 		ResponseEntity response = null;
@@ -125,7 +126,7 @@ public class GameController {
 		return response;
 	}
 	
-	@DeleteMapping("/game/{gameId}")
+	@DeleteMapping("/api/game/{gameId}")
 	@ApiOperation(value = "게임 아이디로 게임 삭제")
 	public Object deleteGameById(@PathVariable int gameId) {
 		logger.info("==========deleteGameById==========");
@@ -144,7 +145,7 @@ public class GameController {
 	}
 	
 	
-	@PostMapping("/game/registergame")
+	@PostMapping("/api/game/registergame")
 	@ApiOperation(value = "게임 등록")
 	public Object registerGame(@RequestBody GameAll request, HttpServletRequest req) {
 		String nickname = jwtService.getNickname(req);
@@ -154,10 +155,12 @@ public class GameController {
 		logger.info("img = " + request.getThumbnail());
 		ResponseEntity response = null;
 		request.setNickname(nickname);
-		String img = request.getThumbnail();
-		String[] extensions = img.split("\\.");
-		String extension = extensions[extensions.length-1];
-		
+		String extension = null;
+		if(request.getThumbnail() != null) {
+			String img = request.getThumbnail();
+			String[] extensions = img.split("\\.");
+			extension = extensions[extensions.length-1];
+		}
 		int gameId = gservice.registerGame(request, extension);
 		if (gameId != 0) {
 			final BasicResponse result = new BasicResponse();
@@ -174,7 +177,7 @@ public class GameController {
 		return response;
 	}
 	
-	@PostMapping("/game/like")
+	@PostMapping("/api/game/like")
 	@ApiOperation(value = "게임 좋아요")
 	public Object gameLike(@RequestBody GameLike request) {
 		logger.info("==========gameLike post==========");
@@ -191,7 +194,7 @@ public class GameController {
 		return response;
 	}
 	
-	@DeleteMapping("/game/like")
+	@DeleteMapping("/api/game/like")
 	@ApiOperation(value = "게임 좋아요 삭제")
 	public Object deleteGameLike(HttpServletRequest request) {
 		logger.info("==========gameLike delete==========");
@@ -213,15 +216,15 @@ public class GameController {
 		return response;
 	}
 	
-	@GetMapping("/game/like/gamelist/{nickname}")
+	@GetMapping("/api/game/like/gamelist/{nickname}/{page}")
 	@ApiOperation(value = "좋아요한 게임 리스트")
-	public Object gameLikeList(@PathVariable String nickname) {
+	public Object gameLikeList(@PathVariable String nickname, @PathVariable int page) {
 		logger.info("==========gameLikeList==========");
 		logger.info("gameLikeList : " + nickname);
 		ResponseEntity response = null;
-		List<Game> games = new LinkedList<>();
-		games = gservice.selectGameByNickname(nickname);
-		if (games.size() >= 0) {
+		MyGameSearch search = new MyGameSearch(nickname, page);
+		List<GameAll> games = gservice.selectGameByNickname(search);
+		if (games != null) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -233,7 +236,7 @@ public class GameController {
 		return response;
 	}
 	
-	@GetMapping("/game/like/userlist/{gameId}")
+	@GetMapping("/api/game/like/userlist/{gameId}")
 	@ApiOperation(value = "게임을 좋아요 한 유저 리스트 조회")
 	public Object userLikeList(@PathVariable String gameId) {
 		logger.info("==========userLikeList==========");
@@ -253,7 +256,7 @@ public class GameController {
 		return response;
 	}
 	
-	@GetMapping("/game/islike")
+	@GetMapping("/api/game/islike")
 	@ApiOperation(value = "이 게임을 좋아하는지 여부 확인")
 	public Object isLike(HttpServletRequest request) {
 		String nickname = request.getParameter("nickname");
@@ -278,7 +281,7 @@ public class GameController {
 		return response;
 	}
 	
-	@PutMapping("/game/approve")
+	@PutMapping("/api/game/approve")
 	@ApiOperation(value = "게임 승인 여부")
 	public Object approve(@RequestBody Game game) {
 		logger.info("==========approve==========");
@@ -295,13 +298,14 @@ public class GameController {
 		return response;
 	}
 	
-	@GetMapping("/madegame/{nickname}")
+	@GetMapping("/api/madegame/{nickname}/{page}")
 	@ApiOperation(value = "내가 만든 프로젝트 리스트 조회")
-	public Object selectMadeGameByNickname(@PathVariable String nickname) {
+	public Object selectMadeGameByNickname(@PathVariable String nickname, @PathVariable int page) {
 		logger.info("==========gameByNickname==========");
 		logger.info("gameByNickname : " + nickname);
 		ResponseEntity response = null;
-		List<GameAll> games = gservice.selectMadeGameByNickname(nickname);
+		MyGameSearch search = new MyGameSearch(nickname, page);
+		List<GameAll> games = gservice.selectMadeGameByNickname(search);
 		if (games != null) {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;

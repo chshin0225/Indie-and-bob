@@ -10,6 +10,7 @@ import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.game.dto.GameGenre;
 import com.ssafy.indieAndBob.game.dto.GameLike;
+import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.user.dto.User;
 
@@ -26,25 +27,27 @@ public class GameDaoImpl implements GameDao{
 		if(temp.insert(ns + "registerGame", game) != 1) {
 			return 0;
 		}
-		String thumbnail = "game/" + game.getGameId() + "/thumbnail/" + game.getGameId() + "." + extension;
-		game.setThumbnail(thumbnail);
+		if(extension != null) {
+			String thumbnail = "game/" + game.getGameId() + "/thumbnail/" + game.getGameId() + "." + extension;
+			game.setThumbnail(thumbnail);
+		}
 		temp.update(ns + "injectThumbnail", game);
 		return game.getGameId();
 	}
 	
 	@Override
 	public int registerDetail(GameAll detail) {
-		detail.setContent("game/"+detail.getGameId()+"/detail/"+detail.getGameId());
+		detail.setContent("game/"+detail.getGameId()+"/content/"+detail.getGameId());
 		return temp.insert(ns + "registerGameDetail", detail);
 	}
 
 	@Override
-	public GameAll selectGameById(String gameId) {
+	public GameAll selectGameById(int gameId) {
 		return temp.selectOne(ns+ "selectGameById", gameId);
 	}
 
 	@Override
-	public List<Game> selectAllGame(int page) {
+	public List<GameAll> selectAllGame(int page) {
 		return temp.selectList(ns + "selectAllGame",page);
 	}
 
@@ -54,8 +57,8 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public List<Game> selectGameByNickname(String nickname) {
-		return temp.selectList(ns+"selectGameByNickname",nickname);
+	public List<GameAll> selectGameByNickname(MyGameSearch search) {
+		return temp.selectList(ns+"selectGameByNickname",search);
 	}
 
 	@Override
@@ -74,7 +77,8 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public int updateGame(Game game) {
+	public int updateGame(GameAll game) {
+		
 		return temp.update(ns + "updateGame", game);
 	}
 
@@ -104,9 +108,13 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public List<GameAll> selectMadeGameByNickname(String nickname) {
-		return temp.selectList(ns + "selectMadeGameByNickname", nickname);
+	public List<GameAll> selectMadeGameByNickname(MyGameSearch search) {
+		return temp.selectList(ns + "selectMadeGameByNickname", search);
 	}
 
+	@Override
+	public int deleteGameGenre(int gameId) {
+		return temp.delete(ns + "deleteGameGenre", gameId);
+	}
 	
 }
