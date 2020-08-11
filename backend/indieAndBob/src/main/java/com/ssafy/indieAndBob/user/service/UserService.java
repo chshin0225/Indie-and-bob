@@ -9,7 +9,7 @@ import com.ssafy.indieAndBob.user.dto.UserAll;
 public interface UserService {
 	User selectByEmailAndPassword(User user);
 	User selectByEmail(String user);
-	User selectByNickname(String nickname);	
+	UserAll selectByNickname(String nickname);	
 	int registerUser(UserAll user);
 	int changeUserInfo(UserAll user);
 	

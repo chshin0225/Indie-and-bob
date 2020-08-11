@@ -7,6 +7,8 @@ import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.indieAndBob.game.dao.GenreDao;
+import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.game.dto.GameGenre;
 import com.ssafy.indieAndBob.user.dao.UserDao;
 import com.ssafy.indieAndBob.user.dao.firebaseT;
@@ -20,6 +22,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserDao userDao;
+	@Autowired
+	GenreDao genreDao;
 	
 	@Override
 	public User selectByEmailAndPassword(User user) {
@@ -83,8 +87,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User selectByNickname(String nickname) {
-		return userDao.selectByNickname(nickname);
+	public UserAll selectByNickname(String nickname) {
+		UserAll user = userDao.selectByNickname(nickname);
+		List<String> genreName = genreDao.selectGenreNameByNickname(nickname);
+		user.setGenreName(genreName);
+		return user;
 	}
 
 	@Override

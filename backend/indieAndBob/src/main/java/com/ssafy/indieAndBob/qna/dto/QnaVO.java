@@ -24,7 +24,7 @@ public class QnaVO implements Comparable<QnaVO>{
 	private String content;
 	private boolean isSecret;
 	private String answer;
-	private Date createAt;
+	private Date createdAt;
 	private Date answerAt;
 	@Override
 	public int compareTo(QnaVO o) {

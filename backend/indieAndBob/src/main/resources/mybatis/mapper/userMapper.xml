@@ -10,7 +10,7 @@
    <select id="selectByEmail" parameterType="String" resultType="user">
    	  select * from user where email=#{email}
    </select>
-   <select id="selectByNickname" parameterType="String" resultType="user">
+   <select id="selectByNickname" parameterType="String" resultType="userall">
    	  select * from user where nickname=#{nickname}
    </select>
    
