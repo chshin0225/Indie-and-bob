@@ -79,4 +79,10 @@
     <delete id="deleteGameGenre" parameterType="int">
     	delete from game_genre where game_id=#{gameId}
     </delete>
+    
+    <select id="mostLikeGame" resultType="gamealllike">
+    	select g.*, count(*) count from game_like left outer join game g using(game_id) where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day) group by game_id 
+		order by count desc
+    </select>
+    
 </mapper>

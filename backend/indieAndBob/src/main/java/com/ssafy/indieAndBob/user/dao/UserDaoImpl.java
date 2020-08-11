@@ -66,7 +66,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User selectByNickname(String nickname) {
+	public UserAll selectByNickname(String nickname) {
 		return temp.selectOne(ns + "selectByNickname", nickname);
 	}
 
