@@ -28,6 +28,7 @@
           multiple
           chips
         ></v-select>
+        <small class="d-block primary--text" v-if="error.genre">{{ error.genre }}</small>
       </v-col>
     </v-row>
 
@@ -294,7 +295,6 @@ export default {
       this.checkForm();
     },
     phonenumber: function() {
-      console.log(this.phonenumber)
       this.checkForm();
     },
     profileImage() {
@@ -324,7 +324,11 @@ export default {
           this.introduction = res.data.object.introduction;
           this.phonenumber = res.data.object.phoneNumber;
           this.nickname = res.data.object.nickname;
-          this.genre = res.data.object.genre;
+          // res.data.object.genreName.forEach(item => {
+          //   this.genre.push(this.idToGenre[item])
+          // })
+          this.genre = res.data.object.genreName
+          console.log(this.genre)
           this.is_developer = res.data.object.developer;
           if (res.data.object.developer) {
             this.usertype = "개발자"

@@ -87,6 +87,7 @@
 <script>
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import router from '../../router'
 import axios from "axios";
 // import router from "../../router";
 import { Editor } from "@toast-ui/vue-editor";
@@ -101,6 +102,8 @@ export default {
     return {
       text: "",
       genre: "",
+      content_upload: false,
+      thumbnail_upload: false,
       genreId: [],
       today: new Date().toISOString().substr(0, 10),
       date: new Date().toISOString().substr(0, 10),
@@ -133,9 +136,25 @@ export default {
       };
       axios.post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
         .then(res => {
-          console.log(res.data.object)
-          firebase.storage().ref(`game/${res.data.object.gameId}/content/${res.data.object.gameId}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
-          firebase.storage().ref(`game/${res.data.object.gameId}/thumbnail/${res.data.object.gameId}.${res.data.object.extension}`).put(this.thumbnail)
+          console.log(res.data.object.gameId)
+          const storageRef1 = firebase.storage().ref(`game/${res.data.object.gameId}/content/${res.data.object.gameId}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
+          storageRef1.on(`state_changed`, snapshot => {
+            if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
+              this.content_upload = true
+              if (this.thumbnail_upload === true) {
+                router.push({name: 'ProjectDetail', params: { id: res.data.object.gameId }})
+              }
+            }
+          })
+          const storageRef2 = firebase.storage().ref(`game/${res.data.object.gameId}/thumbnail/${res.data.object.gameId}.${res.data.object.extension}`).put(this.thumbnail)
+          storageRef2.on(`state_changed`, snapshot => {
+            if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
+              this.thumbnail_upload = true
+              if (this.content_upload === true) {
+                router.push({name: 'ProjectDetail', params: { id: res.data.object.gameId }})
+              }
+            }
+          })
         })
         .catch((err) => console.error(err));
     },

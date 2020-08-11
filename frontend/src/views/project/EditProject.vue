@@ -106,6 +106,7 @@ import { mapGetters, mapState } from "vuex";
 import axios from 'axios'
 import SERVER from '../../api/base'
 import firebase from 'firebase'
+import router from '../../router'
 
 import { Editor } from "@toast-ui/vue-editor";
 
@@ -132,7 +133,7 @@ export default {
   },
   computed: {
     ...mapGetters(['headersConfig']),
-    ...mapState(['genres', 'genreToId', 'idToGenre'])
+    ...mapState(['genres', 'genreToId'])
   },
   methods: {
     changeProjectInfo() {
@@ -160,6 +161,7 @@ export default {
       axios.put(SERVER.BASE + SERVER.GAMEEDIT, PARAMS, this.headersConfig)
         .then(res => {
           console.log(res)
+          router.push({name: 'ProjectDetail', params:{ id:this.$route.params.id }})
         })
         .catch(err => {
           console.error(err)
@@ -184,9 +186,7 @@ export default {
         })
         this.aim = res.data.object.aim
         this.deadline = res.data.object.deadline.slice(0, 10)
-        res.data.object.genreName.forEach(item => {
-          this.genre.push(this.idToGenre[item])
-        })
+        this.genre = res.data.object.genreName
         this.originalThumbnailURL = res.data.object.thumbnail
         storageRef.child(res.data.object.thumbnail).getDownloadURL()
         .then(url => {
