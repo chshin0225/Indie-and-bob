@@ -47,7 +47,8 @@ export default {
     'LIKEDPROJECT': "/game/like/gamelist",
 
     // community
-    'COMMUNITY': '/communitylist/',
+    'COMMUNITY': '/community/',
+    'COMMUNITYLIST': '/communitylist/',
     'COMMUNITYCOMMENT': '/community/comment',
     
     // search

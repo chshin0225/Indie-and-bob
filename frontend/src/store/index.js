@@ -48,11 +48,11 @@ export default new Vuex.Store({
     // community
     articleList: [],
     article: null,
+    articleCount: null,
     
     // project
     projectList: [],
     project: null,
-    myProjectList: [],
     fundedProjectList: [],
     rewardData: null,
 
@@ -132,6 +132,9 @@ export default new Vuex.Store({
     setArticle(state, val) {
       state.article = val
     },
+    setArticleCount(state, val) {
+      state.articleCount = val
+    },
 
     // project
     setProjectList(state, val) {
@@ -148,9 +151,6 @@ export default new Vuex.Store({
     },
     setContent(state, val) {
       state.project.content = val
-    },
-    setMyProjectList(state, val) {
-      state.myProjectList = val
     },
     setFundedProjectList(state, val) {
       state.fundedProjectList = val
@@ -392,12 +392,6 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
-    fetchMyProjects({ commit }, username) {
-      axios.get(SERVER.BASE + SERVER.MYPROJECT + username)
-        .then(res => commit('setMyProjectList', res.data.object))
-        .catch(err => console.error(err))
-    },
-
     fetchFundedProjects({ commit, getters }, username) {
       axios.get(SERVER.BASE + SERVER.FUNDEDPROJECT + username, getters.headersConfig)
         .then(res => {
@@ -433,8 +427,11 @@ export default new Vuex.Store({
 
     // community
     fetchArticles({ commit }, page) {
-      axios.get(SERVER.BASE + SERVER.COMMUNITY + page)
-        .then(res => commit('setArticleList', res.data.object))
+      axios.get(SERVER.BASE + SERVER.COMMUNITYLIST + page)
+        .then(res =>{
+          commit('setArticleList', res.data.object.list)
+          commit('setArticleCount', res.data.object.count)
+        })
         .catch(err => console.error(err))
     },
 
