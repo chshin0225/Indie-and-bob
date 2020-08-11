@@ -10,7 +10,7 @@ import com.ssafy.indieAndBob.user.dto.UserGenre;
 public interface UserDao {
 	User selectByEmailAndPassword(User user);
 	User selectByEmail(String email);
-	User selectByNickname(String nickname);
+	UserAll selectByNickname(String nickname);
 	List<User> searchUser(String keyword);
 	int registerUser(UserAll user);
 	int registerUserGenre(UserGenre userGenre);

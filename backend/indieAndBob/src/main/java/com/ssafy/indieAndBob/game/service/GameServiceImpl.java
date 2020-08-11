@@ -14,6 +14,7 @@ import com.ssafy.indieAndBob.game.dto.GameLike;
 import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.dto.GameAllLike;
 import com.ssafy.indieAndBob.user.dto.User;
 
 @Service
@@ -121,6 +122,12 @@ public class GameServiceImpl implements GameService{
 			game.setGenreName(genreName);
 		}
 		return games;
+	}
+
+	@Override
+	public List<GameAllLike> mostLikeGame() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

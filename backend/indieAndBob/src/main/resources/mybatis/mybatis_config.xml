@@ -17,6 +17,7 @@
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.Game" alias="game"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameDetail" alias="gamedetail"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameAll" alias="gameall"/>
+		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameAllLike" alias="gamealllike"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameLike" alias="gamelike"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.GameComment" alias="gamecomment"/>
 		<typeAlias type="com.ssafy.indieAndBob.game.dto.Genre" alias="genre"/>

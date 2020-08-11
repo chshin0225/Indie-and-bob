@@ -23,4 +23,9 @@ public class GenreDaoImpl implements GenreDao {
 	public List<String> selectGenreNameByGameId(int gameId){
 		return temp.selectList(ns + "selectGenreNameByGameId", gameId);
 	}
+
+	@Override
+	public List<String> selectGenreNameByNickname(String nickname) {
+		return temp.selectList(ns + "selectGenreNameByNickname", nickname);
+	}
 }

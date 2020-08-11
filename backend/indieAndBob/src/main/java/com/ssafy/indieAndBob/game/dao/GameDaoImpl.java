@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ssafy.indieAndBob.game.dto.Game;
 import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.dto.GameAllLike;
 import com.ssafy.indieAndBob.game.dto.GameGenre;
 import com.ssafy.indieAndBob.game.dto.GameLike;
 import com.ssafy.indieAndBob.game.dto.MyGameSearch;
@@ -115,6 +116,11 @@ public class GameDaoImpl implements GameDao{
 	@Override
 	public int deleteGameGenre(int gameId) {
 		return temp.delete(ns + "deleteGameGenre", gameId);
+	}
+
+	@Override
+	public List<GameAllLike> mostLikeGame() {
+		return temp.selectList(ns + "mostLikeGame");
 	}
 	
 }
