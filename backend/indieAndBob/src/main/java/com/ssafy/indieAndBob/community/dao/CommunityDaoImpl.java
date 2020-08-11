@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.indieAndBob.community.dto.Community;
+import com.ssafy.indieAndBob.community.dto.MyCommunitySearch;
 
 @Repository
 public class CommunityDaoImpl implements CommunityDao {
@@ -21,8 +22,8 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public List<Community> listCommunity() {
-		return temp.selectList(ns + "listCommunity");
+	public List<Community> listCommunity(int page) {
+		return temp.selectList(ns + "listCommunity", page);
 	}
 
 	@Override
@@ -38,6 +39,21 @@ public class CommunityDaoImpl implements CommunityDao {
 	@Override
 	public int deleteCommunity(int communityId) {
 		return temp.delete(ns + "deleteCommunity", communityId);
+	}
+
+	@Override
+	public List<Community> listMyCommunity(MyCommunitySearch search) {
+		return temp.selectList(ns + "listMyCommunity", search);
+	}
+
+	@Override
+	public int listCommunityCount() {
+		return temp.selectOne(ns + "listCommunityCount");
+	}
+
+	@Override
+	public int listMyCommunityCount(String nickname) {
+		return temp.selectOne(ns + "listMyCommunityCount", nickname);
 	}
 
 }

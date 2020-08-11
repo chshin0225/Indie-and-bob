@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.indieAndBob.community.dao.CommunityDao;
 import com.ssafy.indieAndBob.community.dto.Community;
+import com.ssafy.indieAndBob.community.dto.MyCommunitySearch;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
@@ -20,8 +21,8 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public List<Community> listCommunity() {
-		return communityDao.listCommunity();
+	public List<Community> listCommunity(int page) {
+		return communityDao.listCommunity(page);
 	}
 
 	@Override
@@ -37,6 +38,21 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int deleteCommunity(int communityId) {
 		return communityDao.deleteCommunity(communityId);
+	}
+
+	@Override
+	public List<Community> listMyCommunity(MyCommunitySearch search) {
+		return communityDao.listMyCommunity(search);
+	}
+
+	@Override
+	public int listCommunityCount() {
+		return communityDao.listCommunityCount();
+	}
+
+	@Override
+	public int listMyCommunityCount(String nickname) {
+		return communityDao.listMyCommunityCount(nickname);
 	}
 
 }

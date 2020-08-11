@@ -30,25 +30,69 @@
       </v-col>
     </v-row>
 
+    <infinite-loading @infinite="fetchLikedProjects"></infinite-loading>
   </v-container>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+// import { mapState, mapActions } from 'vuex'
+import SERVER from '../../api/base'
+
+import axios from 'axios'
+import firebase from 'firebase'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   name: 'LikedProjects',
 
+  components: {
+    InfiniteLoading,
+  },
+
+  data() {
+    return {
+      likedProjectList: [],
+      projectNum: 0,
+    }
+  },
+
   computed: {
-    ...mapState(['likedProjectList',])
+    // ...mapState(['likedProjectList',])
   },
 
   methods: {
-    ...mapActions(['fetchLikedProjects',])
-  },
-
-  created() {
-    this.fetchLikedProjects(this.$route.params.username)
+    // ...mapActions(['fetchLikedProjects',])
+    fetchLikedProjects($state) {
+      const storageRef = firebase.storage().ref()
+      axios.get(SERVER.BASE + SERVER.LIKEDPROJECT + `/${this.$route.params.username}/${this.projectNum}`)
+        .then(res => {
+          console.log(res.data)
+          if (res.data.object.length > 0) {
+            this.projectNum += 9;
+            res.data.object.forEach(item => {
+              if (item.profile !== null) {
+                storageRef.child(item.profile).getDownloadURL()
+                  .then(url => {
+                    item.profile = url
+                  })
+                  .catch(err => console.error(err))
+              }
+              if (item.thumbnail !== null) {
+                storageRef.child(item.thumbnail).getDownloadURL()
+                  .then(url => {
+                    item.thumbnail = url
+                  })
+                  .catch(err => console.error(err))
+              } 
+              this.myProjectList.push(item);
+            });
+            $state.loaded();
+          } else {
+            $state.complete();
+          }
+        })
+        .catch(err => console.error(err))
+    },
   },
 }
 </script>
