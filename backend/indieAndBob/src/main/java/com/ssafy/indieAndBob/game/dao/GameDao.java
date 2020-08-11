@@ -9,6 +9,7 @@ import com.ssafy.indieAndBob.game.dto.GameLike;
 import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.dto.GameAllLike;
 import com.ssafy.indieAndBob.user.dto.User;
 
 public interface GameDao {
@@ -30,4 +31,5 @@ public interface GameDao {
 	int insertGameGenre(GameGenre gameGenre);
 	List<GameAll> selectMadeGameByNickname(MyGameSearch search);
 	int deleteGameGenre(int gameId);
+	List<GameAllLike> mostLikeGame();
 }

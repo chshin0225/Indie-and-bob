@@ -8,6 +8,7 @@ import com.ssafy.indieAndBob.game.dto.GameLike;
 import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.kakaopay.dto.Funding;
 import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.dto.GameAllLike;
 import com.ssafy.indieAndBob.user.dto.User;
 
 public interface GameService {
@@ -26,4 +27,5 @@ public interface GameService {
 	int updateApprove(Game game);
 	int fundingGame(Funding funding);
 	List<GameAll> selectMadeGameByNickname(MyGameSearch search);
+	List<GameAllLike> mostLikeGame();
 }

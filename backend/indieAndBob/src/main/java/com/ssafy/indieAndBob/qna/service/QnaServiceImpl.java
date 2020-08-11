@@ -71,6 +71,9 @@ public class QnaServiceImpl implements QnaService{
 	@Override
 	public List<QnaVO> pagination(List<QnaVO> qnaList, int page) {
 		int numOfContents = qnaList.size();
+		if(numOfContents == 0) {
+			return qnaList;
+		}
 		int fromIndex = (page - 1) * 10;
 		int toIndex = page * 10 - 1;
 		
