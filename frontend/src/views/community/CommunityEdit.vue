@@ -40,7 +40,7 @@
           depressed
           large
           color="accent"
-        >글쓰기</v-btn>
+        >수정하기</v-btn>
       </v-col>
     </v-row>
   </v-container>

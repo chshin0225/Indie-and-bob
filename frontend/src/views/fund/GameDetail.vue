@@ -3,30 +3,31 @@
     <!-- header 부분 -->
     <div class="header">
       <v-container v-if="projectDataFetched">
-        <v-row>
+        <v-row class="d-flex flex-column-reverse flex-sm-row">
           <!-- 프로젝트 정보 -->
           <v-col cols="12" sm="6">
-            <h1>{{ project.name }}</h1>
+            <h1 class="mb-4 my-sm-4">{{ project.name }}</h1>
             <!-- <p>{{ rewards }}</p> -->
             <!-- <p>{{ project }}</p> -->
-            <p>장르: {{ genreData }}</p>
-            <p>개발자: <span><router-link class="text-decoration-none" :to="`/user/mypage/${project.nickname}`">{{ project.nickname }}</router-link></span></p>
-            <p>기간: {{ $moment(project.createdAt).format("YYYY.MM.DD") }} ~ {{ $moment(project.deadline).format("YYYY.MM.DD") }}</p>
+            <p class="mb-2">{{ genreData }}</p>
+            <p class="mb-2">개발자: <span><router-link class="text-decoration-none" :to="`/user/mypage/${project.nickname}`">{{ project.nickname }}</router-link></span></p>
+            <p class="mb-2">기간: {{ $moment(project.createdAt).format("YYYY.MM.DD") }} ~ {{ $moment(project.deadline).format("YYYY.MM.DD") }}</p>
             <p>목표: {{ project.aim }}원</p>
+
             <v-container class="pb-0">
               <v-row>
                 <p> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
-                <p>남은 금액: {{ leftPriceData }}원</p>
+                <p>현재 모금액: {{ project.aim - project.leftPrice }}원</p>
+                <v-progress-linear v-model="fundingProgress"></v-progress-linear>
               </v-row>
             </v-container>
 
-            <v-progress-linear v-model="fundingProgress"></v-progress-linear>
           </v-col>
           <v-spacer></v-spacer>
 
           <!-- thumbnail -->
-          <v-col cols="12" sm="6">
+          <v-col cols="12" sm="6" class="d-flex justify-center align-center">
             <v-img :src="project.thumbnail" contain></v-img>
           </v-col>
         </v-row>
@@ -182,7 +183,6 @@ import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 import _ from 'lodash'
-import firebase from 'firebase'
 
 export default {
   name: 'GameDetail',
@@ -199,11 +199,13 @@ export default {
       isLike: false,
       likeDialog: false,
       shareIcon: "white",
-      // iconColor: "white",
       iconColor: "accent",
       menu: false,
       url: "http://i3a105.p.ssafy.io:3000" + window.location.pathname,
+
+      genres: '',
       rewards: [],
+
       isAdmin: false,
     };
   },
@@ -215,11 +217,14 @@ export default {
       if (this.project.aim === this.project.leftPrice) {
         return 0
       } else {
-        return _.round((this.project.aim - this.leftPriceData) / this.project.aim * 100)
+        return _.round((this.project.aim - this.project.leftPrice) / this.project.aim * 100)
       }
     },
     genreData: function() {
-      return this.project.genreName.join()
+      this.project.genreName.forEach(item => {
+        this.genres += item + ' | '
+      })
+      return this.genres.slice(0, this.genres.length-2)
     },
     leftPriceData: function() {
       if (this.project.leftPrice > 0) {
@@ -289,7 +294,7 @@ export default {
 
     copy() {
       this.$clipboard(this.url);
-      this.$alert("url이 복사되었습니다.");
+      alert("url이 복사되었습니다.");
       this.menu = false;
       this.shareIcon = "white";
     },
@@ -328,17 +333,6 @@ export default {
     if (localStorage.getItem("username") === "admin") {
       this.isAdmin = true;
     }    
-  },
-
-  updated() {
-    if (this.projectDataFetched) {
-      const storageRef = firebase.storage().ref()
-      const ref = this.project.thumbnail
-      storageRef.child(ref).getDownloadURL()
-        .then(url => {
-          this.project.thumbnail = url
-        })
-    }
   },
 };
 </script>
