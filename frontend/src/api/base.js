@@ -35,6 +35,7 @@ export default {
     'CREATEQNA': "/qna/create",
     'UPDATEQNA': "/qna/update",
     'DELETEQNA': "/qna/delete/",
+    'ANSWER': "/qna/updateAnswer",
 
     // kakaopay
     'KAKAOPAY': "/kakaoPay",

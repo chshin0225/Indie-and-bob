@@ -6,7 +6,8 @@
           <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
               <v-list-item>
                 <v-avatar>
-                  <img src="../../assets/default_profile.png" :alt="project.nickname" />
+                  <v-img v-if="project.profile" :src="project.profile" :alt="project.nickname"></v-img>
+                  <v-img v-else src="../../assets/default_profile.png"></v-img>
                 </v-avatar>
                 <v-list-item-content class="ml-4">
                   <v-list-item-title class="headline">{{ project.name }}</v-list-item-title>
@@ -15,7 +16,8 @@
                   <v-list-item-subtitle>목표액: {{ project.aim }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-img src="../../assets/default_project.png" height="194"></v-img>
+              <v-img v-if="project.thumbnail" :src="project.thumbnail" height="194"></v-img>
+              <v-img v-else src="../../assets/default_project.png"></v-img>
           </router-link>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -27,7 +29,10 @@
       </v-col>
     </v-row>
 
-    <infinite-loading @infinite="fetchMyProjects"></infinite-loading>
+    <infinite-loading @infinite="fetchMyProjects" spinner="waveDots">
+      <div slot="no-more"></div>
+      <div slot="no-results">아직 나만의 프로젝트가 없네요!</div>
+    </infinite-loading>
   </v-container>
 </template>
 

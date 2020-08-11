@@ -63,8 +63,7 @@ export default {
 
   methods: {
     fetchMyArticles(page) {
-      const username = localStorage.getItem('username')
-      axios.get(SERVER.BASE + SERVER.COMMUNITY + `/${username}/${page}`)
+      axios.get(SERVER.BASE + SERVER.COMMUNITY + `/${this.$route.params.username}/${page}`)
         .then(res => {
           this.myArticleList = res.data.object.list
           this.articleCount = res.data.object.count

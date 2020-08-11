@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="my-5 text-center">프로젝트 개요를 입력해주세요!</h1>
+    <h1 class="my-5 text-center">새 프로젝트 만들기</h1>
     <v-row class="justify-center">
       <v-col class="py-0" sm="10">
         <label for="title">제목</label>
@@ -45,7 +45,9 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field v-model="date" label="마감날짜" readonly v-bind="attrs" v-on="on"></v-text-field>
           </template>
-          <v-date-picker v-model="date" :min="today" @input="menu2 = false"></v-date-picker>
+          <v-card>
+            <v-date-picker v-model="date" :min="today" @input="menu2 = false"></v-date-picker>
+          </v-card>
         </v-menu>
       </v-col>
     </v-row>
@@ -77,7 +79,7 @@
         </v-col>
       </v-row>
       <v-row class='justify-center'>
- <v-btn cols=auto @click="onButtonClick" class="primary">프로젝트 생성</v-btn>
+        <v-btn cols=auto @click="onButtonClick" class="accent" depressed>프로젝트 생성</v-btn>
       </v-row>
      
     </v-row>
