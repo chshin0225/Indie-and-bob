@@ -40,7 +40,7 @@ public class CommunityController {
 	@Autowired
 	CommunityService communityService;
 	
-	@PostMapping("/community")
+	@PostMapping("/api/community")
 	@ApiOperation(value="커뮤니티 글 작성")
 	public Object registerCommunity(@RequestBody Community community,
 			HttpServletRequest request) {
@@ -59,7 +59,7 @@ public class CommunityController {
 		return response;
 	}
 	
-	@GetMapping("/communitylist/{page}")
+	@GetMapping("/api/communitylist/{page}")
 	@ApiOperation(value="커뮤니티 글 전부 조회")
 	public Object listCommunity(@PathVariable int page) {
 		logger.info("==========listCommunity==========");
@@ -82,7 +82,7 @@ public class CommunityController {
 		return response;
 	}
 	
-	@GetMapping("/community/{communityId}")
+	@GetMapping("/api/community/{communityId}")
 	@ApiOperation(value="커뮤니티 글 세부 조회")
 	public Object communityDetail(@PathVariable int communityId) {
 		logger.info("==========communityDetail==========");
@@ -100,7 +100,7 @@ public class CommunityController {
 		return response;
 	}
 	
-	@PutMapping("/community")
+	@PutMapping("/api/community")
 	@ApiOperation(value="커뮤니티 글 수정")
 	public Object updateCommunity(@RequestBody Community community) {
 		logger.info("==========updateCommunity==========");
@@ -116,7 +116,7 @@ public class CommunityController {
 		return response;
 	}
 	
-	@DeleteMapping("/community/{communityId}")
+	@DeleteMapping("/api/community/{communityId}")
 	@ApiOperation(value="커뮤니티 글 삭제")
 	public Object deleteCommunity(@PathVariable int communityId) {
 		logger.info("==========deleteCommunity==========");
@@ -132,7 +132,7 @@ public class CommunityController {
 		return response;
 	}
 	
-	@GetMapping("/community/{nickname}/{page}")
+	@GetMapping("/api/community/{nickname}/{page}")
 	@ApiOperation(value="내가 작성한 글 조회")
 	public Object listMyCommunity(@PathVariable String nickname, @PathVariable int page) {
 		logger.info("==========listMyCommunity==========");
