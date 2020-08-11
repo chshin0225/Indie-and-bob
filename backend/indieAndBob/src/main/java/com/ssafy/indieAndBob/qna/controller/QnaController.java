@@ -1,5 +1,6 @@
 package com.ssafy.indieAndBob.qna.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +40,7 @@ public class QnaController {
 	@Autowired
 	JwtService jwtService;
 	
-	@PostMapping("/qna/create")
+	@PostMapping("/api/qna/create")
 	@ApiOperation(value = "Q&A 등록")
 	public Object create(@RequestBody QnaVO vo, HttpServletRequest req) {
 		logger.info("==========[qna create]==========");
@@ -59,7 +60,7 @@ public class QnaController {
 		return response;
 	}
 	
-	@GetMapping("/qna/read/{qnaId}")
+	@GetMapping("/api/qna/read/{qnaId}")
 	@ApiOperation(value = "Q&A 조회")
 	public Object read(@PathVariable int qnaId) {
 		logger.info("==========[qna read]==========");
@@ -79,7 +80,7 @@ public class QnaController {
 		return response;
 	}
 	
-	@PutMapping("/qna/update")
+	@PutMapping("/api/qna/update")
 	@ApiOperation("Q&A 수정")
 	public Object update(@RequestBody QnaVO vo, HttpServletRequest req) {
 		logger.info("==========[qna update]==========");
@@ -99,7 +100,7 @@ public class QnaController {
 		return response;
 	}
 	
-	@PutMapping("/qna/updateAnswer")
+	@PutMapping("/api/qna/updateAnswer")
 	@ApiOperation("Answer 수정")
 	public Object updateAnswer(@RequestBody QnaVO vo, HttpServletRequest req) {
 		logger.info("==========[qna update]==========");
@@ -119,7 +120,7 @@ public class QnaController {
 		return response;
 	}
 	
-	@DeleteMapping("/qna/delete/{qnaId}")
+	@DeleteMapping("/api/qna/delete/{qnaId}")
 	@ApiOperation("Q&A 삭제")
 	public Object delete(@PathVariable int qnaId) {
 		logger.info("==========[qna read]==========");
@@ -138,9 +139,9 @@ public class QnaController {
 		return response;		
 	}
 	
-	@GetMapping("/qna/readByGameID/{gameId}")
+	@GetMapping("/api/qna/readByGameID/{gameId}/{page}")
 	@ApiOperation("게임ID로 조회하기")
-	public Object readByGameId(@PathVariable int gameId, HttpServletRequest req) {
+	public Object readByGameId(@PathVariable int gameId, @PathVariable int page, HttpServletRequest req) {
 		logger.info("==========[qna read]==========");
 		ResponseEntity response = null;
 		
@@ -166,13 +167,34 @@ public class QnaController {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
+			qnaList = qnaService.pagination(qnaList, page);
 			result.object = qnaList;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}		
 		return response; 
 	}
 	
-	@GetMapping("/qna/readByGameIDNoSecret/{gameId}")
+	@GetMapping("/api/qna/readByGameIDNoSecret/{gameId}/{page}")
+	@ApiOperation("게임ID로 조회하기")
+	public Object readByGameIdNoSecret(@PathVariable int gameId, @PathVariable int page) {
+		logger.info("==========[qna read]==========");
+		ResponseEntity response = null;
+
+		List<QnaVO> qnaList = qnaService.readByGameIdNoSecret(gameId);
+		if(qnaList == null) {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}else {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			qnaList = qnaService.pagination(qnaList, page);
+			result.object = qnaList;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		}		
+		return response; 
+	}
+	
+	@GetMapping("/api/qna/readByGameIDNoSecret/{gameId}")
 	@ApiOperation("게임ID로 조회하기")
 	public Object readByGameIdNoSecret(@PathVariable int gameId) {
 		logger.info("==========[qna read]==========");

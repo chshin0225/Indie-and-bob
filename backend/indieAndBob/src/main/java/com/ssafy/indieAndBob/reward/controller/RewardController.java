@@ -36,7 +36,7 @@ public class RewardController {
 	GameService gameService;
 	private static final Logger logger = LoggerFactory.getLogger(RewardController.class);
 
-	@GetMapping("/reward")
+	@GetMapping("/api/reward")
 	@ApiOperation(value = "모든리워드찾기")
 	public Object selectAllReward() {
 		logger.info("===========selectAllReward==========");
@@ -55,7 +55,7 @@ public class RewardController {
 		return response;
 	}
 
-	@GetMapping("/reward/hj/{rewardId}")
+	@GetMapping("/api/reward/hj/{rewardId}")
 	@ApiOperation(value = "리워드아이디로 리워드찾기")
 	public Object selectRewardById(@PathVariable int rewardId) {
 
@@ -79,7 +79,7 @@ public class RewardController {
 		}
 		return response;
 	}
-	@GetMapping("/rewards/bygameid/{gameId}")
+	@GetMapping("/api/rewards/bygameid/{gameId}")
 	@ApiOperation(value = "게임아이디에 해당하는 리워드 찾기")
 	public Object selectRewardByGameId(@PathVariable int gameId) {
 		logger.info("===========selectRewardByGameId==========");
@@ -100,7 +100,7 @@ public class RewardController {
 	}
 
 
-	@PostMapping("/reward")
+	@PostMapping("/api/reward")
 	@ApiOperation(value = "리워드등록")
 	public Object registerReward(@RequestBody Reward request) {
 		logger.info("===========registerGame==========");
@@ -116,7 +116,7 @@ public class RewardController {
 		}
 		return response;
 	}
-	@PutMapping("/reward")
+	@PutMapping("/api/reward")
 	@ApiOperation(value = "리워드수정")
 	public Object updateRewardByRewardId(@RequestBody Reward reqest) {
 		logger.info("===========updateRewardByRewardId==========");
@@ -133,7 +133,7 @@ public class RewardController {
 		return response;
 	}
 	
-	@DeleteMapping("/reward/{rewardId}")
+	@DeleteMapping("/api/reward/{rewardId}")
 	@ApiOperation(value = "리워드삭제")
 	public Object deleteRewardByRewardId(@PathVariable int rewardId) {
 		logger.info("===========deleteRewardByRewardId==========");
