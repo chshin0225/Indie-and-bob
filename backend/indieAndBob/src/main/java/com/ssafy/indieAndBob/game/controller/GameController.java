@@ -27,6 +27,7 @@ import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
 import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.dto.GameAllLike;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
@@ -318,4 +319,75 @@ public class GameController {
 		return response;
 	}
 	
+	@GetMapping("/api/mostlikegame")
+	@ApiOperation(value = "좋아요가 가장 많은 게임")
+	public Object mostLikeGame() {
+		logger.info("==========mostLikeGame==========");
+		ResponseEntity response = null;
+		List<GameAllLike> games = gservice.mostLikeGame();
+		if (games != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = games;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/api/deadlinegame")
+	@ApiOperation(value = "마감 임박 게임")
+	public Object deadlineGame() {
+		logger.info("==========deadlineGame==========");
+		ResponseEntity response = null;
+		List<GameAll> games = gservice.deadlineGame();
+		if (games != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = games;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/api/mostfundedgame/price")
+	@ApiOperation(value = "마감 임박 게임")
+	public Object mostFundedPriceGame() {
+		logger.info("==========mostFundedPriceGame==========");
+		ResponseEntity response = null;
+		List<GameAll> games = gservice.mostFundedPriceGame();
+		if (games != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = games;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/api/mostfundedgame/percent")
+	@ApiOperation(value = "마감 임박 게임")
+	public Object mostFundedPercentGame() {
+		logger.info("==========mostFundedPercentGame==========");
+		ResponseEntity response = null;
+		List<GameAll> games = gservice.mostFundedPercentGame();
+		if (games != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = games;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
 }

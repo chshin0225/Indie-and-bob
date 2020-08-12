@@ -139,7 +139,7 @@ public class KakaopayController {
 		model.addAttribute("info", info);
 		// model.addAttribute("info",kakaopay.kakaoPayInfo(pg_token));//정보들
 		ResponseEntity response = null;
-	} 
+	}
 	
 	@GetMapping("/api/kakaoPayCancel")
 	@ApiOperation(value = "카카오페이 결제 취소")
