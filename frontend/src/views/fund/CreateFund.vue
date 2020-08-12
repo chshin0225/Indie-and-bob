@@ -176,6 +176,7 @@ export default {
           window.location.href = QRCode
         })
         .catch(err => console.error(err))
+
     },
 
     execDaumPostcode() {

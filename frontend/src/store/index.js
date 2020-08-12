@@ -11,9 +11,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    // admin
-    isAdmin: false,
-
     // user
     jwtToken: cookies.get('user'),
     isUser: false,
@@ -93,6 +90,7 @@ export default new Vuex.Store({
         "jwt-auth-token": state.jwtToken 
       }
     }),
+    isAdmin: state => state.username === 'admin',
 
     // user
     isLoggedIn: state => !!state.jwtToken,
@@ -108,11 +106,6 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    // admin
-    setAdmin(state, val) {
-      state.isAdmin = val
-    },
-
     // user
     setToken(state, val) {
       state.jwtToken = val
@@ -200,11 +193,6 @@ export default new Vuex.Store({
           // 로그인한 유저의 닉네임 저장 
           commit('setUsername', res.data.object.nickname)
 
-          // admin인지 확인
-          if (localStorage.getItem("username") === "admin") {
-            commit('setAdmin', true)
-          }  
-
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
           
@@ -285,7 +273,6 @@ export default new Vuex.Store({
       // local storage에 있는 username 정보 제거
       commit('setUsername', null)
       localStorage.removeItem('username')
-      commit('setAdmin', false)
       
       if (router.currentRoute.name !== 'Home') {
         router.push({ name: 'Home' })
@@ -439,7 +426,19 @@ export default new Vuex.Store({
     // like
     fetchLikedUsers({ commit }, gameId) {
       axios.get(SERVER.BASE + SERVER.LIKEBYGAME + gameId)
-      .then((res) => commit('setLikedUserList', res.data.object))
+      .then((res) => {
+        if (res.data.object.length > 0) {
+          const storageRef = firebase.storage().ref()
+          res.data.object.forEach(item => {
+            if (item.profile !== null) {
+              storageRef.child(item.profile).getDownloadURL()
+                .then(url => item.profile = url)
+                .catch(err => console.error(err))
+            }
+          })
+        }
+        commit('setLikedUserList', res.data.object)
+      })
       .catch((err) => console.error(err));  
     },
 
