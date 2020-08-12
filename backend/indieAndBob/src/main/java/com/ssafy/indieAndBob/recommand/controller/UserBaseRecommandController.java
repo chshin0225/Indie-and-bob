@@ -50,7 +50,8 @@ public class UserBaseRecommandController {
 		String path = UserBaseRecommandController.class.getResource("").getPath();
 		System.out.println(path);
 		
-		File file = new File(path + "recommand.txt");
+//		File file = new File(path + "recommand.txt");
+		File file = new File("src/main/resources/static/recommand.txt");
 		StringBuilder sb = new StringBuilder();
 		List<UserbaseRecommand> list = service.userbaseRecommand();
 		for(UserbaseRecommand recommand : list) {
@@ -66,9 +67,6 @@ public class UserBaseRecommandController {
 		}
 		
 		try{
-	        //파일 객체 생성
-	        File file2 = new File("C:/Users/multicampus/Desktop/dataset.txt");
-	        //입력 스트림 생성
 	        FileReader filereader = new FileReader(file);
 	        int singleCh = 0;
 	        while((singleCh = filereader.read()) != -1){
