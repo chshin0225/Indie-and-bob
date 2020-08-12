@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="game-detail">
     <!-- header 부분 -->
     <div class="header">
       <v-container v-if="projectDataFetched">
@@ -16,10 +16,10 @@
 
             <v-container class="pb-0">
               <v-row>
-                <p> {{ this.fundingProgress }}% 달성</p>
+                <p class="mb-2"> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
-                <p>현재 모금액: {{ project.aim - project.leftPrice }}원</p>
-                <v-progress-linear v-model="fundingProgress"></v-progress-linear>
+                <p class="mb-2">현재 모금액: {{ project.aim - project.leftPrice }}원</p>
+                <v-progress-linear :value="fundingProgress" height="7"></v-progress-linear>
               </v-row>
             </v-container>
 
@@ -48,8 +48,8 @@
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
-                  <v-card outlined>
-                    <Viewer :initialValue='project.content'/>
+                  <v-card flat>
+                    <Viewer class="content-viewer" :initialValue='project.content'/>
                   </v-card>
                 </v-card-text>
               </v-card>
@@ -209,8 +209,8 @@ export default {
   },
 
   computed: {
-    ...mapState(['project', 'isAdmin',]),
-    ...mapGetters(['headersConfig', 'projectDataFetched', 'likedPeopleCount',]),
+    ...mapState(['project', 'username']),
+    ...mapGetters(['headersConfig', 'projectDataFetched', 'likedPeopleCount', 'isAdmin',]),
 
     fundingProgress: function() {
       if (this.project.aim === this.project.leftPrice) {
@@ -336,7 +336,16 @@ export default {
 </script>
 
 <style scoped>
-.header {
+/* .game-detail {
+  font-family: 'Nanum Gothic';
+} */
+
+/* .header {
   background-color: #e4dfda;
-}
+} */
+            
+  
+                  
+            
+            
 </style>
