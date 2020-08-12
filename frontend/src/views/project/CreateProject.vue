@@ -5,10 +5,10 @@
       <v-col class="py-0" sm="10">
         <label for="title">제목</label>
         <v-text-field
-          v-model="title"
+          v-model="name"
           id="extraAddress"
           placeholder="프로젝트 제목을 입력해주세요"
-          type="title"
+          type="name"
           hide-details="true"
           outlined
           required
@@ -43,10 +43,10 @@
           offset-y
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-text-field v-model="date" label="마감날짜" readonly v-bind="attrs" v-on="on"></v-text-field>
+            <v-text-field v-model="deadline" label="마감날짜" readonly v-bind="attrs" v-on="on"></v-text-field>
           </template>
           <v-card>
-            <v-date-picker v-model="date" :min="today" @input="menu2 = false"></v-date-picker>
+            <v-date-picker v-model="deadline" :min="today" @input="menu2 = false"></v-date-picker>
           </v-card>
         </v-menu>
       </v-col>
@@ -79,7 +79,7 @@
         </v-col>
       </v-row>
       <v-row class='justify-center'>
-        <v-btn cols=auto @click="onButtonClick" class="accent" depressed>프로젝트 생성</v-btn>
+        <v-btn cols=auto @click="onButtonClick" :disable="!isSubmit" class="accent" depressed>프로젝트 생성</v-btn>
       </v-row>
      
     </v-row>
@@ -108,8 +108,8 @@ export default {
       thumbnail_upload: false,
       genreId: [],
       today: new Date().toISOString().substr(0, 10),
-      date: new Date().toISOString().substr(0, 10),
-      title: "",
+      deadline: new Date().toISOString().substr(0, 10),
+      name: "",
       menu2: false,
       editorOptions: {
         hideModeSwitch: true,
@@ -117,6 +117,13 @@ export default {
       content: "",
       aim: 0,
       thumbnail: null,
+      error: {
+        name: false,
+        aim: false,
+        genre: false,
+        deadline: false,
+      },
+      isSubmit: false,
     };
   },
   computed: {
@@ -130,8 +137,8 @@ export default {
       })
       let PARAMS = {
         content: null,
-        name: this.title,
-        deadline: this.date,
+        name: this.name,
+        deadline: this.deadline,
         genre: this.genreId,
         aim: this.aim,
         thumbnail: this.thumbnail.name,
@@ -160,17 +167,55 @@ export default {
         })
         .catch((err) => console.error(err));
     },
-    uploadImage() {
-      let fileInfo = document.getElementById("thumbnail").files[0];
-      let reader = new FileReader();
-      reader.onload = function () {
-        this.thumbnailUrl = reader.result;
-      };
-      if (fileInfo) {
-        reader.readAsDataURL(fileInfo);
+    checkForm() {
+      if (this.name.length <= 0) {
+        this.error.name = "프로젝트 이름을 작성해주세요."
+      } else {
+        this.error.name = false
       }
-    },
+
+      if (this.genre.length <= 0) {
+        this.error.genre = "프로젝트의 장르를 선택해주세요."
+      } else {
+        this.error.genre = false
+      }
+
+      if (this.deadline === null) {
+        this.error.deadline = "프로젝트 펀딩 기간을 선택해주세요."
+      } else {
+        this.error.deadline = false
+      }
+
+      if (this.aim <= 0) {
+        this.error.aim = "프로젝트 펀딩 목표를 작성해주세요."
+      } else {
+        this.error.aim = false
+      }
+
+      let isSubmit = true;
+      Object.values(this.error).map((v) => {
+        if (v) isSubmit = false;
+      });
+      this.isSubmit = isSubmit;
+    }
   },
+  watch: {
+    name() {
+      this.checkForm()
+    },
+
+    genre() {
+      this.checkForm()
+    },
+
+    deadline() {
+      this.checkForm()
+    },
+
+    aim() {
+      this.checkForm()
+    }
+  }
 };
 </script>
 
