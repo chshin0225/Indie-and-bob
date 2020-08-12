@@ -6,7 +6,8 @@
         <v-container class="ml-5">
           <v-row>
             <v-avatar size=100 class="mr-5 mr-sm-9">
-              <img :src="profileImage" alt="실패" />
+              <img v-if="profileImage" :src="profileImage" alt="프로필 사진" />
+              <img v-else src="../../assets/default_profile.png" alt="프로필 사진" />
             </v-avatar>
             <v-col>
               <v-row>
@@ -41,22 +42,22 @@
           </v-row>
         </v-container>
       </div>
-      <v-divider></v-divider>
+      <!-- <v-divider></v-divider> -->
 
       <!-- tab menu -->
       <v-card elevation="0">
         <v-tabs vertical>
           <v-tab>
             <i class="fas fa-laptop mr-3"></i>
-            내 프로젝트
+             만든 프로젝트
           </v-tab>
           <v-tab v-if="isSelf">
             <i class="fas fa-money-check-alt mr-3"></i>
-            펀딩한 프로젝트
+            내가 펀딩한 프로젝트
           </v-tab>
           <v-tab>
             <i class="fas fa-edit mr-3"></i>
-            내가 작성한 글
+            작성한 글
           </v-tab>
           <v-tab>
             <i class="fas fa-thumbs-up mr-3"></i>

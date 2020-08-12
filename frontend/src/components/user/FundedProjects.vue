@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-row>
-      <v-col v-for="project in fundedProjectList" :key="project.gameId" cols=6 sm=4>
-        <v-card>
+      <v-col v-for="project in fundedProjectList" :key="project.gameId" cols=6 md=4>
+        <v-card tile class="card">
           <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
               <v-list-item>
                 <v-avatar>
@@ -10,21 +10,22 @@
                   <v-img v-else src="../../assets/default_profile.png"></v-img>
                 </v-avatar>
                 <v-list-item-content class="ml-4">
-                  <v-list-item-title class="headline">{{ project.name }}</v-list-item-title>
+                  <v-list-item-title class="font-weight-bold project-name">{{ project.name }}</v-list-item-title>
                   <router-link class="text-decoration-none" :to="`/user/mypage/${project.nickname}`">{{ project.nickname }}</router-link>
-                  <v-list-item-subtitle>{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
-                  <v-list-item-subtitle>목표액: {{ project.aim }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="d-none d-sm-block">{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{ project.genreName }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-img v-if="project.thumbnail" :src="project.thumbnail" height="194"></v-img>
               <v-img v-else src="../../assets/default_project.png"></v-img>
+              
+              <v-list-item class="py-1 mx-1">
+                <v-row>
+                  <p class="mb-1 ml-1 funding-progress">{{ fundingProgress(project.aim, project.leftPrice) }}% 달성</p>
+                  <v-progress-linear :value="fundingProgress(project.aim, project.leftPrice)" height="7"></v-progress-linear>
+                </v-row>
+              </v-list-item>
           </router-link>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -43,6 +44,7 @@ import SERVER from '../../api/base'
 import axios from 'axios'
 import InfiniteLoading from 'vue-infinite-loading'
 import firebase from 'firebase'
+import _ from 'lodash'
 
 export default {
   name: 'FundedProjects',
@@ -59,7 +61,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['headersConfig',])
+    ...mapGetters(['headersConfig',]),
+
+    fundingProgress() {
+      return (aim, leftPrice) => {
+        if (aim === leftPrice) {
+          return 0
+        } else {
+          return _.round((aim - leftPrice) / aim * 100)
+        }
+      }
+    },
   },
 
   methods: {
@@ -85,6 +97,12 @@ export default {
                   .catch(err => console.error(err))
               }
               this.fundedProjectList.push(item)
+
+              let genres = ''
+              item.genreName.forEach(genre => {
+                genres += genre + ' | '
+              })
+              item.genreName = genres.slice(0, genres.length-2)
             })
             $state.loaded()
           } else {
@@ -99,6 +117,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.project-name {
+  font-size: 18px;
+}
 </style>

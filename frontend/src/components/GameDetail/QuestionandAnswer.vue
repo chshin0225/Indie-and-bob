@@ -23,6 +23,14 @@
               <v-row>
                 <v-col cols=6>
                   <i class="fas fa-lock mr-2" v-if="question.secret"></i>{{ question.title }}
+                      <v-chip
+                        v-if="question.answer"
+                        color="secondary"
+                        x-small
+                        class="black--text ml-1"
+                      >
+                        답변 완료
+                      </v-chip>
                 </v-col>
                 <v-col>
                   <span><router-link :to="`/user/mypage/${question.nickname}`" class="text-decoration-none">{{question.nickname}}</router-link></span>
@@ -110,7 +118,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
         
-        <!-- pagination -->
+        <!-- pagination --> 
         <div class="text-center mt-3">
           <v-pagination
             v-if="questionList.length > 0"
@@ -173,14 +181,17 @@
                   <small class="error-text primary--text" v-if="error.content">{{error.content}}</small>
                 </v-col>
 
-                <v-col class="py-0" cols=12>
-                  <v-checkbox
-                    v-model="questionData.secret"
-                    label="비밀글로 하기"
-                  ></v-checkbox>
-                  <small>비밀글로 하면 문의 내용을 개발자와 나만 볼 수 있습니다.</small>
-                </v-col>
-                
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-col class="py-0" cols="auto" v-bind="attrs" v-on="on">
+                        <v-checkbox
+                          v-model="questionData.secret"
+                          label="비밀글로 하기"
+                        ></v-checkbox>
+                      </v-col>
+                    </template>
+                    <span>비밀글로 하면 문의 내용을 개발자와 나만 볼 수 있습니다.</span>
+                  </v-tooltip>
               </v-row>
               <!-- <p>{{ questionData }}</p> -->
             </v-container>

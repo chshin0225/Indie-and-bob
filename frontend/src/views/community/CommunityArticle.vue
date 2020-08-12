@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="community-article">
 
     <div v-if="articleDataFetched">
       <!-- article header -->
@@ -13,7 +13,7 @@
           </p>
         </v-col>
       </v-row>
-      <hr>
+      <v-divider></v-divider>
 
       <!-- article content -->
       <v-row>
@@ -28,13 +28,13 @@
       <!-- buttons -->
       <v-row v-if="article.nickname === myName">
         <v-col class="d-flex justify-end">
-          <v-btn :to="`/community/edit/${article.communityId}`" class="mr-2" color="accent" text small>수정</v-btn>
-          <v-btn @click="deleteArticle(article.communityId)" color="accent" text small>삭제</v-btn>
+          <v-btn :to="`/community/edit/${article.communityId}`" class="mr-2" color="primary" text>수정</v-btn>
+          <v-btn @click="deleteArticle(article.communityId)" color="primary" text>삭제</v-btn>
         </v-col>
       </v-row>
     </div>
     
-    <hr>
+    <v-divider></v-divider>
 
     <!-- comment section -->
     <v-row class="justify-center">
@@ -160,6 +160,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+/* .community-article {
+  font-family: 'Nanum Gothic';
+} */
 
 </style>
