@@ -127,6 +127,11 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <v-btn @click="finalSubmit()" dark text>프로젝트 최종 제출하기</v-btn>
+        </v-col>
+      </v-row>
     </div>
   </v-container>
 </template>
@@ -273,6 +278,21 @@ export default {
           this.$alert("Wrong input!");
         }
       });
+    },
+    finalSubmit() {
+      this.$prompt(
+        "프로젝트를 제출하고 싶으시다면 '최종제출'을 입력해주세요.",
+        "",
+        "(최종제출 이후에는 프로젝트를 수정할 수 없습니다.)",
+        "정말 최종제출을 하시겠습니까?"
+      ).then((text) => {
+        if (text === "최종제출") {
+          router.push({ name: 'CreateProjectDone'})
+        } else {
+          this.$alert("잘못된 입력입니다.")
+        }
+      })
+
     },
   },
 };

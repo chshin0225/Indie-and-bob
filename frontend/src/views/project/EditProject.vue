@@ -13,6 +13,7 @@
           outlined
           required
         ></v-text-field>
+        <small class="d-block primary--text" v-if="error.name">{{ error.name }}</small>
       </v-col>
     </v-row>
 
@@ -28,7 +29,9 @@
           outlined
           chips
           multiple
+          required
         ></v-select>
+        <small class="d-block primary--text" v-if="error.genre">{{ error.genre }}</small>
       </v-col>
     </v-row>
 
@@ -41,6 +44,7 @@
           id="content"
           initialEditType="wysiwyg"
           previewStyle="vertical"
+          required
         />
       </v-col>
     </v-row>
@@ -54,10 +58,11 @@
           offset-y
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-text-field v-model="deadline" label="마감날짜" readonly v-bind="attrs" v-on="on"></v-text-field>
+            <v-text-field v-model="deadline" label="마감날짜" readonly v-bind="attrs" v-on="on" required></v-text-field>
           </template>
-          <v-date-picker v-model="deadline" @input="menu2 = false"></v-date-picker>
+          <v-date-picker v-model="deadline" :min="today" @input="menu2 = false"></v-date-picker>
         </v-menu>
+        <small class="d-block primary--text" v-if="error.deadline">{{ error.deadline }}</small>
       </v-col>
     </v-row>
     <v-row class="justify-center">
@@ -72,6 +77,7 @@
           outlined
           required
         ></v-text-field>
+        <small class="d-block primary--text" v-if="error.aim">{{ error.aim }}</small>
       </v-col>
     </v-row>
       <v-row class="justify-center">
@@ -94,7 +100,7 @@
         <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
-    <v-btn @click="changeProjectInfo()" class="primary">수정하기</v-btn>
+    <v-btn @click="changeProjectInfo()" :disabled="!isSubmit" class="primary">수정하기</v-btn>
   </v-container>
 </template>
 
@@ -122,6 +128,14 @@ export default {
       menu2: false,
       genre: null,
       genreId: [],
+      isSubmit: false,
+      today: new Date().toISOString().substr(0, 10),
+      error: {
+        name: false,
+        aim: false,
+        deadline: false,
+        genre: false,
+      },
 
       editorOptions: {
         hideModeSwitch: true
@@ -153,12 +167,23 @@ export default {
       firebase.storage().ref(`game/${this.$route.params.id}/content/${this.$route.params.id}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
       if (this.newThumbnail !== null) {
         var extension = this.newThumbnail.name.split('.').reverse()[0];
-        firebase.storage().ref(`game/${this.$route.params.id}/thumbnail/${this.$route.params.id}.${extension}`).put(this.thumbnail)
+        const storageRef = firebase.storage().ref(`game/${this.$route.params.id}/thumbnail/${this.$route.params.id}.${extension}`).put(this.thumbnail)
         PARAMS.thumbnail = `game/${this.$route.params.id}/thumbnail/${this.$route.params.id}.${extension}`
+        storageRef.on(`state_changed`, snapshot => {
+            if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
+              axios.put(SERVER.BASE + SERVER.GAMEEDIT, PARAMS, this.headersConfig)
+              .then(res => {
+                console.log(res)
+                router.push({name: 'ProjectDetail', params:{ id:this.$route.params.id }})
+              })
+              .catch(err => {
+                console.error(err)
+              })
+            }
+          })
       } else {
         PARAMS.thumbnail = this.originalThumbnailURL
-      }
-      axios.put(SERVER.BASE + SERVER.GAMEEDIT, PARAMS, this.headersConfig)
+        axios.put(SERVER.BASE + SERVER.GAMEEDIT, PARAMS, this.headersConfig)
         .then(res => {
           console.log(res)
           router.push({name: 'ProjectDetail', params:{ id:this.$route.params.id }})
@@ -166,6 +191,38 @@ export default {
         .catch(err => {
           console.error(err)
         })
+      }
+    },
+    checkForm() {
+      if (this.name.length <= 0) {
+        this.error.name = "프로젝트 이름을 작성해주세요."
+      } else {
+        this.error.name = false
+      }
+
+      if (this.genre.length <= 0) {
+        this.error.genre = "프로젝트의 장르를 선택해주세요."
+      } else {
+        this.error.genre = false
+      }
+
+      if (this.deadline === null) {
+        this.error.deadline = "프로젝트 펀딩 기간을 선택해주세요."
+      } else {
+        this.error.deadline = false
+      }
+
+      if (this.aim <= 0) {
+        this.error.aim = "프로젝트 펀딩 목표를 작성해주세요."
+      } else {
+        this.error.aim = false
+      }
+
+      let isSubmit = true;
+      Object.values(this.error).map((v) => {
+        if (v) isSubmit = false;
+      });
+      this.isSubmit = isSubmit;
     }
   },
   created() {
@@ -199,8 +256,30 @@ export default {
     newThumbnail() {
       if (this.newThumbnail !== null) {
         this.originalThumbnail = null
+      } else {
+        const storageRef = firebase.storage().ref()
+        storageRef.child(this.originalThumbnailURL).getDownloadURL()
+        .then(url => {
+          this.originalThumbnail = url
+        })
       }
     },
+
+    name() {
+      this.checkForm()
+    },
+
+    genre() {
+      this.checkForm()
+    },
+
+    deadline() {
+      this.checkForm()
+    },
+
+    aim() {
+      this.checkForm()
+    }
   },
 }
 </script>
