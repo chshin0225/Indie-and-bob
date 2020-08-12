@@ -28,4 +28,5 @@ public interface GameService {
 	int fundingGame(Funding funding);
 	List<GameAll> selectMadeGameByNickname(MyGameSearch search);
 	List<GameAllLike> mostLikeGame();
+	List<GameAll> deadlineGame();
 }

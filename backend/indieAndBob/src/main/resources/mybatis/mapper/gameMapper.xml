@@ -87,4 +87,10 @@
 		order by count desc
     </select>
     
+    <select id="deadlineGame" resultType="gameall">
+    	select g.*, u.profile from game g left outer join user u using(nickname)
+		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
+		order by deadline
+    </select>
+    
 </mapper>

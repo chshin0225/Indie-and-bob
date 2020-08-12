@@ -134,5 +134,15 @@ public class GameServiceImpl implements GameService{
 		return games;
 	}
 
+	@Override
+	public List<GameAll> deadlineGame() {
+		List<GameAll> games = gamedao.deadlineGame();
+		for(GameAll game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
+	}
+
 	
 }

@@ -32,5 +32,5 @@ public interface GameDao {
 	List<GameAll> selectMadeGameByNickname(MyGameSearch search);
 	int deleteGameGenre(int gameId);
 	List<GameAllLike> mostLikeGame();
-	
+	List<GameAll> deadlineGame();
 }
