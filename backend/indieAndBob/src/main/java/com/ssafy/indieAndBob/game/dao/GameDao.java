@@ -33,4 +33,6 @@ public interface GameDao {
 	int deleteGameGenre(int gameId);
 	List<GameAllLike> mostLikeGame();
 	List<GameAll> deadlineGame();
+	List<GameAll> mostFundedPriceGame();
+	List<GameAll> mostFundedPercentGame();
 }

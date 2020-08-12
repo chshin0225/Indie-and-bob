@@ -354,4 +354,40 @@ public class GameController {
 		}
 		return response;
 	}
+	
+	@GetMapping("/api/mostfundedgame/price")
+	@ApiOperation(value = "마감 임박 게임")
+	public Object mostFundedPriceGame() {
+		logger.info("==========mostFundedPriceGame==========");
+		ResponseEntity response = null;
+		List<GameAll> games = gservice.mostFundedPriceGame();
+		if (games != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = games;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/api/mostfundedgame/percent")
+	@ApiOperation(value = "마감 임박 게임")
+	public Object mostFundedPercentGame() {
+		logger.info("==========mostFundedPercentGame==========");
+		ResponseEntity response = null;
+		List<GameAll> games = gservice.mostFundedPercentGame();
+		if (games != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = games;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
 }

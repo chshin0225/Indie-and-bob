@@ -93,4 +93,16 @@
 		order by deadline
     </select>
     
+    <select id="mostFundedPriceGame" resultType="gameall">
+    	select * from game
+		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
+		order by aim-left_price desc
+    </select>
+    
+    <select id="mostFundedPercentGame" resultType="gameall">
+    	select * from game
+		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
+		order by (aim-left_price)/aim desc;
+    </select>
+    
 </mapper>

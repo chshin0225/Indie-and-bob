@@ -144,5 +144,25 @@ public class GameServiceImpl implements GameService{
 		return games;
 	}
 
+	@Override
+	public List<GameAll> mostFundedPriceGame() {
+		List<GameAll> games = gamedao.mostFundedPriceGame();
+		for(GameAll game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
+	}
+
+	@Override
+	public List<GameAll> mostFundedPercentGame() {
+		List<GameAll> games = gamedao.mostFundedPercentGame();
+		for(GameAll game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
+	}
+
 	
 }
