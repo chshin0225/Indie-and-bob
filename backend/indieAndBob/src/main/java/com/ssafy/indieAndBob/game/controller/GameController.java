@@ -27,6 +27,7 @@ import com.ssafy.indieAndBob.game.dto.GameDetail;
 import com.ssafy.indieAndBob.game.dto.GameLike;
 import com.ssafy.indieAndBob.game.dto.MyGameSearch;
 import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.dto.GameAllLike;
 import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.response.dto.BasicResponse;
@@ -318,4 +319,21 @@ public class GameController {
 		return response;
 	}
 	
+	@GetMapping("/api/mostlikegame")
+	@ApiOperation(value = "좋아요가 가장 많은 게임")
+	public Object mostLikeGame() {
+		logger.info("==========mostLikeGame==========");
+		ResponseEntity response = null;
+		List<GameAllLike> games = gservice.mostLikeGame();
+		if (games != null) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = games;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
 }

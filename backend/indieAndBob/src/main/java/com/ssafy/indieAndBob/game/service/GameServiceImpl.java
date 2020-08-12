@@ -126,8 +126,12 @@ public class GameServiceImpl implements GameService{
 
 	@Override
 	public List<GameAllLike> mostLikeGame() {
-		// TODO Auto-generated method stub
-		return null;
+		List<GameAllLike> games = gamedao.mostLikeGame();
+		for(GameAllLike game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
 	}
 
 	
