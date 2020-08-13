@@ -8,7 +8,7 @@
 
         <!-- 로고 -->
         <v-toolbar-title class="pl-1 pt-4">
-          <router-link to="/home" class="white--text text-decoration-none">
+          <router-link :to="{ name: 'Home' }" class="white--text text-decoration-none">
             <v-img src="./assets/logo_horizontal2.png" max-width="170px"></v-img>
           </router-link>
         </v-toolbar-title>
@@ -64,7 +64,7 @@
         <!-- 네비게이션 -->
         <v-list nav dense>
           <v-list-item-group active-class="primary--text">
-            <v-list-item class="px-3" to="/home">
+            <v-list-item class="px-3" to="/">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-home fa-lg grey--text text--darken-2"></i>

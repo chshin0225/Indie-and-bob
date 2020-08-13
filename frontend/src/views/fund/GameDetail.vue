@@ -51,7 +51,7 @@
       <v-container v-if="projectDataFetched">
         <v-row class="d-flex flex-column-reverse flex-sm-row">
           <!-- 프로젝트 정보 -->
-          <v-col cols="12" sm="6">
+          <v-col cols="12" sm="6"> 
             <h1 class="mb-4 my-sm-4">{{ project.name }}</h1>
             <!-- <p>{{ rewards }}</p> -->
             <!-- <p>{{ project }}</p> -->
@@ -89,6 +89,7 @@
             <v-tab>소개</v-tab>
             <v-tab>Q&A</v-tab>
             <v-tab>응원하기</v-tab>
+            <v-tab v-if="isDeveloper">프로젝트 관리</v-tab>
 
             <!-- 프로젝트 소개 -->
             <v-tab-item>
@@ -109,6 +110,11 @@
             <!-- 응원하기 -->
             <v-tab-item>
               <GameCommunity />
+            </v-tab-item>
+
+            <!-- 프로젝트 관리 -->
+            <v-tab-item v-if="isDeveloper">
+              <GameSettings />
             </v-tab-item>
           </v-tabs>
         </v-col>
@@ -216,6 +222,7 @@ import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 import GameCommunity from "../../components/GameDetail/GameCommunity.vue";
 import QuestionandAnswer from "../../components/GameDetail/QuestionandAnswer.vue";
 import GameLike from "../../components/GameDetail/GameLike.vue";
+import GameSettings from "../../components/GameDetail/GameSettings.vue"
 
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
@@ -229,6 +236,7 @@ export default {
     GameCommunity,
     QuestionandAnswer,
     GameLike,
+    GameSettings,
     Viewer,
   },
 
@@ -274,6 +282,10 @@ export default {
       } else {
         return 0
       }
+    },
+
+    isDeveloper: function() {
+      return this.project.nickname === localStorage.getItem("username");
     },
 
   },
