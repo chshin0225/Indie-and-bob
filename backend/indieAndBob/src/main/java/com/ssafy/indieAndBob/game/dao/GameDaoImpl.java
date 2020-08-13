@@ -89,7 +89,7 @@ public class GameDaoImpl implements GameDao{
 	}
 
 	@Override
-	public List<Game> selectAllGameAdmin(int page) {
+	public List<GameAll> selectAllGameAdmin(int page) {
 		return temp.selectList(ns + "selectAllGameAdmin", page);
 	}
 
@@ -136,6 +136,11 @@ public class GameDaoImpl implements GameDao{
 	@Override
 	public List<GameAll> mostFundedPercentGame() {
 		return temp.selectList(ns + "mostFundedPercentGame");
+	}
+
+	@Override
+	public int gameSubmit(int gameId) {
+		return temp.update(ns + "gameSubmit", gameId);
 	}
 	
 }
