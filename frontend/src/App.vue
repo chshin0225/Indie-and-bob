@@ -138,6 +138,7 @@ import { mapActions, mapGetters } from "vuex"
 import axios from 'axios'
 import SERVER from './api/base'
 import firebase from 'firebase'
+import router from './router'
 
 export default {
   name: "app",
@@ -178,7 +179,7 @@ export default {
     },
 
     sendSearch(searchKeyword) {
-      this.search(searchKeyword)
+      router.push({name:"SearchResult", params: {keyword: searchKeyword}})
       this.searchKeyword = ''
     },
   },

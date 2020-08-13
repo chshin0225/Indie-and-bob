@@ -514,23 +514,27 @@ export default new Vuex.Store({
             .then(url => {
               item.thumbnail = url
             })
-            .catch(err => console.error(err))
+            .catch(() => item.thumbnail = null)
            }
            if (item.profile !== null) {
             storageRef.child(item.profile).getDownloadURL()
             .then(url => {
               item.profile = url
             })
-            .catch(err => console.error(err))
+            .catch(() => item.profile = null)
            }
+           let genres = ''
+           item.genreName.forEach(genre => {
+             genres += genre + ' | '
+           })
+           item.genreName = genres.slice(0, genres.length-2)
           })
         }
         commit('setSearchUser', res.data.object.user)
         commit('setSearchGame', res.data.object.game)
         commit('setSearchCommunity', res.data.object.community)
-        router.push(`/search/${searchKeyword}`)
+        router.push(`/search/${searchKeyword}`).catch(()=>{})
       })
-      .catch(err => console.error(err))
     },  
   },
   modules: {
