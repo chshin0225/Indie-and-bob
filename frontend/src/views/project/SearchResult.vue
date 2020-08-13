@@ -10,7 +10,7 @@
         <v-card flat>
           <v-card-text>통합검색 부분입니다.</v-card-text>
           <!-- <p>{{ searchResult }}</p> -->
-          <v-list v-if="searchUser.length > 0">
+          <v-list v-if="searchUser!==null && searchUser.length > 0">
             <v-list-item
               v-for="user in searchUser"
               :key="user.nickname"
@@ -29,7 +29,7 @@
             <p class="text-center">유저 결과없음</p>
           </div>
           <br>
-          <v-row v-if="searchGame.length>0">
+          <v-row v-if="searchGame!==null && searchGame.length>0">
           <v-col v-for="game in searchGame" :key="game.gameId" cols=6 md=4>
             <v-card tile class="card">
               <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
@@ -62,7 +62,7 @@
           <p class="text-center">프로젝트 결과없음</p>
         </div>
         <br>
-        <v-row v-if="searchCommunity.length>0" class="justify-center">
+        <v-row v-if="searchCommunity!==null && searchCommunity.length>0" class="justify-center">
           <v-col class="py-0" cols=10 v-for="article in searchCommunity" :key="article.communityId">
             <v-card class="mx-auto" :to="`/community/${article.communityId}`" flat>
               <v-list-item>
@@ -84,7 +84,7 @@
       <v-tab-item>
         <v-card flat outlined>
           <v-card-text>게임 / 프로젝트 부분입니다.</v-card-text>
-          <v-row v-if="searchGame.length>0">
+          <v-row v-if="searchGame!==null && searchGame.length>0">
           <v-col v-for="game in searchGame" :key="game.gameId" cols=6 md=4>
             <v-card tile class="card">
               <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
@@ -122,7 +122,7 @@
       <v-tab-item>
         <v-card flat outlined>
           <v-card-text>유저 부분입니다.</v-card-text>
-          <v-list v-if="searchUser.length > 0">
+          <v-list v-if="searchUser!==null && searchUser.length > 0">
             <v-list-item
               v-for="user in searchUser"
               :key="user.nickname"
@@ -146,7 +146,7 @@
       <v-tab-item>
         <v-card flat outlined>
           <v-card-text>커뮤니티 부분입니다.</v-card-text>
-          <v-row v-if="searchCommunity.length>0" class="justify-center">
+          <v-row v-if="searchCommunity!==null && searchCommunity.length>0" class="justify-center">
             <v-col class="py-0" cols=10 v-for="article in searchCommunity" :key="article.communityId">
               <v-card class="mx-auto" :to="`/community/${article.communityId}`" flat>
                 <v-list-item>
@@ -178,7 +178,7 @@ export default {
   data() {
     return {
       tab: null,
-      tabs: 4
+      tabs: 4,
     };
   },
 
@@ -198,6 +198,12 @@ export default {
 
   methods: {
     ...mapActions(['search']),
+  },
+
+  watch: {
+    '$route.params.keyword': function() {
+      this.search(this.$route.params.keyword)
+    },
   },
 
   created() {
