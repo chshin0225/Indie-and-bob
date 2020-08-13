@@ -84,25 +84,25 @@
     	select ga.*, u.profile from (select g.*, count(*) count from game_like left outer join game g using(game_id) 
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day) 
 		group by game_id) ga left outer join user u using(nickname)
-		order by count desc
+		order by count desc limit 5
     </select>
     
     <select id="deadlineGame" resultType="gameall">
     	select g.*, u.profile from game g left outer join user u using(nickname)
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
-		order by deadline
+		order by deadline limit 5
     </select>
     
     <select id="mostFundedPriceGame" resultType="gameall">
     	select * from game
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
-		order by aim-left_price desc
+		order by aim-left_price desc limit 5
     </select>
     
     <select id="mostFundedPercentGame" resultType="gameall">
     	select * from game
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
-		order by (aim-left_price)/aim desc;
+		order by (aim-left_price)/aim desc limit 5
     </select>
     
 </mapper>
