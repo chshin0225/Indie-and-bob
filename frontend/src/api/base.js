@@ -53,7 +53,7 @@ export default {
     'COMMUNITYCOMMENT': '/community/comment',
     
     // search
-    'SEARCH': "/user/search?keyword=",
+    'SEARCH': "/search?keyword=",
 }
 
 
