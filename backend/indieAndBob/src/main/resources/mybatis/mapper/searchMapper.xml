@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.indieAndBob.mapper.search">
+	
+	<select id="searchUser" parameterType="String" resultType="user">
+   	  	select * from user where nickname like CONCAT('%', #{keyword}, '%')
+   	</select>
+   	
+   	<select id="searchGame" parameterType="String" resultType="gameall">
+   	  	select g.*, u.profile from game g left outer join user u using(nickname) where g.name like CONCAT('%', #{keyword}, '%')
+   	</select>
+   	
+   	<select id="searchCommunity" parameterType="String" resultType="community">
+   	  	select * from community where title like CONCAT('%', #{keyword}, '%')
+   	</select>
+   
+</mapper>
