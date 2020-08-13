@@ -122,5 +122,20 @@ public class GameDaoImpl implements GameDao{
 	public List<GameAllLike> mostLikeGame() {
 		return temp.selectList(ns + "mostLikeGame");
 	}
+
+	@Override
+	public List<GameAll> deadlineGame() {
+		return temp.selectList(ns + "deadlineGame");
+	}
+
+	@Override
+	public List<GameAll> mostFundedPriceGame() {
+		return temp.selectList(ns + "mostFundedPriceGame");
+	}
+
+	@Override
+	public List<GameAll> mostFundedPercentGame() {
+		return temp.selectList(ns + "mostFundedPercentGame");
+	}
 	
 }

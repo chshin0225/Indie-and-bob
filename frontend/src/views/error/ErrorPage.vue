@@ -17,6 +17,8 @@ import router from "../../router"
 import { mapState } from 'vuex'
 
 export default {
+    name: 'ErrorPage',
+    
     methods: {
         goBack () {
             router.go('-1')
