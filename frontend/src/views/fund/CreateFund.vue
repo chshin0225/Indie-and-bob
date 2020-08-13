@@ -7,7 +7,7 @@
       <v-row class="justify-center">
         <v-col sm=8 class="py-0"> 
           <h2 class="pb-1">리워드 정보</h2>
-          <v-card class="mx-auto" outlined>
+          <v-card class="mx-auto" outlined tile>
             <div class="overline px-4 pt-3">{{ rewardData.game.name }}</div>
             <v-card-title class="headline pt-1">{{ rewardData.reward.rewardName }}</v-card-title>
             <v-card-text>{{ rewardData.reward.content }}</v-card-text>
