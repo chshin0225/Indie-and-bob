@@ -12,7 +12,7 @@
    	    select g.*, u.profile from game g left outer join user u using(nickname)
    	    where is_approve=1 and is_end=false order by game_id desc limit #{page},10
     </select>
-    <select id="selectAllGameAdmin" parameterType="int" resultType="game">
+    <select id="selectAllGameAdmin" parameterType="int" resultType="gameall">
     	select g.*, u.profile from game g left outer join user u using(nickname) where is_approve=0 and is_end=false limit #{page},10;
     </select>
     <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameall">
