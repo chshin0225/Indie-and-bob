@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex"
+import { mapActions, mapGetters } from "vuex"
 import axios from 'axios'
 import SERVER from './api/base'
 import firebase from 'firebase'
@@ -186,7 +186,6 @@ export default {
 
   computed: {
     ...mapGetters(['isLoggedIn']),
-    ...mapState(['message', 'items']),
     dataFetched: function() {
       return !!this.userInfo
     },

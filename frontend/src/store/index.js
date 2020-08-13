@@ -80,7 +80,9 @@ export default new Vuex.Store({
     errorDetail: null,
 
     // search
-    searchResult: null,
+    searchUser: null,
+    searchGame: null,
+    searchCommunity: null,
   },
 
   getters: {
@@ -171,8 +173,16 @@ export default new Vuex.Store({
     },
 
     // search
-    setSearchResult(state, val) {
-      state.searchResult = val
+    setSearchUser(state, val) {
+      state.searchUser = val
+    },
+
+    setSearchGame(state, val) {
+      state.searchGame = val
+    },
+
+    setSearchCommunity(state, val) {
+      state.searchCommunity = val
     },
 
     // error
@@ -481,9 +491,43 @@ export default new Vuex.Store({
 
     // search
     search({ commit }, searchKeyword) {
+      // user
       axios.get(SERVER.BASE + SERVER.SEARCH + `${searchKeyword}`)
       .then(res => {
-        commit('setSearchResult', res.data.object)
+        const storageRef = firebase.storage().ref()
+        if (res.data.object.user.length > 0){
+          res.data.object.user.forEach(item => {
+            if (item.profile !== null) {
+            storageRef.child(item.profile).getDownloadURL()
+            .then(url => {
+              item.profile = url
+            })
+            .catch(err => console.error(err))
+           }
+          })
+        }
+
+        if (res.data.object.game.length > 0){
+          res.data.object.game.forEach(item => {
+            if (item.thumbnail !== null) {
+            storageRef.child(item.thumbnail).getDownloadURL()
+            .then(url => {
+              item.thumbnail = url
+            })
+            .catch(err => console.error(err))
+           }
+           if (item.profile !== null) {
+            storageRef.child(item.profile).getDownloadURL()
+            .then(url => {
+              item.profile = url
+            })
+            .catch(err => console.error(err))
+           }
+          })
+        }
+        commit('setSearchUser', res.data.object.user)
+        commit('setSearchGame', res.data.object.game)
+        commit('setSearchCommunity', res.data.object.community)
         router.push(`/search/${searchKeyword}`)
       })
       .catch(err => console.error(err))
