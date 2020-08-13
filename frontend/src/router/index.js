@@ -48,7 +48,7 @@ Vue.use(VueRouter)
 const routes = [
   // home
     {
-      path: '/home',
+      path: '/',
       name: 'Home',
       component: Home,
       meta: {
@@ -68,7 +68,7 @@ const routes = [
 
   // user
   {
-    path: '/',
+    path: '/login',
     name: 'Login',
     component: Login,
     meta: {
@@ -277,8 +277,6 @@ router.beforeEach((to, from, next) => {
   const adminPages = [
     'NewProjectRequest',
   ]
-
-  console.log('to', to.name)
 
   const authRequired = !PublicPages.includes(to.name)
   const unauthRequired = authPages.includes(to.name)

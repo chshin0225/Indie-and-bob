@@ -1,6 +1,15 @@
 export default {
     'BASE': "http://localhost:8080/api",
 
+    // home
+    'MOSTLIKED': '/mostlikegame',
+    'ALMOSTFINISHED': '/deadlinegame',
+    'MOSTFUNDED': '/mostfundedgame/price',
+    'HIGHESTPERCENT': '/mostfundedgame/percent',
+
+    // recommedations
+    'GENREBASEDRECOMMENDATION': '/recommand/genrebase',
+
     // user
     'LOGIN': "/account/login",
     'SIGNUP': "/account/signup",
