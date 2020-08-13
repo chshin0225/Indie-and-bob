@@ -53,7 +53,7 @@
           <router-link :to="`/user/mypage/${ userInfo.nickname }`" class="text-decoration-none black--text" v-if="isLoggedIn && dataFetched">
             <div class="pa-2 d-flex">
               <v-avatar>
-                <v-img v-if="profileURL!==null" :src="profileURL" :alt="userInfo.nickname"></v-img>
+                <v-img v-if="userInfo.profile" :src="userInfo.profile" :alt="userInfo.nickname"></v-img>
                 <v-img v-else src="./assets/default_profile.png" :alt="userInfo.nickname"></v-img>
               </v-avatar>
               <h3 class="ml-4 align-self-center">{{ userInfo.nickname }}</h3>
@@ -100,6 +100,15 @@
               </v-row>
             </v-list-item>
 
+            <v-list-item class="px-3" to="/newrequest" v-if="isLoggedIn && isAdmin">
+              <v-row>
+                <v-col cols="3">
+                  <i class="fas fa-clipboard-check fa-lg ml-1 grey--text text--darken-2"></i>
+                </v-col>
+                <v-col class="font-weight-regular">프로젝트 심사</v-col>
+              </v-row>
+            </v-list-item>
+
           </v-list-item-group>
         </v-list>
 
@@ -140,7 +149,6 @@ export default {
       searchKeyword: '',
       closeOnClick: true,
       currentUser: localStorage.getItem('username'),
-      profileURL: null,
     };
   },
   
@@ -152,7 +160,19 @@ export default {
       if (this.isLoggedIn) {
         let username = localStorage.getItem('username')
         axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
-          .then(res => this.userInfo = res.data.object)
+          .then(res => {
+            this.userInfo = res.data.object
+            if (this.userInfo !== null) {
+              const storageRef = firebase.storage().ref()
+              if (this.userInfo.profile !== null) {
+                storageRef.child(this.userInfo.profile).getDownloadURL()
+                  .then(url => {
+                    this.userInfo.profile = url
+                  })
+                  .catch(err => console.error(err))
+              }
+            }
+          })
           .catch(err => console.error(err))
       }
     },
@@ -171,21 +191,10 @@ export default {
     $route: function() {
       this.getUserInfo()
     },  
-
-    userInfo() {
-      if (this.userInfo !== null) {
-        const storageRef = firebase.storage().ref()
-        if (this.userInfo.profile !== null) {
-          storageRef.child(this.userInfo.profile).getDownloadURL().then(url => {
-          this.profileURL = url
-          })
-        }
-      }
-    }
   },
 
   computed: {
-    ...mapGetters(['isLoggedIn']),
+    ...mapGetters(['isLoggedIn', 'isAdmin',]),
     ...mapState(['message', 'items']),
     dataFetched: function() {
       return !!this.userInfo

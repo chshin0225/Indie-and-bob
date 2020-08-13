@@ -1,5 +1,51 @@
 <template>
   <div class="game-detail">
+    <!-- admin -->
+    <v-alert 
+      color="secondary" 
+      elevation="2"
+      tile 
+      class="mb-0" 
+      v-if="isAdmin && project.isApprove === 0"
+    >
+      <v-row>
+        <span class="text-h5 mx-4 mt-1">프로젝트 심사</span>
+        <v-spacer></v-spacer>
+        <v-btn cols="auto" @click="approve" class="mr-3" color="primary" depressed>승인</v-btn>
+        
+        <!-- 거절 및 거절 사유 -->
+        <v-menu offset-y nudge-bottom="5px" :close-on-content-click="false">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn 
+              cols="auto" 
+              class="mr-3" 
+              color="accent" 
+              depressed
+              v-bind="attrs"
+              v-on="on"
+            >
+              거절
+            </v-btn>
+          </template>
+          <v-card width="500px">
+            <v-card-title>거절 사유</v-card-title>
+            <v-card-text>
+              <v-text-field
+                label="거절 사유"
+                v-model="reasonOfRejection"
+                hide-details="true"
+              ></v-text-field>
+              <small v-if="error" class="primary--text">{{ error }}</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn @click="disapprove" color="primary" depressed>거절</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+      </v-row>
+    </v-alert>
+
     <!-- header 부분 -->
     <div class="header">
       <v-container v-if="projectDataFetched">
@@ -156,14 +202,6 @@
           </v-card>
         </v-col>
       </v-row>
-
- 
-      <!-- admin -->
-      <div v-if="isAdmin && project.isApprove === 0">
-        <v-btn cols="auto" @click="approve" class="mr-3" color="accent" depressed>승인</v-btn>
-        <v-btn cols="auto" @click="disapprove" class="mr-3" color="accent" depressed>거절</v-btn>
-      </div>  
-
     </v-container>
 
   </div>
@@ -205,6 +243,9 @@ export default {
 
       genres: '',
       rewards: [],
+
+      reasonOfRejection: null,
+      error: false,
     };
   },
 
@@ -306,23 +347,27 @@ export default {
         gameId: this.$route.params.id,
         isApprove: 1,
       })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           router.push({ name: "GameMain" });
         })
         .catch((err) => console.error(err));
     },
 
     disapprove() {
-      axios.put(SERVER.BASE + SERVER.APPROVE, {
-        gameId: this.$route.params.id,
-        isApprove: -1,
-      })
-        .then((res) => {
-          console.log(res);
-          router.push({ name: "GameMain" });
+      if (this.reasonOfRejection) {
+        axios.put(SERVER.BASE + SERVER.APPROVE, {
+          gameId: this.$route.params.id,
+          isApprove: -1,
+          // reasonOfRejection
         })
-        .catch((err) => console.error(err));
+          .then((res) => {
+            console.log(res);
+            router.push({ name: "GameMain" });
+          })
+          .catch((err) => console.error(err)); 
+      } else {
+        this.error = '거절사유를 써주세요'
+      }
     },
   },
 
@@ -335,17 +380,5 @@ export default {
 };
 </script>
 
-<style scoped>
-/* .game-detail {
-  font-family: 'Nanum Gothic';
-} */
-
-/* .header {
-  background-color: #e4dfda;
-} */
-            
-  
-                  
-            
-            
+<style scoped>      
 </style>
