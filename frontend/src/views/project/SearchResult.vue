@@ -121,29 +121,7 @@
 
       <v-tab-item>
         <v-card flat outlined>
-          <v-card-text>커뮤니티 부분입니다.</v-card-text>
-          <v-row v-if="searchCommunity.length>0" class="justify-center">
-          <v-col class="py-0" cols=10 v-for="article in searchCommunity" :key="article.communityId">
-            <v-card class="mx-auto" :to="`/community/${article.communityId}`" flat>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title class="headline mb-1">{{ article.title }}</v-list-item-title>
-                  <v-list-item-subtitle class="pa-0 col-10">{{ $moment(article.updatedAt).format('YYYY.MM.DD hh:mm') }} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span></v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-card>
-            <v-divider></v-divider>
-          </v-col>
-        </v-row>
-        <div v-else class="mt-5">
-          <p class="text-center">게시글 결과없음</p>
-        </div>
-        </v-card>
-      </v-tab-item>
-
-      <v-tab-item>
-        <v-card flat outlined>
-          <v-card-text>유저검색 부분입니다.</v-card-text>
+          <v-card-text>유저 부분입니다.</v-card-text>
           <v-list v-if="searchUser.length > 0">
             <v-list-item
               v-for="user in searchUser"
@@ -164,12 +142,35 @@
           </div>
         </v-card>
       </v-tab-item>
+
+      <v-tab-item>
+        <v-card flat outlined>
+          <v-card-text>커뮤니티 부분입니다.</v-card-text>
+          <v-row v-if="searchCommunity.length>0" class="justify-center">
+            <v-col class="py-0" cols=10 v-for="article in searchCommunity" :key="article.communityId">
+              <v-card class="mx-auto" :to="`/community/${article.communityId}`" flat>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title class="headline mb-1">{{ article.title }}</v-list-item-title>
+                    <v-list-item-subtitle class="pa-0 col-10">{{ $moment(article.updatedAt).format('YYYY.MM.DD hh:mm') }} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span></v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-card>
+              <v-divider></v-divider>
+            </v-col>
+          </v-row>
+          <div v-else class="mt-5">
+            <p class="text-center">게시글 결과없음</p>
+          </div>
+        </v-card>
+      </v-tab-item>
     </v-tabs>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
+import _ from 'lodash'
 
 export default {
   name: "SearchResult",
@@ -182,7 +183,25 @@ export default {
   },
 
   computed: {
-    ...mapState(["searchUser", "searchGame", "searchCommunity"])
+    ...mapState(["searchUser", "searchGame", "searchCommunity"]),
+    
+    fundingProgress() {
+      return (aim, leftPrice) => {
+        if (aim === leftPrice) {
+          return 0
+        } else {
+          return _.round((aim - leftPrice) / aim * 100)
+        }
+      }
+    },
+  },
+
+  methods: {
+    ...mapActions(['search']),
+  },
+
+  created() {
+    this.search(this.$route.params.keyword)
   }
 };
 </script>
