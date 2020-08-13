@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="text-center">Signup</h1>
+    <h1 class="text-center">회원가입</h1>
 
     <!-- id -->
     <v-row class="justify-center my-4">

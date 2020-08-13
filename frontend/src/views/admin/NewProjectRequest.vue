@@ -25,8 +25,7 @@
               
               <v-list-item class="py-1 mx-1">
                 <v-row>
-                  <p class="mb-1 ml-1 funding-progress">{{ fundingProgress(game.aim, game.leftPrice) }}% 달성</p>
-                  <v-progress-linear :value="fundingProgress(game.aim, game.leftPrice)" height="7"></v-progress-linear>
+                  <p class="mb-0 ml-1 funding-progress">목표 금액: {{ game.aim }}원</p>
                 </v-row>
               </v-list-item>
           </router-link>
@@ -47,8 +46,7 @@ import { mapGetters } from "vuex";
 import axios from "axios";
 import SERVER from "../../api/base";
 import InfiniteLoading from "vue-infinite-loading";
-// import firebase from 'firebase'
-import _ from 'lodash'
+import firebase from 'firebase'
 
 export default {
   name: 'NewProjectRequest',
@@ -66,46 +64,34 @@ export default {
 
   computed: {
     ...mapGetters(["headersConfig"]),
-
-    fundingProgress() {
-      return (aim, leftPrice) => {
-        if (aim === leftPrice) {
-          return 0
-        } else {
-          return _.round((aim - leftPrice) / aim * 100)
-        }
-      }
-    },
   },
 
   methods: {
     infiniteHandler($state) {
-      // const storageRef = firebase.storage().ref()
+      const storageRef = firebase.storage().ref()
       axios.get(SERVER.BASE + SERVER.UNAPPROVED + this.gameNum + "/", this.headersConfig)
         .then((res) => {
-          console.log(res.data.object)
           if (res.data.object.length > 0) {
             this.gameNum += 10;
             // console.log(res.data);
             res.data.object.forEach(item => {
-              console.log(item)
-              // if (item.profile !== null) {
-              //   storageRef.child(item.profile).getDownloadURL().then(url => {
-              //     item.profile = url
-              //   })
-              // }
-              // if (item.thumbnail !== null) {
-              //   storageRef.child(item.thumbnail).getDownloadURL().then(url => {
-              //     item.thumbnail = url
-              //   })
-              // } 
-              // this.games.push(item);
+              if (item.profile !== null) {
+                storageRef.child(item.profile).getDownloadURL().then(url => {
+                  item.profile = url
+                })
+              }
+              if (item.thumbnail !== null) {
+                storageRef.child(item.thumbnail).getDownloadURL().then(url => {
+                  item.thumbnail = url
+                })
+              } 
+              this.games.push(item);
               
-              // let genres = ''
-              // item.genreName.forEach(genre => {
-              //   genres += genre + ' | '
-              // })
-              // item.genreName = genres.slice(0, genres.length-2)
+              let genres = ''
+              item.genreName.forEach(genre => {
+                genres += genre + ' | '
+              })
+              item.genreName = genres.slice(0, genres.length-2)
             });
             $state.loaded();
           } else {
