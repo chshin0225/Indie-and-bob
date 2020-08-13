@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.indieAndBob.mapper.genrebaseRecommand">
+
+	<select id="genrebaseRecommand" parameterType = "String" resultType="GenrebaseRecommand">		
+		select 
+			gameinfo.game_id,
+			gameinfo.name,
+	    	gameinfo.deadline,
+		    gameinfo.aim,
+    		gameinfo.left_price,
+		    gameinfo.is_end,
+    		gameinfo.is_approve,
+	    	gameinfo.thumbnail,
+	    	gameinfo.created_at,
+		    gameinfo.updated_at,
+    		gameinfo.started_at,
+    		gameinfo.cnt,
+		    user.nickname,
+    		user.profile
+		from
+			(select 
+				game.game_id game_id,
+				game.name name,
+	    	    game.deadline deadline,
+    	    	game.aim aim,
+	    	    game.left_price left_price,
+    	    	game.is_end is_end,
+	        	game.is_approve is_approve,
+		        game.nickname nickname,
+    		    game.thumbnail thumbnail,
+        		game.created_at created_at,
+		        game.updated_at updated_at,
+    		    game.started_at started_at,
+    		    game_lank.cnt cnt
+			from	
+				(select same_genre.game_id, count(game_like.nickname) cnt
+				from
+					(select distinct game_genre.game_id
+					from 
+						indie.game_genre,
+						indie.user_genre
+					where
+						user_genre.nickname =#{nickname} and
+						game_genre.genre_id = user_genre.genre_id)same_genre
+				left outer join indie.game_like
+				on
+					same_genre.game_id = game_like.game_id
+					group by same_genre.game_id
+					order by cnt desc
+					limit 5)game_lank
+			left outer join indie.game
+			on 
+				game.game_id = game_lank.game_id) as gameinfo
+			    left outer join indie.user
+		on
+			gameinfo.nickname = user.nickname
+		order by gameinfo.cnt desc;
+	</select>
+</mapper>

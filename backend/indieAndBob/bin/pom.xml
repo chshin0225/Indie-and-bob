@@ -112,14 +112,31 @@
 			<artifactId>firebase-admin</artifactId>
 			<version>6.11.0</version>
 		</dependency>
-		
-		
+
+
 		<!-- email 전송 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 			<version>1.4.3.RELEASE</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-mr</artifactId>
+			<version>0.10.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-math</artifactId>
+			<version>0.13.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-hdfs</artifactId>
+			<version>0.13.0</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
