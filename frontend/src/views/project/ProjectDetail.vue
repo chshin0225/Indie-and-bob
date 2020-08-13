@@ -104,14 +104,7 @@
     <div v-if="rewards">
       <v-row>
         <v-col cols="12" sm="6" v-for="reward in rewards" :key="reward.rewardId">
-          <v-card color="secondary" class="mx-auto" max-width="400">
-            <v-img
-              v-if="reward.rImg"
-              class="white--text align-end"
-              height="200px"
-              :src="reward.rImg"
-            ></v-img>
-            <v-img v-else class="white--text align-end" height="200px" src="rnn"></v-img>
+          <v-card color="secondary" class="mx-auto" max-width="400">  
             <v-card-title>{{reward.rewardName}}</v-card-title>
             <v-card-subtitle class="pb-0">{{reward.price}}원</v-card-subtitle>
 
@@ -127,12 +120,12 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col>
-          <v-btn @click="finalSubmit()" dark text>프로젝트 최종 제출하기</v-btn>
-        </v-col>
-      </v-row>
     </div>
+    <v-row>
+      <v-col>
+        <v-btn @click="finalSubmit()" dark>프로젝트 최종 제출하기</v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -202,11 +195,10 @@ export default {
         content: this.r_content,
         price: this.r_price,
         leftCount: this.r_left,
-        rImg: this.r_thumbnailUrl,
       };
       console.log(PARAMS);
       axios
-        .post(SERVER.BASE + SERVER.REWARD, PARAMS, this.headersConfig)
+        .post(SERVER.BASE + SERVER.ALLREWARD, PARAMS, this.headersConfig)
         .then((res) => {
           console.log(res);
           axios
@@ -236,7 +228,7 @@ export default {
       ).then((text) => {
         if (text === "Delete the reward") {
           axios
-            .delete(SERVER.BASE + SERVER.REWARD + reward_id, this.headersConfig)
+            .delete(SERVER.BASE + SERVER.ALLREWARD + reward_id, this.headersConfig)
             .then((res) => {
               console.log(res)
               axios
@@ -254,7 +246,8 @@ export default {
         } else {
           this.$alert("Wrong input!");
         }
-      });
+      })
+       .catch(() => false)
     },
     projectEdit() {
       router.push("/pjt/edit/" + this.id);
@@ -277,22 +270,24 @@ export default {
         } else {
           this.$alert("Wrong input!");
         }
-      });
+      })
+       .catch(() => false)
     },
     finalSubmit() {
       this.$prompt(
         "프로젝트를 제출하고 싶으시다면 '최종제출'을 입력해주세요.",
         "",
-        "(최종제출 이후에는 프로젝트를 수정할 수 없습니다.)",
-        "정말 최종제출을 하시겠습니까?"
+        "최종제출 이후에는 프로젝트를 수정할 수 없습니다.",
+        "question"
       ).then((text) => {
         if (text === "최종제출") {
+          axios.get(SERVER.BASE + SERVER.GAMEREGISTER + `/${this.$route.params.id}`)
           router.push({ name: 'CreateProjectDone'})
         } else {
           this.$alert("잘못된 입력입니다.")
         }
       })
-
+      .catch(() => false)
     },
   },
 };
