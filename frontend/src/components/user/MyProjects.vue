@@ -3,8 +3,37 @@
     <!-- <p>{{myProjectList[0]}}</p> -->
     <v-row>
       <v-col v-for="project in myProjectList" :key="project.gameId" cols=6 md=4>
-        <v-card tile class="card">
-          <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
+        <v-card v-if="project.isApprove===2" tile class="card"> 
+          <router-link v-if="project.isApprove===2" :to="`/project/${project.gameId}`" class="text-decoration-none">
+              <v-list-item>
+                <v-avatar>
+                  <v-img v-if="project.profile" :src="project.profile" :alt="project.nickname"></v-img>
+                  <v-img v-else src="../../assets/default_profile.png"></v-img>
+                </v-avatar>
+                <v-list-item-content class="ml-4">
+                  <v-list-item-title class="font-weight-bold project-name">{{ project.name }}</v-list-item-title>
+                  <router-link class="text-decoration-none" :to="`/user/mypage/${project.nickname}`">{{ project.nickname }}</router-link>
+                  <v-list-item-subtitle class="d-none d-sm-block">{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{ project.genreName }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-img v-if="project.thumbnail" :src="project.thumbnail" height="194"></v-img>
+              <v-img v-else src="../../assets/default_project.png"></v-img>
+              
+              <v-list-item class="py-1 mx-1">
+                <v-row>
+                  <v-chip
+                    class="ma-2"
+                    color="info"
+                  >
+                    작성중
+                  </v-chip>
+                </v-row>
+              </v-list-item>
+          </router-link>    
+        </v-card>
+        <v-card v-else tile class="card"> 
+           <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
               <v-list-item>
                 <v-avatar>
                   <v-img v-if="project.profile" :src="project.profile" :alt="project.nickname"></v-img>
@@ -25,6 +54,14 @@
                   <p class="mb-1 ml-1 funding-progress">{{ fundingProgress(project.aim, project.leftPrice) }}% 달성</p>
                   <v-progress-linear :value="fundingProgress(project.aim, project.leftPrice)" height="7"></v-progress-linear>
                 </v-row>
+                <v-row v-else-if="project.isApprove === -1">
+                  <v-chip
+                    class="ma-2"
+                    color="danger"
+                  >
+                    거절됨
+                  </v-chip>
+                </v-row>
                 <v-row v-else>
                   <v-chip
                     class="ma-2"
@@ -34,7 +71,7 @@
                   </v-chip>
                 </v-row>
               </v-list-item>
-          </router-link>
+          </router-link>    
         </v-card>
       </v-col>
     </v-row>
