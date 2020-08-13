@@ -239,7 +239,7 @@ export default {
       shareIcon: "white",
       iconColor: "accent",
       menu: false,
-      url: "http://i3a105.p.ssafy.io:3000" + window.location.pathname,
+      url: "http://i3a105.p.ssafy.io" + window.location.pathname,
 
       genres: '',
       rewards: [],
