@@ -4,11 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.indieAndBob.mapper.game">
 
-   	<select id="selectGameById" parameterType="String" resultType="gameall">
-		select * from game left outer join game_detail using(game_id) where game_id=#{game_id};
+   	<select id="selectGameById" parameterType="int" resultType="gameall">
+		select g.*, gd.*, u.profile from game g left outer join game_detail gd using(game_id) left outer join user u using(nickname)
+		where game_id=#{game_id}
     </select>
-    <select id="selectAllGame" parameterType="int" resultType="game">
-   	    select * from game where is_approve=1 and is_end=false order by game_id desc limit #{page},10
+    <select id="selectAllGame" parameterType="int" resultType="gameall">
+   	    select g.*, u.profile from game g left outer join user u using(nickname)
+   	    where is_approve=1 and is_end=false order by game_id desc limit #{page},10
     </select>
     <select id="selectAllGameAdmin" parameterType="int" resultType="game">
     	select * from game where is_approve=0 and is_end=false limit #{page},10
@@ -19,8 +21,8 @@
         values (#{name}, #{deadline}, #{aim},#{aim},#{isEnd},#{isApprove},#{nickname},
         #{thumbnail})
     </insert>
-    <update id="updateGame" parameterType="game">
-    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, left_price=#{leftPrice}, is_end=#{isEnd}, is_approve=#{isApprove}, nickname=#{nickname}
+    <update id="updateGame" parameterType="gameall">
+    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, updated_at=now(), thumbnail=#{thumbnail}
         where game_id=#{gameId}
     </update>
     <delete id="deleteGameById" parameterType="int">
@@ -33,9 +35,11 @@
     	insert into game_like (nickname,game_id) values(#{nickname},#{gameId})
     </insert>
     
-    <select id="selectGameByNickname" parameterType="String" resultType="game">
-    	select * from game 
-    	where game_id in (select game_id from game_like where nickname=#{nickname});
+    <select id="selectGameByNickname" parameterType="mygamesearch" resultType="gameall">
+    	select g.*, u.profile from game g left outer join user u using(nickname)
+    	where game_id in (select game_id from game_like where nickname=#{nickname})
+    	order by game_id desc
+    	limit #{page},9
     </select>
     
     <select id="selectUserByGameId" parameterType="String" resultType="user">
@@ -63,11 +67,42 @@
     	insert into game_genre (game_id,genre_id) values(#{gameId},#{genreId})
     </insert>
     
-    <select id="selectMadeGameByNickname" parameterType="String" resultType="gameall">
-    	select * from game where nickname=#{nickname}
+    <select id="selectMadeGameByNickname" parameterType="mygamesearch" resultType="gameall">
+    	select g.*, u.profile from game g left outer join user u using(nickname)
+   	    where nickname=#{nickname} order by game_id desc limit #{page},9
     </select>
     
     <update id="injectThumbnail" parameterType="gameall">
     	update game set thumbnail=#{thumbnail} where game_id=#{gameId}
     </update>
+    
+    <delete id="deleteGameGenre" parameterType="int">
+    	delete from game_genre where game_id=#{gameId}
+    </delete>
+    
+    <select id="mostLikeGame" resultType="gamealllike">
+    	select ga.*, u.profile from (select g.*, count(*) count from game_like left outer join game g using(game_id) 
+		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day) 
+		group by game_id) ga left outer join user u using(nickname)
+		order by count desc
+    </select>
+    
+    <select id="deadlineGame" resultType="gameall">
+    	select g.*, u.profile from game g left outer join user u using(nickname)
+		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
+		order by deadline
+    </select>
+    
+    <select id="mostFundedPriceGame" resultType="gameall">
+    	select * from game
+		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
+		order by aim-left_price desc
+    </select>
+    
+    <select id="mostFundedPercentGame" resultType="gameall">
+    	select * from game
+		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
+		order by (aim-left_price)/aim desc;
+    </select>
+    
 </mapper>

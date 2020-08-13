@@ -72,7 +72,7 @@ public class GameController {
 		logger.info("==========selectAllGame==========");
 		ResponseEntity response = null;
 		if(nickname.equals("admin")) {
-			List<Game> gamelist = gservice.selectAllGameAdmin(page);
+			List<GameAll> gamelist = gservice.selectAllGameAdmin(page);
 			if(gamelist.size()>=0) {
 				final BasicResponse result = new BasicResponse();
 				result.status = true;
@@ -171,6 +171,22 @@ public class GameController {
 			obj.put("extension", extension);
 			obj.put("gameId", gameId);
 			result.object = obj;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/api/game/registergame/{gameId}")
+	@ApiOperation(value = "게임 등록")
+	public Object gameSubmit(@PathVariable int gameId) {
+		logger.info("==========gameSubmit==========");
+		ResponseEntity response = null;
+		if (gservice.gameSubmit(gameId) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.indieAndBob.mapper.community">
+	<insert id="insertCommunity" parameterType="community">
+		insert into community (nickname, title, content)
+		values(#{nickname},#{title},#{content})
+	</insert>
+	
+	<select id="listCommunity" parameterType="int" resultType="community">
+		select community_id, nickname, title, created_at, updated_at from community
+		order by community_id desc limit #{page},10
+	</select>
+	
+	<select id="communityDetail" parameterType="int" resultType="community">
+		select * from community where community_id=#{communityId}
+	</select>
+	
+	<update id="updateCommunity" parameterType="community">
+		update community set title=#{title}, content=#{content}, updated_at=now()
+		where community_id=#{communityId}
+	</update>
+	
+	<delete id="deleteCommunity" parameterType="int">
+		delete from community where community_id=#{communityId}
+	</delete>
+    
+    <select id="listMyCommunity" parameterType="mycommunitysearch" resultType="community">
+    	select * from community where nickname=#{nickname} order by community_id desc limit #{page},10
+    </select>
+    
+    <select id="listCommunityCount" resultType="int">
+    	select count(*) from community
+    </select>
+    
+    <select id="listMyCommunityCount" parameterType="String" resultType="int">
+    	select count(*) from community where nickname=#{nickname}
+    </select>
+</mapper>

@@ -11,6 +11,9 @@
    	<select id="selectFundingByRewardId" parameterType="int" resultType="funding">
 		select * from funding where reward_id=#{rewardId}
     </select>
+    <select id="selectFundingByGameId" parameterType="int" resultType="funding">
+    	select * from funding where game_id=#{gameId}
+    </select>
 <!--     <select id="selectAllFunding" parameterType="int" resultType="funding"> -->
 <!--    	    select * from funding order by game_id desc limit #{page},10 -->
 <!--     </select> -->
@@ -21,8 +24,8 @@
     <delete id="deleteFundingByFundingId" parameterType="int">
     	delete from funding where funding_id=#{fundingId}
     </delete>
-    <select id="selectFundingByNickname" parameterType="String" resultType="funding">
-    	select * from funding 
-    	where nickname=#{nickname};
+    <select id="selectFundingByNickname" parameterType="mygamesearch" resultType="fundinggame">
+    	select g.*,r.*,u.profile from funding f,game g,reward r, user u
+		where f.game_id=g.game_id and f.reward_id=r.reward_id and u.nickname=g.nickname and f.nickname=#{nickname} order by funding_id desc limit #{page},9;
     </select>
 </mapper>
