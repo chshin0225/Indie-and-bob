@@ -49,6 +49,7 @@
 		<mapper resource="mybatis/mapper/communityMapper.xml" />
 		<mapper resource="mybatis/mapper/communityCommentMapper.xml" />
 		<mapper resource="mybatis/mapper/userbaseRecommandMapper.xml" />
+		<mapper resource="mybatis/mapper/SearchMapper.xml" />
 		
 		<!--권성완-->
 		<mapper resource="mybatis/mapper/qnaMapper.xml"/>
