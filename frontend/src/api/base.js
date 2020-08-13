@@ -31,6 +31,7 @@ export default {
     'GAMEREGISTER' : "/game/registergame",
     'GAMECOMMUNITY' : "/game/comment",
     'MYPROJECT': "/madegame/",
+    'FUNDLIST': "/fundingByGameId/",
 
     // fund
     'ALLREWARD': "/reward/",

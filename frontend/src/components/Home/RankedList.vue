@@ -2,7 +2,6 @@
   <div>
     <v-card flat>
       <template v-for="project in projectList">
-
         <v-list-item three-line :key="project.gameId" :to="`/game/${project.gameId}`">
           <v-list-item-content class="py-0">
             <v-col cols="6">
@@ -11,7 +10,7 @@
               <v-list-item-subtitle>{{ project.genreName }}</v-list-item-subtitle>
             </v-col>
             <v-col cols="6">
-              <v-img contain height="70px" :src="project.thumbnail"></v-img>
+              <v-img contain max-height="70px" :src="project.thumbnail"></v-img>
             </v-col>
           </v-list-item-content>
         </v-list-item>

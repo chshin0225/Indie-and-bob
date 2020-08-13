@@ -176,6 +176,7 @@ export default {
       profileImage: null,
     }
   },
+
   computed: {
     ...mapState(["userInfo", "followerList", "followingList", "isFollowing",]),
     ...mapGetters(["userDataFetched"]),
@@ -197,6 +198,7 @@ export default {
       this.fetchFollowers(username);
       this.fetchFollowings(username);
     },
+    
     userDataFetched() {
       const storageRef = firebase.storage().ref()
       if (this.userInfo.profile !== null) {
