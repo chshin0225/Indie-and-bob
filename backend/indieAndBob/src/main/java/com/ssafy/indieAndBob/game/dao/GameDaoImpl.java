@@ -142,5 +142,10 @@ public class GameDaoImpl implements GameDao{
 	public int gameSubmit(int gameId) {
 		return temp.update(ns + "gameSubmit", gameId);
 	}
+
+	@Override
+	public int endDay() {
+		return temp.update(ns + "endDay");
+	}
 	
 }

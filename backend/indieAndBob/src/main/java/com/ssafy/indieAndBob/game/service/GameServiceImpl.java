@@ -174,5 +174,10 @@ public class GameServiceImpl implements GameService{
 		return gamedao.gameSubmit(gameId);
 	}
 
+	@Override
+	public int endDay() {
+		return gamedao.endDay();
+	}
+
 	
 }

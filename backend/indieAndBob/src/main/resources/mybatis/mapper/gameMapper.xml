@@ -56,7 +56,7 @@
     </select>
     
     <update id="updateApprove" parameterType="game">
-    	update game set is_approve=#{isApprove} where game_id=#{gameId}
+    	update game set is_approve=#{isApprove}, reason=#{reason} where game_id=#{gameId}
     </update>
     
     <update id="fundingGame" parameterType="funding">
@@ -108,4 +108,8 @@
     <update id="gameSubmit" parameterType="int">
     	update game set is_approve=0 where game_id=#{gameId}
     </update>
+
+	<update id="endDay">
+		update game set is_end=true where date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
+	</update>
 </mapper>
