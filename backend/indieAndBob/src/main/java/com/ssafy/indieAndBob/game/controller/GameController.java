@@ -372,7 +372,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/api/mostfundedgame/price")
-	@ApiOperation(value = "마감 임박 게임")
+	@ApiOperation(value = "펀딩 금액이 가장 높은 프로젝트")
 	public Object mostFundedPriceGame() {
 		logger.info("==========mostFundedPriceGame==========");
 		ResponseEntity response = null;
@@ -390,7 +390,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/api/mostfundedgame/percent")
-	@ApiOperation(value = "마감 임박 게임")
+	@ApiOperation(value = "펀딩 비율이 가장 높은 프로젝트")
 	public Object mostFundedPercentGame() {
 		logger.info("==========mostFundedPercentGame==========");
 		ResponseEntity response = null;
