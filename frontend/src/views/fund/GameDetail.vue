@@ -61,7 +61,10 @@
             <p>목표: {{ project.aim }}원</p>
 
             <v-container class="pb-0">
-              <v-row>
+              <v-row v-if="project.isApprove===-1">
+                <p>거절사유 : {{ project.reason }}</p>
+              </v-row>
+              <v-row v-else>
                 <p class="mb-2"> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
                 <p class="mb-2">현재 모금액: {{ project.aim - project.leftPrice }}원</p>
@@ -189,7 +192,7 @@
                   </div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  {{ reward.content }}
+                  <div v-html="reward.content"></div>
                   <v-divider class="mt-3"></v-divider>
                   <v-row>
                     <v-col class="d-flex align-center">
@@ -259,7 +262,7 @@ export default {
 
   computed: {
     ...mapState(['project', 'username']),
-    ...mapGetters(['headersConfig', 'projectDataFetched', 'likedPeopleCount', 'isAdmin',]),
+    ...mapGetters(['headersConfig', 'projectDataFetched', 'likedPeopleCount', 'isAdmin', 'isLoggedIn']),
 
     fundingProgress: function() {
       if (this.project.aim === this.project.leftPrice) {
@@ -315,35 +318,44 @@ export default {
     fetchRewards() {
       axios.get(SERVER.BASE + SERVER.REWARDS + this.$route.params.id)
       .then(res => {
+        if (res.data.object.length > 0) {
+          res.data.object.forEach(item => {
+            item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
+          })
+        }
         this.rewards = res.data.object
       })
       .catch(err => console.error(err))
     },
 
     likeButton() {
-      if (this.iconColor === "accent") {
-        axios.post(SERVER.BASE + SERVER.LIKE,
-          {
-            nickname: localStorage.getItem("username"),
-            gameId: this.project.gameId,
-          },
-          this.headersConfig
-          )
-          .then(() => {
-            this.iconColor = "primary"
-            this.isLike = true
-            this.fetchLikedUsers(this.project.gameId)
-          })
-          .catch(err => console.error(err))
+      if (this.isLoggedIn) {
+        if (this.iconColor === "accent") {
+          axios.post(SERVER.BASE + SERVER.LIKE,
+            {
+              nickname: localStorage.getItem("username"),
+              gameId: this.project.gameId,
+            },
+            this.headersConfig
+            )
+            .then(() => {
+              this.iconColor = "primary"
+              this.isLike = true
+              this.fetchLikedUsers(this.project.gameId)
+            })
+            .catch(err => console.error(err))
+        } else {
+          const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.project.gameId;
+          axios.delete(deleteLike, this.headersConfig)
+            .then(() => {
+              this.iconColor = "accent"
+              this.isLike = false
+              this.fetchLikedUsers(this.project.gameId)
+            })
+            .catch(err => console.error(err))
+        }
       } else {
-        const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.project.gameId;
-        axios.delete(deleteLike, this.headersConfig)
-          .then(() => {
-            this.iconColor = "accent"
-            this.isLike = false
-            this.fetchLikedUsers(this.project.gameId)
-          })
-          .catch(err => console.error(err))
+        alert("로그인을 해야 좋아요를 누를 수 있습니다.")
       }
     },
 
@@ -370,7 +382,7 @@ export default {
         axios.put(SERVER.BASE + SERVER.APPROVE, {
           gameId: this.$route.params.id,
           isApprove: -1,
-          // reasonOfRejection
+          reason: this.reasonOfRejection
         })
           .then((res) => {
             console.log(res);

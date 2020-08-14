@@ -457,6 +457,7 @@ export default new Vuex.Store({
 
     // follow 
     follow({ getters, dispatch }, following) {
+      if (getters.isLoggedIn) {
       axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
         .then(() => {
           // console.log(res.data)
@@ -464,9 +465,13 @@ export default new Vuex.Store({
           dispatch('checkFollowing', following.following)
         })
         .catch(err => console.error(err))
+      } else {
+        alert("로그인을 해야 팔로우를 할 수 있습니다.")
+      }
     },
 
     unfollow({ getters, dispatch }, unfollow) {
+      if (getters.isLoggedIn) {
       axios.delete(SERVER.BASE + SERVER.UNFOLLOW + unfollow, getters.headersConfig)
         .then(() => {
           // console.log(res.data)
@@ -474,7 +479,9 @@ export default new Vuex.Store({
           dispatch('checkFollowing', unfollow)
         })
         .catch(err => console.error(err))
-
+      } else {
+        alert("로그인을 해야 언팔로우를 할 수 있습니다.")
+      }
     },
 
     checkFollowing({ commit, getters }, following) {
@@ -528,7 +535,7 @@ export default new Vuex.Store({
                   res.data.object.thumbnail = url
                   commit('setProject', res.data.object)
                 })
-                .catch(err => console.error(err))
+                .catch(() => res.data.object.thumbnail = null)
             })
             .catch(function(error) {
               console.log(error)
@@ -580,7 +587,10 @@ export default new Vuex.Store({
     getArticle({ commit }, communityId) {
       commit('setArticle', null)
       axios.get(SERVER.BASE + SERVER.COMMUNITY + `/${communityId}`)
-        .then(res => commit('setArticle', res.data.object))
+        .then(res => {
+          res.data.object.content = res.data.object.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
+          commit('setArticle', res.data.object)
+        })
         .catch(err => console.error(err))
     },
 
@@ -616,7 +626,7 @@ export default new Vuex.Store({
             .then(url => {
               item.profile = url
             })
-            .catch(err => console.error(err))
+            .catch(() => item.profile = null)
            }
           })
         }
