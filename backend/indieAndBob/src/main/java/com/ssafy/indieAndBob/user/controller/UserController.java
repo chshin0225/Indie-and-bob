@@ -84,7 +84,7 @@ public class UserController {
 					result.status = true;
 					result.data = "success";
 					response = new ResponseEntity<>(result, HttpStatus.OK);
-					emailService.sendSimpleMessage(request.getEmail(), "Indie And Bob 가입 환영 메일", "가입을 환영합니다~~!!");
+//					emailService.sendSimpleMessage(request.getEmail(), "Indie And Bob 가입 환영 메일", "가입을 환영합니다~~!!");
 				} else {
 					response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 				}
