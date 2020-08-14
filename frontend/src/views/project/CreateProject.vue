@@ -246,6 +246,10 @@ export default {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
+    },
+
+    onAction() {
+      this.isSubmit = false
     }
   },
 
