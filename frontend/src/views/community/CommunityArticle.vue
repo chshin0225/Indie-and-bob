@@ -18,8 +18,8 @@
       <!-- article content -->
       <v-row>
         <v-col>
-          <p>
-            {{ article.content }}
+          <p v-html="article.content">
+            <!-- {{ article.content }} -->
             <!-- {{ article }} -->
           </p>
         </v-col>
