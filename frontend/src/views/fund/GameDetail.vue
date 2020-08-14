@@ -259,7 +259,7 @@ export default {
 
   computed: {
     ...mapState(['project', 'username']),
-    ...mapGetters(['headersConfig', 'projectDataFetched', 'likedPeopleCount', 'isAdmin',]),
+    ...mapGetters(['headersConfig', 'projectDataFetched', 'likedPeopleCount', 'isAdmin', 'isLoggedIn']),
 
     fundingProgress: function() {
       if (this.project.aim === this.project.leftPrice) {
@@ -326,29 +326,33 @@ export default {
     },
 
     likeButton() {
-      if (this.iconColor === "accent") {
-        axios.post(SERVER.BASE + SERVER.LIKE,
-          {
-            nickname: localStorage.getItem("username"),
-            gameId: this.project.gameId,
-          },
-          this.headersConfig
-          )
-          .then(() => {
-            this.iconColor = "primary"
-            this.isLike = true
-            this.fetchLikedUsers(this.project.gameId)
-          })
-          .catch(err => console.error(err))
+      if (this.isLoggedIn) {
+        if (this.iconColor === "accent") {
+          axios.post(SERVER.BASE + SERVER.LIKE,
+            {
+              nickname: localStorage.getItem("username"),
+              gameId: this.project.gameId,
+            },
+            this.headersConfig
+            )
+            .then(() => {
+              this.iconColor = "primary"
+              this.isLike = true
+              this.fetchLikedUsers(this.project.gameId)
+            })
+            .catch(err => console.error(err))
+        } else {
+          const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.project.gameId;
+          axios.delete(deleteLike, this.headersConfig)
+            .then(() => {
+              this.iconColor = "accent"
+              this.isLike = false
+              this.fetchLikedUsers(this.project.gameId)
+            })
+            .catch(err => console.error(err))
+        }
       } else {
-        const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.project.gameId;
-        axios.delete(deleteLike, this.headersConfig)
-          .then(() => {
-            this.iconColor = "accent"
-            this.isLike = false
-            this.fetchLikedUsers(this.project.gameId)
-          })
-          .catch(err => console.error(err))
+        alert("로그인을 해야 좋아요를 누를 수 있습니다.")
       }
     },
 

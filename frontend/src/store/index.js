@@ -457,6 +457,7 @@ export default new Vuex.Store({
 
     // follow 
     follow({ getters, dispatch }, following) {
+      if (getters.isLoggedIn) {
       axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
         .then(() => {
           // console.log(res.data)
@@ -464,9 +465,13 @@ export default new Vuex.Store({
           dispatch('checkFollowing', following.following)
         })
         .catch(err => console.error(err))
+      } else {
+        alert("로그인을 해야 팔로우를 할 수 있습니다.")
+      }
     },
 
     unfollow({ getters, dispatch }, unfollow) {
+      if (getters.isLoggedIn) {
       axios.delete(SERVER.BASE + SERVER.UNFOLLOW + unfollow, getters.headersConfig)
         .then(() => {
           // console.log(res.data)
@@ -474,7 +479,9 @@ export default new Vuex.Store({
           dispatch('checkFollowing', unfollow)
         })
         .catch(err => console.error(err))
-
+      } else {
+        alert("로그인을 해야 언팔로우를 할 수 있습니다.")
+      }
     },
 
     checkFollowing({ commit, getters }, following) {
