@@ -1,14 +1,14 @@
 <template>
   <v-container>
-    <h1 class="my-5 text-center">프로젝트 개요를 입력해주세요!</h1>
+    <h1 class="my-5 text-center">새 프로젝트 만들기</h1>
     <v-row class="justify-center">
       <v-col class="py-0" sm="10">
         <label for="title">제목</label>
         <v-text-field
-          v-model="title"
+          v-model="name"
           id="extraAddress"
           placeholder="프로젝트 제목을 입력해주세요"
-          type="title"
+          type="name"
           hide-details="true"
           outlined
           required
@@ -43,9 +43,11 @@
           offset-y
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-text-field v-model="date" label="마감날짜" readonly v-bind="attrs" v-on="on"></v-text-field>
+            <v-text-field v-model="deadline" label="마감날짜" readonly v-bind="attrs" v-on="on"></v-text-field>
           </template>
-          <v-date-picker v-model="date" :min="today" @input="menu2 = false"></v-date-picker>
+          <v-card>
+            <v-date-picker v-model="deadline" :min="today" @input="menu2 = false"></v-date-picker>
+          </v-card>
         </v-menu>
       </v-col>
     </v-row>
@@ -77,7 +79,7 @@
         </v-col>
       </v-row>
       <v-row class='justify-center'>
- <v-btn cols=auto @click="onButtonClick" class="primary">프로젝트 생성</v-btn>
+        <v-btn cols=auto @click="onButtonClick" :disable="!isSubmit" class="accent" depressed>프로젝트 생성</v-btn>
       </v-row>
      
     </v-row>
@@ -87,6 +89,7 @@
 <script>
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import router from '../../router'
 import axios from "axios";
 // import router from "../../router";
 import { Editor } from "@toast-ui/vue-editor";
@@ -101,10 +104,12 @@ export default {
     return {
       text: "",
       genre: "",
+      content_upload: false,
+      thumbnail_upload: false,
       genreId: [],
       today: new Date().toISOString().substr(0, 10),
-      date: new Date().toISOString().substr(0, 10),
-      title: "",
+      deadline: new Date().toISOString().substr(0, 10),
+      name: "",
       menu2: false,
       editorOptions: {
         hideModeSwitch: true,
@@ -112,6 +117,13 @@ export default {
       content: "",
       aim: 0,
       thumbnail: null,
+      error: {
+        name: false,
+        aim: false,
+        genre: false,
+        deadline: false,
+      },
+      isSubmit: false,
     };
   },
   computed: {
@@ -125,31 +137,85 @@ export default {
       })
       let PARAMS = {
         content: null,
-        name: this.title,
-        deadline: this.date,
+        name: this.name,
+        deadline: this.deadline,
         genre: this.genreId,
         aim: this.aim,
         thumbnail: this.thumbnail.name,
       };
       axios.post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
         .then(res => {
-          console.log(res.data.object)
-          firebase.storage().ref(`game/${res.data.object.gameId}/content/${res.data.object.gameId}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
-          firebase.storage().ref(`game/${res.data.object.gameId}/thumbnail/${res.data.object.gameId}.${res.data.object.extension}`).put(this.thumbnail)
+          console.log(res.data.object.gameId)
+          const storageRef1 = firebase.storage().ref(`game/${res.data.object.gameId}/content/${res.data.object.gameId}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
+          storageRef1.on(`state_changed`, snapshot => {
+            if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
+              this.content_upload = true
+              if (this.thumbnail_upload === true) {
+                router.push({name: 'ProjectDetail', params: { id: res.data.object.gameId }})
+              }
+            }
+          })
+          const storageRef2 = firebase.storage().ref(`game/${res.data.object.gameId}/thumbnail/${res.data.object.gameId}.${res.data.object.extension}`).put(this.thumbnail)
+          storageRef2.on(`state_changed`, snapshot => {
+            if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
+              this.thumbnail_upload = true
+              if (this.content_upload === true) {
+                router.push({name: 'ProjectDetail', params: { id: res.data.object.gameId }})
+              }
+            }
+          })
         })
         .catch((err) => console.error(err));
     },
-    uploadImage() {
-      let fileInfo = document.getElementById("thumbnail").files[0];
-      let reader = new FileReader();
-      reader.onload = function () {
-        this.thumbnailUrl = reader.result;
-      };
-      if (fileInfo) {
-        reader.readAsDataURL(fileInfo);
+    checkForm() {
+      if (this.name.length <= 0) {
+        this.error.name = "프로젝트 이름을 작성해주세요."
+      } else {
+        this.error.name = false
       }
-    },
+
+      if (this.genre.length <= 0) {
+        this.error.genre = "프로젝트의 장르를 선택해주세요."
+      } else {
+        this.error.genre = false
+      }
+
+      if (this.deadline === null) {
+        this.error.deadline = "프로젝트 펀딩 기간을 선택해주세요."
+      } else {
+        this.error.deadline = false
+      }
+
+      if (this.aim <= 0) {
+        this.error.aim = "프로젝트 펀딩 목표를 작성해주세요."
+      } else {
+        this.error.aim = false
+      }
+
+      let isSubmit = true;
+      Object.values(this.error).map((v) => {
+        if (v) isSubmit = false;
+      });
+      this.isSubmit = isSubmit;
+    }
   },
+  watch: {
+    name() {
+      this.checkForm()
+    },
+
+    genre() {
+      this.checkForm()
+    },
+
+    deadline() {
+      this.checkForm()
+    },
+
+    aim() {
+      this.checkForm()
+    }
+  }
 };
 </script>
 

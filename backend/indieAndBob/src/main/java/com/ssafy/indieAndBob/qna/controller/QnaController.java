@@ -190,7 +190,9 @@ public class QnaController {
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
-			qnaList = qnaService.pagination(qnaList, page);
+//			if(qnaList.size() > 0) {
+//				qnaList = qnaService.pagination(qnaList, page);
+//			}
 			result.object = qnaList;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}		

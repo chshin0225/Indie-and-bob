@@ -7,7 +7,8 @@
         :to="`/user/mypage/${likedUser.nickname}`"
       >
         <v-list-item-avatar>
-          <v-img src="../../assets/default_profile.png" :alt="likedUser.nickname"></v-img>
+          <v-img v-if="likedUser.profile" :src="likedUser.profile" :alt="likedUser.nickname"></v-img>
+          <v-img v-else src="../../assets/default_profile.png" :alt="likedUser.nickname"></v-img>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>{{ likedUser.nickname }}</v-list-item-title>

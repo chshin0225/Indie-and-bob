@@ -39,6 +39,33 @@ export default new Vuex.Store({
       "PC": 15, 
       "콘솔": 16
     },
+    // idToGenre: {
+    //   1: "액션", 
+    //   2: "슈팅", 
+    //   3: "RPG", 
+    //   4: "시뮬레이션", 
+    //   5: "어드벤쳐", 
+    //   6: "스포츠", 
+    //   7: "레이싱", 
+    //   8: "추리", 
+    //   9: "퍼즐", 
+    //   10: "리듬", 
+    //   11: "턴제", 
+    //   12: "캐주얼", 
+    //   13: "디펜스", 
+    //   14: "모바일", 
+    //   15: "PC", 
+    //   16: "콘솔"
+    // },
+
+    // home
+    mostLikedList: [],
+    almostFinishedList: [],
+    mostFundedList: [],
+    highestPercentList: [],
+
+    // recommedation
+    genreRecommendationList: [],
               
     // follow
     followerList: null,
@@ -53,18 +80,18 @@ export default new Vuex.Store({
     // project
     projectList: [],
     project: null,
-    fundedProjectList: [],
     rewardData: null,
 
     // like
-    likedProjectList: [],
     likedUserList: [],
 
     // error
     errorDetail: null,
 
     // search
-    searchResult: null,
+    searchUser: null,
+    searchGame: null,
+    searchCommunity: null,
   },
 
   getters: {
@@ -74,6 +101,7 @@ export default new Vuex.Store({
         "jwt-auth-token": state.jwtToken 
       }
     }),
+    isAdmin: state => state.username === 'admin',
 
     // user
     isLoggedIn: state => !!state.jwtToken,
@@ -114,6 +142,25 @@ export default new Vuex.Store({
       state.picture = val
     },
 
+    // home
+    setMostLikedList(state, val) {
+      state.mostLikedList = val
+    },
+    setAlmostFinishedList(state, val) {
+      state.almostFinishedList = val
+    },
+    setMostFundedList(state, val) {
+      state.mostFundedList = val
+    },
+    setHighestPercentList(state, val) {
+      state.highestPercentList = val
+    },
+
+    // recommendation
+    setGenreRecommendationList(state, val) {
+      state.genreRecommendationList = val
+    },
+
     // follow
     setFollowerList(state, val) {
       state.followerList = val
@@ -143,25 +190,27 @@ export default new Vuex.Store({
     setProject(state, val) {
       state.project = val
     },
-    setLikedProjectList(state, val) {
-      state.likedProjectList = val
-    },
     setLikedUserList(state, val) {
       state.likedUserList = val
     },
     setContent(state, val) {
       state.project.content = val
     },
-    setFundedProjectList(state, val) {
-      state.fundedProjectList = val
-    },
     setRewardData(state, val) {
       state.rewardData = val
     },
 
     // search
-    setSearchResult(state, val) {
-      state.searchResult = val
+    setSearchUser(state, val) {
+      state.searchUser = val
+    },
+
+    setSearchGame(state, val) {
+      state.searchGame = val
+    },
+
+    setSearchCommunity(state, val) {
+      state.searchCommunity = val
     },
 
     // error
@@ -185,7 +234,7 @@ export default new Vuex.Store({
           // 쿠키에 저장
           commit('setToken', res.headers['jwt-auth-token'])
           
-          router.push('/home')
+          router.push({ name: 'Home' })
         })
         .catch(err => {
           if (err.response.status === 404) {
@@ -202,29 +251,31 @@ export default new Vuex.Store({
       }
       if (signupData.profile !== null) {
         commit('setPicture', null)
-        console.log(signupData.profile)
-        console.log(signupData.profile.name)
+        // console.log(signupData.profile)
+        // console.log(signupData.profile.name)
         var extension = signupData.profile.name.split('.').reverse()[0];
         firebase.storage().ref(`user/${signupData.nickname}/${signupData.nickname}.${extension}`).put(signupData.profile)
         signupData.profile = `user/${signupData.nickname}/${signupData.nickname}.${extension}`
-        if (signupData.genreId !== null) {
-          let genreArray = []
-          signupData.genreId.forEach(item => {
-            genreArray.push(state.genreToId[item])
-          })
-          signupData.genreId = genreArray
+      }
+      if (signupData.genreId !== null) {
+        let genreArray = []
+        signupData.genreId.forEach(item => {
+          genreArray.push(state.genreToId[item])
+        })
+        signupData.genreId = genreArray
+      console.log(signupData)
+      axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
+      .then(res => {
+        console.log(signupData)
+        console.log(res)
+        if (res.data.status) {
+          alert("회원가입 인증 메일이 발송되었습니다. 이메일을 확인해주세요.")
+          router.push({ name: "Login" });
+        } else {
+          // console.log(res.data.status)
+          commit('setErrorDetail', res.data.data)
+          router.push({ name: "ErrorPage" })
         }
-        axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
-        .then(res => {
-          console.log(res)
-          if (res.data.status) {
-            alert("회원가입 인증 메일이 발송되었습니다. 이메일을 확인해주세요.")
-            router.push({ name: "Login" });
-          } else {
-            console.log(res.data.status)
-            commit('setErrorDetail', res.data.data)
-            router.push({ name: "ErrorPage" })
-          }
         })
         .catch(err => {
           console.log(err.response)
@@ -233,12 +284,12 @@ export default new Vuex.Store({
       else {
         axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
           .then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.data.status) {
               alert("회원가입 인증 메일이 발송되었습니다. 이메일을 확인해주세요.")
               router.push({ name: "Login" });
             } else {
-              console.log(res.data.status)
+              // console.log(res.data.status)
               commit('setErrorDetail', res.data.data)
               router.push({ name: "ErrorPage" })
             }
@@ -287,7 +338,7 @@ export default new Vuex.Store({
       commit('setUserInfo', null)
       axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
         .then(res => {
-          console.log("getUserInfo")
+          // console.log("getUserInfo")
           commit('setUserInfo', res.data.object)
         })
         .catch(err => console.error(err))
@@ -317,6 +368,92 @@ export default new Vuex.Store({
         .catch(err => console.error(err))
     },
 
+    // home
+    fetchHomeData({ commit, getters }) {
+      const storageRef = firebase.storage().ref()
+
+      axios.get(SERVER.BASE + SERVER.MOSTLIKED)
+        .then(res => {
+          res.data.object.forEach(item => {
+            storageRef.child(item.thumbnail).getDownloadURL()
+              .then(url => item.thumbnail = url)
+              .catch(err => console.error(err))
+            let genres = ''
+            item.genreName.forEach(genre => {
+              genres += genre + ' | '
+            })
+            item.genreName = genres.slice(0, genres.length-2)
+          })
+          commit('setMostLikedList', res.data.object)
+        })
+        .catch(err => console.error(err))
+      
+      axios.get(SERVER.BASE + SERVER.ALMOSTFINISHED)
+        .then(res => {
+          res.data.object.forEach(item => {
+            storageRef.child(item.thumbnail).getDownloadURL()
+              .then(url => item.thumbnail = url)
+              .catch(err => console.error(err))
+            let genres = ''
+            item.genreName.forEach(genre => {
+              genres += genre + ' | '
+            })
+            item.genreName = genres.slice(0, genres.length-2)
+          })
+          commit('setAlmostFinishedList', res.data.object)
+        })
+        .catch(err => console.error(err))
+
+      axios.get(SERVER.BASE + SERVER.MOSTFUNDED)
+        .then(res => {
+          res.data.object.forEach(item => {
+            storageRef.child(item.thumbnail).getDownloadURL()
+              .then(url => item.thumbnail = url)
+              .catch(err => console.error(err))
+            let genres = ''
+            item.genreName.forEach(genre => {
+              genres += genre + ' | '
+            })
+            item.genreName = genres.slice(0, genres.length-2)
+          })
+          commit('setMostFundedList', res.data.object)
+        })
+        .catch(err => console.error(err))
+
+      axios.get(SERVER.BASE + SERVER.HIGHESTPERCENT)
+        .then(res => {
+          res.data.object.forEach(item => {
+            storageRef.child(item.thumbnail).getDownloadURL()
+              .then(url => item.thumbnail = url)
+              .catch(err => console.error(err))
+            let genres = ''
+            item.genreName.forEach(genre => {
+              genres += genre + ' | '
+            })
+            item.genreName = genres.slice(0, genres.length-2)
+          })
+          commit('setHighestPercentList', res.data.object)
+        })
+        .catch(err => console.error(err))
+      
+      if (getters.isLoggedIn) {
+        axios.get(SERVER.BASE + SERVER.GENREBASEDRECOMMENDATION, getters.headersConfig)
+          .then(res => {
+            res.data.object.forEach(item => {
+              storageRef.child(item.thumbnail).getDownloadURL()
+                .then(url => item.thumbnail = url)
+                .catch(err => console.error(err))
+              let genres = ''
+              item.genreName.forEach(genre => {
+                genres += genre + ' | '
+              })
+              item.genreName = genres.slice(0, genres.length-2)
+            })
+            commit('setGenreRecommendationList', res.data.object)
+          })
+          .catch(err => console.error(err))
+      }
+    },
 
     // follow 
     follow({ getters, dispatch }, following) {
@@ -399,15 +536,6 @@ export default new Vuex.Store({
         })
         .catch(err => console.error(err))
     },
-
-    fetchFundedProjects({ commit, getters }, username) {
-      axios.get(SERVER.BASE + SERVER.FUNDEDPROJECT + username, getters.headersConfig)
-        .then(res => {
-          console.log(res.data)
-          commit('setFundedProjectList', res.data.object)
-        })
-        .catch(err => console.log(err))
-    },
     
     getReward({ commit }, rewardId) {
       commit('setRewardData', null)
@@ -420,15 +548,21 @@ export default new Vuex.Store({
     },
 
     // like
-    fetchLikedProjects({ commit }, username) {
-      axios.get(SERVER.BASE + SERVER.LIKEDPROJECT + `/${username}`)
-        .then(res => commit('setLikedProjectList', res.data.object))
-        .catch(err => console.error(err))
-    },
-
     fetchLikedUsers({ commit }, gameId) {
       axios.get(SERVER.BASE + SERVER.LIKEBYGAME + gameId)
-      .then((res) => commit('setLikedUserList', res.data.object))
+      .then((res) => {
+        if (res.data.object.length > 0) {
+          const storageRef = firebase.storage().ref()
+          res.data.object.forEach(item => {
+            if (item.profile !== null) {
+              storageRef.child(item.profile).getDownloadURL()
+                .then(url => item.profile = url)
+                .catch(err => console.error(err))
+            }
+          })
+        }
+        commit('setLikedUserList', res.data.object)
+      })
       .catch((err) => console.error(err));  
     },
 
@@ -471,12 +605,50 @@ export default new Vuex.Store({
 
     // search
     search({ commit }, searchKeyword) {
+      // user
       axios.get(SERVER.BASE + SERVER.SEARCH + `${searchKeyword}`)
       .then(res => {
-        commit('setSearchResult', res.data.object)
-        router.push(`/search/${searchKeyword}`)
+        const storageRef = firebase.storage().ref()
+        if (res.data.object.user.length > 0){
+          res.data.object.user.forEach(item => {
+            if (item.profile !== null) {
+            storageRef.child(item.profile).getDownloadURL()
+            .then(url => {
+              item.profile = url
+            })
+            .catch(err => console.error(err))
+           }
+          })
+        }
+
+        if (res.data.object.game.length > 0){
+          res.data.object.game.forEach(item => {
+            if (item.thumbnail !== null) {
+            storageRef.child(item.thumbnail).getDownloadURL()
+            .then(url => {
+              item.thumbnail = url
+            })
+            .catch(() => item.thumbnail = null)
+           }
+           if (item.profile !== null) {
+            storageRef.child(item.profile).getDownloadURL()
+            .then(url => {
+              item.profile = url
+            })
+            .catch(() => item.profile = null)
+           }
+           let genres = ''
+           item.genreName.forEach(genre => {
+             genres += genre + ' | '
+           })
+           item.genreName = genres.slice(0, genres.length-2)
+          })
+        }
+        commit('setSearchUser', res.data.object.user)
+        commit('setSearchGame', res.data.object.game)
+        commit('setSearchCommunity', res.data.object.community)
+        router.push(`/search/${searchKeyword}`).catch(()=>{})
       })
-      .catch(err => console.error(err))
     },  
   },
   modules: {

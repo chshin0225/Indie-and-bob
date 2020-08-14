@@ -1,68 +1,111 @@
 <template>
   <v-container>
-
     <!-- <p>{{ projectList }}</p> -->
-    <h1 class="text-center">Projects</h1>
+    <h1 class="text-center">프로젝트 심사</h1>
 
     <!-- projects  -->
-    <div v-for="game in games" :key="game.gameId">
-      <v-card outlined :to="`/game/${game.gameId}`">
-        <v-list-item three-line>
-          <v-list-item-content>
-            <v-list-item-title class="headline mb-1">{{ game.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ game.deadline }}까지</v-list-item-subtitle>
-            <v-list-item-subtitle>목표액: {{ game.aim }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-card>
+    <v-row>
+      <v-col v-for="game in games" :key="game.gameId" cols=6 md=4>
+        <v-card tile class="card">
+          <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
+              <v-list-item>
+                <v-avatar>
+                  <v-img v-if="game.profile" :src="game.profile" :alt="game.nickname"></v-img>
+                  <v-img v-else src="../../assets/default_profile.png"></v-img>
+                </v-avatar>
+                <v-list-item-content class="ml-4">
+                  <v-list-item-title class="font-weight-bold game-name">{{ game.name }}</v-list-item-title>
+                  <router-link class="text-decoration-none" :to="`/user/mypage/${game.nickname}`">{{ game.nickname }}</router-link>
+                  <v-list-item-subtitle class="d-none d-sm-block">{{ $moment(game.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{ game.genreName }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-img v-if="game.thumbnail" :src="game.thumbnail" height="194"></v-img>
+              <v-img v-else src="../../assets/default_project.png"></v-img>
+              
+              <v-list-item class="py-1 mx-1">
+                <v-row>
+                  <p class="mb-0 ml-1 funding-progress">목표 금액: {{ game.aim }}원</p>
+                </v-row>
+              </v-list-item>
+          </router-link>
+        </v-card>
+      </v-col>
+    </v-row>
 
-    </div>
-  <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+    <infinite-loading @infinite="infiniteHandler" spinner="waveDots">
+      <div slot="no-more"></div>
+      <div slot="no-results">심사할 프로젝트가 없네요!</div>
+    </infinite-loading>
   </v-container>
 </template>
 
 <script>
-import axios from 'axios'
-import SERVER from '../../api/base'
-import InfiniteLoading from 'vue-infinite-loading';
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
+
+import axios from "axios";
+import SERVER from "../../api/base";
+import InfiniteLoading from "vue-infinite-loading";
+import firebase from 'firebase'
+
 export default {
-    data () {
-        return {
-            games: [],
-            gameNum: 0,
-        }
-    },
-    computed: {
-        ...mapGetters([ 'headersConfig' ])
-    },
-    components : {
-        InfiniteLoading
-    },
-    methods: {
-        infiniteHandler($state) {
-            axios.get(SERVER.BASE + SERVER.UNAPPROVED + this.gameNum + '/', this.headersConfig)
-                .then(res => { 
-            console.log(res)
-            if (res.data.object.length > 0) {
+  name: 'NewProjectRequest',
+
+  data() {
+    return {
+      games: [],
+      gameNum: 0,
+    };
+  },
+
+  components: {
+    InfiniteLoading,
+  },
+
+  computed: {
+    ...mapGetters(["headersConfig"]),
+  },
+
+  methods: {
+    infiniteHandler($state) {
+      const storageRef = firebase.storage().ref()
+      axios.get(SERVER.BASE + SERVER.UNAPPROVED + this.gameNum + "/", this.headersConfig)
+        .then((res) => {
+          if (res.data.object.length > 0) {
             this.gameNum += 10;
-            console.log(res.data)
+            // console.log(res.data);
             res.data.object.forEach(item => {
-                this.games.push(item)
-            })
-            console.log('게임즈')
-            console.log(this.games)
+              if (item.profile !== null) {
+                storageRef.child(item.profile).getDownloadURL().then(url => {
+                  item.profile = url
+                })
+              }
+              if (item.thumbnail !== null) {
+                storageRef.child(item.thumbnail).getDownloadURL().then(url => {
+                  item.thumbnail = url
+                })
+              } 
+              this.games.push(item);
+              
+              let genres = ''
+              item.genreName.forEach(genre => {
+                genres += genre + ' | '
+              })
+              item.genreName = genres.slice(0, genres.length-2)
+            });
             $state.loaded();
-            } else {
+          } else {
             $state.complete();
-            }
-      })
-        .catch(err => console.error(err))
+          }
+        })
+        .catch((err) => console.error(err));
     },
-  }
-}
+  },
+};
 </script>
 
-<style>
-
+<style scoped>
+  .game-name {
+    font-size: 18px;
+  }
 </style>

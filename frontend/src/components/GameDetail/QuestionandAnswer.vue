@@ -1,40 +1,138 @@
 <template>
   <v-container>
 
-    <v-row>
+    <v-row v-if="questionList.length > 0">
       <v-col cols=12>
         <!-- questions -->
-        <v-simple-table>
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">제목</th>
-                <th class="text-left">작성자</th>
-                <th class="text-left">작성일</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="question in questionList" :key="question.qnaId">
-                <td><i class="fas fa-lock mr-2" v-if="question.secret"></i>{{ question.title }}</td>
-                <td><span><router-link :to="`/user/mypage/${question.nickname}`" class="text-decoration-none">{{question.nickname}}</router-link></span></td>
-                <td>날짜날짜</td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
+        <v-row>
+          <v-col cols=6>
+            <span class="ml-7 font-weight-bold">제목</span>
+          </v-col>
+          <v-col class="pl-0">
+            <span class="font-weight-bold">작성자</span>
+          </v-col>
+          <v-col>
+            <span class="font-weight-bold">작성일</span>
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+
+        <v-expansion-panels accordion flat>
+          <v-expansion-panel v-for="question in questionList" :key="question.qnaId">
+            <v-expansion-panel-header @click="answerToQuestion = ''">
+              <v-row>
+                <v-col cols=6>
+                  <i class="fas fa-lock mr-2" v-if="question.secret"></i>{{ question.title }}
+                      <v-chip
+                        v-if="question.answer"
+                        color="secondary"
+                        x-small
+                        class="black--text ml-1"
+                      >
+                        답변 완료
+                      </v-chip>
+                </v-col>
+                <v-col>
+                  <span><router-link :to="`/user/mypage/${question.nickname}`" class="text-decoration-none">{{question.nickname}}</router-link></span>
+                </v-col>
+                <v-col>
+                  <span class="pl-3">{{ $moment(question.createdAt).format('YYYY.MM.DD') }}</span>
+                </v-col>
+              </v-row>
+            </v-expansion-panel-header>
+
+            <v-expansion-panel-content>
+              <!-- 개발자 아닌 사람이 보는 경우 -->
+              <div v-if="!isDeveloper">
+                <v-card flat>
+                  <v-card-subtitle class="pb-1 pt-0"><span class="font-weight-bold">Q.</span></v-card-subtitle>
+                  <v-card-text>{{ question.content }}</v-card-text>
+                </v-card>
+                <v-card flat>
+                  <v-card-subtitle class="pb-1"><span class="font-weight-bold">A.</span></v-card-subtitle>
+                  <v-card-text v-if="question.answer">{{ question.answer }}</v-card-text>
+                  <v-card-text v-else>아직 답변이 없네요!</v-card-text>
+                  <v-card-actions class="pr-0 py-0">
+                      <v-spacer></v-spacer>
+                      <v-btn
+                       v-if = "question.nickname === currentUser"
+                        color="primary" 
+                        text 
+                        @click="deleteQuestion(question.qnaId)"
+                      >삭제</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </div>
+
+              <!-- 개발자가 보는 경우 -->
+              <div v-else>
+                <v-card flat>
+                  <v-card-subtitle class="pb-1 pt-0"><span class="font-weight-bold">Q.</span></v-card-subtitle>
+                  <v-card-text>{{ question.content }}</v-card-text>
+                </v-card>
+                <v-card flat>
+                  <v-card-subtitle class="pb-1"><span class="font-weight-bold">A.</span></v-card-subtitle>
+                  <!-- 답변 완료 -->
+                  <v-card-text v-if="question.answer" class="pb-0">
+                    {{ question.answer }}
+                    <v-card-actions class="pr-0 py-0">
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="primary" 
+                        text 
+                        @click="deleteQuestion(question.qnaId)"
+                      >삭제</v-btn>
+                    </v-card-actions>
+                  </v-card-text>
+
+                  <!-- 답변 작성해야함 -->
+                  <v-card-text class="pb-0" v-else>
+                    <v-textarea
+                      v-model="answerToQuestion"
+                      hide-details="true"
+                      outlined
+                      id="content"
+                      placeholder="답변 작성"
+                      type="text"
+                    ></v-textarea>
+                    <v-card-actions class="pr-0">
+                      <v-spacer></v-spacer>
+                      <v-btn 
+                        color="primary" 
+                        depressed 
+                        @click="submitAnswer({'gameId': question.gameId, 'title': question.title, 'content': question.content, 'secret': question.secret, 'answer': answerToQuestion, 'qnaId': question.qnaId})"
+                      >답변</v-btn>
+                      <v-btn
+                        color="primary" 
+                        text 
+                        @click="deleteQuestion(question.qnaId)"
+                      >삭제</v-btn>
+                    </v-card-actions>
+                  </v-card-text>
+                </v-card>
+              </div>
+
+            </v-expansion-panel-content>
+            <v-divider></v-divider>
+
+          </v-expansion-panel>
+        </v-expansion-panels>
         
-        <!-- pagination -->
-        <div class="text-center">
+        <!-- pagination --> 
+        <div class="text-center mt-3">
           <v-pagination
+            v-if="questionList.length > 0"
             v-model="page"
             :length="paginationLength"
             color="accent"
           ></v-pagination>
         </div>
-        <!-- <p>{{ questionList }}</p> -->
-
       </v-col>
     </v-row>
+
+    <div v-else>
+      <p class="py-6 text-center">아직 문의사항이 없네요!</p>
+    </div>
 
     <v-row class="justify-end">
       <v-dialog v-model="questionForm" persistent max-width="600px">
@@ -83,43 +181,31 @@
                   <small class="error-text primary--text" v-if="error.content">{{error.content}}</small>
                 </v-col>
 
-                <v-col class="py-0" cols=12>
-                  <v-checkbox
-                    v-model="questionData.secret"
-                    label="비밀글로 하기"
-                  ></v-checkbox>
-                </v-col>
-                
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-col class="py-0" cols="auto" v-bind="attrs" v-on="on">
+                        <v-checkbox
+                          v-model="questionData.secret"
+                          label="비밀글로 하기"
+                        ></v-checkbox>
+                      </v-col>
+                    </template>
+                    <span>비밀글로 하면 문의 내용을 개발자와 나만 볼 수 있습니다.</span>
+                  </v-tooltip>
               </v-row>
-              <p>{{ questionData }}</p>
+              <!-- <p>{{ questionData }}</p> -->
             </v-container>
           </v-card-text>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="accent" depressed @click="submitQuestion()">문의하기</v-btn>
-            <v-btn color="primary" text @click="questionForm = false">닫기</v-btn>
+            <v-btn color="accent" depressed @click="submitQuestion">문의하기</v-btn>
+            <v-btn color="primary" text @click="resetQuestionData">닫기</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </v-row>
 
-
-
-    <!-- <v-expansion-panels>
-      <v-expansion-panel>
-        <v-expansion-panel-header>
-            title
-            content
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-        answer
-        </v-expansion-panel-content>
-        <v-expansion-panel-content>
-        </v-expansion-panel-content>
-
-      </v-expansion-panel>
-    </v-expansion-panels> -->
   </v-container>
 </template>
 
@@ -140,6 +226,7 @@ export default {
           content: '',
           secret: false,
         },
+        answerToQuestion: '',
         error: {
           title: false,
           content: false,
@@ -147,15 +234,34 @@ export default {
         questionList: [],
         questionCount: null,
         page: 1,
+
+        isDeveloper: false,
+        currentUser: localStorage.getItem('username'),
       }
     },
 
     computed: {
       ...mapState(['project',]),
-      ...mapGetters(['headersConfig', 'isLoggedIn'])
+      ...mapGetters(['headersConfig', 'isLoggedIn']),
+      paginationLength() {
+        return Math.ceil(this.questionCount / 10)
+      },
+    },
+
+    watch: {
+      page: function() {
+        this.fetchQuestions(this.page)
+      },
     },
 
     methods: {
+      resetQuestionData() {
+        this.questionData.title = ''
+        this.questionData.content = ''
+        this.questionData.secret = false
+        this.questionForm = false
+      },
+
       submitQuestion() {
         if (this.questionData.title.length <= 0) {
           this.error.title = "제목이 있어야 합니다."
@@ -173,34 +279,54 @@ export default {
               this.questionData.content = ''
               this.questionData.secret = false
               this.questionForm = false
-              this.fetchQuestions()
+              this.fetchQuestions(1)
             })
             .catch(err => console.error(err))
         }
       },
 
-      fetchQuestions() {
+      fetchQuestions(page) {
         if (this.isLoggedIn) {
-          axios.get(SERVER.BASE + SERVER.QNA + this.$route.params.id + `/${this.page}`, this.headersConfig)
+          axios.get(SERVER.BASE + SERVER.QNA + this.$route.params.id + `/${page}`, this.headersConfig)
             .then(res => {
-              console.log('Login', this.isLoggedIn)
-              console.log(res.data)
+              // console.log(res.data.object)
               this.questionList = res.data.object
+              this.questionCount = res.data.object.length
             })
             .catch(err => console.error(err))
         } else {
           axios.get(SERVER.BASE + SERVER.NOSECRETQNA + this.$route.params.id + `/${this.page}`)
             .then(res => {
-              console.log('Login', this.isLoggedIn)
+              // console.log('Login', this.isLoggedIn)
               this.questionList = res.data.object
             })
             .catch(err => console.error(err))
         }
       },
+
+      submitAnswer(answerData) {
+        axios.put(SERVER.BASE + SERVER.ANSWER, answerData, this.headersConfig)
+          .then(() => {
+            this.answerToQuestion = ''
+            this.fetchQuestions(this.page)
+          })
+          .catch(err => console.error(err))
+      },
+
+      deleteQuestion(qnaId) {
+        axios.delete(SERVER.BASE + SERVER.DELETEQNA + qnaId)
+          .then(() => this.fetchQuestions(this.page))
+          .catch(err => console.error(err))
+      },
     },
 
     created() {
-      this.fetchQuestions()
+      this.fetchQuestions(this.page)
+
+      // 현재 유저가 개발자인지 확인
+      if (this.project.nickname === localStorage.getItem('username')) {
+        this.isDeveloper = true
+      }
     },
 }
 </script>

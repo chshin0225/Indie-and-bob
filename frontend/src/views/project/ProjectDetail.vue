@@ -1,11 +1,20 @@
 <template v-if="render">
-  <v-container>
-    <h1>{{ this.project.name }} 제작페이지</h1>
+  <v-container v-if="project">
+    <h1>{{ project.name }} 제작페이지</h1>
+
+    <v-row v-if="project.thumbnail" class="justify-center">
+      <v-col class="py-0" sm="6">
+        <label for="profile-image">프로젝트 썸네일</label>
+        <v-img contain :src="project.thumbnail" :alt="project.name"></v-img>
+        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
+      </v-col>
+    </v-row>
+
     <v-btn @click="projectDelete()">프로젝트 삭제</v-btn>
     <v-btn @click="projectEdit()">프로젝트 수정</v-btn>
     <h2>프로젝트 소개내용</h2>
     <v-card outlined>
-      <Viewer v-if="project.content != null" :initialValue="project.content" />
+      <Viewer ref="toastuiEditor" :initialValue="project.content" />
     </v-card>
     <v-row class="justify-around">
       <v-col cols="auto">
@@ -43,19 +52,6 @@
                   outlined
                   required
                 ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row class="justify-center">
-              <v-col class="py-0 mt-5" sm="6">
-                <label for="r_thumbnailUrl">썸네일</label>
-                <v-file-input
-                  id="r_thumbnailUrl"
-                  v-model="r_thumbnailUrl"
-                  @change="uploadImgPreview"
-                  accept="image/*"
-                  label="썸네일 이미지를 입력해주세요"
-                  prepend-icon="mdi-camera"
-                ></v-file-input>
               </v-col>
             </v-row>
             <v-row class="justify-center">
@@ -108,14 +104,7 @@
     <div v-if="rewards">
       <v-row>
         <v-col cols="12" sm="6" v-for="reward in rewards" :key="reward.rewardId">
-          <v-card color="secondary" class="mx-auto" max-width="400">
-            <v-img
-              v-if="reward.rImg"
-              class="white--text align-end"
-              height="200px"
-              :src="reward.rImg"
-            ></v-img>
-            <v-img v-else class="white--text align-end" height="200px" src="rnn"></v-img>
+          <v-card color="secondary" class="mx-auto" max-width="400">  
             <v-card-title>{{reward.rewardName}}</v-card-title>
             <v-card-subtitle class="pb-0">{{reward.price}}원</v-card-subtitle>
 
@@ -132,6 +121,11 @@
         </v-col>
       </v-row>
     </div>
+    <v-row>
+      <v-col>
+        <v-btn @click="finalSubmit()" dark>프로젝트 최종 제출하기</v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -139,31 +133,20 @@
 import axios from "axios";
 import router from "../../router";
 import SERVER from "../../api/base";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
+// import firebase from 'firebase'
 
 export default {
   components: {
     Viewer,
   },
   created() {
-    this.id = this.$route.params.id;
-    console.log(this.id);
+    this.getProject(this.$route.params.id)
     axios
-      .get(SERVER.BASE + SERVER.GAME + this.id)
-      .then((res) => {
-        this.project = res.data.object;
-        this.content = this.project.content;
-        console.log(this.project);
-      })
-      .catch((err) => {
-        console.error(err);
-        router.push("/404");
-      });
-    axios
-      .get(SERVER.BASE + SERVER.REWARDS + this.id)
+      .get(SERVER.BASE + SERVER.REWARDS + this.$route.params.id)
       .then((res) => {
         console.log("rewards", res.data.object);
         this.rewards = res.data.object;
@@ -172,29 +155,29 @@ export default {
       .catch((err) => {
         console.error(err);
         this.rewards = [];
-      });
+    });  
   },
   computed: {
     ...mapGetters(["headersConfig"]),
+    ...mapState(['project'])
   },
   data() {
     return {
-      project: {},
-      content: "",
       rewards: [],
       dialog: false,
       notifications: false,
       sound: true,
       widgets: false,
-      r_thumbnailUrl: "n",
       r_left: 0,
       r_price: 0,
       r_title: "",
       r_content: "",
       render: false,
+      id: this.$route.params.id
     };
   },
   methods: {
+    ...mapActions(['getProject']),
     uploadImgPreview() {
       let fileInfo = document.getElementById("thumbnail").files[0];
       let reader = new FileReader();
@@ -212,11 +195,10 @@ export default {
         content: this.r_content,
         price: this.r_price,
         leftCount: this.r_left,
-        rImg: this.r_thumbnailUrl,
       };
       console.log(PARAMS);
       axios
-        .post(SERVER.BASE + SERVER.REWARD, PARAMS, this.headersConfig)
+        .post(SERVER.BASE + SERVER.ALLREWARD, PARAMS, this.headersConfig)
         .then((res) => {
           console.log(res);
           axios
@@ -246,7 +228,7 @@ export default {
       ).then((text) => {
         if (text === "Delete the reward") {
           axios
-            .delete(SERVER.BASE + SERVER.REWARD + reward_id, this.headersConfig)
+            .delete(SERVER.BASE + SERVER.ALLREWARD + reward_id, this.headersConfig)
             .then((res) => {
               console.log(res)
               axios
@@ -264,7 +246,8 @@ export default {
         } else {
           this.$alert("Wrong input!");
         }
-      });
+      })
+       .catch(() => false)
     },
     projectEdit() {
       router.push("/pjt/edit/" + this.id);
@@ -287,7 +270,24 @@ export default {
         } else {
           this.$alert("Wrong input!");
         }
-      });
+      })
+       .catch(() => false)
+    },
+    finalSubmit() {
+      this.$prompt(
+        "프로젝트를 제출하고 싶으시다면 '최종제출'을 입력해주세요.",
+        "",
+        "최종제출 이후에는 프로젝트를 수정할 수 없습니다.",
+        "question"
+      ).then((text) => {
+        if (text === "최종제출") {
+          axios.get(SERVER.BASE + SERVER.GAMEREGISTER + `/${this.$route.params.id}`)
+          router.push({ name: 'CreateProjectDone'})
+        } else {
+          this.$alert("잘못된 입력입니다.")
+        }
+      })
+      .catch(() => false)
     },
   },
 };

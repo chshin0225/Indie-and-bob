@@ -1,33 +1,39 @@
 <template>
   <v-container>
     <v-row>
-      <v-col v-for="project in fundedProjectList" :key="project.gameId" cols=6 sm=4>
-        <v-card>
+      <v-col v-for="project in fundedProjectList" :key="project.gameId" cols=6 md=4>
+        <v-card tile class="card">
           <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
               <v-list-item>
                 <v-avatar>
-                  <img src="../../assets/default_profile.png" :alt="project.nickname" />
+                  <v-img v-if="project.profile" :src="project.profile" :alt="project.nickname"></v-img>
+                  <v-img v-else src="../../assets/default_profile.png"></v-img>
                 </v-avatar>
                 <v-list-item-content class="ml-4">
-                  <v-list-item-title class="headline">{{ project.name }}</v-list-item-title>
+                  <v-list-item-title class="font-weight-bold project-name">{{ project.name }}</v-list-item-title>
                   <router-link class="text-decoration-none" :to="`/user/mypage/${project.nickname}`">{{ project.nickname }}</router-link>
-                  <v-list-item-subtitle>{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
-                  <v-list-item-subtitle>목표액: {{ project.aim }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="d-none d-sm-block">{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{ project.genreName }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-img src="../../assets/default_project.png" height="194"></v-img>
+              <v-img v-if="project.thumbnail" :src="project.thumbnail" height="194"></v-img>
+              <v-img v-else src="../../assets/default_project.png"></v-img>
+              
+              <v-list-item class="py-1 mx-1">
+                <v-row>
+                  <p class="mb-1 ml-1 funding-progress">{{ fundingProgress(project.aim, project.leftPrice) }}% 달성</p>
+                  <v-progress-linear :value="fundingProgress(project.aim, project.leftPrice)" height="7"></v-progress-linear>
+                </v-row>
+              </v-list-item>
           </router-link>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
 
-    <infinite-loading @infinite="fetchFundedProjects"></infinite-loading>
+    <infinite-loading @infinite="fetchFundedProjects" spinner="waveDots">
+      <div slot="no-more"></div>
+      <div slot="no-results">아직 펀딩한 프로젝트가 없네요!</div>
+    </infinite-loading>
   </v-container>
 </template>
 
@@ -38,6 +44,7 @@ import SERVER from '../../api/base'
 import axios from 'axios'
 import InfiniteLoading from 'vue-infinite-loading'
 import firebase from 'firebase'
+import _ from 'lodash'
 
 export default {
   name: 'FundedProjects',
@@ -54,7 +61,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['headersConfig',])
+    ...mapGetters(['headersConfig',]),
+
+    fundingProgress() {
+      return (aim, leftPrice) => {
+        if (aim === leftPrice) {
+          return 0
+        } else {
+          return _.round((aim - leftPrice) / aim * 100)
+        }
+      }
+    },
   },
 
   methods: {
@@ -62,11 +79,9 @@ export default {
       const storageRef = firebase.storage().ref()
       axios.get(SERVER.BASE + SERVER.FUNDEDPROJECT + `${this.$route.params.username}/${this.projectNum}`, this.headersConfig)
         .then(res => {
-          console.log('fetch', res.data.object)
           if (res.data.object.length > 0) {
             this.projectNum += 9
             res.data.object.forEach(item => {
-              console.log(item.profile)
               if (item.profile !== null) {
                 storageRef.child(item.profile).getDownloadURL()
                   .then(url => {
@@ -75,7 +90,6 @@ export default {
                   .catch(err => console.error(err))
               }
               if (item.thumbnail !== null) {
-                console.log(item.thumbnail)
                 storageRef.child(item.thumbnail).getDownloadURL()
                   .then(url => {
                     item.thumbnail = url
@@ -83,6 +97,12 @@ export default {
                   .catch(err => console.error(err))
               }
               this.fundedProjectList.push(item)
+
+              let genres = ''
+              item.genreName.forEach(genre => {
+                genres += genre + ' | '
+              })
+              item.genreName = genres.slice(0, genres.length-2)
             })
             $state.loaded()
           } else {
@@ -97,6 +117,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.project-name {
+  font-size: 18px;
+}
 </style>
