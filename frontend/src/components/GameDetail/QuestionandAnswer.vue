@@ -46,11 +46,11 @@
               <div v-if="!isDeveloper">
                 <v-card flat>
                   <v-card-subtitle class="pb-1 pt-0"><span class="font-weight-bold">Q.</span></v-card-subtitle>
-                  <v-card-text>{{ question.content }}</v-card-text>
+                  <v-card-text v-html="question.content"></v-card-text>
                 </v-card>
                 <v-card flat>
                   <v-card-subtitle class="pb-1"><span class="font-weight-bold">A.</span></v-card-subtitle>
-                  <v-card-text v-if="question.answer">{{ question.answer }}</v-card-text>
+                  <v-card-text v-if="question.answer" v-html="question.answer"></v-card-text>
                   <v-card-text v-else>아직 답변이 없네요!</v-card-text>
                   <v-card-actions class="pr-0 py-0">
                       <v-spacer></v-spacer>
@@ -68,13 +68,13 @@
               <div v-else>
                 <v-card flat>
                   <v-card-subtitle class="pb-1 pt-0"><span class="font-weight-bold">Q.</span></v-card-subtitle>
-                  <v-card-text>{{ question.content }}</v-card-text>
+                  <v-card-text v-html="question.content"></v-card-text>
                 </v-card>
                 <v-card flat>
                   <v-card-subtitle class="pb-1"><span class="font-weight-bold">A.</span></v-card-subtitle>
                   <!-- 답변 완료 -->
                   <v-card-text v-if="question.answer" class="pb-0">
-                    {{ question.answer }}
+                    <div v-html="question.answer"></div>
                     <v-card-actions class="pr-0 py-0">
                       <v-spacer></v-spacer>
                       <v-btn
@@ -119,7 +119,7 @@
         </v-expansion-panels>
         
         <!-- pagination --> 
-        <div class="text-center mt-3">
+        <div class="text-center mt-4">
           <v-pagination
             v-if="questionList.length > 0"
             v-model="page"
@@ -138,6 +138,7 @@
       <v-dialog v-model="questionForm" persistent max-width="600px">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+            v-if="isLoggedIn"
             color="accent"
             depressed
             v-bind="attrs"
@@ -241,7 +242,7 @@ export default {
     },
 
     computed: {
-      ...mapState(['project',]),
+      ...mapState(['project', 'isLoggedIn',]),
       ...mapGetters(['headersConfig', 'isLoggedIn']),
       paginationLength() {
         return Math.ceil(this.questionCount / 10)
@@ -290,6 +291,14 @@ export default {
           axios.get(SERVER.BASE + SERVER.QNA + this.$route.params.id + `/${page}`, this.headersConfig)
             .then(res => {
               // console.log(res.data.object)
+              if (res.data.object.length > 0) {
+                res.data.object.forEach(item => {
+                  item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
+                  if (item.answer !== null) {
+                    item.answer = item.answer.replace(/(?:\r\n|\r|\n)/g, '<br />')
+                  }
+                })
+              }
               this.questionList = res.data.object
               this.questionCount = res.data.object.length
             })
@@ -297,8 +306,16 @@ export default {
         } else {
           axios.get(SERVER.BASE + SERVER.NOSECRETQNA + this.$route.params.id + `/${this.page}`)
             .then(res => {
-              // console.log('Login', this.isLoggedIn)
+              if (res.data.object.length > 0) {
+                res.data.object.forEach(item => {
+                  item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
+                  if (item.answer !== null) {
+                    item.answer = item.answer.replace(/(?:\r\n|\r|\n)/g, '<br />')
+                  }
+                })
+              }
               this.questionList = res.data.object
+              this.questionCount = res.data.object.length
             })
             .catch(err => console.error(err))
         }

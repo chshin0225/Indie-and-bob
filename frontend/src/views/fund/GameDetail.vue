@@ -189,7 +189,7 @@
                   </div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  {{ reward.content }}
+                  <div v-html="reward.content"></div>
                   <v-divider class="mt-3"></v-divider>
                   <v-row>
                     <v-col class="d-flex align-center">
@@ -315,6 +315,11 @@ export default {
     fetchRewards() {
       axios.get(SERVER.BASE + SERVER.REWARDS + this.$route.params.id)
       .then(res => {
+        if (res.data.object.length > 0) {
+          res.data.object.forEach(item => {
+            item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
+          })
+        }
         this.rewards = res.data.object
       })
       .catch(err => console.error(err))
