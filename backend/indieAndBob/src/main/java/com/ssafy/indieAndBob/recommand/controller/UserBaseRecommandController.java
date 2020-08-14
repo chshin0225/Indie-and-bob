@@ -94,7 +94,7 @@ public class UserBaseRecommandController {
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
-		}0
+		}
 		
 		return response;
 	}
