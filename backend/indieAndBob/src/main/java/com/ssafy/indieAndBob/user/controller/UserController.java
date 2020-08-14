@@ -57,7 +57,10 @@ public class UserController {
 			result.object = u;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
-			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "없는 이메일이거나 틀린 비밀번호 입니다.";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		return response;
 	}
@@ -92,14 +95,14 @@ public class UserController {
 			else {
 				final BasicResponse result = new BasicResponse();
 				result.status = false;
-				result.data = "duplicated nickname";
-				response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+				result.data = "이미 사용중인 닉네임입니다.";
+				response = new ResponseEntity<>(result, HttpStatus.OK);
 			}
 		} else {
 			final BasicResponse result = new BasicResponse();
 			result.status = false;
-			result.data = "duplicated email";
-			response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+			result.data = "이미 가입된 이메일입니다.";
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		return response;
 	}
