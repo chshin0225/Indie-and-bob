@@ -96,7 +96,7 @@ export default {
     },
 
     submitComment() {
-      if (this.communityComment.trim().length() > 0){
+      if (this.communityComment.trim().length > 0){
         let PARAMS = {
           nickname: localStorage.getItem("username"),
           content: this.communityComment,
