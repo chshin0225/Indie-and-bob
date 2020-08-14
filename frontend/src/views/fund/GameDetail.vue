@@ -61,7 +61,10 @@
             <p>목표: {{ project.aim }}원</p>
 
             <v-container class="pb-0">
-              <v-row>
+              <v-row v-if="project.isApprove===-1">
+                <p>거절사유 : {{ project.reason }}</p>
+              </v-row>
+              <v-row v-else>
                 <p class="mb-2"> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
                 <p class="mb-2">현재 모금액: {{ project.aim - project.leftPrice }}원</p>
