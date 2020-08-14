@@ -364,7 +364,7 @@ export default {
     },
 
     approve() {
-      axios.post(SERVER.BASE + SERVER.APPROVE, {
+      axios.put(SERVER.BASE + SERVER.APPROVE, {
         gameId: this.$route.params.id,
         isApprove: 1,
       })
@@ -376,7 +376,7 @@ export default {
 
     disapprove() {
       if (this.reasonOfRejection) {
-        axios.post(SERVER.BASE + SERVER.APPROVE, {
+        axios.put(SERVER.BASE + SERVER.APPROVE, {
           gameId: this.$route.params.id,
           isApprove: -1,
           reason: this.reasonOfRejection
