@@ -179,7 +179,7 @@ export default {
 
   computed: {
     ...mapState(["userInfo", "followerList", "followingList", "isFollowing",]),
-    ...mapGetters(["userDataFetched"]),
+    ...mapGetters(["userDataFetched", "isLoggedIn"]),
 
     isSelf: function() {
       return this.userInfo.nickname === localStorage.getItem("username");
