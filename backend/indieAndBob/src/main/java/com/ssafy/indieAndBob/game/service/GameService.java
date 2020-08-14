@@ -32,4 +32,5 @@ public interface GameService {
 	List<GameAll> mostFundedPriceGame();
 	List<GameAll> mostFundedPercentGame();
 	int gameSubmit(int gameId);
+	int endDay();
 }
