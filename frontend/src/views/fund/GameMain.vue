@@ -87,11 +87,13 @@ export default {
                 storageRef.child(item.profile).getDownloadURL().then(url => {
                   item.profile = url
                 })
+                .catch(() => item.profile = null)
               }
               if (item.thumbnail !== null) {
                 storageRef.child(item.thumbnail).getDownloadURL().then(url => {
                   item.thumbnail = url
                 })
+                .catch(() => item.thumbnail = null)
               } 
               this.games.push(item);
               
