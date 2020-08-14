@@ -189,7 +189,7 @@
                   </div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  {{ reward.content }}
+                  <div v-html="reward.content"></div>
                   <v-divider class="mt-3"></v-divider>
                   <v-row>
                     <v-col class="d-flex align-center">
@@ -315,6 +315,11 @@ export default {
     fetchRewards() {
       axios.get(SERVER.BASE + SERVER.REWARDS + this.$route.params.id)
       .then(res => {
+        if (res.data.object.length > 0) {
+          res.data.object.forEach(item => {
+            item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
+          })
+        }
         this.rewards = res.data.object
       })
       .catch(err => console.error(err))
@@ -355,7 +360,7 @@ export default {
     },
 
     approve() {
-      axios.put(SERVER.BASE + SERVER.APPROVE, {
+      axios.post(SERVER.BASE + SERVER.APPROVE, {
         gameId: this.$route.params.id,
         isApprove: 1,
       })
@@ -367,10 +372,10 @@ export default {
 
     disapprove() {
       if (this.reasonOfRejection) {
-        axios.put(SERVER.BASE + SERVER.APPROVE, {
+        axios.post(SERVER.BASE + SERVER.APPROVE, {
           gameId: this.$route.params.id,
           isApprove: -1,
-          // reasonOfRejection
+          reason: this.reasonOfRejection
         })
           .then((res) => {
             console.log(res);
