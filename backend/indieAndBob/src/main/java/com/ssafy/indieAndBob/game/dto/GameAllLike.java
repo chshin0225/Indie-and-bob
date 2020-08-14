@@ -23,6 +23,7 @@ public class GameAllLike {
 	private Date createdAt;
 	private Date updatedAt;
 	private Date startedAt;
+	private String reason;
     private String content;
     private List<Integer> genre;
     private List<String> genreName;
