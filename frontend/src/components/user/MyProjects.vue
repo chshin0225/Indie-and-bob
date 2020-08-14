@@ -18,7 +18,7 @@
                 </v-list-item-content>
               </v-list-item>
               <v-img v-if="project.thumbnail" :src="project.thumbnail" height="194"></v-img>  
-              <v-img v-else src="../../assets/default_project.png"></v-img>
+              <v-img v-else height="194" src="../../assets/default_project.png"></v-img>
               
               <v-list-item class="py-1 mx-1">
                 <v-row>
@@ -47,7 +47,7 @@
                 </v-list-item-content>
               </v-list-item>
               <v-img v-if="project.thumbnail" :src="project.thumbnail" height="194"></v-img>
-              <v-img v-else src="../../assets/default_project.png"></v-img>
+              <v-img v-else height="194" src="../../assets/default_project.png"></v-img>
               
               <v-list-item class="py-1 mx-1">
                 <v-row v-if="project.isApprove === 1">
@@ -131,14 +131,14 @@ export default {
                   .then(url => {
                     item.profile = url
                   })
-                  .catch(err => console.error(err))
+                  .catch(() => item.profile=null)
               }
               if (item.thumbnail !== null) {
                 storageRef.child(item.thumbnail).getDownloadURL()
                   .then(url => {
                     item.thumbnail = url
                   })
-                  .catch(err => console.error(err))
+                  .catch(() => item.thumbnail = null)
               } 
               this.myProjectList.push(item);
 

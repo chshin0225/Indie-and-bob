@@ -128,16 +128,20 @@ export default {
     ...mapActions(['getArticle', 'deleteArticle']),
 
     submitComment() {
-      const PARAMS = {
-        content: this.comment,
-        communityId: this.$route.params.articleId
+      if (this.comment.trim().length() > 0) {
+        const PARAMS = {
+          content: this.comment,
+          communityId: this.$route.params.articleId
+        }
+        axios.post(SERVER.BASE + SERVER.COMMUNITYCOMMENT, PARAMS, this.headersConfig)
+          .then(() => {
+            this.comment = null
+            this.fetchComments(this.$route.params.articleId)
+          })
+          .catch(err => console.error(err))
+      } else {
+        alert('댓글 내용을 작성해주세요.')
       }
-      axios.post(SERVER.BASE + SERVER.COMMUNITYCOMMENT, PARAMS, this.headersConfig)
-        .then(() => {
-          this.comment = null
-          this.fetchComments(this.$route.params.articleId)
-        })
-        .catch(err => console.error(err))
     },
 
     fetchComments(articleId) {
