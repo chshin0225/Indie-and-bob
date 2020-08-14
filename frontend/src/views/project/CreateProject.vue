@@ -83,7 +83,7 @@
       <v-col class="py-0" sm="10">
         <v-btn 
           cols=auto 
-          @click="onAction; onButtonClick" 
+          @click="onAction(); onButtonClick()" 
           :disabled="!isSubmit" 
           class="accent" 
           depressed
