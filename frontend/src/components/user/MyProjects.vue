@@ -17,7 +17,7 @@
                   <v-list-item-subtitle>{{ project.genreName }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-img v-if="project.thumbnail" :src="project.thumbnail" height="194"></v-img>
+              <v-img v-if="project.thumbnail" :src="project.thumbnail" height="194"></v-img>  
               <v-img v-else src="../../assets/default_project.png"></v-img>
               
               <v-list-item class="py-1 mx-1">
