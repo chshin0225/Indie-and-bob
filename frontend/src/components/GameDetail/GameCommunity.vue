@@ -2,7 +2,7 @@
   <v-container>
 
       <!-- comment submit section -->
-      <v-row class="justify-center">
+      <v-row class="justify-center" v-if="isLoggedIn">
         <v-col cols=12 sm="10" class="pb-0">
           <v-text-field
             v-model="communityComment"
@@ -24,7 +24,7 @@
           >글쓰기</v-btn>
         </v-col>
       </v-row>
-      <v-divider></v-divider>
+      <v-divider v-if="isLoggedIn"></v-divider>
 
       <!-- comments -->
       <v-list v-if="commentRender && commentList.length > 0" two-line>
@@ -85,7 +85,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['headersConfig',])
+    ...mapGetters(['headersConfig', 'isLoggedIn',])
   },
 
   methods: {

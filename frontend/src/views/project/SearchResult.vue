@@ -10,41 +10,158 @@
         <v-card flat>
           <v-card-text>통합검색 부분입니다.</v-card-text>
           <!-- <p>{{ searchResult }}</p> -->
-          <v-list v-if="searchResult.length > 0">
+          <v-list v-if="searchUser!==null && searchUser.length > 0">
             <v-list-item
-              v-for="result in searchResult"
-              :key="result.nickname"
-              :to="`/user/mypage/${result.nickname}`"
+              v-for="user in searchUser"
+              :key="user.nickname"
+              :to="`/user/mypage/${user.nickname}`"
             >
               <v-list-item-avatar>
-                <v-img src="../../assets/default_profile.png"></v-img>
+                <v-img v-if="user.profile" :src="user.profile"></v-img>
+                <v-img v-else src="../../assets/default_profile.png"></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title>{{ result.nickname }}</v-list-item-title>
+                <v-list-item-title>{{ user.nickname }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
           <div v-else class="mt-5">
-            <p class="text-center">결과없음</p>
+            <p class="text-center">유저 결과없음</p>
           </div>
+          <br>
+          <v-row v-if="searchGame!==null && searchGame.length>0">
+          <v-col v-for="game in searchGame" :key="game.gameId" cols=6 md=4>
+            <v-card tile class="card">
+              <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
+                  <v-list-item>
+                    <v-avatar>
+                      <v-img v-if="game.profile" :src="game.profile" :alt="game.nickname"></v-img>
+                      <v-img v-else src="../../assets/default_profile.png"></v-img>
+                    </v-avatar>
+                    <v-list-item-content class="ml-4">
+                      <v-list-item-title class="font-weight-bold game-name">{{ game.name }}</v-list-item-title>
+                      <router-link class="text-decoration-none" :to="`/user/mypage/${game.nickname}`">{{ game.nickname }}</router-link>
+                      <v-list-item-subtitle class="d-none d-sm-block">{{ $moment(game.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                      <v-list-item-subtitle>{{ game.genreName }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-img v-if="game.thumbnail" :src="game.thumbnail" height="194"></v-img>
+                  <v-img v-else src="../../assets/default_project.png"></v-img>
+                  
+                  <v-list-item class="py-1 mx-1">
+                    <v-row>
+                      <p class="mb-1 ml-1 funding-progress">{{ fundingProgress(game.aim, game.leftPrice) }}% 달성</p>
+                      <v-progress-linear :value="fundingProgress(game.aim, game.leftPrice)" height="7"></v-progress-linear>
+                    </v-row>
+                  </v-list-item>
+              </router-link>
+            </v-card>
+          </v-col>
+        </v-row>
+        <div v-else class="mt-5">
+          <p class="text-center">프로젝트 결과없음</p>
+        </div>
+        <br>
+        <v-row v-if="searchCommunity!==null && searchCommunity.length>0" class="justify-center">
+          <v-col class="py-0" cols=10 v-for="article in searchCommunity" :key="article.communityId">
+            <v-card class="mx-auto" :to="`/community/${article.communityId}`" flat>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="headline mb-1">{{ article.title }}</v-list-item-title>
+                  <v-list-item-subtitle class="pa-0 col-10">{{ $moment(article.updatedAt).format('YYYY.MM.DD hh:mm') }} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span></v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-card>
+            <v-divider></v-divider>
+          </v-col>
+        </v-row>
+        <div v-else class="mt-5">
+          <p class="text-center">게시글 결과없음</p>
+        </div>
         </v-card>
       </v-tab-item>
 
       <v-tab-item>
         <v-card flat outlined>
           <v-card-text>게임 / 프로젝트 부분입니다.</v-card-text>
+          <v-row v-if="searchGame!==null && searchGame.length>0">
+          <v-col v-for="game in searchGame" :key="game.gameId" cols=6 md=4>
+            <v-card tile class="card">
+              <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
+                  <v-list-item>
+                    <v-avatar>
+                      <v-img v-if="game.profile" :src="game.profile" :alt="game.nickname"></v-img>
+                      <v-img v-else src="../../assets/default_profile.png"></v-img>
+                    </v-avatar>
+                    <v-list-item-content class="ml-4">
+                      <v-list-item-title class="font-weight-bold game-name">{{ game.name }}</v-list-item-title>
+                      <router-link class="text-decoration-none" :to="`/user/mypage/${game.nickname}`">{{ game.nickname }}</router-link>
+                      <v-list-item-subtitle class="d-none d-sm-block">{{ $moment(game.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                      <v-list-item-subtitle>{{ game.genreName }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-img v-if="game.thumbnail" :src="game.thumbnail" height="194"></v-img>
+                  <v-img v-else src="../../assets/default_project.png"></v-img>
+                  
+                  <v-list-item class="py-1 mx-1">
+                    <v-row>
+                      <p class="mb-1 ml-1 funding-progress">{{ fundingProgress(game.aim, game.leftPrice) }}% 달성</p>
+                      <v-progress-linear :value="fundingProgress(game.aim, game.leftPrice)" height="7"></v-progress-linear>
+                    </v-row>
+                  </v-list-item>
+              </router-link>
+            </v-card>
+          </v-col>
+        </v-row>
+        <div v-else class="mt-5">
+          <p class="text-center">프로젝트 결과없음</p>
+        </div>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card flat outlined>
+          <v-card-text>유저 부분입니다.</v-card-text>
+          <v-list v-if="searchUser!==null && searchUser.length > 0">
+            <v-list-item
+              v-for="user in searchUser"
+              :key="user.nickname"
+              :to="`/user/mypage/${user.nickname}`"
+            >
+              <v-list-item-avatar>
+                <v-img v-if="user.profile" :src="user.profile"></v-img>
+                <v-img v-else src="../../assets/default_profile.png"></v-img>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>{{ user.nickname }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <div v-else class="mt-5">
+            <p class="text-center">유저 결과없음</p>
+          </div>
         </v-card>
       </v-tab-item>
 
       <v-tab-item>
         <v-card flat outlined>
           <v-card-text>커뮤니티 부분입니다.</v-card-text>
-        </v-card>
-      </v-tab-item>
-
-      <v-tab-item>
-        <v-card flat outlined>
-          <v-card-text>유저검색 부분입니다.</v-card-text>
+          <v-row v-if="searchCommunity!==null && searchCommunity.length>0" class="justify-center">
+            <v-col class="py-0" cols=10 v-for="article in searchCommunity" :key="article.communityId">
+              <v-card class="mx-auto" :to="`/community/${article.communityId}`" flat>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title class="headline mb-1">{{ article.title }}</v-list-item-title>
+                    <v-list-item-subtitle class="pa-0 col-10">{{ $moment(article.updatedAt).format('YYYY.MM.DD hh:mm') }} by <span><router-link :to="`/user/mypage/${article.nickname}`" class="text-decoration-none">{{article.nickname}}</router-link></span></v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-card>
+              <v-divider></v-divider>
+            </v-col>
+          </v-row>
+          <div v-else class="mt-5">
+            <p class="text-center">게시글 결과없음</p>
+          </div>
         </v-card>
       </v-tab-item>
     </v-tabs>
@@ -52,7 +169,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
+import _ from 'lodash'
 
 export default {
   name: "SearchResult",
@@ -60,12 +178,36 @@ export default {
   data() {
     return {
       tab: null,
-      tabs: 4
+      tabs: 4,
     };
   },
 
   computed: {
-    ...mapState(["searchResult"])
+    ...mapState(["searchUser", "searchGame", "searchCommunity"]),
+    
+    fundingProgress() {
+      return (aim, leftPrice) => {
+        if (aim === leftPrice) {
+          return 0
+        } else {
+          return _.round((aim - leftPrice) / aim * 100)
+        }
+      }
+    },
+  },
+
+  methods: {
+    ...mapActions(['search']),
+  },
+
+  watch: {
+    '$route.params.keyword': function() {
+      this.search(this.$route.params.keyword)
+    },
+  },
+
+  created() {
+    this.search(this.$route.params.keyword)
   }
 };
 </script>

@@ -1,20 +1,22 @@
 <template>
-  <v-app>
+  <v-app class="App">
     <div>
       <!-- navbar -->
       <v-app-bar color="primary" dense flat fixed>
-        <!-- 모바일 화면에서만 햄버거 메뉴 사용 가능-->
+        <!-- 햄버거 메뉴 -->
         <v-app-bar-nav-icon class="white--text" @click="drawer = true"></v-app-bar-nav-icon>
 
         <!-- 로고 -->
-        <v-toolbar-title>
-          <router-link to="/home" class="white--text text-decoration-none">Indie and Bob</router-link>
+        <v-toolbar-title class="pl-1 pt-4">
+          <router-link :to="{ name: 'Home' }" class="white--text text-decoration-none">
+            <v-img src="./assets/logo_horizontal2.png" max-width="170px"></v-img>
+          </router-link>
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
         <!-- search bar -->
-        <v-text-field dark color="white" class="mt-4 search-input" placeholder="Search" v-model="searchKeyword" @keypress.enter="sendSearch(searchKeyword)"></v-text-field>
+        <v-text-field dark color="white" class="mt-4 search-input" placeholder="검색" v-model="searchKeyword" @keypress.enter="sendSearch(searchKeyword)"></v-text-field>
         <v-btn icon @click="sendSearch(searchKeyword)">
           <i class="fas fa-search white--text"></i>
         </v-btn>
@@ -51,7 +53,7 @@
           <router-link :to="`/user/mypage/${ userInfo.nickname }`" class="text-decoration-none black--text" v-if="isLoggedIn && dataFetched">
             <div class="pa-2 d-flex">
               <v-avatar>
-                <v-img v-if="profileURL!==null" :src="profileURL" :alt="userInfo.nickname"></v-img>
+                <v-img v-if="userInfo.profile" :src="userInfo.profile" :alt="userInfo.nickname"></v-img>
                 <v-img v-else src="./assets/default_profile.png" :alt="userInfo.nickname"></v-img>
               </v-avatar>
               <h3 class="ml-4 align-self-center">{{ userInfo.nickname }}</h3>
@@ -62,12 +64,12 @@
         <!-- 네비게이션 -->
         <v-list nav dense>
           <v-list-item-group active-class="primary--text">
-            <v-list-item class="px-3" to="/home">
+            <v-list-item class="px-3" to="/">
               <v-row>
                 <v-col cols="3">
                   <i class="fas fa-home fa-lg grey--text text--darken-2"></i>
                 </v-col>
-                <v-col class="font-weight-regular">Home</v-col>
+                <v-col class="font-weight-regular">홈</v-col>
               </v-row>
             </v-list-item>
 
@@ -76,7 +78,7 @@
                 <v-col cols="3">
                   <i class="fas fa-user fa-lg grey--text text--darken-2"></i>
                 </v-col>
-                <v-col class="font-weight-regular">My Page</v-col>
+                <v-col class="font-weight-regular">마이 페이지</v-col>
               </v-row>
             </v-list-item>
 
@@ -85,7 +87,7 @@
                 <v-col cols="3">
                   <i class="fas fa-gamepad fa-lg grey--text text--darken-2"></i>
                 </v-col>
-                <v-col class="font-weight-regular">Browse Projects</v-col>
+                <v-col class="font-weight-regular">모든 프로젝트 보기</v-col>
               </v-row>
             </v-list-item>
 
@@ -94,7 +96,16 @@
                 <v-col cols="3">
                   <i class="fas fa-comment-alt fa-lg grey--text text--darken-2"></i>
                 </v-col>
-                <v-col class="font-weight-regular">Community</v-col>
+                <v-col class="font-weight-regular">커뮤니티</v-col>
+              </v-row>
+            </v-list-item>
+
+            <v-list-item class="px-3" to="/newrequest" v-if="isLoggedIn && isAdmin">
+              <v-row>
+                <v-col cols="3">
+                  <i class="fas fa-clipboard-check fa-lg ml-1 grey--text text--darken-2"></i>
+                </v-col>
+                <v-col class="font-weight-regular">프로젝트 심사</v-col>
               </v-row>
             </v-list-item>
 
@@ -105,11 +116,11 @@
         <template v-slot:append>
           <!-- 로그인 했을 때 -->
           <div class="pa-2" v-if="isLoggedIn">
-            <v-btn block color="secondary black--text" @click="logout">Logout</v-btn>
+            <v-btn block color="secondary black--text" @click="logout">로그아웃</v-btn>
           </div>
           <!-- 로그인 안했을 때 -->
           <div class="pa-2" v-if="!isLoggedIn">
-            <v-btn block color="accent white--text" :to="{ name: 'Login' }">Login</v-btn>
+            <v-btn block color="accent white--text" :to="{ name: 'Login' }">로그인</v-btn>
           </div>
         </template>
       </v-navigation-drawer>
@@ -123,10 +134,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex"
+import { mapActions, mapGetters } from "vuex"
 import axios from 'axios'
 import SERVER from './api/base'
 import firebase from 'firebase'
+import router from './router'
 
 export default {
   name: "app",
@@ -138,7 +150,6 @@ export default {
       searchKeyword: '',
       closeOnClick: true,
       currentUser: localStorage.getItem('username'),
-      profileURL: null,
     };
   },
   
@@ -150,13 +161,25 @@ export default {
       if (this.isLoggedIn) {
         let username = localStorage.getItem('username')
         axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
-          .then(res => this.userInfo = res.data.object)
+          .then(res => {
+            this.userInfo = res.data.object
+            if (this.userInfo !== null) {
+              const storageRef = firebase.storage().ref()
+              if (this.userInfo.profile !== null) {
+                storageRef.child(this.userInfo.profile).getDownloadURL()
+                  .then(url => {
+                    this.userInfo.profile = url
+                  })
+                  .catch(err => console.error(err))
+              }
+            }
+          })
           .catch(err => console.error(err))
       }
     },
 
     sendSearch(searchKeyword) {
-      this.search(searchKeyword)
+      router.push({name:"SearchResult", params: {keyword: searchKeyword}})
       this.searchKeyword = ''
     },
   },
@@ -169,22 +192,10 @@ export default {
     $route: function() {
       this.getUserInfo()
     },  
-
-    userInfo() {
-      if (this.userInfo !== null) {
-        const storageRef = firebase.storage().ref()
-        if (this.userInfo.profile !== null) {
-          storageRef.child(this.userInfo.profile).getDownloadURL().then(url => {
-          this.profileURL = url
-          })
-        }
-      }
-    }
   },
 
   computed: {
-    ...mapGetters(['isLoggedIn']),
-    ...mapState(['message', 'items']),
+    ...mapGetters(['isLoggedIn', 'isAdmin',]),
     dataFetched: function() {
       return !!this.userInfo
     },
@@ -193,6 +204,25 @@ export default {
 </script>
 
 <style scoped>
+@font-face {
+  font-family: 'IBMPlexSansKR-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PFStardust';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/PFStardust.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+            
+.App {
+  /* font-family: 'Nanum Gothic', sans-serif; */
+  font-family: 'IBMPlexSansKR-Regular';
+}
+
 .search-input {
   max-width: 300px;
 }

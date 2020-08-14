@@ -35,6 +35,7 @@
 		<!--권성완-->
 		<typeAlias type="com.ssafy.indieAndBob.qna.dto.QnaVO" alias="QnaVO"/>
 		<typeAlias type="com.ssafy.indieAndBob.qna.dto.QnaGameVO" alias="QnaGameVO"/>
+		<typeAlias type="com.ssafy.indieAndBob.recommand.dto.GenrebaseRecommand" alias="GenrebaseRecommand"/>
 		
 	</typeAliases>
 
@@ -53,6 +54,7 @@
 		
 		<!--권성완-->
 		<mapper resource="mybatis/mapper/qnaMapper.xml"/>
+		<mapper resource="mybatis/mapper/genrebaseRecommandMapper.xml" />
 		
 	</mappers>
 </configuration>

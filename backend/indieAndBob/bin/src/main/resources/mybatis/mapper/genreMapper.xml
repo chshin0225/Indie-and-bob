@@ -11,4 +11,8 @@
     <select id="selectGenreNameByGameId" resultType="String" parameterType="int">
     	select genre_name from game_genre natural join genre where game_id=#{gameId}
     </select>
+    
+    <select id="selectGenreNameByNickname" parameterType="String" resultType="String">
+    	select genre_name from user_genre left outer join genre using(genre_id) where nickname=#{nickname};
+    </select>
 </mapper>

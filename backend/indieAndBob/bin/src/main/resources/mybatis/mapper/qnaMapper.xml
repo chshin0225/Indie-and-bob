@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.indieAndBob.mapper.qna">
+
+   	<insert id="create" parameterType="QnaVO">
+		 insert into qna (game_id, nickname, title, content, is_secret, answer) 
+		 values(#{gameId}, #{nickname}, #{title}, #{content}, #{isSecret}, #{answer})
+	 </insert>
+   	
+   	<select id="read" parameterType="int" resultType="QnaVO">
+		select * from qna where qna_id = #{qnaId}
+	</select>
+	
+	<update id="update" parameterType="QnaVO">
+		update qna set qna_id=#{qnaId}, game_id=#{gameId}, nickname=#{nickname}, title=#{title}, content=#{content}, is_secret=#{isSecret} where qna_id=#{qnaId}
+ 	</update>
+ 	
+ 	<update id="updateAnswer" parameterType="QnaVO">
+ 		update qna set answer=#{answer}, answer_at=now() where qna_id=#{qnaId}
+ 	</update>
+ 	
+	<delete id="delete">
+		delete from qna where qna_id=#{qnaId}
+	</delete>
+	
+	<select id="isDeveloper" parameterType="QnaGameVO" resultType="QnaVO">
+		select * from game where game_id=#{gameId} and nickname=#{nickname}
+	</select>
+ 	
+ 	<select id="readByGameIdNoSecret" parameterType="int" resultType="QnaVO">
+ 		select * from qna where game_id=#{gameId} and is_Secret=false
+ 	</select>
+ 	
+ 	<select id="readByGameIdAllSecret" parameterType="int" resultType="QnaVO">
+ 		select * from qna where game_id=#{gameId} and is_Secret=true
+ 	</select>
+ 	
+ 	<select id="readByGameIdMySecret" parameterType="QnaGameVO" resultType="QnaVO">
+ 		select * from qna where game_id=#{gameId} and nickname=#{nickname} and is_Secret=true
+ 	</select>
+ 	
+</mapper>

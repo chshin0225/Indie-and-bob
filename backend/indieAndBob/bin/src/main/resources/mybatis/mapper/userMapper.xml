@@ -10,7 +10,7 @@
    <select id="selectByEmail" parameterType="String" resultType="user">
    	  select * from user where email=#{email}
    </select>
-   <select id="selectByNickname" parameterType="String" resultType="user">
+   <select id="selectByNickname" parameterType="String" resultType="userall">
    	  select * from user where nickname=#{nickname}
    </select>
    
@@ -24,11 +24,14 @@
       values (#{email}, #{name}, #{nickname}, #{password}, #{postcode},#{address},#{extraAddress},#{bankName},#{bankAccount},
       #{isDeveloper},#{phoneNumber},#{profile},#{introduction})
    </insert>
-   <update id="changeUserInfo">
-   	  update user set email=#{email}, name=#{name}, nickname=#{nickname}, password=#{password}, postcode=#{postcode},address=#{address},
+   <insert id="registerUserGenre" parameterType="usergenre">
+		insert into user_genre (nickname, genre_id) values(#{nickname},#{genreId})
+   </insert>
+   <update id="changeUserInfo" parameterType="user">
+   	  update user set name=#{name}, postcode=#{postcode},address=#{address},
    	  extra_address=#{extraAddress},bank_name=#{bankName},bank_account=#{bankAccount},
       is_developer=#{isDeveloper},phone_number=#{phoneNumber},profile=#{profile},introduction=#{introduction}
-      where email={#email}
+      where email=#{email}
    </update>
    <insert id="registerFollow" parameterType="follow">
    	  insert into follow (follower, following) values (#{follower},#{following})
@@ -45,4 +48,7 @@
    <select id="isFollowing" parameterType="follow" resultType="follow">
       select * from follow where follower=#{follower} and following=#{following}
    </select>
+   <delete id="deleteUserGenre" parameterType="String">
+   		delete from user_genre where nickname=#{nickname}
+   </delete>
 </mapper>

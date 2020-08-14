@@ -28,6 +28,7 @@
           multiple
           chips
         ></v-select>
+        <small class="d-block primary--text" v-if="error.genre">{{ error.genre }}</small>
       </v-col>
     </v-row>
 
@@ -255,7 +256,7 @@ export default {
       profileURL: null,
       phonenumber: "",
       nickname: "",
-      genre: null,
+      genre: [],
       name: "",
       usertype: "",
       userTypes: ["일반 사용자", "개발자"],
@@ -270,6 +271,7 @@ export default {
         phonenumber: false,
         nickName: "",
         accountnumber: false,
+        genre: false,
       },
       isSubmit: false,
       termPopup: false,
@@ -289,19 +291,8 @@ export default {
   },
 
   watch: {
-    nickname: function() {
+    genre: function() {
       this.checkForm();
-    },
-    email: function() {
-      this.checkForm();
-      if (
-        this.email.length > 0 &&
-        this.email.charAt(0) >= "A" &&
-        this.email.charAt(0) <= "Z"
-      ) {
-        this.email =
-          this.email.substring(0, 1).toLowerCase() + this.email.substring(1);
-      }
     },
     phonenumber: function() {
       this.checkForm();
@@ -333,7 +324,11 @@ export default {
           this.introduction = res.data.object.introduction;
           this.phonenumber = res.data.object.phoneNumber;
           this.nickname = res.data.object.nickname;
-          this.genre = res.data.object.genre;
+          // res.data.object.genreName.forEach(item => {
+          //   this.genre.push(this.idToGenre[item])
+          // })
+          this.genre = res.data.object.genreName
+          console.log(this.genre)
           this.is_developer = res.data.object.developer;
           if (res.data.object.developer) {
             this.usertype = "개발자"
@@ -357,9 +352,9 @@ export default {
     },
 
     checkForm() {
-      if (this.nickname.length <= 0)
-        this.error.nickName = "왜 지웠어요? 다시 쓰세요";
-      else this.error.nickName = false;
+      if (this.genre.length <= 0)
+        this.error.genre = "최소 1개의 장르를 선택해야합니다.";
+      else this.error.genre = false;
 
       if ((this.phonenumber + "").length != 11)
         this.error.phonenumber = "올바른 휴대폰번호 형식이ㅣ 아닙니다.";

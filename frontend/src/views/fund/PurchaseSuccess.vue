@@ -10,7 +10,7 @@
       <v-row class="justify-center">
         <v-col sm=8> 
           <!-- <p>{{ rewardData }}</p> -->
-          <v-card class="mx-auto" outlined>
+          <v-card class="mx-auto" outlined tile>
             <div class="overline px-4 pt-3">{{ rewardData.game.name }}</div>
             <v-card-title class="headline pt-1">{{ rewardData.reward.rewardName }}</v-card-title>
             <v-card-text>{{ rewardData.reward.content }}</v-card-text>

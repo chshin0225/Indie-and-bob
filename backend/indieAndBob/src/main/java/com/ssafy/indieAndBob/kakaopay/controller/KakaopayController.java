@@ -176,7 +176,7 @@ public class KakaopayController {
 		return response;
 	}
 
-	@GetMapping("/api/fundingByRewardId/{gameId}")
+	@GetMapping("/api/fundingByGameId/{gameId}")
 	@ApiOperation(value = "게임 아이디로 해당 펀딩리스트찾기")
 	public Object selectFundingByGameId(@PathVariable int gameId) {
 		log.info("-------------selectFundingByRewardId-----------------");
