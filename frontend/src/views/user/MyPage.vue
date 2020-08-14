@@ -235,4 +235,8 @@ export default {
 .header {
   background-color: #e4dfda;
 }
+
+.v-tab {
+  justify-content: left;
+}
 </style>

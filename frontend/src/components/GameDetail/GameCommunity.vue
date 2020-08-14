@@ -96,17 +96,21 @@ export default {
     },
 
     submitComment() {
-      let PARAMS = {
-        nickname: localStorage.getItem("username"),
-        content: this.communityComment,
-        gameId : this.$route.params.id
-      };
-      axios.post(SERVER.BASE + SERVER.GAMECOMMUNITY, PARAMS, this.headersConfig)
-        .then(() => {
-          this.communityComment = '',
-          this.fetchComments()
-        })
-        .catch((err) => console.error(err.data));
+      if (this.communityComment.trim().length() > 0){
+        let PARAMS = {
+          nickname: localStorage.getItem("username"),
+          content: this.communityComment,
+          gameId : this.$route.params.id
+        };
+        axios.post(SERVER.BASE + SERVER.GAMECOMMUNITY, PARAMS, this.headersConfig)
+          .then(() => {
+            this.communityComment = '',
+            this.fetchComments()
+          })
+          .catch((err) => console.error(err.data));
+      } else {
+        alert("내용을 작성해주세요.")
+      }
     },
 
     deleteComment(id) {
