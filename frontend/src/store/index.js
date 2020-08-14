@@ -580,7 +580,10 @@ export default new Vuex.Store({
     getArticle({ commit }, communityId) {
       commit('setArticle', null)
       axios.get(SERVER.BASE + SERVER.COMMUNITY + `/${communityId}`)
-        .then(res => commit('setArticle', res.data.object))
+        .then(res => {
+          res.data.object.content = res.data.object.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
+          commit('setArticle', res.data.object)
+        })
         .catch(err => console.error(err))
     },
 
