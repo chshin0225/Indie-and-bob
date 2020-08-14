@@ -535,7 +535,7 @@ export default new Vuex.Store({
                   res.data.object.thumbnail = url
                   commit('setProject', res.data.object)
                 })
-                .catch(err => console.error(err))
+                .catch(() => res.data.object.thumbnail = null)
             })
             .catch(function(error) {
               console.log(error)
@@ -626,7 +626,7 @@ export default new Vuex.Store({
             .then(url => {
               item.profile = url
             })
-            .catch(err => console.error(err))
+            .catch(() => item.profile = null)
            }
           })
         }
