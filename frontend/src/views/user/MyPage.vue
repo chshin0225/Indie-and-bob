@@ -179,7 +179,7 @@ export default {
 
   computed: {
     ...mapState(["userInfo", "followerList", "followingList", "isFollowing",]),
-    ...mapGetters(["userDataFetched", "isLoggedIn"]),
+    ...mapGetters(["userDataFetched"]),
 
     isSelf: function() {
       return this.userInfo.nickname === localStorage.getItem("username");
@@ -234,5 +234,9 @@ export default {
 <style scoped>
 .header {
   background-color: #e4dfda;
+}
+
+.v-tab {
+  justify-content: left;
 }
 </style>
