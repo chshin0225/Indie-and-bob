@@ -94,24 +94,34 @@
         <small class="d-block primary--text" v-if="error.aim">{{ error.aim }}</small>
       </v-col>
     </v-row>
-    
-    <v-row class="mt-5 justify-center">
-      <v-row class="justify-center">
-        <v-col class="py-0 mt-5" sm="6">
-          <label for="thumbnail">썸네일</label>
-          <v-file-input
-            id="thumbnail"
-            accept="image/*"
-            label="썸네일 이미지를 입력해주세요"
-            prepend-icon="mdi-camera"
-            v-model="thumbnail"
-          ></v-file-input>
-        </v-col>
-      </v-row>
-      <v-row class='justify-center'>
-        <v-btn cols=auto @click="onAction; onButtonClick" :disable="!isSubmit" class="accent" depressed>프로젝트 생성</v-btn>
-      </v-row>
-     
+
+    <v-row class="justify-center mb-4">
+      <v-col class="py-0" sm="10">
+        <label for="thumbnail">썸네일</label>
+        <v-file-input
+          id="thumbnail"
+          accept="image/*"
+          placeholder="프로젝트의 썸네일 이미지를 입력해주세요."
+          prepend-icon="mdi-camera"
+          v-model="thumbnail"
+          class="pt-1"
+        ></v-file-input>
+      </v-col>
+    </v-row>
+
+    <v-row class="justify-center mb-10 text-right">
+      <v-col class="py-0" sm="10">
+        <v-btn 
+          cols=auto 
+          @click="onButtonClick" 
+          :disabled="!isSubmit" 
+          class="accent" 
+          depressed
+          large
+        >
+          프로젝트 생성
+        </v-btn>
+      </v-col>
     </v-row>
      
   </v-container>
@@ -182,7 +192,7 @@ export default {
       };
       axios.post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
         .then(res => {
-          // console.log(res.data.object.gameId)
+          console.log(res.data.object.gameId)
           this.isSubmit = false
           const storageRef1 = firebase.storage().ref(`game/${res.data.object.gameId}/content/${res.data.object.gameId}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
           storageRef1.on(`state_changed`, snapshot => {
@@ -236,10 +246,6 @@ export default {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
-    },
-
-    onAction() {
-      this.isSubmit = false
     }
   },
 
