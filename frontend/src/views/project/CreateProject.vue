@@ -79,7 +79,7 @@
         </v-col>
       </v-row>
       <v-row class='justify-center'>
-        <v-btn cols=auto @click="onButtonClick" :disable="!isSubmit" class="accent" depressed>프로젝트 생성</v-btn>
+        <v-btn cols=auto @click="onAction; onButtonClick" :disable="!isSubmit" class="accent" depressed>프로젝트 생성</v-btn>
       </v-row>
      
     </v-row>
@@ -197,6 +197,10 @@ export default {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
+    },
+
+    onAction() {
+      this.isSubmit = false
     }
   },
   watch: {
