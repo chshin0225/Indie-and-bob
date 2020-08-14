@@ -8,8 +8,7 @@
       <v-tab>커뮤니티</v-tab>
       <v-tab-item>
         <v-card flat>
-          <v-card-text>통합검색 부분입니다.</v-card-text>
-          <v-divider class="mx-4" :inset="inset" vertical></v-divider>
+          <v-subheader>유저 검색 결과</v-subheader>
           <!-- <p>{{ searchResult }}</p> -->
           <v-list v-if="searchUser!==null && searchUser.length > 0">
             <v-list-item
@@ -29,7 +28,8 @@
           <div v-else class="mt-5">
             <p class="text-center">유저 결과없음</p>
           </div>
-          <v-divider :inset="inset" vertical></v-divider>
+          <v-divider class="my-4" color="#FFC0CB" :inset="inset"></v-divider>
+          <v-subheader>게임 검색 결과</v-subheader>
           <v-row v-if="searchGame!==null && searchGame.length>0">
           <v-col v-for="game in searchGame" :key="game.gameId" cols=6 md=4>
             <v-card tile class="card">
@@ -62,7 +62,8 @@
         <div v-else class="mt-5">
           <p class="text-center">프로젝트 결과없음</p>
         </div>
-        <v-divider :inset="inset" vertical></v-divider>
+        <v-divider class="my-4" color="#FFC0CB" :inset="inset"></v-divider>
+        <v-subheader>게시글 검색 결과</v-subheader>
         <v-row v-if="searchCommunity!==null && searchCommunity.length>0" class="justify-center">
           <v-col class="py-0" cols=10 v-for="article in searchCommunity" :key="article.communityId">
             <v-card class="mx-auto" :to="`/community/${article.communityId}`" flat>
