@@ -56,7 +56,7 @@
     </select>
     
     <update id="updateApprove" parameterType="game">
-    	update game set is_approve=#{isApprove} where game_id=#{gameId}
+    	update game set is_approve=#{isApprove}, reason=#{reason} where game_id=#{gameId}
     </update>
     
     <update id="fundingGame" parameterType="funding">
