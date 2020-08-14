@@ -200,11 +200,13 @@ export default {
     },
     
     userDataFetched() {
-      const storageRef = firebase.storage().ref()
-      if (this.userInfo.profile !== null) {
-        storageRef.child(this.userInfo.profile).getDownloadURL().then(url => {
-          this.profileImage = url
-        }) 
+      if (this.userDataFetched) {
+        const storageRef = firebase.storage().ref()
+        if (this.userInfo.profile !== null) {
+          storageRef.child(this.userInfo.profile).getDownloadURL().then(url => {
+            this.profileImage = url
+          }) 
+        }
       }
     }
   },
