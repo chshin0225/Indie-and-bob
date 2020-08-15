@@ -128,7 +128,7 @@ export default {
     ...mapActions(['getArticle', 'deleteArticle']),
 
     submitComment() {
-      if (this.comment.trim().length() > 0) {
+      if (this.comment.trim().length > 0) {
         const PARAMS = {
           content: this.comment,
           communityId: this.$route.params.articleId
