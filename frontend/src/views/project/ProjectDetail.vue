@@ -90,7 +90,6 @@
                 v-model="r_price"
                 id="price"
                 placeholder="희망 판매가격 "
-                type="number"
                 hide-details="true"
                 required
                 class="pt-0"

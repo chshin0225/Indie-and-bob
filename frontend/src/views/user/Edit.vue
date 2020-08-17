@@ -7,6 +7,7 @@
         <p>이름 : {{ name }}</p>
       </v-col>
     </v-row>
+    
     <!-- id -->
     <v-row class="justify-center">
       <v-col class="py-0" sm="6">
@@ -98,7 +99,6 @@
           v-model="phonenumber"
           id="phonenumber"
           outlined
-          type="number"
         />
         <small class="d-block" v-if="error.phonenumber">{{ error.phonenumber }}</small>
       </v-col>
@@ -188,7 +188,6 @@
           id="accountnumber"
           outlined
           placeholder="(-)를 제외한 숫자만 입력해주세요"
-          type="number"
         />
         <small class="d-block" v-if="error.accountnumber">{{ error.accountnumber }}</small>
       </v-col>
