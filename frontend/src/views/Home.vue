@@ -9,32 +9,26 @@
       </h1>
     </div>
 
+
     <!-- body -->
     <v-container>
       <v-row>
-        <v-col cols=8>
-          <h2>이런 프로젝트는 어때요?</h2>
-          <v-row>
-            <router-link v-for="project in mostFundedList" :key="project.gameId">
-              <v-col>
-                
-              </v-col>
-            </router-link>
-          </v-row>
+        <v-col cols=12 md=8 class="d-flex flex-column mb-10">
+          <h2 class="mb-3">이런 프로젝트는 어때요?</h2>
+          <Recommendations v-if="!isLoggedIn" :projectList="highestPercentList" />
+          <Recommendations v-else :projectList="genreRecommendationList" />
+
+
+          <h2 class="mb-3 mt-10">현재 핫한 프로젝트</h2>
+          <Recommendations v-if="!isLoggedIn" :projectList="mostFundedList" />
+          <Recommendations v-else :projectList="userRecommendationList" />
         </v-col>
 
-        <v-col cols=4>
+        <v-col cols=12 md=4 class="d-flex flex-column">
           <h2>가장 좋아요가 많은 프로젝트</h2>
           <RankedList :projectList="mostLikedList" />
-        </v-col>
-        
-      </v-row>
 
-      <v-row>
-        <v-spacer></v-spacer>
-
-        <v-col cols=4>
-          <h2>마감임박 프로젝트</h2>
+          <h2 class="mt-10">마감임박 프로젝트</h2>
           <RankedList :projectList="almostFinishedList" />
         </v-col>
 
@@ -48,7 +42,7 @@
           <RankedList :projectList="highestPercentList" />
         </v-col> -->
 
-        <v-col v-if="isLoggedIn && genreRecommendationList.length > 0">
+        <!-- <v-col v-if="isLoggedIn && genreRecommendationList.length > 0">
           <h3>장르 기반 추천</h3>
           <RankedList :projectList="genreRecommendationList" />
         </v-col>
@@ -56,7 +50,8 @@
         <v-col v-if="isLoggedIn && userRecommendationList.length > 0">
           <h3>유저 기반 추천</h3>
           <RankedList :projectList="userRecommendationList" />
-        </v-col>
+        </v-col> -->
+
       </v-row>
 
     </v-container>
@@ -74,6 +69,7 @@
 </template>
 
 <script>
+import Recommendations from '../components/Home/Recommendations.vue'
 import RankedList from '../components/Home/RankedList.vue'
 import { mapState, mapActions, mapGetters } from 'vuex'
 
@@ -81,6 +77,7 @@ export default {
   name: 'Home',
 
   components: {
+    Recommendations,
     RankedList,
   },
 

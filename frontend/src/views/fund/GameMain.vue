@@ -1,10 +1,8 @@
 <template>
   <v-container class="ProjectMain">
-    <!-- <p>{{ projectList }}</p> -->
-    <!-- <h1 class="text-center mb-3">Projects</h1> -->
-
     <!-- projects  -->
     <v-row>
+      <!-- <p>{{games}}</p> -->
       <v-col v-for="game in games" :key="game.gameId" cols=6 md=4>
         <v-card tile class="card">
           <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">

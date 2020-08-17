@@ -62,8 +62,16 @@
 
             <v-container class="pb-0">
               <v-row v-if="project.isApprove===-1">
-                <p>거절사유 : {{ project.reason }}</p>
+                <v-col cols=12 class="px-0">
+                  <v-alert outlined text color="primary" dense>
+                    <div class="d-flex justify-space-between">
+                      <p class="my-0 mt-1">거절사유: <span class="black--text ml-1">{{ project.reason }}</span></p>
+                      <v-btn color="accent" depressed :to="`/project/${project.gameId}`">수정하기</v-btn>
+                    </div>
+                  </v-alert>
+                </v-col>
               </v-row>
+
               <v-row v-else>
                 <p class="mb-2"> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
@@ -200,7 +208,7 @@
                     </v-col>
                     <v-spacer></v-spacer>
                     <v-col class="d-flex justify-end">
-                      <v-btn v-if="reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
+                      <v-btn v-if="project.isApprove === 1 && reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
                       <v-btn v-else color="accent" disabled rounded>매진</v-btn>
                     </v-col>
                   </v-row>
@@ -372,7 +380,7 @@ export default {
         isApprove: 1,
       })
         .then(() => {
-          router.push({ name: "GameMain" });
+          router.push({ name: "NewProjectRequest" });
         })
         .catch((err) => console.error(err));
     },
@@ -386,7 +394,7 @@ export default {
         })
           .then((res) => {
             console.log(res);
-            router.push({ name: "GameMain" });
+            router.push({ name: "NewProjectRequest" });
           })
           .catch((err) => console.error(err)); 
       } else {
@@ -404,5 +412,5 @@ export default {
 };
 </script>
 
-<style scoped>      
+<style scoped>   
 </style>

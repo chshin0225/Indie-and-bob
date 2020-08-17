@@ -1,18 +1,33 @@
 <template>
   <v-container>
     <h1 class="text-center">회원정보 변경</h1>
-
-    <v-row class="justify-center">
-      <v-col class="py-0" sm="6">
-        <p>이름 : {{ name }}</p>
-      </v-col>
-    </v-row>
     
     <!-- id -->
-    <v-row class="justify-center">
+    <v-row class="justify-center mt-4 mb-2">
       <v-col class="py-0" sm="6">
         <p>닉네임 : {{ nickname }}</p>
-        <small class="d-block" v-if="error.nickName">{{ error.nickName }}</small>
+      </v-col>
+    </v-row>
+
+    <!-- email -->
+    <v-row class="justify-center mt-2 mb-4">
+      <v-col class="py-0" sm="6">
+        <p>이메일 : {{ email }}</p>
+      </v-col>
+    </v-row>
+
+    <!-- name -->
+    <v-row class="justify-center my-4">
+      <v-col class="py-0" sm="6">
+        <label for="name">이름</label>
+        <v-text-field
+          hide-details="true"
+          v-model="name"
+          id="name"
+          outlined
+          placeholder="이름을 입력해주세요."
+          type="text"
+        />
       </v-col>
     </v-row>
 
@@ -23,7 +38,7 @@
           hide-details="true"
           :items="genres"
           id="genres"
-          placeholder="본인이 좋아하는 게임 장르를 선택해주세요.(복수선택 가능)"
+          placeholder="본인이 좋아하는 게임 장르를 선택해주세요. (복수선택 가능)"
           v-model="genre"
           outlined
           multiple
@@ -33,26 +48,49 @@
       </v-col>
     </v-row>
 
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="usertype">주 사용자 유형</label>
-        <v-select hide-details="true" :items="userTypes" id="usertype" v-model="usertype" outlined></v-select>
+        <v-select
+         hide-details="true" 
+         :items="userTypes" 
+         id="usertype" 
+         v-model="usertype" 
+         outlined
+        ></v-select>
       </v-col>
     </v-row>
 
-    <!-- email -->
-    <v-row class="justify-center">
-      <v-col class="py-0" sm="6">
-        <p>이메일 : {{ email }}</p>
+    <!-- bank account -->
+    <v-row class="justify-center my-4" v-if="usertype === '개발자'">
+      <v-col class="py-0" sm="2">
+        <label for="bankname">은행명</label>
+        <v-select
+          hide-details="true"
+          :items="banks"
+          id="bankname"
+          v-model="bankname"
+          outlined
+        ></v-select>
+      </v-col>
+      <v-col class="py-0" sm="4">
+        <label for="accountnumber">계좌번호</label>
+        <v-text-field
+          hide-details="true"
+          v-model="accountnumber"
+          id="accountnumber"
+          outlined
+          placeholder="(-)를 제외한 숫자만 입력해주세요"
+        />
+        <small class="d-block primary--text" v-if="error.accountnumber">{{ error.accountnumber }}</small>
       </v-col>
     </v-row>
 
     <!-- profile image -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="profile-image">이미지</label>
         <v-file-input
-          class="my-3"
           accept="image/*"
           hide-details="true"
           v-model="profileImage"
@@ -60,24 +98,22 @@
           outlined
           placeholder="프로필 사진을 등록해주세요."
         />
-        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
       </v-col>
     </v-row>
+
     <!-- original profile image -->
     <v-row v-if="originalProfile" class="justify-center">
       <v-col class="py-0" sm="6">
-        <label for="profile-image">기존에 사용하던 이미지</label>
-        <v-img contain :src="originalProfile" :alt="nickname"></v-img>
-        <!-- <small class="d-block" v-if="error.email">{{ error.email }}</small> -->
+        <label for="profile-image" class="font-weight-bold">기존에 사용하던 이미지</label>
+        <v-img contain :src="originalProfile" :alt="nickname" class="mt-2"></v-img>
       </v-col>
     </v-row>
 
     <!-- introduction -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="introduction">한 줄 소개</label>
         <v-text-field
-          class="my-3"
           hide-details="true"
           v-model="introduction"
           id="introduction"
@@ -90,12 +126,11 @@
     </v-row>
 
     <!-- phone number -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="phonenumber">핸드폰 번호('-' 제외)</label>
         <v-text-field
           hide-details="true"
-          class="my-3"
           v-model="phonenumber"
           id="phonenumber"
           outlined
@@ -108,6 +143,7 @@
     <v-row
       ref="searchWindow"
       :style="searchWindow"
+      class="my-4"
       style="border:1px solid;width:100%;margin:5px 0;position:relative"
     >
       <v-col class="py-0" sm="6">
@@ -121,8 +157,8 @@
       </v-col>
     </v-row>
 
-    <v-row class="justify-center">
-      <v-col class="py-0 mt-3" sm="3">
+    <v-row class="justify-center my-4">
+      <v-col class="py-0" sm="3">
         <label for="postcode">우편번호</label>
         <v-text-field
           v-model="postcode"
@@ -133,11 +169,12 @@
           required
         ></v-text-field>
       </v-col>
-      <v-col class="my-2" sm="3">
-        <v-btn @click="execDaumPostcode" dark>우편번호 찾기</v-btn>
+      <v-col class="my-3 py-0 d-flex align-end" sm="3">
+        <v-btn @click="execDaumPostcode" depressed color="accent">우편번호 찾기</v-btn>
       </v-col>
     </v-row>
-    <v-row class="justify-center">
+
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="address">주소</label>
         <v-text-field
@@ -151,7 +188,8 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row class="justify-center">
+
+    <v-row class="justify-center my-4">
       <v-col class="py-0" sm="6">
         <label for="extraAddress">상세주소</label>
         <v-text-field
@@ -166,41 +204,14 @@
       </v-col>
     </v-row>
 
-    <!-- bank account -->
-    <v-row class="justify-center">
-      <v-col class="py-0" sm="2">
-        <label for="bankname">은행명</label>
-        <v-select
-          class="my-3"
-          hide-details="true"
-          :items="banks"
-          id="bankname"
-          v-model="bankname"
-          outlined
-        ></v-select>
-      </v-col>
-      <v-col class="py-0" sm="4">
-        <label for="accountnumber">계좌번호</label>
-        <v-text-field
-          hide-details="true"
-          class="my-3"
-          v-model="accountnumber"
-          id="accountnumber"
-          outlined
-          placeholder="(-)를 제외한 숫자만 입력해주세요"
-        />
-        <small class="d-block" v-if="error.accountnumber">{{ error.accountnumber }}</small>
-      </v-col>
-    </v-row>
-
     <!-- term -->
-    <v-row class="justify-center">
+    <v-row class="justify-center my-4">
       <v-col sm="6">
         <v-row class="justify-space-between">
           <v-col class="py-0">
             <v-dialog v-model="dialog" persistent max-width="290">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn text v-bind="attrs" v-on="on">약관보기</v-btn>
+                <v-btn text v-bind="attrs" v-on="on" color="primary">약관보기</v-btn>
               </template>
               <v-card>
                 <v-card-title class="headline">IndieAndBob 약관</v-card-title>
@@ -215,13 +226,30 @@
 
           <v-col class="text-right py-0">
             <v-btn
-              @click="changeUserInfo({name:name, email: email, genreId: genre, profile:profileImage, profileURL: profileURL, password: password, nickname: nickname, isDeveloper: is_developer, phoneNumber: phonenumber, bankName: bankname, bankAccount: accountnumber, postcode: postcode, address: address, extraAddress: extraAddress, introduction: introduction})"
+              @click="changeUserInfo(
+                {
+                  name: name, 
+                  email: email, 
+                  genreId: genre, 
+                  profile: profileImage, 
+                  profileURL: profileURL, 
+                  password: password, 
+                  nickname: nickname, 
+                  developer: is_developer, 
+                  phoneNumber: phonenumber, 
+                  bankName: bankname, 
+                  bankAccount: accountnumber, 
+                  postcode: postcode, 
+                  address: address, 
+                  extraAddress: extraAddress, 
+                  introduction: introduction
+                })"
               :disabled="!isSubmit"
               class="d-inline-block"
               :class="{disabled : !isSubmit}"
               depressed
               large
-              color="primary"
+              color="accent"
             >회원 정보 변경</v-btn>
           </v-col>
         </v-row>
@@ -260,7 +288,29 @@ export default {
       usertype: "",
       userTypes: ["일반 사용자", "개발자"],
       is_developer: false,
-      banks: ["하나은행", "우리은행", "국민은행"],
+      banks: [
+        "하나", 
+        "우리", 
+        "국민", 
+        "농협", 
+        "카카오뱅크", 
+        "신한", 
+        "IBK기업", 
+        "SC제일", 
+        "씨티",
+        "대구",
+        "부산",
+        "광주",
+        "새마을",
+        "경남",
+        "전북",
+        "제주",
+        "산업",
+        "우체국",
+        "신협",
+        "수협",
+        "케이뱅크"
+      ],
       bankname: "",
       accountnumber: "",
       introduction: "",
