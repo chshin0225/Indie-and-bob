@@ -179,6 +179,7 @@ export default {
 
   methods: {
     onButtonClick() {
+      this.isSubmit = false
       this.genre.forEach( item => {
         this.genreId.push(this.genreToId[item])
       })
@@ -193,7 +194,6 @@ export default {
       axios.post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
         .then(res => {
           console.log(res.data.object.gameId)
-          this.isSubmit = false
           const storageRef1 = firebase.storage().ref(`game/${res.data.object.gameId}/content/${res.data.object.gameId}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
           storageRef1.on(`state_changed`, snapshot => {
             if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
