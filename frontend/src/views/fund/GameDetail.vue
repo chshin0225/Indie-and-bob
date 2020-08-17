@@ -62,8 +62,16 @@
 
             <v-container class="pb-0">
               <v-row v-if="project.isApprove===-1">
-                <p>거절사유 : {{ project.reason }}</p>
+                <v-col cols=12 class="px-0">
+                  <v-alert outlined text color="primary" dense>
+                    <div class="d-flex justify-space-between">
+                      <p class="my-0 mt-1">거절사유: <span class="black--text ml-1">{{ project.reason }}</span></p>
+                      <v-btn color="accent" depressed :to="`/project/${project.gameId}`">수정하기</v-btn>
+                    </div>
+                  </v-alert>
+                </v-col>
               </v-row>
+
               <v-row v-else>
                 <p class="mb-2"> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
@@ -404,5 +412,5 @@ export default {
 };
 </script>
 
-<style scoped>      
+<style scoped>   
 </style>

@@ -8,7 +8,7 @@
         <label for="nickname">닉네임</label>
         <v-text-field
           hide-details="true"
-          class=""
+          class="" 
           v-model="nickName"
           id="nickname"
           outlined
@@ -26,7 +26,7 @@
           hide-details="true"
           :items="genres"
           id="genres"
-          placeholder="본인이 좋아하는 게임 장르를 선택해주세요.(복수선택 가능)"
+          placeholder="본인이 좋아하는 게임 장르를 선택해주세요. (복수선택 가능)"
           v-model="genre"
           outlined
           multiple
@@ -56,7 +56,6 @@
         <v-col class="py-0" sm="2">
           <label for="bankname">은행명</label>
           <v-select
-            class=""
             hide-details="true"
             :items="banks"
             id="bankname"
@@ -68,7 +67,6 @@
           <label for="accountnumber">계좌번호</label>
           <v-text-field
             hide-details="true"
-            class=""
             v-model="accountnumber"
             id="accountnumber"
             outlined
@@ -85,7 +83,6 @@
       <v-col class="py-0" sm="6">
         <label for="email">이메일</label>
         <v-text-field
-          class=""
           hide-details="true"
           v-model="email"
           id="email"
@@ -102,7 +99,6 @@
       <v-col class="py-0" sm="6">
         <label for="name">이름</label>
         <v-text-field
-          class=""
           hide-details="true"
           v-model="name"
           id="name"
@@ -118,7 +114,6 @@
       <v-col class="py-0" sm="6">
         <label for="profile-image">프로필 사진</label>
         <v-file-input
-          class=""
           accept="image/*"
           hide-details="true"
           v-model="profileImage"
@@ -134,7 +129,6 @@
       <v-col class="py-0" sm="6">
         <label for="password">비밀번호</label>
         <v-text-field
-          class=""
           hide-details="true"
           v-model="password"
           :append-icon="showPw ? 'mdi-eye' : 'mdi-eye-off'"
@@ -153,7 +147,6 @@
       <v-col class="py-0" sm="6">
         <label for="password-confirm">비밀번호 확인</label>
         <v-text-field
-          class=""
           hide-details="true"
           v-model="passwordConfirm"
           :append-icon="showPwc ? 'mdi-eye' : 'mdi-eye-off'"
@@ -173,7 +166,6 @@
         <label for="phonenumber">핸드폰 번호('-' 제외)</label>
         <v-text-field
           hide-details="true"
-          class=""
           v-model="phonenumber"
           id="phonenumber"
           outlined
@@ -189,7 +181,6 @@
       <v-col class="py-0" sm="6">
         <label for="introduction">한 줄 소개</label>
         <v-text-field
-          class=""
           hide-details="true"
           v-model="introduction"
           id="introduction"
@@ -299,7 +290,7 @@
                 profile: profileImage,
                 nickname: nickName,
                 genreId: genre, 
-                isDeveloper: is_developer, 
+                developer: is_developer, 
                 phoneNumber: phonenumber, 
                 bankName: bankname,
                 bankAccount: accountnumber, 
