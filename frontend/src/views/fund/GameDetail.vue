@@ -208,7 +208,7 @@
                     </v-col>
                     <v-spacer></v-spacer>
                     <v-col class="d-flex justify-end">
-                      <v-btn v-if="reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
+                      <v-btn v-if="project.isApprove === 1 && reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
                       <v-btn v-else color="accent" disabled rounded>매진</v-btn>
                     </v-col>
                   </v-row>
@@ -380,7 +380,7 @@ export default {
         isApprove: 1,
       })
         .then(() => {
-          router.push({ name: "GameMain" });
+          router.push({ name: "NewProjectRequest" });
         })
         .catch((err) => console.error(err));
     },
@@ -394,7 +394,7 @@ export default {
         })
           .then((res) => {
             console.log(res);
-            router.push({ name: "GameMain" });
+            router.push({ name: "NewProjectRequest" });
           })
           .catch((err) => console.error(err)); 
       } else {
