@@ -43,6 +43,7 @@
           id="content"
           initialEditType="wysiwyg"
           previewStyle="vertical"
+          height="600px"
         />
       </v-col>
     </v-row>
@@ -123,7 +124,13 @@
         </v-btn>
       </v-col>
     </v-row>
-     
+
+    <v-overlay :value="overlay">
+      <h2 class="mb-5">프로젝트 생성 중...</h2>
+      <div class="d-flex justify-center align-center">
+        <v-progress-circular indeterminate size="64" color="primary"></v-progress-circular>
+      </div>
+    </v-overlay>
   </v-container>
 </template>
 
@@ -168,7 +175,9 @@ export default {
         genre: false,
         deadline: false,
       },
+
       isSubmit: false,
+      overlay: false,
     };
   },
 
@@ -180,6 +189,7 @@ export default {
   methods: {
     onButtonClick() {
       this.isSubmit = false
+      this.overlay = true
       this.genre.forEach( item => {
         this.genreId.push(this.genreToId[item])
       })
@@ -246,6 +256,10 @@ export default {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
+    },
+
+    onAction() {
+      this.isSubmit = false
     }
   },
 

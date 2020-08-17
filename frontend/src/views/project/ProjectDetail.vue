@@ -267,7 +267,7 @@ export default {
 
     projectDelete() {
       let answer = confirm('프로젝트를 삭제하시겠습니까?')
-      if (answer === true) {
+      if (answer) {
         axios.delete(SERVER.BASE + SERVER.GAME + this.id, this.headersConfig)
           .then(router.push({ name: 'Home' }))
           .catch((err) => console.error(err))
@@ -276,7 +276,7 @@ export default {
 
     finalSubmit() {
       let answer = confirm('프로젝트를 제출하시겠습니까?')
-      if (answer === true) {
+      if (answer) {
         axios.get(SERVER.BASE + SERVER.GAMEREGISTER + `/${this.$route.params.id}`)
           .then(() => router.push({ name: 'CreateProjectDone'}))
           .catch(err => console.error(err))

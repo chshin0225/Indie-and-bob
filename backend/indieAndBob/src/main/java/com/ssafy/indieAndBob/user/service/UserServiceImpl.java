@@ -89,6 +89,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserAll selectByNickname(String nickname) {
 		UserAll user = userDao.selectByNickname(nickname);
+		if(user == null) {
+			return user;
+		}
 		List<String> genreName = genreDao.selectGenreNameByNickname(nickname);
 		user.setGenreName(genreName);
 		return user;
