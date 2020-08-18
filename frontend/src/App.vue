@@ -134,11 +134,12 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex"
+import { mapActions, mapGetters, mapMutations } from "vuex"
 import axios from 'axios'
 import SERVER from './api/base'
 import firebase from 'firebase'
 import router from './router'
+import cookies from 'vue-cookies'
 
 export default {
   name: "app",
@@ -149,20 +150,22 @@ export default {
       drawer: false,
       searchKeyword: '',
       closeOnClick: true,
-      currentUser: localStorage.getItem('username'),
+      currentUser: cookies.get('username'),
     };
   },
   
   methods: {
     ...mapActions(['goBack', 'logout', 'search']),
+    ...mapMutations(['setIsDeveloper']),
 
     getUserInfo() {
       this.userInfo = null
       if (this.isLoggedIn) {
-        let username = localStorage.getItem('username')
+        let username = cookies.get('username')
         axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
           .then(res => {
             this.userInfo = res.data.object
+            this.setIsDeveloper(this.userInfo.developer)
             if (this.userInfo !== null) {
               const storageRef = firebase.storage().ref()
               if (this.userInfo.profile !== null) {

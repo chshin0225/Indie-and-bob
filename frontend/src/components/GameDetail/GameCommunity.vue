@@ -72,13 +72,15 @@ import axios from "axios";
 import SERVER from "../../api/base";
 import { mapGetters } from 'vuex'
 
+import cookies from 'vue-cookies'
+
 export default {
   name: 'GameCommunity',
 
   data() {
     return {
       communityComment: "",
-      myName: localStorage.getItem('username'),
+      myName: cookies.get('username'),
       commentRender : false,
       commentList: [],
     }
@@ -98,7 +100,7 @@ export default {
     submitComment() {
       if (this.communityComment.trim().length > 0){
         let PARAMS = {
-          nickname: localStorage.getItem("username"),
+          nickname: cookies.get('username'),
           content: this.communityComment,
           gameId : this.$route.params.id
         };
