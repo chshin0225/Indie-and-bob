@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex"
+import { mapActions, mapGetters, mapMutations } from "vuex"
 import axios from 'axios'
 import SERVER from './api/base'
 import firebase from 'firebase'
@@ -156,6 +156,7 @@ export default {
   
   methods: {
     ...mapActions(['goBack', 'logout', 'search']),
+    ...mapMutations(['setIsDeveloper']),
 
     getUserInfo() {
       this.userInfo = null
@@ -164,6 +165,7 @@ export default {
         axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
           .then(res => {
             this.userInfo = res.data.object
+            this.setIsDeveloper(this.userInfo.developer)
             if (this.userInfo !== null) {
               const storageRef = firebase.storage().ref()
               if (this.userInfo.profile !== null) {
