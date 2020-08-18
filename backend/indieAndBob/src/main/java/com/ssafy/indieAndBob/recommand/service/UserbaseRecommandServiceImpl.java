@@ -19,4 +19,9 @@ public class UserbaseRecommandServiceImpl implements UserbaseRecommandService {
 		return ubDao.userbaseRecommand();
 	}
 
+	@Override
+	public int getUserId(String nickname) {
+		return ubDao.getUserId(nickname);
+	}
+	
 }

@@ -18,5 +18,9 @@ public class UserbaseRecommandDaoImpl implements UserBaseRecommandDao {
 	public List<UserbaseRecommand> userbaseRecommand() {
 		return temp.selectList(ns + "userbaseRecommand");
 	}
-
+	@Override
+	public int getUserId(String nickname) {
+		return temp.selectOne(ns + "getUserId", nickname);
+	}
+	
 }

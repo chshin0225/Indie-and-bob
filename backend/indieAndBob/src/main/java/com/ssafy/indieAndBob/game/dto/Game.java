@@ -23,4 +23,5 @@ public class Game {
 	private Date updatedAt;
 	private Date startedAt;
 	private String reason;
+	private int leftDay;
 }
