@@ -134,7 +134,7 @@
       </v-card>
 
       <!-- 새 프로젝트 생성 버튼 -->
-      <v-tooltip right>
+      <v-tooltip right v-if="userInfo.developer">
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" to="/newproject" class="mb-4 ml-4" depressed fab fixed bottom left v-bind="attrs" v-on="on">
             <v-icon>fas fa-plus</v-icon>

@@ -82,7 +82,7 @@
           outlined
           placeholder="(-)를 제외한 숫자만 입력해주세요"
         />
-        <small class="d-block primary--text" v-if="error.accountnumber">{{ error.accountnumber }}</small>
+        <small class="d-block primary--text" v-if="error.bank">{{ error.bank }}</small>
       </v-col>
     </v-row>
 
@@ -319,8 +319,8 @@ export default {
         email: false,
         phonenumber: false,
         nickName: "",
-        accountnumber: false,
         genre: false,
+        bank: false,
       },
       isSubmit: false,
       termPopup: false,
@@ -355,7 +355,14 @@ export default {
       } else {
         this.is_developer = false;
       }
+      this.checkForm()
     },
+    bankname: function() {
+      this.checkForm();
+    },
+    accountnumber: function() {
+      this.checkForm();
+    }
   },
 
   methods: {
@@ -406,8 +413,16 @@ export default {
       else this.error.genre = false;
 
       if ((this.phonenumber + "").length != 11)
-        this.error.phonenumber = "올바른 휴대폰번호 형식이ㅣ 아닙니다.";
+        this.error.phonenumber = "올바른 휴대폰번호 형식이 아닙니다.";
       else this.error.phonenumber = false;
+
+      if (this.is_developer) {
+        if (this.bankname.trim().length <= 0 || this.accountnumber.trim().length <= 9) {
+          this.error.bank = "개발자는 올바른 계좌번호를 등록해야 합니다."
+        } else {
+          this.error.bank = false
+        }
+      }
 
       let isSubmit = true;
       Object.values(this.error).map(v => {

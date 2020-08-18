@@ -59,6 +59,7 @@ export default new Vuex.Store({
     // },
 
     // home
+    isDeveloper: false,
     mostLikedList: [],
     almostFinishedList: [],
     mostFundedList: [],
@@ -141,6 +142,10 @@ export default new Vuex.Store({
     },
     setPicture(state, val) {
       state.picture = val
+    },
+
+    setIsDeveloper(state, val) {
+      state.isDeveloper = val
     },
 
     // home
