@@ -522,7 +522,7 @@ export default new Vuex.Store({
           storageRef.child(res.data.object.content).getDownloadURL()
             .then(url => {
               var xhr = new XMLHttpRequest()
-              if (xhr) {
+              if (xhr) {  
                 xhr.open('GET', url, false)
                 xhr.send()
                 var result = (xhr.response)
