@@ -90,7 +90,8 @@
     
     <select id="deadlineGame" resultType="gameall">
     	select g.*, u.profile, DATEDIFF(deadline, now()) as left_day from game g left outer join user u using(nickname)
-		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
+		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day) and 0 &lt; left_price/aim
+        and left_price/aim &lt; 0.2
 		order by deadline limit 5
     </select>
     
