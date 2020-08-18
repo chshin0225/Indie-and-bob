@@ -6,4 +6,5 @@ import com.ssafy.indieAndBob.recommand.dto.UserbaseRecommand;
 
 public interface UserbaseRecommandService {
 	List<UserbaseRecommand> userbaseRecommand();
+	int getUserId(String nickname);
 }
