@@ -19,7 +19,8 @@
           <Recommendations v-else :projectList="genreRecommendationList" />
 
 
-          <h2 class="mb-3 mt-10">현재 핫한 프로젝트</h2>
+          <h2 v-if="!isLoggedIn" class="mb-3 mt-10">현재 핫한 프로젝트</h2>
+          <h2 v-else class="mb-3 mt-10">당신을 위한 추천 프로젝트</h2>
           <Recommendations v-if="!isLoggedIn" :projectList="mostFundedList" />
           <Recommendations v-else :projectList="userRecommendationList" />
         </v-col>
