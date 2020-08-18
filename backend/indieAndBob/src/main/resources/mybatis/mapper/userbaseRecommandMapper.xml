@@ -7,4 +7,8 @@
    	<select id="userbaseRecommand" resultType="userbaserecommand">
    		select user_id, game_id from game_like left outer join user using(nickname);
    	</select>
+   	
+   	<select id="getUserId" parameterType="String">
+   		select user_id from user where nickname=#{nickname};
+   	</select>
 </mapper>
