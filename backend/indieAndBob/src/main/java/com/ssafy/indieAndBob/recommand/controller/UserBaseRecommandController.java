@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.indieAndBob.game.dto.GameAll;
+import com.ssafy.indieAndBob.game.service.GameService;
 import com.ssafy.indieAndBob.jwt.service.JwtService;
 import com.ssafy.indieAndBob.recommand.dto.UserbaseRecommand;
 import com.ssafy.indieAndBob.recommand.service.UserbaseRecommandService;
@@ -49,6 +52,8 @@ public class UserBaseRecommandController {
 	UserbaseRecommandService service;
 	@Autowired
 	JwtService jwtService;
+	@Autowired
+	GameService gameService;
 	
 	@GetMapping("/api/recommand/userbase")
 	@ApiOperation(value = "유저기반 추천")
@@ -82,14 +87,21 @@ public class UserBaseRecommandController {
 			UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
 			
 			List<RecommendedItem> recommendations = recommender.recommend(userId, 5);
-			logger.info("size : " + recommendations.size());
-			for(RecommendedItem item : recommendations) {
-				logger.info("item" + item);
+			List<GameAll> gamelist = new LinkedList<GameAll>();
+			if(recommendations.size() == 0) {
+				gamelist = service.randomRecommend();
+			}
+			else {
+				logger.info("size : " + recommendations.size());
+				for(RecommendedItem item : recommendations) {
+					logger.info("item" + item);
+					gamelist.add(gameService.selectGameById((int)item.getItemID()));
+				}
 			}
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
-			result.object = recommendations;
+			result.object = gamelist;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e1) {
 			e1.printStackTrace();
