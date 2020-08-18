@@ -48,6 +48,7 @@ public class GameServiceImpl implements GameService{
 	
 	@Override
 	public int deleteGameById(int gameId) {
+		gamedao.deleteGameGenre(gameId);
 		return gamedao.deleteGameById(gameId);
 	}
 
