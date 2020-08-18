@@ -16,9 +16,9 @@
     	select g.*, u.profile from game g left outer join user u using(nickname) where is_approve=0 and is_end=false limit #{page},10;
     </select>
     <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameall">
-        insert into game (name, deadline, aim,left_price, is_end, is_approve, nickname,
+        insert into game (name, deadline, aim,left_price, nickname,
         thumbnail)
-        values (#{name}, #{deadline}, #{aim},#{aim},#{isEnd},#{isApprove},#{nickname},
+        values (#{name}, #{deadline}, #{aim},#{aim},#{nickname},
         #{thumbnail})
     </insert>
     <update id="updateGame" parameterType="gameall">
@@ -111,6 +111,6 @@
     </update>
 
 	<update id="endDay">
-		update game set is_end=true where date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
+		update game set is_end=true where date_format(deadline, '%Y-%m-%d') &lt; date_sub(now(),interval 1 day)
 	</update>
 </mapper>

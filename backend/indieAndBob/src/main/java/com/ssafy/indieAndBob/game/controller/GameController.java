@@ -78,6 +78,7 @@ public class GameController {
 				result.status = true;
 				result.data = "success";
 				result.object = gamelist;
+				logger.info("game list : " + gamelist);
 				response = new ResponseEntity<>(result, HttpStatus.OK);
 			} else {
 				response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
