@@ -13,6 +13,6 @@
    	</select>
    	
    	<select id="selectRandGame" resultType="gameall">
-   		select * from game where is_approve=1 and is_end=false order by rand() limit 5
+   		select *, DATEDIFF(deadline, now()) as left_day from game where is_approve=1 and is_end=false order by rand() limit 5
    	</select>
 </mapper>
