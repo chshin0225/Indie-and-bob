@@ -17,7 +17,7 @@ export default new Vuex.Store({
     changedPw: false,
     oriEmail: "",
     oriPassword: "",
-    username: localStorage.getItem('username'),
+    username: cookies.get('username'),
     userInfo: null,
     picture: null,
     genres: ["액션", "슈팅", "RPG", "시뮬레이션", "어드벤쳐", "스포츠", "레이싱", "추리", "퍼즐", "리듬", "턴제", "캐주얼", "디펜스", "모바일", "PC", "콘솔"],
@@ -59,6 +59,7 @@ export default new Vuex.Store({
     // },
 
     // home
+    isDeveloper: false,
     mostLikedList: [],
     almostFinishedList: [],
     mostFundedList: [],
@@ -66,6 +67,7 @@ export default new Vuex.Store({
 
     // recommedation
     genreRecommendationList: [],
+    userRecommendationList: [],
               
     // follow
     followerList: null,
@@ -133,13 +135,17 @@ export default new Vuex.Store({
     },
     setUsername(state, val) {
       state.username = val
-      localStorage.setItem('username', val)
+      cookies.set('username', val)
     },
     setUserInfo(state, val) {
       state.userInfo = val
     },
     setPicture(state, val) {
       state.picture = val
+    },
+
+    setIsDeveloper(state, val) {
+      state.isDeveloper = val
     },
 
     // home
@@ -159,6 +165,9 @@ export default new Vuex.Store({
     // recommendation
     setGenreRecommendationList(state, val) {
       state.genreRecommendationList = val
+    },
+    setUserRecommendationList(state, val) {
+      state.userRecommendationList = val
     },
 
     // follow
@@ -283,7 +292,7 @@ export default new Vuex.Store({
 
       // local storage에 있는 username 정보 제거
       commit('setUsername', null)
-      localStorage.removeItem('username')
+      cookies.remove('username')
       
       if (router.currentRoute.name !== 'Home') {
         router.push({ name: 'Home' })
@@ -425,6 +434,22 @@ export default new Vuex.Store({
             commit('setGenreRecommendationList', res.data.object)
           })
           .catch(err => console.error(err))
+
+        axios.get(SERVER.BASE + SERVER.USERBASEDRECOMMENDATION, getters.headersConfig)
+          .then(res => {
+            res.data.object.forEach(item => {
+              storageRef.child(item.thumbnail).getDownloadURL()
+                .then(url => item.thumbnail = url)
+                .catch(err => console.error(err))
+              let genres = ''
+              item.genreName.forEach(genre => {
+                genres += genre + ' | '
+              })
+              item.genreName = genres.slice(0, genres.length-2)
+            })
+            commit('setUserRecommendationList', res.data.object)
+          })
+          .catch(err => console.error(err))
       }
     },
 
@@ -521,7 +546,8 @@ export default new Vuex.Store({
       commit('setRewardData', null)
       axios.get(SERVER.BASE + SERVER.REWARDDETAIL + rewardId, this.headersConfig)
         .then(res => {
-          // console.log(res.data.object)
+          // console.log(res.data.object.reward)
+          res.data.object.reward.content = res.data.object.reward.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
           commit('setRewardData', res.data.object)
         })
         .catch(err => console.error(err));

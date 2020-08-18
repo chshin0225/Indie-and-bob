@@ -15,7 +15,8 @@
                 <v-list-item-content class="ml-4">
                   <v-list-item-title class="font-weight-bold project-name">{{ project.name }}</v-list-item-title>
                   <router-link class="text-decoration-none" :to="`/user/mypage/${project.nickname}`">{{ project.nickname }}</router-link>
-                  <v-list-item-subtitle class="d-none d-sm-block">{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="!project.end" class="d-none d-sm-block">{{ project.leftDay }}일 남음</v-list-item-subtitle>
+                  <v-list-item-subtitle v-else class="d-none d-sm-block">{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
                   <v-list-item-subtitle>{{ project.genreName }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
@@ -23,9 +24,19 @@
               <v-img v-else src="../../assets/default_project.png" height="194"></v-img>
               
               <v-list-item class="py-1 mx-1">
-                <v-row>
+                <v-row v-if="!project.end">
                   <p class="mb-1 ml-1 funding-progress">{{ fundingProgress(project.aim, project.leftPrice) }}% 달성</p>
                   <v-progress-linear :value="fundingProgress(project.aim, project.leftPrice)" height="7"></v-progress-linear>
+                </v-row>
+
+                <!-- 종료됨 -->
+                <v-row v-else>
+                  <v-chip
+                    class="ma-2"
+                    color="primary"
+                  >
+                    종료됨
+                  </v-chip>
                 </v-row>
               </v-list-item>
           </router-link>

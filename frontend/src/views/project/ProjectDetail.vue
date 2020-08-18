@@ -90,7 +90,6 @@
                 v-model="r_price"
                 id="price"
                 placeholder="희망 판매가격 "
-                type="number"
                 hide-details="true"
                 required
                 class="pt-0"
@@ -230,7 +229,12 @@ export default {
           axios
             .get(SERVER.BASE + SERVER.REWARDS + this.id)
             .then((res) => {
-              console.log("rewards", res.data.object);
+              // console.log("rewards", res.data.object); 
+              if (res.data.object.length > 0) {
+                res.data.object.forEach(item => {
+                  item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
+                })
+              }
               this.rewards = res.data.object;
               this.dialog = false;
               this.r_thumbnailUrl = "";
@@ -268,7 +272,7 @@ export default {
 
     projectDelete() {
       let answer = confirm('프로젝트를 삭제하시겠습니까?')
-      if (answer === true) {
+      if (answer) {
         axios.delete(SERVER.BASE + SERVER.GAME + this.id, this.headersConfig)
           .then(router.push({ name: 'Home' }))
           .catch((err) => console.error(err))
@@ -277,7 +281,7 @@ export default {
 
     finalSubmit() {
       let answer = confirm('프로젝트를 제출하시겠습니까?')
-      if (answer === true) {
+      if (answer) {
         axios.get(SERVER.BASE + SERVER.GAMEREGISTER + `/${this.$route.params.id}`)
           .then(() => router.push({ name: 'CreateProjectDone'}))
           .catch(err => console.error(err))

@@ -2,19 +2,20 @@
   <div>
     <div v-if="userDataFetched">
       <!-- header -->
-      <div class="header">
+      <div class="header d-flex align-center">
         <v-container class="ml-5">
           <v-row>
-            <v-avatar size=100 class="mr-5 mr-sm-9">
+            <v-avatar size=100 class="mr-5 mr-sm-9 align-self-center">
               <img v-if="profileImage" :src="profileImage" alt="프로필 사진" />
               <img v-else src="../../assets/default_profile.png" alt="프로필 사진" />
             </v-avatar>
             <v-col>
               <v-row>
-                <h1>{{ userInfo.nickname }}</h1>
+                <h1 class="white--text">{{ userInfo.nickname }}</h1>
                 <div class="d-flex" v-if="!isSelf">
                   <v-btn
-                    outlined
+                    depressed
+                    rounded
                     small
                     color="primary"
                     class="align-self-center ml-3"
@@ -23,7 +24,8 @@
                   >follow</v-btn>
 
                   <v-btn
-                    outlined
+                    depressed
+                    rounded
                     small
                     color="accent"
                     class="align-self-center ml-3"
@@ -34,7 +36,9 @@
                 
               </v-row>
               <v-row>
-                <p class="mb-0">{{ userInfo.introduction }}</p>
+                <p class="mb-0 white--text">
+                  {{ userInfo.introduction }}
+                </p>
               </v-row>
 
             </v-col>
@@ -130,7 +134,7 @@
       </v-card>
 
       <!-- 새 프로젝트 생성 버튼 -->
-      <v-tooltip right>
+      <v-tooltip right v-if="userInfo.developer">
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" to="/newproject" class="mb-4 ml-4" depressed fab fixed bottom left v-bind="attrs" v-on="on">
             <v-icon>fas fa-plus</v-icon>
@@ -158,6 +162,7 @@ import FollowInfo from "../../components/user/FollowInfo.vue";
 import MyInfo from "../../components/user/MyInfo.vue";
 
 import firebase from "firebase"
+import cookies from 'vue-cookies'
 
 export default {
   name: "MyPage",
@@ -182,7 +187,7 @@ export default {
     ...mapGetters(["userDataFetched"]),
 
     isSelf: function() {
-      return this.userInfo.nickname === localStorage.getItem("username");
+      return this.userInfo.nickname === cookies.get('username');
     },
     followInfo: function() {
       return {
@@ -235,7 +240,11 @@ export default {
 
 <style scoped>
 .header {
-  background-color: #e4dfda;
+  /* background-color: #e4dfda; */
+  height: 150px;
+  background-image: url('../../assets/mypage_img2.jpg');
+  background-position: center center;
+  background-size: cover;
 }
 
 .v-tab {
