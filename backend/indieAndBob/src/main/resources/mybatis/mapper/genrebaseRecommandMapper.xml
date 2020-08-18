@@ -18,6 +18,7 @@
 		    gameinfo.updated_at,
     		gameinfo.started_at,
     		gameinfo.cnt,
+    		DATEDIFF(gameinfo.deadline, now()) as left_day,
 		    user.nickname,
     		user.profile
 		from
