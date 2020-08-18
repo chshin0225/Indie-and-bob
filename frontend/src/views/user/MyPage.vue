@@ -162,6 +162,7 @@ import FollowInfo from "../../components/user/FollowInfo.vue";
 import MyInfo from "../../components/user/MyInfo.vue";
 
 import firebase from "firebase"
+import cookies from 'vue-cookies'
 
 export default {
   name: "MyPage",
@@ -186,7 +187,7 @@ export default {
     ...mapGetters(["userDataFetched"]),
 
     isSelf: function() {
-      return this.userInfo.nickname === localStorage.getItem("username");
+      return this.userInfo.nickname === cookies.get('username');
     },
     followInfo: function() {
       return {

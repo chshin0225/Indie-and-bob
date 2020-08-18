@@ -283,7 +283,7 @@ router.beforeEach((to, from, next) => {
   const adminRequired = adminPages.includes(to.name)
 
   const isLoggedIn = cookies.isKey('user')
-  const isAdmin = localStorage.getItem('username') === 'admin'
+  const isAdmin = cookies.get('username') === 'admin'
   // console.log('admin', isAdmin)
 
   // tab 제목 바꾸기

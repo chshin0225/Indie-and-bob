@@ -139,6 +139,7 @@ import axios from 'axios'
 import SERVER from './api/base'
 import firebase from 'firebase'
 import router from './router'
+import cookies from 'vue-cookies'
 
 export default {
   name: "app",
@@ -149,7 +150,7 @@ export default {
       drawer: false,
       searchKeyword: '',
       closeOnClick: true,
-      currentUser: localStorage.getItem('username'),
+      currentUser: cookies.get('username'),
     };
   },
   
@@ -159,7 +160,7 @@ export default {
     getUserInfo() {
       this.userInfo = null
       if (this.isLoggedIn) {
-        let username = localStorage.getItem('username')
+        let username = cookies.get('username')
         axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
           .then(res => {
             this.userInfo = res.data.object
