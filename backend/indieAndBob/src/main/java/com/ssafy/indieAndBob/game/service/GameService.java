@@ -18,7 +18,7 @@ public interface GameService {
 	int updateGame(GameAll game);
 	int deleteGameById(int gameId);
 	List<GameAll> selectAllGame(int page);
-	List<Game> selectAllGameAdmin(int page);
+	List<GameAll> selectAllGameAdmin(int page);
 	int gameLike(GameLike like);
 	List<GameAll> selectGameByNickname(MyGameSearch search);
 	List<User> selectUserByGameId(String gameId);
@@ -31,4 +31,6 @@ public interface GameService {
 	List<GameAll> deadlineGame();
 	List<GameAll> mostFundedPriceGame();
 	List<GameAll> mostFundedPercentGame();
+	int gameSubmit(int gameId);
+	int endDay();
 }

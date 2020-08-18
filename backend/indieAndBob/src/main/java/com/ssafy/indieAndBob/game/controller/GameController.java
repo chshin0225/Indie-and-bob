@@ -72,12 +72,13 @@ public class GameController {
 		logger.info("==========selectAllGame==========");
 		ResponseEntity response = null;
 		if(nickname.equals("admin")) {
-			List<Game> gamelist = gservice.selectAllGameAdmin(page);
+			List<GameAll> gamelist = gservice.selectAllGameAdmin(page);
 			if(gamelist.size()>=0) {
 				final BasicResponse result = new BasicResponse();
 				result.status = true;
 				result.data = "success";
 				result.object = gamelist;
+				logger.info("game list : " + gamelist);
 				response = new ResponseEntity<>(result, HttpStatus.OK);
 			} else {
 				response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -171,6 +172,22 @@ public class GameController {
 			obj.put("extension", extension);
 			obj.put("gameId", gameId);
 			result.object = obj;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@GetMapping("/api/game/registergame/{gameId}")
+	@ApiOperation(value = "게임 등록")
+	public Object gameSubmit(@PathVariable int gameId) {
+		logger.info("==========gameSubmit==========");
+		ResponseEntity response = null;
+		if (gservice.gameSubmit(gameId) == 1) {
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			response = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -356,7 +373,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/api/mostfundedgame/price")
-	@ApiOperation(value = "마감 임박 게임")
+	@ApiOperation(value = "펀딩 금액이 가장 높은 프로젝트")
 	public Object mostFundedPriceGame() {
 		logger.info("==========mostFundedPriceGame==========");
 		ResponseEntity response = null;
@@ -374,7 +391,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/api/mostfundedgame/percent")
-	@ApiOperation(value = "마감 임박 게임")
+	@ApiOperation(value = "펀딩 비율이 가장 높은 프로젝트")
 	public Object mostFundedPercentGame() {
 		logger.info("==========mostFundedPercentGame==========");
 		ResponseEntity response = null;

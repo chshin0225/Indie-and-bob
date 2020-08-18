@@ -12,17 +12,18 @@
    	    select g.*, u.profile from game g left outer join user u using(nickname)
    	    where is_approve=1 and is_end=false order by game_id desc limit #{page},10
     </select>
-    <select id="selectAllGameAdmin" parameterType="int" resultType="game">
-    	select * from game where is_approve=0 and is_end=false limit #{page},10
+    <select id="selectAllGameAdmin" parameterType="int" resultType="gameall">
+    	select g.*, u.profile from game g left outer join user u using(nickname) where is_approve=0 and is_end=false limit #{page},10;
     </select>
     <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameall">
-        insert into game (name, deadline, aim,left_price, is_end, is_approve, nickname,
+        insert into game (name, deadline, aim,left_price, nickname,
         thumbnail)
-        values (#{name}, #{deadline}, #{aim},#{aim},#{isEnd},#{isApprove},#{nickname},
+        values (#{name}, #{deadline}, #{aim},#{aim},#{nickname},
         #{thumbnail})
     </insert>
     <update id="updateGame" parameterType="gameall">
-    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, updated_at=now(), thumbnail=#{thumbnail}
+    	update game set name=#{name}, deadline=#{deadline}, aim=#{aim}, updated_at=now(), thumbnail=#{thumbnail},
+    	reason=null
         where game_id=#{gameId}
     </update>
     <delete id="deleteGameById" parameterType="int">
@@ -56,7 +57,7 @@
     </select>
     
     <update id="updateApprove" parameterType="game">
-    	update game set is_approve=#{isApprove} where game_id=#{gameId}
+    	update game set is_approve=#{isApprove}, reason=#{reason} where game_id=#{gameId}
     </update>
     
     <update id="fundingGame" parameterType="funding">
@@ -84,25 +85,32 @@
     	select ga.*, u.profile from (select g.*, count(*) count from game_like left outer join game g using(game_id) 
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day) 
 		group by game_id) ga left outer join user u using(nickname)
-		order by count desc
+		order by count desc limit 5
     </select>
     
     <select id="deadlineGame" resultType="gameall">
     	select g.*, u.profile from game g left outer join user u using(nickname)
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
-		order by deadline
+		order by deadline limit 5
     </select>
     
     <select id="mostFundedPriceGame" resultType="gameall">
     	select * from game
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
-		order by aim-left_price desc
+		order by aim-left_price desc limit 5
     </select>
     
     <select id="mostFundedPercentGame" resultType="gameall">
     	select * from game
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
-		order by (aim-left_price)/aim desc;
+		order by (aim-left_price)/aim desc limit 5
     </select>
     
+    <update id="gameSubmit" parameterType="int">
+    	update game set is_approve=0 where game_id=#{gameId}
+    </update>
+
+	<update id="endDay">
+		update game set is_end=true where date_format(deadline, '%Y-%m-%d') &lt; date_sub(now(),interval 1 day)
+	</update>
 </mapper>

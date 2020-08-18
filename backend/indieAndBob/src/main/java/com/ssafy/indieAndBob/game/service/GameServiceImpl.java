@@ -100,8 +100,13 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<Game> selectAllGameAdmin(int page) {
-		return gamedao.selectAllGameAdmin(page);
+	public List<GameAll> selectAllGameAdmin(int page) {
+		List<GameAll> games = gamedao.selectAllGameAdmin(page);
+		for(GameAll game : games) {
+			List<String> genreName = genredao.selectGenreNameByGameId(game.getGameId());
+			game.setGenreName(genreName);
+		}
+		return games;
 	}
 
 	@Override
@@ -162,6 +167,16 @@ public class GameServiceImpl implements GameService{
 			game.setGenreName(genreName);
 		}
 		return games;
+	}
+
+	@Override
+	public int gameSubmit(int gameId) {
+		return gamedao.gameSubmit(gameId);
+	}
+
+	@Override
+	public int endDay() {
+		return gamedao.endDay();
 	}
 
 	
