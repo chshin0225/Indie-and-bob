@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import cookies from 'vue-cookies'
+import store from '../store'
 
 // home
 import Home from '../views/Home.vue'
@@ -278,12 +279,19 @@ router.beforeEach((to, from, next) => {
     'NewProjectRequest',
   ]
 
+  const developerPages = [
+    'CreateProject',
+    'EditProject'
+  ]
+
   const authRequired = !PublicPages.includes(to.name)
   const unauthRequired = authPages.includes(to.name)
   const adminRequired = adminPages.includes(to.name)
+  const developerRequired = developerPages.includes(to.name)
 
   const isLoggedIn = cookies.isKey('user')
   const isAdmin = cookies.get('username') === 'admin'
+  const isDeveloper = store.state.isDeveloper
   // console.log('admin', isAdmin)
 
   // tab 제목 바꾸기
@@ -301,6 +309,12 @@ router.beforeEach((to, from, next) => {
 
   if (authRequired && !isLoggedIn) {
     next({ name: 'Login' })
+  } else {
+    next()
+  }
+
+  if (developerRequired && !isDeveloper) {
+    next( {name: 'Home'})
   } else {
     next()
   }

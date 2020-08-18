@@ -57,7 +57,7 @@
     </v-container>
 
     <!-- 새 프로젝트 생성 버튼 -->
-      <v-tooltip right v-if="isLoggedIn">
+      <v-tooltip right v-if="isLoggedIn&&isDeveloper">
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" to="/newproject" class="mb-4 ml-4" depressed fab fixed bottom left v-bind="attrs" v-on="on">
             <v-icon>fas fa-plus</v-icon>
@@ -82,7 +82,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['mostLikedList', 'almostFinishedList', 'mostFundedList', 'highestPercentList', 'genreRecommendationList', 'userRecommendationList',]),
+    ...mapState(['mostLikedList', 'almostFinishedList', 'mostFundedList', 'highestPercentList', 'genreRecommendationList', 'userRecommendationList', 'isDeveloper']),
     ...mapGetters(['isLoggedIn',])
   },
 
