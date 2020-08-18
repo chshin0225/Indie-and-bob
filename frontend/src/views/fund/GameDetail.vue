@@ -185,7 +185,7 @@
           </v-card>
 
           <!-- rewards section -->
-          <v-card tile v-if="project.nickname===username || project.isApprove===1">
+          <v-card tile v-if="project.nickname===username || username==='admin' ||project.isApprove===1">
             <!-- header -->
             <v-subheader><h3>리워드 종류</h3></v-subheader>
             <v-divider></v-divider>
