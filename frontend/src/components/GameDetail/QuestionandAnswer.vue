@@ -215,6 +215,8 @@ import axios from 'axios';
 import SERVER from '../../api/base';
 import { mapState, mapGetters } from 'vuex'
 
+import cookies from 'vue-cookies'
+
 export default {
     name:'QuestionandAnswer',
 
@@ -237,7 +239,7 @@ export default {
         page: 1,
 
         isDeveloper: false,
-        currentUser: localStorage.getItem('username'),
+        currentUser: cookies.get('username'),
       }
     },
 
@@ -341,7 +343,7 @@ export default {
       this.fetchQuestions(this.page)
 
       // 현재 유저가 개발자인지 확인
-      if (this.project.nickname === localStorage.getItem('username')) {
+      if (this.project.nickname === cookies.get('username')) {
         this.isDeveloper = true
       }
     },

@@ -107,6 +107,7 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import axios from 'axios'
 import SERVER from '../../api/base'
+import cookies from 'vue-cookies'
 
 export default {
   name: 'CommunityArticle',
@@ -115,7 +116,7 @@ export default {
     return {
       comment: null,
       commentList: [],
-      myName: localStorage.getItem('username'),
+      myName: cookies.get('username'),
     }
   },
 

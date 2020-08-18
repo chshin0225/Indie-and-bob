@@ -17,7 +17,7 @@ export default new Vuex.Store({
     changedPw: false,
     oriEmail: "",
     oriPassword: "",
-    username: localStorage.getItem('username'),
+    username: cookies.get('username'),
     userInfo: null,
     picture: null,
     genres: ["액션", "슈팅", "RPG", "시뮬레이션", "어드벤쳐", "스포츠", "레이싱", "추리", "퍼즐", "리듬", "턴제", "캐주얼", "디펜스", "모바일", "PC", "콘솔"],
@@ -134,7 +134,7 @@ export default new Vuex.Store({
     },
     setUsername(state, val) {
       state.username = val
-      localStorage.setItem('username', val)
+      cookies.set('username', val)
     },
     setUserInfo(state, val) {
       state.userInfo = val
@@ -287,7 +287,7 @@ export default new Vuex.Store({
 
       // local storage에 있는 username 정보 제거
       commit('setUsername', null)
-      localStorage.removeItem('username')
+      cookies.remove('username')
       
       if (router.currentRoute.name !== 'Home') {
         router.push({ name: 'Home' })
