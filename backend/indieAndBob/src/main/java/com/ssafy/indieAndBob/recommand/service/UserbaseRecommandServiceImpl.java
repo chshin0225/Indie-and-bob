@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.recommand.dao.UserBaseRecommandDao;
 import com.ssafy.indieAndBob.recommand.dto.UserbaseRecommand;
 
@@ -22,6 +23,11 @@ public class UserbaseRecommandServiceImpl implements UserbaseRecommandService {
 	@Override
 	public int getUserId(String nickname) {
 		return ubDao.getUserId(nickname);
+	}
+
+	@Override
+	public List<GameAll> randomRecommend() {
+		return ubDao.randomRecommend();
 	}
 	
 }

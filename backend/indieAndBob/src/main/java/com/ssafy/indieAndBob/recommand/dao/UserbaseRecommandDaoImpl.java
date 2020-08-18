@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.indieAndBob.game.dto.GameAll;
 import com.ssafy.indieAndBob.recommand.dto.UserbaseRecommand;
 
 @Repository
@@ -21,6 +22,10 @@ public class UserbaseRecommandDaoImpl implements UserBaseRecommandDao {
 	@Override
 	public int getUserId(String nickname) {
 		return temp.selectOne(ns + "getUserId", nickname);
+	}
+	@Override
+	public List<GameAll> randomRecommend() {
+		return temp.selectList(ns + "selectRandGame");
 	}
 	
 }
