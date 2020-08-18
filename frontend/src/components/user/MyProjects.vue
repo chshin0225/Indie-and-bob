@@ -3,6 +3,7 @@
     <!-- <p>{{myProjectList[0]}}</p> -->
     <v-row>
       <v-col v-for="project in myProjectList" :key="project.gameId" cols=6 md=4>
+        <!-- 작성중 -->
         <v-card v-if="project.isApprove===2" tile class="card"> 
           <router-link v-if="project.isApprove===2" :to="`/project/${project.gameId}`" class="text-decoration-none">
               <v-list-item>
@@ -32,6 +33,8 @@
               </v-list-item>
           </router-link>    
         </v-card>
+
+        <!-- 작성중 외의 status -->
         <v-card v-else tile class="card"> 
            <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
               <v-list-item>
@@ -42,7 +45,8 @@
                 <v-list-item-content class="ml-4">
                   <v-list-item-title class="font-weight-bold project-name">{{ project.name }}</v-list-item-title>
                   <router-link class="text-decoration-none" :to="`/user/mypage/${project.nickname}`">{{ project.nickname }}</router-link>
-                  <v-list-item-subtitle class="d-none d-sm-block">{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="!project.end" class="d-none d-sm-block">{{ project.leftDay }}일 남음</v-list-item-subtitle>
+                  <v-list-item-subtitle v-else class="d-none d-sm-block">{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
                   <v-list-item-subtitle>{{ project.genreName }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
@@ -50,22 +54,37 @@
               <v-img v-else height="194" src="../../assets/default_project.png"></v-img>
               
               <v-list-item class="py-1 mx-1">
-                <v-row v-if="project.isApprove === 1">
+                <!-- 진행중 -->
+                <v-row v-if="project.isApprove === 1 && !project.end">
                   <p class="mb-1 ml-1 funding-progress">{{ fundingProgress(project.aim, project.leftPrice) }}% 달성</p>
                   <v-progress-linear :value="fundingProgress(project.aim, project.leftPrice)" height="7"></v-progress-linear>
                 </v-row>
+
+                <!-- 종료됨 -->
+                <v-row v-else-if="project.isApprove === 1 && project.end">
+                  <v-chip
+                    class="ma-2"
+                    color="primary"
+                  >
+                    종료됨
+                  </v-chip>
+                </v-row>
+        
+                <!-- 거절 -->
                 <v-row v-else-if="project.isApprove === -1">
                   <v-chip
                     class="ma-2"
-                    color="danger"
+                    color="warning"
                   >
                     거절됨
                   </v-chip>
                 </v-row>
+
+                <!-- 심사중 -->
                 <v-row v-else>
                   <v-chip
                     class="ma-2"
-                    color="accent"
+                    color="success"
                   >
                     심사중
                   </v-chip>

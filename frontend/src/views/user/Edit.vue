@@ -208,7 +208,7 @@
     <v-row class="justify-center my-4">
       <v-col sm="6">
         <v-row class="justify-space-between">
-          <v-col class="py-0">
+          <!-- <v-col class="py-0">
             <v-dialog v-model="dialog" persistent max-width="290">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn text v-bind="attrs" v-on="on" color="primary">약관보기</v-btn>
@@ -222,7 +222,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-          </v-col>
+          </v-col> -->
 
           <v-col class="text-right py-0">
             <v-btn
