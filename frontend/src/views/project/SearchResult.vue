@@ -6,6 +6,7 @@
       <v-tab>게임/프로젝트</v-tab>
       <v-tab>유저</v-tab>
       <v-tab>커뮤니티</v-tab>
+
       <v-tab-item>
         <v-card flat>
           <v-subheader>유저 검색 결과</v-subheader>
@@ -30,7 +31,7 @@
           </div>
           <v-divider class="my-4" color="#FFC0CB" :inset="inset"></v-divider>
           <v-subheader>게임 검색 결과</v-subheader>
-          <v-row v-if="searchGame!==null && searchGame.length>0">
+          <v-row v-if="searchGame !== null && searchGame.length>0">
           <v-col v-for="game in searchGame" :key="game.gameId" cols=6 md=4>
             <v-card tile class="card">
               <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
@@ -42,7 +43,8 @@
                     <v-list-item-content class="ml-4">
                       <v-list-item-title class="font-weight-bold game-name">{{ game.name }}</v-list-item-title>
                       <router-link class="text-decoration-none" :to="`/user/mypage/${game.nickname}`">{{ game.nickname }}</router-link>
-                      <v-list-item-subtitle class="d-none d-sm-block">{{ $moment(game.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                      <v-list-item-subtitle v-if="!game.end" class="d-none d-sm-block">{{ game.leftDay }}일 남음</v-list-item-subtitle>
+                      <v-list-item-subtitle v-else class="d-none d-sm-block">{{ $moment(game.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
                       <v-list-item-subtitle>{{ game.genreName }}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -50,10 +52,19 @@
                   <v-img v-else height="194" src="../../assets/default_project.png"></v-img>
                   
                   <v-list-item class="py-1 mx-1">
-                    <v-row>
+                    <v-row v-if="!game.end">
                       <p class="mb-1 ml-1 funding-progress">{{ fundingProgress(game.aim, game.leftPrice) }}% 달성</p>
                       <v-progress-linear :value="fundingProgress(game.aim, game.leftPrice)" height="7"></v-progress-linear>
                     </v-row>
+
+                    <v-row v-else>
+                    <v-chip
+                      class="ma-2"
+                      color="primary"
+                    >
+                      종료됨
+                    </v-chip>
+                  </v-row>
                   </v-list-item>
               </router-link>
             </v-card>
@@ -64,7 +75,7 @@
         </div>
         <v-divider class="my-4" color="#FFC0CB" :inset="inset"></v-divider>
         <v-subheader>게시글 검색 결과</v-subheader>
-        <v-row v-if="searchCommunity!==null && searchCommunity.length>0" class="justify-center">
+        <v-row v-if="searchCommunity !== null && searchCommunity.length>0" class="justify-center">
           <v-col class="py-0" cols=10 v-for="article in searchCommunity" :key="article.communityId">
             <v-card class="mx-auto" :to="`/community/${article.communityId}`" flat>
               <v-list-item>
@@ -98,7 +109,8 @@
                     <v-list-item-content class="ml-4">
                       <v-list-item-title class="font-weight-bold game-name">{{ game.name }}</v-list-item-title>
                       <router-link class="text-decoration-none" :to="`/user/mypage/${game.nickname}`">{{ game.nickname }}</router-link>
-                      <v-list-item-subtitle class="d-none d-sm-block">{{ $moment(game.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
+                      <v-list-item-subtitle v-if="!game.end" class="d-none d-sm-block">{{ game.leftDay }}일 남음</v-list-item-subtitle>
+                      <v-list-item-subtitle v-else class="d-none d-sm-block">{{ $moment(game.deadline).format('YYYY.MM.DD') }}까지</v-list-item-subtitle>
                       <v-list-item-subtitle>{{ game.genreName }}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -106,9 +118,18 @@
                   <v-img v-else height="194" src="../../assets/default_project.png"></v-img>
                   
                   <v-list-item class="py-1 mx-1">
-                    <v-row>
+                    <v-row v-if="!game.end">
                       <p class="mb-1 ml-1 funding-progress">{{ fundingProgress(game.aim, game.leftPrice) }}% 달성</p>
                       <v-progress-linear :value="fundingProgress(game.aim, game.leftPrice)" height="7"></v-progress-linear>
+                    </v-row>
+
+                    <v-row v-else>
+                      <v-chip
+                        class="ma-2"
+                        color="primary"
+                      >
+                        종료됨
+                      </v-chip>
                     </v-row>
                   </v-list-item>
               </router-link>
@@ -148,7 +169,7 @@
       <v-tab-item>
         <v-card flat outlined>
           <v-card-text>커뮤니티 부분입니다.</v-card-text>
-          <v-row v-if="searchCommunity!==null && searchCommunity.length>0" class="justify-center">
+          <v-row v-if="searchCommunity !== null && searchCommunity.length>0" class="justify-center">
             <v-col class="py-0" cols=10 v-for="article in searchCommunity" :key="article.communityId">
               <v-card class="mx-auto" :to="`/community/${article.communityId}`" flat>
                 <v-list-item>
