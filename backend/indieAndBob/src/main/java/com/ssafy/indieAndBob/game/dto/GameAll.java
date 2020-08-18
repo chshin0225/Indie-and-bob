@@ -28,4 +28,5 @@ public class GameAll {
     private List<Integer> genre;
     private List<String> genreName;
     private String profile;
+    private int leftDay;
 }

@@ -5,15 +5,15 @@
 <mapper namespace="com.ssafy.indieAndBob.mapper.game">
 
    	<select id="selectGameById" parameterType="int" resultType="gameall">
-		select g.*, gd.*, u.profile from game g left outer join game_detail gd using(game_id) left outer join user u using(nickname)
+		select g.*, gd.*, u.profile, DATEDIFF(deadline, now()) as left_day from game g left outer join game_detail gd using(game_id) left outer join user u using(nickname)
 		where game_id=#{game_id}
     </select>
     <select id="selectAllGame" parameterType="int" resultType="gameall">
-   	    select g.*, u.profile from game g left outer join user u using(nickname)
+   	    select g.*, u.profile, DATEDIFF(deadline, now()) as left_day from game g left outer join user u using(nickname)
    	    where is_approve=1 and is_end=false order by game_id desc limit #{page},10
     </select>
     <select id="selectAllGameAdmin" parameterType="int" resultType="gameall">
-    	select g.*, u.profile from game g left outer join user u using(nickname) where is_approve=0 and is_end=false limit #{page},10;
+    	select g.*, u.profile, DATEDIFF(deadline, now()) as left_day from game g left outer join user u using(nickname) where is_approve=0 and is_end=false limit #{page},10;
     </select>
     <insert id="registerGame" useGeneratedKeys="true" keyProperty="gameId" parameterType="gameall">
         insert into game (name, deadline, aim,left_price, nickname,
@@ -37,7 +37,7 @@
     </insert>
     
     <select id="selectGameByNickname" parameterType="mygamesearch" resultType="gameall">
-    	select g.*, u.profile from game g left outer join user u using(nickname)
+    	select g.*, u.profile, DATEDIFF(deadline, now()) as left_day from game g left outer join user u using(nickname)
     	where game_id in (select game_id from game_like where nickname=#{nickname})
     	order by game_id desc
     	limit #{page},9
@@ -69,7 +69,7 @@
     </insert>
     
     <select id="selectMadeGameByNickname" parameterType="mygamesearch" resultType="gameall">
-    	select g.*, u.profile from game g left outer join user u using(nickname)
+    	select g.*, u.profile, DATEDIFF(deadline, now()) as left_day from game g left outer join user u using(nickname)
    	    where nickname=#{nickname} order by game_id desc limit #{page},9
     </select>
     
@@ -82,26 +82,27 @@
     </delete>
     
     <select id="mostLikeGame" resultType="gamealllike">
-    	select ga.*, u.profile from (select g.*, count(*) count from game_like left outer join game g using(game_id) 
+    	select ga.*, u.profile, DATEDIFF(deadline, now()) as left_day from (select g.*, count(*) count from game_like left outer join game g using(game_id) 
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day) 
 		group by game_id) ga left outer join user u using(nickname)
 		order by count desc limit 5
     </select>
     
     <select id="deadlineGame" resultType="gameall">
-    	select g.*, u.profile from game g left outer join user u using(nickname)
-		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
+    	select g.*, u.profile, DATEDIFF(deadline, now()) as left_day from game g left outer join user u using(nickname)
+		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day) and 0 &lt; left_price/aim
+        and left_price/aim &lt; 0.2
 		order by deadline limit 5
     </select>
     
     <select id="mostFundedPriceGame" resultType="gameall">
-    	select * from game
+    	select *, DATEDIFF(deadline, now()) as left_day from game
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
 		order by aim-left_price desc limit 5
     </select>
     
     <select id="mostFundedPercentGame" resultType="gameall">
-    	select * from game
+    	select *, DATEDIFF(deadline, now()) as left_day from game
 		where is_approve=1 and date_format(deadline, '%Y-%m-%d') >= date_sub(now(),interval 1 day)
 		order by (aim-left_price)/aim desc limit 5
     </select>
