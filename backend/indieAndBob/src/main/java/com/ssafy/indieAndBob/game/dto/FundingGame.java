@@ -32,4 +32,5 @@ public class FundingGame {
 	private int price;
 	private String content;
 	private String profile;
+	private int leftDay;
 }

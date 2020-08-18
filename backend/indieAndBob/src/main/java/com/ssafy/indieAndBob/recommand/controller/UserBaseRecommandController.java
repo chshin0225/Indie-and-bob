@@ -61,9 +61,14 @@ public class UserBaseRecommandController {
 		logger.info("==========recommandUserbase==========");
 		ResponseEntity response = null;
 		String nickname = jwtService.getNickname(request);
+//		String nickname = "이희준";
 		int userId = service.getUserId(nickname);
 		
-		File file = new File("src/main/resources/static/recommand.txt");
+		String path = UserBaseRecommandController.class.getResource("").getPath();
+		System.out.println(path);
+		
+		File file = new File(path + "recommand.txt");
+//		File file = new File(path);
 		StringBuilder sb = new StringBuilder();
 		List<UserbaseRecommand> list = service.userbaseRecommand();
 		for(UserbaseRecommand recommand : list) {
@@ -77,7 +82,7 @@ public class UserBaseRecommandController {
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
-		
+		List<GameAll> gamelist = new LinkedList<GameAll>();
 		try {
 			DataModel model = new FileDataModel(file);
 			UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
@@ -87,7 +92,7 @@ public class UserBaseRecommandController {
 			UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
 			
 			List<RecommendedItem> recommendations = recommender.recommend(userId, 5);
-			List<GameAll> gamelist = new LinkedList<GameAll>();
+			
 			if(recommendations.size() == 0) {
 				gamelist = service.randomRecommend();
 			}
@@ -104,7 +109,12 @@ public class UserBaseRecommandController {
 			result.object = gamelist;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			gamelist = service.randomRecommend();
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = gamelist;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		
 		return response;
