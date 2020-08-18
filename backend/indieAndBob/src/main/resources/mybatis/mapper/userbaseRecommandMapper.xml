@@ -5,10 +5,14 @@
 <mapper namespace="com.ssafy.indieAndBob.mapper.userbaseRecommand">
 
    	<select id="userbaseRecommand" resultType="userbaserecommand">
-   		select user_id, game_id from game_like left outer join user using(nickname);
+   		select user_id, game_id from game_like left outer join user using(nickname)
    	</select>
    	
-   	<select id="getUserId" parameterType="String">
-   		select user_id from user where nickname=#{nickname};
+   	<select id="getUserId" parameterType="String" resultType="int">
+   		select user_id from user where nickname=#{nickname}
+   	</select>
+   	
+   	<select id="selectRandGame">
+   		select * from game where is_approve=1 and is_end=false order by rand() limit 5
    	</select>
 </mapper>

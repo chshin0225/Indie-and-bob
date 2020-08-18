@@ -61,7 +61,7 @@
             <p>목표: {{ project.aim }}원</p>
 
             <v-container class="pb-0">
-              <v-row v-if="project.isApprove===-1">
+              <v-row v-if="project.isApprove===-1 && project.nickname===username">
                 <v-col cols=12 class="px-0">
                   <v-alert outlined text color="primary" dense>
                     <div class="d-flex justify-space-between">
@@ -185,7 +185,7 @@
           </v-card>
 
           <!-- rewards section -->
-          <v-card tile>
+          <v-card tile v-if="project.nickname===username || project.isApprove===1">
             <!-- header -->
             <v-subheader><h3>리워드 종류</h3></v-subheader>
             <v-divider></v-divider>
