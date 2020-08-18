@@ -61,7 +61,6 @@ public class UserBaseRecommandController {
 		logger.info("==========recommandUserbase==========");
 		ResponseEntity response = null;
 		String nickname = jwtService.getNickname(request);
-//		String nickname = "우왁굳";
 		int userId = service.getUserId(nickname);
 		
 		File file = new File("src/main/resources/static/recommand.txt");
