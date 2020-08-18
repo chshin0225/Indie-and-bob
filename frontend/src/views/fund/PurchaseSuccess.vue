@@ -33,6 +33,8 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import router from "../../router";
 
+import cookies from 'vue-cookies'
+
 export default {
   name: 'PurchaseSuccess',
 
@@ -45,7 +47,7 @@ export default {
     ...mapActions(['getReward',]),
 
     myPage() {
-      const username = localStorage.getItem('username')
+      const username = cookies.get('username')
       router.push(`/user/mypage/${username}`)
     },
   },

@@ -239,6 +239,7 @@ import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 import _ from 'lodash'
+import cookies from 'vue-cookies'
 
 export default {
   name: 'GameDetail',
@@ -296,7 +297,7 @@ export default {
     },
 
     isDeveloper: function() {
-      return this.project.nickname === localStorage.getItem("username");
+      return this.project.nickname === cookies.get('username');
     },
 
   },
@@ -310,7 +311,7 @@ export default {
     },
 
     isLiked() {
-      let PARAMS = "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.$route.params.id
+      let PARAMS = "?nickname=" + cookies.get('username') + "&gameId=" + this.$route.params.id
       axios.get(SERVER.BASE + SERVER.ISLIKE + PARAMS, this.headersConfig)
         .then((res) => {
           if (res.data.status) {    
@@ -341,7 +342,7 @@ export default {
         if (this.iconColor === "accent") {
           axios.post(SERVER.BASE + SERVER.LIKE,
             {
-              nickname: localStorage.getItem("username"),
+              nickname: cookies.get('username'),
               gameId: this.project.gameId,
             },
             this.headersConfig
@@ -353,7 +354,7 @@ export default {
             })
             .catch(err => console.error(err))
         } else {
-          const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.project.gameId;
+          const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + cookies.get('username') + "&gameId=" + this.project.gameId;
           axios.delete(deleteLike, this.headersConfig)
             .then(() => {
               this.iconColor = "accent"

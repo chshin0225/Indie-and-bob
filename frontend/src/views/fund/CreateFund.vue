@@ -142,6 +142,7 @@
 import axios from "axios"
 import SERVER from '../../api/base'
 import { mapActions, mapGetters, mapState } from "vuex"
+import cookies from 'vue-cookies'
 
 export default {
   name: 'CreateFund',
@@ -225,7 +226,7 @@ export default {
   },
 
   created() {
-    let username = localStorage.getItem('username')
+    let username = cookies.get('username')
     this.getUserInfo(username)
     this.getReward(this.$route.params.id)
   },
