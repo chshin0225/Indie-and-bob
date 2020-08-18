@@ -112,6 +112,6 @@
     </update>
 
 	<update id="endDay">
-		update game set is_end=true where date_format(deadline, '%Y-%m-%d') &lt; date_sub(now(),interval 1 day)
+		update game set is_end=true where date_format(deadline, '%Y-%m-%d') &lt; now()
 	</update>
 </mapper>
