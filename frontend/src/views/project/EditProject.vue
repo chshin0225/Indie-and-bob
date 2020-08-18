@@ -213,7 +213,7 @@ export default {
       firebase.storage().ref(`game/${this.$route.params.id}/content/${this.$route.params.id}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
       if (this.newThumbnail !== null) {
         var extension = this.newThumbnail.name.split('.').reverse()[0];
-        const storageRef = firebase.storage().ref(`game/${this.$route.params.id}/thumbnail/${this.$route.params.id}.${extension}`).put(this.thumbnail)
+        const storageRef = firebase.storage().ref(`game/${this.$route.params.id}/thumbnail/${this.$route.params.id}.${extension}`).put(this.newThumbnail)
         PARAMS.thumbnail = `game/${this.$route.params.id}/thumbnail/${this.$route.params.id}.${extension}`
         storageRef.on(`state_changed`, snapshot => {
             if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
