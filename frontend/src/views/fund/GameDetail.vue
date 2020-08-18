@@ -52,7 +52,17 @@
         <v-row class="d-flex flex-column-reverse flex-sm-row">
           <!-- 프로젝트 정보 -->
           <v-col cols="12" sm="6"> 
-            <h1 class="mb-4 my-sm-4">{{ project.name }}</h1>
+            <h1 class="mb-4 my-sm-4">
+              {{ project.name }} 
+              <v-chip
+                v-if="project.end"
+                color="primary"
+                small
+                class="white-text ml-1 mb-1"
+              >
+                종료됨
+              </v-chip>
+            </h1>
             <!-- <p>{{ rewards }}</p> -->
             <!-- <p>{{ project }}</p> -->
             <p class="mb-2">{{ genreData }}</p>
@@ -75,7 +85,8 @@
               <v-row v-else>
                 <p class="mb-2"> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
-                <p class="mb-2">현재 모금액: {{ project.aim - project.leftPrice }}원</p>
+                <p class="mb-2" v-if="!project.end">현재 모금액: {{ project.aim - project.leftPrice }}원</p>
+                <p class="mb-2" v-else>최종 모금액: {{ project.aim - project.leftPrice }}원</p>
                 <v-progress-linear :value="fundingProgress" height="7"></v-progress-linear>
               </v-row>
             </v-container>
@@ -208,8 +219,8 @@
                     </v-col>
                     <v-spacer></v-spacer>
                     <v-col class="d-flex justify-end">
-                      <v-btn v-if="project.isApprove === 1 && reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
-                      <v-btn v-else color="accent" disabled rounded>매진</v-btn>
+                      <v-btn v-if="project.isApprove === 1 && !project.end && reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
+                      <v-btn v-else color="accent" disabled rounded>구매불가</v-btn>
                     </v-col>
                   </v-row>
                 </v-expansion-panel-content>
@@ -327,6 +338,7 @@ export default {
     fetchRewards() {
       axios.get(SERVER.BASE + SERVER.REWARDS + this.$route.params.id)
       .then(res => {
+        console.log(res.data)
         if (res.data.object.length > 0) {
           res.data.object.forEach(item => {
             item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
