@@ -13,7 +13,7 @@
           <v-card class="mx-auto" outlined tile>
             <div class="overline px-4 pt-3">{{ rewardData.game.name }}</div>
             <v-card-title class="headline pt-1">{{ rewardData.reward.rewardName }}</v-card-title>
-            <v-card-text>{{ rewardData.reward.content }}</v-card-text>
+            <v-card-text v-html="rewardData.reward.content"></v-card-text>
             <v-card-text class="subtitle-1 text-right pt-0 black--text">{{ rewardData.reward.price }} 원</v-card-text>
           </v-card>
         </v-col>

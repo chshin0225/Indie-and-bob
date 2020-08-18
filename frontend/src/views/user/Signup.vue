@@ -264,7 +264,7 @@
     <v-row class="justify-center my-4">
       <v-col sm="6">
         <v-row class="justify-space-between">
-          <v-col class="py-0">
+          <!-- <v-col class="py-0">
             <v-switch class="ml-2" v-model="isTerm" label="약관에 동의합니다."></v-switch>
             <v-dialog v-model="dialog" persistent max-width="290">
               <template v-slot:activator="{ on, attrs }">
@@ -279,7 +279,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-          </v-col>
+          </v-col> -->
 
           <v-col class="text-right py-0">
             <v-btn
@@ -365,9 +365,9 @@ export default {
     phonenumber: function () {
       this.checkForm();
     },
-    isTerm: function () {
-      this.checkForm();
-    },
+    // isTerm: function () {
+    //   this.checkForm();
+    // },
   },
   methods: {
     ...mapActions(["SignUp"]),
@@ -404,8 +404,8 @@ export default {
         this.error.phonenumber = "올바른 휴대폰번호 형식이 아닙니다.";
       else this.error.phonenumber = false;
 
-      if (this.isTerm) this.error.isTerm = false;
-      else this.error.isTerm = true;
+      // if (this.isTerm) this.error.isTerm = false;
+      // else this.error.isTerm = true;
 
       let isSubmit = true;
       Object.values(this.error).map((v) => {
@@ -509,7 +509,7 @@ export default {
         phonenumber: false,
         nickName: "",
         passwordConfirm: false,
-        isTerm: false,
+        // isTerm: false,
         genre: false,
       },
       isSubmit: false,
