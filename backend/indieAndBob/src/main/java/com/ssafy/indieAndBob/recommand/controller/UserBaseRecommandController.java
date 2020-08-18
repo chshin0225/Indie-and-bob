@@ -63,7 +63,7 @@ public class UserBaseRecommandController {
 		String nickname = jwtService.getNickname(request);
 		int userId = service.getUserId(nickname);
 		
-		File file = new File("src/main/resources/static/recommand.txt");
+		File file = new File("recommand.txt");
 		StringBuilder sb = new StringBuilder();
 		List<UserbaseRecommand> list = service.userbaseRecommand();
 		for(UserbaseRecommand recommand : list) {
