@@ -12,7 +12,7 @@
    		select user_id from user where nickname=#{nickname}
    	</select>
    	
-   	<select id="selectRandGame">
+   	<select id="selectRandGame" resultType="gameall">
    		select * from game where is_approve=1 and is_end=false order by rand() limit 5
    	</select>
 </mapper>
