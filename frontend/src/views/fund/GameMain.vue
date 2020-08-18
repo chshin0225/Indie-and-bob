@@ -132,10 +132,10 @@ export default {
 
 <style scoped>    
 .header {
-    height: 200px;
-    background-image: url("../../assets/mypage_img2.jpg");
-    background-position: center center;
-    background-size: cover;
+  height: 200px;
+  background-image: url("../../assets/mypage_img2.jpg");
+  background-position: center center;
+  background-size: cover;
 }
 
 .header-text {
