@@ -522,7 +522,7 @@ export default new Vuex.Store({
           storageRef.child(res.data.object.content).getDownloadURL()
             .then(url => {
               var xhr = new XMLHttpRequest()
-              if (xhr) {
+              if (xhr) {  
                 xhr.open('GET', url, false)
                 xhr.send()
                 var result = (xhr.response)
@@ -546,7 +546,8 @@ export default new Vuex.Store({
       commit('setRewardData', null)
       axios.get(SERVER.BASE + SERVER.REWARDDETAIL + rewardId, this.headersConfig)
         .then(res => {
-          // console.log(res.data.object)
+          // console.log(res.data.object.reward)
+          res.data.object.reward.content = res.data.object.reward.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
           commit('setRewardData', res.data.object)
         })
         .catch(err => console.error(err));

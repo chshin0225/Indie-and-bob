@@ -19,7 +19,7 @@
               <v-img :src="project.thumbnail"  height="150px"></v-img>
               <h4 class="px-1 mt-2">{{ project.name }}</h4>
               <v-card-subtitle class="py-0 px-1">{{ project.genreName }}</v-card-subtitle>
-              <v-card-subtitle class="py-0 px-1">{{ $moment(project.deadline).format('YYYY.MM.DD') }}까지</v-card-subtitle>
+              <v-card-subtitle class="py-0 px-1">{{ project.leftDay }}일 남음</v-card-subtitle>
               <v-card-subtitle class="py-0 px-1 primary--text">{{ fundingProgress(project.aim, project.leftPrice) }}% 달성</v-card-subtitle>
             </v-card>
           </router-link>

@@ -229,7 +229,12 @@ export default {
           axios
             .get(SERVER.BASE + SERVER.REWARDS + this.id)
             .then((res) => {
-              console.log("rewards", res.data.object);
+              // console.log("rewards", res.data.object); 
+              if (res.data.object.length > 0) {
+                res.data.object.forEach(item => {
+                  item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
+                })
+              }
               this.rewards = res.data.object;
               this.dialog = false;
               this.r_thumbnailUrl = "";

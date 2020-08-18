@@ -77,7 +77,7 @@ public class UserBaseRecommandController {
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
-		
+		List<GameAll> gamelist = new LinkedList<GameAll>();
 		try {
 			DataModel model = new FileDataModel(file);
 			UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
@@ -87,9 +87,10 @@ public class UserBaseRecommandController {
 			UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
 			
 			List<RecommendedItem> recommendations = recommender.recommend(userId, 5);
-			List<GameAll> gamelist = new LinkedList<GameAll>();
+			
 			if(recommendations.size() == 0) {
 				gamelist = service.randomRecommend();
+				logger.info("size == 0");
 			}
 			else {
 				logger.info("size : " + recommendations.size());
@@ -104,7 +105,13 @@ public class UserBaseRecommandController {
 			result.object = gamelist;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			logger.info("error");
+			gamelist = service.randomRecommend();
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			result.object = gamelist;
+			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		
 		return response;
