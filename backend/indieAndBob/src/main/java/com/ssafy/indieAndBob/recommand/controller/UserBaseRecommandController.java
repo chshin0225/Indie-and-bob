@@ -90,6 +90,7 @@ public class UserBaseRecommandController {
 			
 			if(recommendations.size() == 0) {
 				gamelist = service.randomRecommend();
+				logger.info("size == 0");
 			}
 			else {
 				logger.info("size : " + recommendations.size());
@@ -104,6 +105,7 @@ public class UserBaseRecommandController {
 			result.object = gamelist;
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e1) {
+			logger.info("error");
 			gamelist = service.randomRecommend();
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
