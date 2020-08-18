@@ -9,6 +9,7 @@ export default {
 
     // recommedations
     'GENREBASEDRECOMMENDATION': '/recommand/genrebase',
+    'USERBASEDRECOMMENDATION': '/recommand/userbase',
 
     // user
     'LOGIN': "/account/login",

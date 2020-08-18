@@ -8,7 +8,7 @@
         <label for="nickname">닉네임</label>
         <v-text-field
           hide-details="true"
-          class=""
+          class="" 
           v-model="nickName"
           id="nickname"
           outlined
@@ -26,7 +26,7 @@
           hide-details="true"
           :items="genres"
           id="genres"
-          placeholder="본인이 좋아하는 게임 장르를 선택해주세요.(복수선택 가능)"
+          placeholder="본인이 좋아하는 게임 장르를 선택해주세요. (복수선택 가능)"
           v-model="genre"
           outlined
           multiple
@@ -56,7 +56,6 @@
         <v-col class="py-0" sm="2">
           <label for="bankname">은행명</label>
           <v-select
-            class=""
             hide-details="true"
             :items="banks"
             id="bankname"
@@ -68,7 +67,6 @@
           <label for="accountnumber">계좌번호</label>
           <v-text-field
             hide-details="true"
-            class=""
             v-model="accountnumber"
             id="accountnumber"
             outlined
@@ -85,7 +83,6 @@
       <v-col class="py-0" sm="6">
         <label for="email">이메일</label>
         <v-text-field
-          class=""
           hide-details="true"
           v-model="email"
           id="email"
@@ -102,7 +99,6 @@
       <v-col class="py-0" sm="6">
         <label for="name">이름</label>
         <v-text-field
-          class=""
           hide-details="true"
           v-model="name"
           id="name"
@@ -118,7 +114,6 @@
       <v-col class="py-0" sm="6">
         <label for="profile-image">프로필 사진</label>
         <v-file-input
-          class=""
           accept="image/*"
           hide-details="true"
           v-model="profileImage"
@@ -134,7 +129,6 @@
       <v-col class="py-0" sm="6">
         <label for="password">비밀번호</label>
         <v-text-field
-          class=""
           hide-details="true"
           v-model="password"
           :append-icon="showPw ? 'mdi-eye' : 'mdi-eye-off'"
@@ -153,7 +147,6 @@
       <v-col class="py-0" sm="6">
         <label for="password-confirm">비밀번호 확인</label>
         <v-text-field
-          class=""
           hide-details="true"
           v-model="passwordConfirm"
           :append-icon="showPwc ? 'mdi-eye' : 'mdi-eye-off'"
@@ -173,7 +166,6 @@
         <label for="phonenumber">핸드폰 번호('-' 제외)</label>
         <v-text-field
           hide-details="true"
-          class=""
           v-model="phonenumber"
           id="phonenumber"
           outlined
@@ -189,7 +181,6 @@
       <v-col class="py-0" sm="6">
         <label for="introduction">한 줄 소개</label>
         <v-text-field
-          class=""
           hide-details="true"
           v-model="introduction"
           id="introduction"
@@ -273,7 +264,7 @@
     <v-row class="justify-center my-4">
       <v-col sm="6">
         <v-row class="justify-space-between">
-          <v-col class="py-0">
+          <!-- <v-col class="py-0">
             <v-switch class="ml-2" v-model="isTerm" label="약관에 동의합니다."></v-switch>
             <v-dialog v-model="dialog" persistent max-width="290">
               <template v-slot:activator="{ on, attrs }">
@@ -288,7 +279,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-          </v-col>
+          </v-col> -->
 
           <v-col class="text-right py-0">
             <v-btn
@@ -299,7 +290,7 @@
                 profile: profileImage,
                 nickname: nickName,
                 genreId: genre, 
-                isDeveloper: is_developer, 
+                developer: is_developer, 
                 phoneNumber: phonenumber, 
                 bankName: bankname,
                 bankAccount: accountnumber, 
@@ -374,9 +365,9 @@ export default {
     phonenumber: function () {
       this.checkForm();
     },
-    isTerm: function () {
-      this.checkForm();
-    },
+    // isTerm: function () {
+    //   this.checkForm();
+    // },
   },
   methods: {
     ...mapActions(["SignUp"]),
@@ -413,8 +404,8 @@ export default {
         this.error.phonenumber = "올바른 휴대폰번호 형식이 아닙니다.";
       else this.error.phonenumber = false;
 
-      if (this.isTerm) this.error.isTerm = false;
-      else this.error.isTerm = true;
+      // if (this.isTerm) this.error.isTerm = false;
+      // else this.error.isTerm = true;
 
       let isSubmit = true;
       Object.values(this.error).map((v) => {
@@ -484,7 +475,29 @@ export default {
       is_developer: false,
       is_admin: false,
       userTypes: ["일반 사용자", "개발자"],
-      banks: ["하나", "우리", "국민", "농협", "카카오뱅크", "신한", "IBK기업", "SC제일", "씨티"],
+      banks: [
+        "하나", 
+        "우리", 
+        "국민", 
+        "농협", 
+        "카카오뱅크", 
+        "신한", 
+        "IBK기업", 
+        "SC제일", 
+        "씨티",
+        "대구",
+        "부산",
+        "광주",
+        "새마을",
+        "경남",
+        "전북",
+        "제주",
+        "산업",
+        "우체국",
+        "신협",
+        "수협",
+        "케이뱅크"
+        ],
       bankname: "",
       accountnumber: "",
       isTerm: false,
@@ -496,7 +509,7 @@ export default {
         phonenumber: false,
         nickName: "",
         passwordConfirm: false,
-        isTerm: false,
+        // isTerm: false,
         genre: false,
       },
       isSubmit: false,

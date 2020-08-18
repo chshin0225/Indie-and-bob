@@ -61,9 +61,17 @@
             <p>목표: {{ project.aim }}원</p>
 
             <v-container class="pb-0">
-              <v-row v-if="project.isApprove===-1">
-                <p>거절사유 : {{ project.reason }}</p>
+              <v-row v-if="project.isApprove===-1 && project.nickname===username">
+                <v-col cols=12 class="px-0">
+                  <v-alert outlined text color="primary" dense>
+                    <div class="d-flex justify-space-between">
+                      <p class="my-0 mt-1">거절사유: <span class="black--text ml-1">{{ project.reason }}</span></p>
+                      <v-btn color="accent" depressed :to="`/project/${project.gameId}`">수정하기</v-btn>
+                    </div>
+                  </v-alert>
+                </v-col>
               </v-row>
+
               <v-row v-else>
                 <p class="mb-2"> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
@@ -177,7 +185,7 @@
           </v-card>
 
           <!-- rewards section -->
-          <v-card tile>
+          <v-card tile v-if="project.nickname===username || project.isApprove===1">
             <!-- header -->
             <v-subheader><h3>리워드 종류</h3></v-subheader>
             <v-divider></v-divider>
@@ -200,7 +208,7 @@
                     </v-col>
                     <v-spacer></v-spacer>
                     <v-col class="d-flex justify-end">
-                      <v-btn v-if="reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
+                      <v-btn v-if="project.isApprove === 1 && reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
                       <v-btn v-else color="accent" disabled rounded>매진</v-btn>
                     </v-col>
                   </v-row>
@@ -231,6 +239,7 @@ import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 import _ from 'lodash'
+import cookies from 'vue-cookies'
 
 export default {
   name: 'GameDetail',
@@ -288,7 +297,7 @@ export default {
     },
 
     isDeveloper: function() {
-      return this.project.nickname === localStorage.getItem("username");
+      return this.project.nickname === cookies.get('username');
     },
 
   },
@@ -302,7 +311,7 @@ export default {
     },
 
     isLiked() {
-      let PARAMS = "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.$route.params.id
+      let PARAMS = "?nickname=" + cookies.get('username') + "&gameId=" + this.$route.params.id
       axios.get(SERVER.BASE + SERVER.ISLIKE + PARAMS, this.headersConfig)
         .then((res) => {
           if (res.data.status) {    
@@ -333,7 +342,7 @@ export default {
         if (this.iconColor === "accent") {
           axios.post(SERVER.BASE + SERVER.LIKE,
             {
-              nickname: localStorage.getItem("username"),
+              nickname: cookies.get('username'),
               gameId: this.project.gameId,
             },
             this.headersConfig
@@ -345,7 +354,7 @@ export default {
             })
             .catch(err => console.error(err))
         } else {
-          const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.project.gameId;
+          const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + cookies.get('username') + "&gameId=" + this.project.gameId;
           axios.delete(deleteLike, this.headersConfig)
             .then(() => {
               this.iconColor = "accent"
@@ -372,7 +381,7 @@ export default {
         isApprove: 1,
       })
         .then(() => {
-          router.push({ name: "GameMain" });
+          router.push({ name: "NewProjectRequest" });
         })
         .catch((err) => console.error(err));
     },
@@ -386,7 +395,7 @@ export default {
         })
           .then((res) => {
             console.log(res);
-            router.push({ name: "GameMain" });
+            router.push({ name: "NewProjectRequest" });
           })
           .catch((err) => console.error(err)); 
       } else {
@@ -404,5 +413,5 @@ export default {
 };
 </script>
 
-<style scoped>      
+<style scoped>   
 </style>

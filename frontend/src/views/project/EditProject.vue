@@ -44,6 +44,7 @@
           initialEditType="wysiwyg"
           previewStyle="vertical"
           required
+          height="600px"
         />
       </v-col>
     </v-row>
@@ -102,7 +103,7 @@
           id="thumbnail"
           accept="image/*"
           v-model="newThumbnail"
-          label="프로젝트의 썸네일 이미지를 입력해주세요."
+          placeholder="프로젝트의 썸네일 이미지를 입력해주세요."
           prepend-icon="mdi-camera"
           class="pt-1"
         ></v-file-input>
@@ -120,7 +121,7 @@
     <v-row class="justify-center mb-10 text-right">
       <v-col class="py-0 my-10" sm="10">
         <v-btn 
-          @click="changeProjectInfo()" 
+          @click="changeProjectInfo" 
           :disabled="!isSubmit" 
           class="accent" 
           depressed
@@ -130,6 +131,13 @@
         </v-btn>
       </v-col>
     </v-row>
+
+    <v-overlay :value="overlay">
+      <h2 class="mb-5">프로젝트 수정 중...</h2>
+      <div class="d-flex justify-center align-center">
+        <v-progress-circular indeterminate size="64" color="primary"></v-progress-circular>
+      </div>
+    </v-overlay>
   </v-container>
 </template>
 
@@ -175,6 +183,7 @@ export default {
       newThumbnail: null,
       originalThumbnail: null,
       originalThumbnailURL: null,
+      overlay: false,
     };
   },
 
@@ -186,8 +195,10 @@ export default {
   methods: {
     changeProjectInfo() {
       this.isSubmit = false
+      this.overlay = true
+      
       this.genre.forEach((item) => {
-        console.log(this.genreId)
+        // console.log(this.genreId)
         this.genreId.push(this.genreToId[item])
       })
       let PARAMS = {
@@ -202,7 +213,7 @@ export default {
       firebase.storage().ref(`game/${this.$route.params.id}/content/${this.$route.params.id}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
       if (this.newThumbnail !== null) {
         var extension = this.newThumbnail.name.split('.').reverse()[0];
-        const storageRef = firebase.storage().ref(`game/${this.$route.params.id}/thumbnail/${this.$route.params.id}.${extension}`).put(this.thumbnail)
+        const storageRef = firebase.storage().ref(`game/${this.$route.params.id}/thumbnail/${this.$route.params.id}.${extension}`).put(this.newThumbnail)
         PARAMS.thumbnail = `game/${this.$route.params.id}/thumbnail/${this.$route.params.id}.${extension}`
         storageRef.on(`state_changed`, snapshot => {
             if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
@@ -268,7 +279,7 @@ export default {
         // console.log(res)
         this.name = res.data.object.name
         const storageRef = firebase.storage().ref()
-        storageRef.child('game/15/content/15').getDownloadURL().then(url => {
+        storageRef.child(res.data.object.content).getDownloadURL().then(url => {
           var xhr = new XMLHttpRequest();
           if (xhr) {
             xhr.open('GET', url, false)

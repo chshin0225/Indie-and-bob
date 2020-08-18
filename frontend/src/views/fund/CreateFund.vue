@@ -10,7 +10,7 @@
           <v-card class="mx-auto" outlined tile>
             <div class="overline px-4 pt-3">{{ rewardData.game.name }}</div>
             <v-card-title class="headline pt-1">{{ rewardData.reward.rewardName }}</v-card-title>
-            <v-card-text>{{ rewardData.reward.content }}</v-card-text>
+            <v-card-text v-html="rewardData.reward.content"></v-card-text>
             <v-card-text class="subtitle-1 text-right pt-0 black--text">{{ rewardData.reward.price }} 원</v-card-text>
           </v-card>
         </v-col>
@@ -142,6 +142,7 @@
 import axios from "axios"
 import SERVER from '../../api/base'
 import { mapActions, mapGetters, mapState } from "vuex"
+import cookies from 'vue-cookies'
 
 export default {
   name: 'CreateFund',
@@ -161,7 +162,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getUserInfo", 'getReward',]),
+    ...mapActions(["getUserInfo", 'getReward',]), 
 
     kakaoPay() {
       const PARAMS = {
@@ -225,7 +226,7 @@ export default {
   },
 
   created() {
-    let username = localStorage.getItem('username')
+    let username = cookies.get('username')
     this.getUserInfo(username)
     this.getReward(this.$route.params.id)
   },
