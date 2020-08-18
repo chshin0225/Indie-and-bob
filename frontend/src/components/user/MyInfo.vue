@@ -14,7 +14,7 @@
     </div>
     <div class="text-right">
       <v-btn :to="`/user/edit/${userInfo.nickname}`" color="accent" depressed class="mr-3" >회원정보 수정</v-btn>
-      <v-btn to="/user/password" color="accent" depressed>비밀번호 변경</v-btn>
+      <!-- <v-btn to="/user/password" color="accent" depressed>비밀번호 변경</v-btn> -->
     </div>
 
   </v-container>
