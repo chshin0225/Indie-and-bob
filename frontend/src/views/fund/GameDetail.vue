@@ -68,7 +68,7 @@
             <p class="mb-2">{{ genreData }}</p>
             <p class="mb-2">개발자: <span><router-link class="text-decoration-none" :to="`/user/mypage/${project.nickname}`">{{ project.nickname }}</router-link></span></p>
             <p class="mb-2">기간: {{ $moment(project.createdAt).format("YYYY.MM.DD") }} ~ {{ $moment(project.deadline).format("YYYY.MM.DD") }}</p>
-            <p>목표: {{ project.aim }}원</p>
+            <p>목표: {{ project.aim | numFormat }}원</p>
 
             <v-container class="pb-0">
               <v-row v-if="project.isApprove===-1 && project.nickname===username">
@@ -85,8 +85,8 @@
               <v-row v-else>
                 <p class="mb-2"> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
-                <p class="mb-2" v-if="!project.end">현재 모금액: {{ project.aim - project.leftPrice }}원</p>
-                <p class="mb-2" v-else>최종 모금액: {{ project.aim - project.leftPrice }}원</p>
+                <p class="mb-2" v-if="!project.end">현재 모금액: {{ project.aim - project.leftPrice | numFormat }}원</p>
+                <p class="mb-2" v-else>최종 모금액: {{ project.aim - project.leftPrice | numFormat }}원</p>
                 <v-progress-linear :value="fundingProgress" height="7"></v-progress-linear>
               </v-row>
             </v-container>
@@ -207,7 +207,7 @@
                 <v-expansion-panel-header>
                   <div>
                     <h3 class="font-weight-medium">{{ reward.rewardName }}</h3>
-                    <p class="mb-0 mt-1 text-subtitle-2 font-weight-regular">{{ reward.price }}원</p>
+                    <p class="mb-0 mt-1 text-subtitle-2 font-weight-regular">{{ reward.price | numFormat }}원</p>
                   </div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>

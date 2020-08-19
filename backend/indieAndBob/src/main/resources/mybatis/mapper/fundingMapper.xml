@@ -12,7 +12,7 @@
 		select * from funding where reward_id=#{rewardId}
     </select>
     <select id="selectFundingByGameId" parameterType="int" resultType="funding">
-    	select * from funding where game_id=#{gameId}
+    	select * from funding where game_id=#{gameId} order by funded_at desc
     </select>
 <!--     <select id="selectAllFunding" parameterType="int" resultType="funding"> -->
 <!--    	    select * from funding order by game_id desc limit #{page},10 -->
