@@ -1,5 +1,15 @@
 export default {
-    'BASE': "http://localhost:8080",
+    'BASE': "http://localhost:8080/api",
+
+    // home
+    'MOSTLIKED': '/mostlikegame',
+    'ALMOSTFINISHED': '/deadlinegame',
+    'MOSTFUNDED': '/mostfundedgame/price',
+    'HIGHESTPERCENT': '/mostfundedgame/percent',
+
+    // recommedations
+    'GENREBASEDRECOMMENDATION': '/recommand/genrebase',
+    'USERBASEDRECOMMENDATION': '/recommand/userbase',
 
     // user
     'LOGIN': "/account/login",
@@ -22,6 +32,7 @@ export default {
     'GAMEREGISTER' : "/game/registergame",
     'GAMECOMMUNITY' : "/game/comment",
     'MYPROJECT': "/madegame/",
+    'FUNDLIST': "/fundingByGameId/",
 
     // fund
     'ALLREWARD': "/reward/",
@@ -35,6 +46,7 @@ export default {
     'CREATEQNA': "/qna/create",
     'UPDATEQNA': "/qna/update",
     'DELETEQNA': "/qna/delete/",
+    'ANSWER': "/qna/updateAnswer",
 
     // kakaopay
     'KAKAOPAY': "/kakaoPay",
@@ -52,9 +64,10 @@ export default {
     'COMMUNITYCOMMENT': '/community/comment',
     
     // search
-    'SEARCH': "/user/search?keyword=",
+    'SEARCH': "/search?keyword=",
 }
 
 
 // "http://i3a105.p.ssafy.io:8080", 
 // "http://localhost:8080",
+// "http://i3a105.p.ssafy.io/api"

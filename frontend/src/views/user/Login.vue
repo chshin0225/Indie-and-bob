@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="text-center">Login</h1>
+    <h1 class="text-center">로그인</h1>
 
     <!-- email -->
     <v-row class="justify-center my-3">

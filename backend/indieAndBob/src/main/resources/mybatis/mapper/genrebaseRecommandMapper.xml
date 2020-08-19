@@ -18,6 +18,7 @@
 		    gameinfo.updated_at,
     		gameinfo.started_at,
     		gameinfo.cnt,
+    		DATEDIFF(gameinfo.deadline, now()) as left_day,
 		    user.nickname,
     		user.profile
 		from
@@ -49,14 +50,16 @@
 				on
 					same_genre.game_id = game_like.game_id
 					group by same_genre.game_id
-					order by cnt desc
-					limit 5)game_lank
+					order by cnt desc)
+                    game_lank
 			left outer join indie.game
 			on 
 				game.game_id = game_lank.game_id) as gameinfo
 			    left outer join indie.user
 		on
 			gameinfo.nickname = user.nickname
-		order by gameinfo.cnt desc;
+		where gameinfo.is_approve=1 and is_end=false
+		order by gameinfo.cnt desc
+        limit 5;
 	</select>
 </mapper>

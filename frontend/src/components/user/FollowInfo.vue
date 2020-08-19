@@ -3,7 +3,7 @@
     <v-row>
       <!-- 팔로워 리스트 -->
       <v-col cols=12 sm=5>
-        <h2 class="mb-3">나를 팔로우하는 사람들 {{ followerCount }}명</h2>
+        <h2 class="mb-3">팔로워 {{ followerCount }}명</h2>
         <v-list v-if="followerList.length > 0">
           <v-list-item
             v-for="follower in followerList"
@@ -11,7 +11,8 @@
             :to="`/user/mypage/${follower.nickname}`"
           >
             <v-list-item-avatar>
-              <v-img src="../../assets/default_profile.png" :alt="follower.nickname"></v-img>
+              <v-img v-if="follower.profile" :src="follower.profile" :alt="follower.nickname"></v-img>
+              <v-img v-else src="../../assets/default_profile.png" :alt="follower.nickname"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ follower.nickname }}</v-list-item-title>
@@ -23,13 +24,13 @@
         </div>
       </v-col>
 
-      <v-col cols=1 class="d-none d-sm-flex">
+      <v-col cols=1 class="d-none d-sm-flex pr-0">
         <v-divider vertical class="secondary"></v-divider>
       </v-col>
 
       <!-- 팔로잉 리스트 -->
-      <v-col cols=12 sm=5>
-        <h2 class="mb-3">내가 팔로우하는 사람들 {{ followingCount }}명</h2>
+      <v-col cols=12 sm=5 class="pl-0">
+        <h2 class="mb-3">팔로잉 {{ followingCount }}명</h2>
         <v-list v-if="followingList.length > 0">
           <v-list-item
             v-for="following in followingList"
@@ -37,7 +38,8 @@
             :to="`/user/mypage/${following.nickname}`"
           >
             <v-list-item-avatar>
-              <v-img src="../../assets/default_profile.png"></v-img>
+              <v-img v-if="following.profile" :src="following.profile"></v-img>
+              <v-img v-else src="../../assets/default_profile.png"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ following.nickname }}</v-list-item-title>
@@ -56,6 +58,8 @@
 <script>
 import { mapState } from 'vuex'
 
+import firebase from 'firebase'
+
 export default {
   name: 'FollowInfo',
 
@@ -70,6 +74,66 @@ export default {
       return this.followingList.length;
     },
   },
+
+  watch: {
+    followerList: function() {
+      const storageRef = firebase.storage().ref()
+
+      if (this.followerList.length > 0) {
+          this.followerList.forEach(item => {
+            console.log(item.profile)
+            if (item.profile !== null) {
+              storageRef.child(item.profile).getDownloadURL()
+                .then(url => item.profile = url)
+                .catch(err => console.error(err))
+            }
+          })
+      }
+    },
+
+    followingList: function() {
+      const storageRef = firebase.storage().ref()
+      
+      if (this.followingList.length > 0) {
+        this.followingList.forEach(item => {
+          console.log(item.profile)
+          if (item.profile !== null) {
+            storageRef.child(item.profile).getDownloadURL()
+              .then(url => item.profile = url)
+              .catch(err => console.error(err))
+          }
+        })
+      }
+    },
+  },
+
+  created() {
+    const storageRef = firebase.storage().ref()
+
+    if (this.followerList.length > 0) {
+        this.followerList.forEach(item => {
+          console.log(item.profile)
+          if (item.profile !== null) {
+            storageRef.child(item.profile).getDownloadURL()
+              .then(url => item.profile = url)
+              .catch(err => console.error(err))
+          }
+        })
+    }
+
+    if (this.followingList.length > 0) {
+        this.followingList.forEach(item => {
+          console.log(item.profile)
+          if (item.profile !== null) {
+            storageRef.child(item.profile).getDownloadURL()
+              .then(url => item.profile = url)
+              .catch(err => console.error(err))
+          }
+        })
+    }
+  }
+
+
 }
 </script>
 

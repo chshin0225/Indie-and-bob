@@ -29,4 +29,5 @@ public class GameAllLike {
     private List<String> genreName;
     private String profile;
     private int count;
+    private int leftDay;
 }

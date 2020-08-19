@@ -25,4 +25,6 @@ public class GenrebaseRecommand {
 	private Date startedAt;
 	private String nickname;
 	private String profile;
+	private int leftDay;
+	private List<String> genreName;
 }

@@ -2,7 +2,7 @@
   <v-container>
 
       <!-- comment submit section -->
-      <v-row class="justify-center">
+      <v-row class="justify-center" v-if="isLoggedIn">
         <v-col cols=12 sm="10" class="pb-0">
           <v-text-field
             v-model="communityComment"
@@ -24,7 +24,7 @@
           >글쓰기</v-btn>
         </v-col>
       </v-row>
-      <v-divider></v-divider>
+      <v-divider v-if="isLoggedIn"></v-divider>
 
       <!-- comments -->
       <v-list v-if="commentRender && commentList.length > 0" two-line>
@@ -72,20 +72,22 @@ import axios from "axios";
 import SERVER from "../../api/base";
 import { mapGetters } from 'vuex'
 
+import cookies from 'vue-cookies'
+
 export default {
   name: 'GameCommunity',
 
   data() {
     return {
       communityComment: "",
-      myName: localStorage.getItem('username'),
+      myName: cookies.get('username'),
       commentRender : false,
       commentList: [],
     }
   },
 
   computed: {
-    ...mapGetters(['headersConfig',])
+    ...mapGetters(['headersConfig', 'isLoggedIn',])
   },
 
   methods: {
@@ -96,17 +98,21 @@ export default {
     },
 
     submitComment() {
-      let PARAMS = {
-        nickname: localStorage.getItem("username"),
-        content: this.communityComment,
-        gameId : this.$route.params.id
-      };
-      axios.post(SERVER.BASE + SERVER.GAMECOMMUNITY, PARAMS, this.headersConfig)
-        .then(() => {
-          this.communityComment = '',
-          this.fetchComments()
-        })
-        .catch((err) => console.error(err.data));
+      if (this.communityComment.trim().length > 0){
+        let PARAMS = {
+          nickname: cookies.get('username'),
+          content: this.communityComment,
+          gameId : this.$route.params.id
+        };
+        axios.post(SERVER.BASE + SERVER.GAMECOMMUNITY, PARAMS, this.headersConfig)
+          .then(() => {
+            this.communityComment = '',
+            this.fetchComments()
+          })
+          .catch((err) => console.error(err.data));
+      } else {
+        alert("내용을 작성해주세요.")
+      }
     },
 
     deleteComment(id) {

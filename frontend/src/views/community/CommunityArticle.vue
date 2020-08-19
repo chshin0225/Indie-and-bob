@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="community-article">
 
     <div v-if="articleDataFetched">
       <!-- article header -->
@@ -13,13 +13,13 @@
           </p>
         </v-col>
       </v-row>
-      <hr>
+      <v-divider></v-divider>
 
       <!-- article content -->
       <v-row>
         <v-col>
-          <p>
-            {{ article.content }}
+          <p v-html="article.content">
+            <!-- {{ article.content }} -->
             <!-- {{ article }} -->
           </p>
         </v-col>
@@ -28,13 +28,13 @@
       <!-- buttons -->
       <v-row v-if="article.nickname === myName">
         <v-col class="d-flex justify-end">
-          <v-btn :to="`/community/edit/${article.communityId}`" class="mr-2" color="accent" text small>수정</v-btn>
-          <v-btn @click="deleteArticle(article.communityId)" color="accent" text small>삭제</v-btn>
+          <v-btn :to="`/community/edit/${article.communityId}`" class="mr-2" color="primary" text>수정</v-btn>
+          <v-btn @click="deleteArticle(article.communityId)" color="primary" text>삭제</v-btn>
         </v-col>
       </v-row>
     </div>
     
-    <hr>
+    <v-divider></v-divider>
 
     <!-- comment section -->
     <v-row class="justify-center">
@@ -107,6 +107,7 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import axios from 'axios'
 import SERVER from '../../api/base'
+import cookies from 'vue-cookies'
 
 export default {
   name: 'CommunityArticle',
@@ -115,7 +116,7 @@ export default {
     return {
       comment: null,
       commentList: [],
-      myName: localStorage.getItem('username'),
+      myName: cookies.get('username'),
     }
   },
 
@@ -128,16 +129,20 @@ export default {
     ...mapActions(['getArticle', 'deleteArticle']),
 
     submitComment() {
-      const PARAMS = {
-        content: this.comment,
-        communityId: this.$route.params.articleId
+      if (this.comment.trim().length > 0) {
+        const PARAMS = {
+          content: this.comment,
+          communityId: this.$route.params.articleId
+        }
+        axios.post(SERVER.BASE + SERVER.COMMUNITYCOMMENT, PARAMS, this.headersConfig)
+          .then(() => {
+            this.comment = null
+            this.fetchComments(this.$route.params.articleId)
+          })
+          .catch(err => console.error(err))
+      } else {
+        alert('댓글 내용을 작성해주세요.')
       }
-      axios.post(SERVER.BASE + SERVER.COMMUNITYCOMMENT, PARAMS, this.headersConfig)
-        .then(() => {
-          this.comment = null
-          this.fetchComments(this.$route.params.articleId)
-        })
-        .catch(err => console.error(err))
     },
 
     fetchComments(articleId) {
@@ -160,6 +165,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+/* .community-article {
+  font-family: 'Nanum Gothic';
+} */
 
 </style>

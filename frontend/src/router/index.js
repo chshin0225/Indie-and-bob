@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import cookies from 'vue-cookies'
+import store from '../store'
 
 // home
 import Home from '../views/Home.vue'
@@ -19,7 +21,6 @@ import CreateProject from '../views/project/CreateProject.vue'
 import CreateProjectDone from '../views/project/CreateProjectDone.vue'
 import EditProject from '../views/project/EditProject.vue'
 import ProjectDetail from '../views/project/ProjectDetail.vue'
-import ProjectSettings from '../views/project/ProjectSettings.vue'
 
 // project + funding
 import GameMain from '../views/fund/GameMain.vue'
@@ -48,7 +49,7 @@ Vue.use(VueRouter)
 const routes = [
   // home
     {
-      path: '/home',
+      path: '/',
       name: 'Home',
       component: Home,
       meta: {
@@ -62,13 +63,13 @@ const routes = [
     name: 'NewProjectRequest',
     component: NewProjectRequest,
     meta: {
-      title: 'New Project Request'
+      title: '프로젝트 심사'
     },
   },
 
   // user
   {
-    path: '/',
+    path: '/login',
     name: 'Login',
     component: Login,
     meta: {
@@ -125,14 +126,6 @@ const routes = [
       title: '새 프로젝트'
     },
   },
-  { 
-    path: '/project-settings/:id',
-    name: 'ProjectSettings',
-    component: ProjectSettings,
-    meta: {
-      title: 'Project Settings'
-    }
-  },
   {
     path: '/completed',
     name: 'CreateProjectDone',
@@ -156,7 +149,7 @@ const routes = [
     name: 'GameDetail',
     component: GameDetail,
     meta: {
-      title: 'Project Detail'
+      title: '프로젝트 상세보기'
     },
   },
   {
@@ -180,7 +173,7 @@ const routes = [
     name: 'GameMain',
     component: GameMain,
     meta: {
-      title: 'Browse Projects'
+      title: '모든 프로젝트'
     },
   },
 
@@ -223,6 +216,9 @@ const routes = [
     path: '/search/:keyword',
     name: 'SearchResult',
     component: SearchResult,
+    meta: {
+      title: '검색 결과',
+    }
   },
 
   // error
@@ -231,7 +227,7 @@ const routes = [
     name: 'PageNotFound',
     component: PageNotFound,
     meta: {
-      title: 'Page Not Found'
+      title: '페이지 없음'
     },
   },
   {
@@ -239,7 +235,7 @@ const routes = [
     name: 'AuthorizationError',
     component: AuthorizationError,
     meta: {
-      title: 'Not Authorized'
+      title: '권한 없음'
     }
   },
   {
@@ -247,7 +243,7 @@ const routes = [
     name: 'ErrorPage',
     component: ErrorPage,
     meta: {
-      title: 'Error'
+      title: '에러 페이지'
     },
   },
 
@@ -260,9 +256,68 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  // 로그인 필요없음
+  const PublicPages = [
+    'Home',
+    'Login',
+    'Signup',
+    'GameMain',
+    'GameDetail',
+    'CommunityMain',
+    'PageNotFound',
+    'ErrorPage',
+    'AuthorizationError',
+  ]
+
+  // 로그인되어 있으면 안됨
+  const authPages = [
+    'Login',
+    'Signup',
+  ]
+
+  const adminPages = [
+    'NewProjectRequest',
+  ]
+
+  const developerPages = [
+    'CreateProject',
+    'EditProject'
+  ]
+
+  const authRequired = !PublicPages.includes(to.name)
+  const unauthRequired = authPages.includes(to.name)
+  const adminRequired = adminPages.includes(to.name)
+  const developerRequired = developerPages.includes(to.name)
+
+  const isLoggedIn = cookies.isKey('user')
+  const isAdmin = cookies.get('username') === 'admin'
+  const isDeveloper = store.state.isDeveloper
+  // console.log('admin', isAdmin)
+
   // tab 제목 바꾸기
   document.title = to.meta.title
-  next()
+
+  // 다음 페이지 갈 권한 있는지 확인 
+  if (unauthRequired && isLoggedIn) {
+    next({ name: 'Home'})
+  }
+
+  // admin 아닌 사람이 admin 권한 접근시
+  if (adminRequired && !isAdmin) {
+    next({ name: 'Home'})
+  }
+
+  if (authRequired && !isLoggedIn) {
+    next({ name: 'Login' })
+  } else {
+    next()
+  }
+
+  if (developerRequired && !isDeveloper) {
+    next( {name: 'Home'})
+  } else {
+    next()
+  }
 })
 
 export default router

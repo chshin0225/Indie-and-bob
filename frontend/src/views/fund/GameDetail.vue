@@ -1,12 +1,68 @@
 <template>
-  <div>
+  <div class="game-detail" v-if="project">
+    <!-- admin -->
+    <v-alert 
+      color="secondary" 
+      elevation="2"
+      tile 
+      class="mb-0" 
+      v-if="isAdmin && project.isApprove === 0"
+    >
+      <v-row>
+        <span class="text-h5 mx-4 mt-1">프로젝트 심사</span>
+        <v-spacer></v-spacer>
+        <v-btn cols="auto" @click="approve" class="mr-3" color="primary" depressed>승인</v-btn>
+        
+        <!-- 거절 및 거절 사유 -->
+        <v-menu offset-y nudge-bottom="5px" :close-on-content-click="false">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn 
+              cols="auto" 
+              class="mr-3" 
+              color="accent" 
+              depressed
+              v-bind="attrs"
+              v-on="on"
+            >
+              거절
+            </v-btn>
+          </template>
+          <v-card width="500px">
+            <v-card-title>거절 사유</v-card-title>
+            <v-card-text>
+              <v-text-field
+                label="거절 사유"
+                v-model="reasonOfRejection"
+                hide-details="true"
+              ></v-text-field>
+              <small v-if="error" class="primary--text">{{ error }}</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn @click="disapprove" color="primary" depressed>거절</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+      </v-row>
+    </v-alert>
+
     <!-- header 부분 -->
     <div class="header">
       <v-container v-if="projectDataFetched">
         <v-row class="d-flex flex-column-reverse flex-sm-row">
           <!-- 프로젝트 정보 -->
-          <v-col cols="12" sm="6">
-            <h1 class="mb-4 my-sm-4">{{ project.name }}</h1>
+          <v-col cols="12" sm="6"> 
+            <h1 class="mb-4 my-sm-4">
+              {{ project.name }} 
+              <v-chip
+                v-if="project.end"
+                color="primary"
+                small
+                class="white-text ml-1 mb-1"
+              >
+                종료됨
+              </v-chip>
+            </h1>
             <!-- <p>{{ rewards }}</p> -->
             <!-- <p>{{ project }}</p> -->
             <p class="mb-2">{{ genreData }}</p>
@@ -15,11 +71,23 @@
             <p>목표: {{ project.aim }}원</p>
 
             <v-container class="pb-0">
-              <v-row>
-                <p> {{ this.fundingProgress }}% 달성</p>
+              <v-row v-if="project.isApprove===-1 && project.nickname===username">
+                <v-col cols=12 class="px-0">
+                  <v-alert outlined text color="primary" dense>
+                    <div class="d-flex justify-space-between">
+                      <p class="my-0 mt-1">거절사유: <span class="black--text ml-1">{{ project.reason }}</span></p>
+                      <v-btn color="accent" depressed :to="`/project/${project.gameId}`">수정하기</v-btn>
+                    </div>
+                  </v-alert>
+                </v-col>
+              </v-row>
+
+              <v-row v-else>
+                <p class="mb-2"> {{ this.fundingProgress }}% 달성</p>
                 <v-spacer></v-spacer>
-                <p>현재 모금액: {{ project.aim - project.leftPrice }}원</p>
-                <v-progress-linear v-model="fundingProgress"></v-progress-linear>
+                <p class="mb-2" v-if="!project.end">현재 모금액: {{ project.aim - project.leftPrice }}원</p>
+                <p class="mb-2" v-else>최종 모금액: {{ project.aim - project.leftPrice }}원</p>
+                <v-progress-linear :value="fundingProgress" height="7"></v-progress-linear>
               </v-row>
             </v-container>
 
@@ -28,7 +96,7 @@
 
           <!-- thumbnail -->
           <v-col cols="12" sm="6" class="d-flex justify-center align-center">
-            <v-img :src="project.thumbnail" contain></v-img>
+            <v-img :src="project.thumbnail" contain max-height="300"></v-img>
           </v-col>
         </v-row>
       </v-container>
@@ -43,13 +111,14 @@
             <v-tab>소개</v-tab>
             <v-tab>Q&A</v-tab>
             <v-tab>응원하기</v-tab>
+            <v-tab v-if="isDeveloper">프로젝트 관리</v-tab>
 
             <!-- 프로젝트 소개 -->
             <v-tab-item>
               <v-card flat>
                 <v-card-text>
-                  <v-card outlined>
-                    <Viewer :initialValue='project.content'/>
+                  <v-card flat>
+                    <Viewer class="content-viewer" :initialValue='project.content'/>
                   </v-card>
                 </v-card-text>
               </v-card>
@@ -63,6 +132,11 @@
             <!-- 응원하기 -->
             <v-tab-item>
               <GameCommunity />
+            </v-tab-item>
+
+            <!-- 프로젝트 관리 -->
+            <v-tab-item v-if="isDeveloper">
+              <GameSettings />
             </v-tab-item>
           </v-tabs>
         </v-col>
@@ -122,7 +196,7 @@
           </v-card>
 
           <!-- rewards section -->
-          <v-card tile>
+          <v-card tile v-if="project.nickname===username || username==='admin' || project.isApprove===1">
             <!-- header -->
             <v-subheader><h3>리워드 종류</h3></v-subheader>
             <v-divider></v-divider>
@@ -137,7 +211,7 @@
                   </div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  {{ reward.content }}
+                  <div v-html="reward.content"></div>
                   <v-divider class="mt-3"></v-divider>
                   <v-row>
                     <v-col class="d-flex align-center">
@@ -145,8 +219,8 @@
                     </v-col>
                     <v-spacer></v-spacer>
                     <v-col class="d-flex justify-end">
-                      <v-btn v-if="reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
-                      <v-btn v-else color="accent" disabled rounded>매진</v-btn>
+                      <v-btn v-if="project.isApprove === 1 && !project.end && reward.leftCount > 0" @click="rewardBuy(reward.rewardId)" color="accent" depressed rounded>구매</v-btn>
+                      <v-btn v-else color="accent" disabled rounded>구매불가</v-btn>
                     </v-col>
                   </v-row>
                 </v-expansion-panel-content>
@@ -156,14 +230,6 @@
           </v-card>
         </v-col>
       </v-row>
-
- 
-      <!-- admin -->
-      <div v-if="isAdmin && project.isApprove === 0">
-        <v-btn cols="auto" @click="approve" class="mr-3">승인</v-btn>
-        <v-btn cols="auto" @click="disapprove" class="mr-3">거절</v-btn>
-      </div>  
-
     </v-container>
 
   </div>
@@ -178,11 +244,13 @@ import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 import GameCommunity from "../../components/GameDetail/GameCommunity.vue";
 import QuestionandAnswer from "../../components/GameDetail/QuestionandAnswer.vue";
 import GameLike from "../../components/GameDetail/GameLike.vue";
+import GameSettings from "../../components/GameDetail/GameSettings.vue"
 
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
 import _ from 'lodash'
+import cookies from 'vue-cookies'
 
 export default {
   name: 'GameDetail',
@@ -191,6 +259,7 @@ export default {
     GameCommunity,
     QuestionandAnswer,
     GameLike,
+    GameSettings,
     Viewer,
   },
 
@@ -201,18 +270,20 @@ export default {
       shareIcon: "white",
       iconColor: "accent",
       menu: false,
-      url: "http://i3a105.p.ssafy.io:3000" + window.location.pathname,
+      url: "http://i3a105.p.ssafy.io" + window.location.pathname,
 
       genres: '',
       rewards: [],
 
-      isAdmin: false,
+      reasonOfRejection: null,
+      error: false,
     };
   },
 
   computed: {
-    ...mapState(['project']),
-    ...mapGetters(['headersConfig', 'projectDataFetched', 'likedPeopleCount',]),
+    ...mapState(['project', 'username']),
+    ...mapGetters(['headersConfig', 'projectDataFetched', 'likedPeopleCount', 'isAdmin', 'isLoggedIn']),
+
     fundingProgress: function() {
       if (this.project.aim === this.project.leftPrice) {
         return 0
@@ -220,12 +291,14 @@ export default {
         return _.round((this.project.aim - this.project.leftPrice) / this.project.aim * 100)
       }
     },
+
     genreData: function() {
       this.project.genreName.forEach(item => {
         this.genres += item + ' | '
       })
       return this.genres.slice(0, this.genres.length-2)
     },
+
     leftPriceData: function() {
       if (this.project.leftPrice > 0) {
         return this.project.leftPrice
@@ -233,6 +306,11 @@ export default {
         return 0
       }
     },
+
+    isDeveloper: function() {
+      return this.project.nickname === cookies.get('username');
+    },
+
   },
 
   methods: {
@@ -244,7 +322,7 @@ export default {
     },
 
     isLiked() {
-      let PARAMS = "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.$route.params.id
+      let PARAMS = "?nickname=" + cookies.get('username') + "&gameId=" + this.$route.params.id
       axios.get(SERVER.BASE + SERVER.ISLIKE + PARAMS, this.headersConfig)
         .then((res) => {
           if (res.data.status) {    
@@ -260,35 +338,45 @@ export default {
     fetchRewards() {
       axios.get(SERVER.BASE + SERVER.REWARDS + this.$route.params.id)
       .then(res => {
+        console.log(res.data)
+        if (res.data.object.length > 0) {
+          res.data.object.forEach(item => {
+            item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
+          })
+        }
         this.rewards = res.data.object
       })
       .catch(err => console.error(err))
     },
 
     likeButton() {
-      if (this.iconColor === "accent") {
-        axios.post(SERVER.BASE + SERVER.LIKE,
-          {
-            nickname: localStorage.getItem("username"),
-            gameId: this.project.gameId,
-          },
-          this.headersConfig
-          )
-          .then(() => {
-            this.iconColor = "primary"
-            this.isLike = true
-            this.fetchLikedUsers(this.project.gameId)
-          })
-          .catch(err => console.error(err))
+      if (this.isLoggedIn) {
+        if (this.iconColor === "accent") {
+          axios.post(SERVER.BASE + SERVER.LIKE,
+            {
+              nickname: cookies.get('username'),
+              gameId: this.project.gameId,
+            },
+            this.headersConfig
+            )
+            .then(() => {
+              this.iconColor = "primary"
+              this.isLike = true
+              this.fetchLikedUsers(this.project.gameId)
+            })
+            .catch(err => console.error(err))
+        } else {
+          const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + cookies.get('username') + "&gameId=" + this.project.gameId;
+          axios.delete(deleteLike, this.headersConfig)
+            .then(() => {
+              this.iconColor = "accent"
+              this.isLike = false
+              this.fetchLikedUsers(this.project.gameId)
+            })
+            .catch(err => console.error(err))
+        }
       } else {
-        const deleteLike = SERVER.BASE + SERVER.LIKE + "?nickname=" + localStorage.getItem("username") + "&gameId=" + this.project.gameId;
-        axios.delete(deleteLike, this.headersConfig)
-          .then(() => {
-            this.iconColor = "accent"
-            this.isLike = false
-            this.fetchLikedUsers(this.project.gameId)
-          })
-          .catch(err => console.error(err))
+        alert("로그인을 해야 좋아요를 누를 수 있습니다.")
       }
     },
 
@@ -304,23 +392,27 @@ export default {
         gameId: this.$route.params.id,
         isApprove: 1,
       })
-        .then((res) => {
-          console.log(res);
-          router.push({ name: "GameMain" });
+        .then(() => {
+          router.push({ name: "NewProjectRequest" });
         })
         .catch((err) => console.error(err));
     },
 
     disapprove() {
-      axios.put(SERVER.BASE + SERVER.APPROVE, {
-        gameId: this.$route.params.id,
-        isApprove: -1,
-      })
-        .then((res) => {
-          console.log(res);
-          router.push({ name: "GameMain" });
+      if (this.reasonOfRejection) {
+        axios.put(SERVER.BASE + SERVER.APPROVE, {
+          gameId: this.$route.params.id,
+          isApprove: -1,
+          reason: this.reasonOfRejection
         })
-        .catch((err) => console.error(err));
+          .then((res) => {
+            console.log(res);
+            router.push({ name: "NewProjectRequest" });
+          })
+          .catch((err) => console.error(err)); 
+      } else {
+        this.error = '거절사유를 써주세요'
+      }
     },
   },
 
@@ -329,16 +421,9 @@ export default {
     this.isLiked()
     this.fetchRewards()
     this.fetchLikedUsers(this.$route.params.id)
-    
-    if (localStorage.getItem("username") === "admin") {
-      this.isAdmin = true;
-    }    
   },
 };
 </script>
 
-<style scoped>
-.header {
-  background-color: #e4dfda;
-}
+<style scoped>   
 </style>

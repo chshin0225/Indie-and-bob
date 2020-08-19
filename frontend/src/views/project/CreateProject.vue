@@ -1,28 +1,41 @@
 <template>
   <v-container>
-    <h1 class="my-5 text-center">프로젝트 개요를 입력해주세요!</h1>
-    <v-row class="justify-center">
+    <h1 class="my-5 text-center">새 프로젝트 만들기</h1>
+    
+    <v-row class="justify-center mb-7">
       <v-col class="py-0" sm="10">
-        <label for="title">제목</label>
+        <label for="title">프로젝트명</label>
         <v-text-field
-          v-model="title"
-          id="extraAddress"
-          placeholder="프로젝트 제목을 입력해주세요"
-          type="title"
+          v-model="name"
+          id="title"
+          placeholder="프로젝트 이름을 입력해주세요."
           hide-details="true"
-          outlined
+          class="pt-0"
           required
         ></v-text-field>
+        <small class="d-block primary--text" v-if="error.name">{{ error.name }}</small>
       </v-col>
     </v-row>
-    <v-row class="justify-center">
-      <v-col class="py-0 mt-5" sm="10">
-        <label for="genres">장르선택(복수의 선택도 가능합니다)</label>
-        <v-select v-model="genre" :items="genres" chips id="genres" multiple outlined></v-select>
+
+    <v-row class="justify-center my-7">
+      <v-col class="py-0" sm="10">
+        <label for="genres">프로젝트 장르</label>
+        <v-select
+         v-model="genre" 
+         :items="genres" 
+         chips 
+         id="genres" 
+         multiple 
+         placeholder="복수 선택도 가능합니다."
+         hide-details="true"
+         class="pt-0"
+        ></v-select>
+        <small class="d-block primary--text" v-if="error.genre">{{ error.genre }}</small>
       </v-col>
     </v-row>
-    <v-row class="justify-center">
-      <v-col class="py-0 mt-5" sm="10">
+
+    <v-row class="justify-center my-7">
+      <v-col class="py-0" sm="10">
         <label for="content">프로젝트 내용</label>
         <editor
           ref="toastuiEditor"
@@ -30,126 +43,243 @@
           id="content"
           initialEditType="wysiwyg"
           previewStyle="vertical"
+          height="600px"
         />
       </v-col>
     </v-row>
-    <v-row justify="center">
-      <v-col sm="10">
+
+    <v-row class="justify-center my-7">
+      <v-col sm="10" class="py-0">
         <v-menu
           v-model="menu2"
           :close-on-content-click="false"
-          :nudge-right="40"
+          nudge-right="70"
           transition="scale-transition"
-          offset-y
+
+          min-width="290px"
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-text-field v-model="date" label="마감날짜" readonly v-bind="attrs" v-on="on"></v-text-field>
+            <label for="deadline">펀딩 마감 날짜</label>
+            <v-text-field
+              id="deadline"
+              v-model="deadline" 
+              readonly 
+              prepend-icon="mdi-calendar-month"
+              v-bind="attrs" 
+              v-on="on" 
+              hide-details="true"
+              class="pt-1"
+            ></v-text-field>
+            <small class="d-block primary--text" v-if="error.deadline">{{ error.deadline }}</small>
           </template>
-          <v-date-picker v-model="date" :min="today" @input="menu2 = false"></v-date-picker>
+            <v-date-picker 
+              v-model="deadline" 
+              :min="today" 
+              @input="menu2 = false"
+            ></v-date-picker>
         </v-menu>
       </v-col>
     </v-row>
-    <v-row class="justify-center">
-      <v-col class="py-0 mt-5" sm="10">
-        <label for="aim">목표 모금금액(단위:원)</label>
+
+    <v-row class="justify-center my-7">
+      <v-col class="py-0" sm="10">
+        <label for="aim">목표 펀딩 금액 (단위: 원)</label>
         <v-text-field
           v-model="aim"
           id="aim"
-          placeholder="목표 모금금액을 작성해주세요. 상세 리워드는 프로젝트 상세 페이지에서 추가/수정 가능합니다."
-          type="number"
+          placeholder="상세 리워드 금액은 다음 페이지에서 추가/수정 가능합니다."
           hide-details="true"
-          outlined
           required
+          class="pt-1"
         ></v-text-field>
+        <small class="d-block primary--text" v-if="error.aim">{{ error.aim }}</small>
       </v-col>
     </v-row>
-    <v-row class="mt-5 justify-center">
-      <v-row class="justify-center">
-        <v-col class="py-0 mt-5" sm="6">
-          <label for="thumbnail">썸네일</label>
-          <v-file-input
-            id="thumbnail"
-            accept="image/*"
-            label="썸네일 이미지를 입력해주세요"
-            prepend-icon="mdi-camera"
-            v-model="thumbnail"
-          ></v-file-input>
-        </v-col>
-      </v-row>
-      <v-row class='justify-center'>
- <v-btn cols=auto @click="onButtonClick" class="primary">프로젝트 생성</v-btn>
-      </v-row>
-     
+
+    <v-row class="justify-center mb-4">
+      <v-col class="py-0" sm="10">
+        <label for="thumbnail">썸네일</label>
+        <v-file-input
+          id="thumbnail"
+          accept="image/*"
+          placeholder="프로젝트의 썸네일 이미지를 입력해주세요."
+          prepend-icon="mdi-camera"
+          v-model="thumbnail"
+          class="pt-1"
+        ></v-file-input>
+      </v-col>
     </v-row>
+
+    <v-row class="justify-center mb-10 text-right">
+      <v-col class="py-0" sm="10">
+        <v-btn 
+          cols=auto 
+          @click="onButtonClick" 
+          :disabled="!isSubmit" 
+          class="accent" 
+          depressed
+          large
+        >
+          프로젝트 생성
+        </v-btn>
+      </v-col>
+    </v-row>
+
+    <v-overlay :value="overlay">
+      <h2 class="mb-5">프로젝트 생성 중...</h2>
+      <div class="d-flex justify-center align-center">
+        <v-progress-circular indeterminate size="64" color="primary"></v-progress-circular>
+      </div>
+    </v-overlay>
   </v-container>
 </template>
 
 <script>
-import "codemirror/lib/codemirror.css";
-import "@toast-ui/editor/dist/toastui-editor.css";
+import router from '../../router'
 import axios from "axios";
-// import router from "../../router";
+import { mapGetters, mapState } from 'vuex';
+
 import { Editor } from "@toast-ui/vue-editor";
 import SERVER from "../../api/base";
-import { mapGetters, mapState } from 'vuex';
 import firebase from 'firebase'
+import "codemirror/lib/codemirror.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+
 export default {
+  name: 'CreateProject',
+
   components: {
     editor: Editor,
   },
+
   data() {
     return {
       text: "",
       genre: "",
+      content_upload: false,
+      thumbnail_upload: false,
       genreId: [],
       today: new Date().toISOString().substr(0, 10),
-      date: new Date().toISOString().substr(0, 10),
-      title: "",
+      deadline: new Date().toISOString().substr(0, 10),
+      name: "",
       menu2: false,
       editorOptions: {
         hideModeSwitch: true,
       },
       content: "",
-      aim: 0,
+      aim: null,
       thumbnail: null,
+      error: {
+        name: false,
+        aim: false,
+        genre: false,
+        deadline: false,
+      },
+
+      isSubmit: false,
+      overlay: false,
     };
   },
+
   computed: {
     ...mapGetters([ 'headersConfig' ]),
     ...mapState(['genres', 'genreToId'])
   },
+
   methods: {
     onButtonClick() {
+      this.isSubmit = false
+      this.overlay = true
       this.genre.forEach( item => {
         this.genreId.push(this.genreToId[item])
       })
       let PARAMS = {
         content: null,
-        name: this.title,
-        deadline: this.date,
+        name: this.name,
+        deadline: this.deadline,
         genre: this.genreId,
         aim: this.aim,
         thumbnail: this.thumbnail.name,
       };
       axios.post(SERVER.BASE + SERVER.GAMEREGISTER, PARAMS, this.headersConfig)
         .then(res => {
-          console.log(res.data.object)
-          firebase.storage().ref(`game/${res.data.object.gameId}/content/${res.data.object.gameId}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
-          firebase.storage().ref(`game/${res.data.object.gameId}/thumbnail/${res.data.object.gameId}.${res.data.object.extension}`).put(this.thumbnail)
+          console.log(res.data.object.gameId)
+          const storageRef1 = firebase.storage().ref(`game/${res.data.object.gameId}/content/${res.data.object.gameId}`).put(new Blob([this.$refs.toastuiEditor.invoke("getHtml")]))
+          storageRef1.on(`state_changed`, snapshot => {
+            if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
+              this.content_upload = true
+              if (this.thumbnail_upload === true) {
+                router.push({name: 'ProjectDetail', params: { id: res.data.object.gameId }})
+              }
+            }
+          })
+          const storageRef2 = firebase.storage().ref(`game/${res.data.object.gameId}/thumbnail/${res.data.object.gameId}.${res.data.object.extension}`).put(this.thumbnail)
+          storageRef2.on(`state_changed`, snapshot => {
+            if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
+              this.thumbnail_upload = true
+              if (this.content_upload === true) {
+                router.push({name: 'ProjectDetail', params: { id: res.data.object.gameId }})
+              }
+            }
+          })
         })
         .catch((err) => console.error(err));
     },
-    uploadImage() {
-      let fileInfo = document.getElementById("thumbnail").files[0];
-      let reader = new FileReader();
-      reader.onload = function () {
-        this.thumbnailUrl = reader.result;
-      };
-      if (fileInfo) {
-        reader.readAsDataURL(fileInfo);
+
+    checkForm() {
+      if (this.name.length <= 0) {
+        this.error.name = "프로젝트 이름을 작성해주세요."
+      } else {
+        this.error.name = false
       }
+
+      if (this.genre.length <= 0) {
+        this.error.genre = "프로젝트의 장르를 선택해주세요."
+      } else {
+        this.error.genre = false
+      }
+
+      if (this.deadline === null) {
+        this.error.deadline = "프로젝트 펀딩 기간을 선택해주세요."
+      } else {
+        this.error.deadline = false
+      }
+
+      if (this.aim <= 0) {
+        this.error.aim = "프로젝트 펀딩 목표를 작성해주세요."
+      } else {
+        this.error.aim = false
+      }
+
+      let isSubmit = true;
+      Object.values(this.error).map((v) => {
+        if (v) isSubmit = false;
+      });
+      this.isSubmit = isSubmit;
     },
+
+    onAction() {
+      this.isSubmit = false
+    }
   },
+
+  watch: {
+    name() {
+      this.checkForm()
+    },
+
+    genre() {
+      this.checkForm()
+    },
+
+    deadline() {
+      this.checkForm()
+    },
+
+    aim() {
+      this.checkForm()
+    }
+  }
 };
 </script>
 
