@@ -15,11 +15,13 @@
       <v-row>
         <v-col cols=12 md=8 class="d-flex flex-column mb-10">
           
-          <h2 class="mb-3">현재 핫한 프로젝트</h2>
+          <h2 v-if="!isLoggedIn" class="mb-3">현재 핫한 프로젝트</h2>
+          <h2 v-else class="mb-3">회원님 맞춤 추천</h2>
           <Recommendations v-if="!isLoggedIn" :projectList="mostFundedList" />
           <Recommendations v-else :projectList="userRecommendationList" />
 
-          <h2 class="mb-3  mt-10">이런 프로젝트는 어때요?</h2>
+          <h2 v-if="!isLoggedIn" class="mb-3  mt-10">이런 프로젝트는 어때요?</h2>
+          <h2 v-else class="mb-3">그외 다양한 프로젝트들</h2>
           <Recommendations v-if="!isLoggedIn" :projectList="highestPercentList" />
           <Recommendations v-else :projectList="genreRecommendationList" />
         </v-col>
