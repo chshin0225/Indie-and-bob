@@ -16,10 +16,48 @@
         <v-spacer></v-spacer>
 
         <!-- search bar -->
-        <v-text-field dark color="white" class="mt-4 search-input" placeholder="검색" v-model="searchKeyword" @keypress.enter="sendSearch(searchKeyword)"></v-text-field>
-        <v-btn icon @click="sendSearch(searchKeyword)">
+        <v-text-field
+          dark 
+          color="white" 
+          class="mt-4 search-input d-none d-sm-flex" 
+          placeholder="검색" 
+          v-model="searchKeyword" 
+          @keypress.enter="sendSearch(searchKeyword)"
+        ></v-text-field>
+        <v-btn icon @click="sendSearch(searchKeyword)" class="d-none d-sm-flex">
           <i class="fas fa-search white--text"></i>
         </v-btn>
+
+        <!-- <v-btn icon @click="sendSearch(searchKeyword)" class="d-flex d-sm-none">
+          <i class="fas fa-search white--text"></i>
+        </v-btn> -->
+
+        <v-menu offset-y nudge-bottom="5px" :close-on-content-click="false" v-model="searchMenu">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon class="d-flex d-sm-none" v-bind="attrs" v-on="on">
+              <i class="fas fa-search white--text"></i>
+            </v-btn>
+          </template>
+          <v-card width="200px">
+            <v-card-text class="d-flex pl-3 pr-1 pt-0">
+              <v-text-field
+                label="검색"
+                v-model="searchKeyword"
+                hide-details="true"
+                @keypress.enter="sendSearch(searchKeyword)"
+              ></v-text-field>
+              <v-btn icon @click="sendSearch(searchKeyword)" class="align-self-end pt-2">
+                <i class="fas fa-search black--text"></i>
+              </v-btn>
+            </v-card-text>
+          </v-card>
+        </v-menu>
+
+
+
+
+
+
 
         <!-- notifications(login했을 때만) -->
         <!-- <v-menu v-if="isLoggedIn" transition="slide-y-transition" :close-on-click="closeOnClick" nudge-bottom=50 bottom left>
@@ -151,6 +189,7 @@ export default {
       searchKeyword: '',
       closeOnClick: true,
       currentUser: cookies.get('username'),
+      searchMenu: false,
     };
   },
   
@@ -182,8 +221,11 @@ export default {
     },
 
     sendSearch(searchKeyword) {
-      router.push({name:"SearchResult", params: {keyword: searchKeyword}})
-      this.searchKeyword = ''
+      if (this.searchKeyword.trim().length > 0) {
+        this.searchMenu = false
+        router.push({name:"SearchResult", params: {keyword: searchKeyword}})
+        this.searchKeyword = ''
+      } 
     },
   },
 

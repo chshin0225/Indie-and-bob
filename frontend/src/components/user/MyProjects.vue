@@ -2,7 +2,7 @@
   <v-container>
     <!-- <p>{{myProjectList[0]}}</p> -->
     <v-row>
-      <v-col v-for="project in myProjectList" :key="project.gameId" cols=6 md=4>
+      <v-col v-for="project in myProjectList" :key="project.gameId" cols=12 sm=6 md=4>
         <!-- 작성중 -->
         <v-card v-if="project.isApprove===2" tile class="card"> 
           <router-link v-if="project.isApprove===2" :to="`/project/${project.gameId}`" class="text-decoration-none">

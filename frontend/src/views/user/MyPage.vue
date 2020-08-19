@@ -50,7 +50,7 @@
 
       <!-- tab menu -->
       <v-card elevation="0">
-        <v-tabs vertical>
+        <v-tabs vertical v-if="windowWidth > 600">
           <v-tab>
             <i class="fas fa-laptop mr-3"></i>
              만든 프로젝트
@@ -76,7 +76,89 @@
             내 정보확인/변경
           </v-tab>
 
-        <!-- tab menu content -->
+          <!-- tab menu content -->
+          <!-- 내 프로젝트들 -->
+          <v-tab-item class="myProjects">
+            <v-card flat>
+              <v-card-text>
+                <MyProjects />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+
+          <!-- 내가 펀딩한 프로젝트들 -->
+          <v-tab-item class="myFundings" v-if="isSelf">
+            <v-card flat>
+              <v-card-text>
+                <FundedProjects />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+
+          <!-- 내가 작성한 글들 -->
+          <v-tab-item class="myArticles">
+            <v-card flat>
+              <v-card-text>
+                <MyArticles />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+
+          <!-- 내가 좋아한 프로젝트들 -->
+          <v-tab-item class="myLikes">
+            <v-card flat>
+              <v-card-text>
+                <LikedProjects />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+
+          <!-- 팔로우 정보 -->
+          <v-tab-item class="Follow">
+            <v-card flat>
+              <v-card-text>
+                <FollowInfo />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+
+          <!-- 내 정보 -->
+          <v-tab-item class="myInfo" v-if="isSelf">
+            <v-card flat>
+              <v-card-text>
+                <MyInfo />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+        </v-tabs>
+
+        <v-tabs center-active show-arrows v-else>
+          <v-tab>
+            <!-- <i class="fas fa-laptop mr-3"></i> -->
+             만든 프로젝트
+          </v-tab>
+          <v-tab v-if="isSelf">
+            <!-- <i class="fas fa-money-check-alt mr-3"></i> -->
+            내가 펀딩한 프로젝트
+          </v-tab>
+          <v-tab>
+            <!-- <i class="fas fa-edit mr-3"></i> -->
+            작성한 글
+          </v-tab>
+          <v-tab>
+            <!-- <i class="fas fa-thumbs-up mr-3"></i> -->
+            좋아요 한 프로젝트
+          </v-tab>
+          <v-tab>
+            <!-- <i class="fas fa-users mr-3"></i> -->
+            팔로우 정보
+          </v-tab>
+          <v-tab v-if="isSelf">
+            <!-- <i class="fas fa-user-edit mr-3"></i> -->
+            내 정보확인/변경
+          </v-tab>
+
+          <!-- tab menu content -->
           <!-- 내 프로젝트들 -->
           <v-tab-item class="myProjects">
             <v-card flat>
@@ -179,6 +261,7 @@ export default {
   data() {
     return {
       profileImage: null,
+      windowWidth: window.innerWidth,
     }
   },
 
