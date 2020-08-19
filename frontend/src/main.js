@@ -7,6 +7,10 @@ import VueSimpleAlert from "vue-simple-alert";
 import VueMoment from 'vue-moment'
 import Clipboard from 'v-clipboard'
 import firebase from 'firebase'
+import numeral from 'numeral';
+import numFormat from 'vue-filter-number-format';
+ 
+Vue.filter('numFormat', numFormat(numeral));
 
 Vue.config.productionTip = false
 

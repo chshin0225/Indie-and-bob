@@ -22,7 +22,7 @@
       <h4 class="my-2">이름 <span class="text-body-1 ml-2 my-auto">{{ project.name }}</span></h4>
       <h4 class="my-2">장르 <span class="text-body-1 ml-2 my-auto">{{ genreData }}</span></h4>
       <h4 class="my-2">펀딩 마감 날짜 <span class="text-body-1 ml-2 my-auto">{{ $moment(project.deadline).format('YYYY.MM.DD') }}</span></h4>
-      <h4 class="my-2">펀딩 목표 금액<span class="text-body-1 ml-2 my-auto">{{ project.aim }}원</span></h4>
+      <h4 class="my-2">펀딩 목표 금액<span class="text-body-1 ml-2 my-auto">{{ project.aim | numFormat }}원</span></h4>
     </v-container>
 
     <!-- 소개 -->
@@ -128,7 +128,7 @@
         <v-col cols="12" v-for="reward in rewards" :key="reward.rewardId">
           <v-card tile max-width="400px">  
             <v-card-title class="font-weight-bold">{{reward.rewardName}}</v-card-title>
-            <v-card-subtitle class="pb-0">{{reward.price}}원</v-card-subtitle>
+            <v-card-subtitle class="pb-0">{{reward.price | numFormat}}원</v-card-subtitle>
             <v-card-text class="black--text mt-2">
               <div v-html="reward.content"></div>
             </v-card-text>

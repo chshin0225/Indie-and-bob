@@ -5,7 +5,7 @@
         <!-- <p>{{ fundingList[0] }}</p> -->
         <v-list-item two-line v-for="funding in fundingList" :key="funding.fundingId">
           <v-list-item-content>
-            <v-list-item-title>{{ funding.nickname }}님이 {{ funding.money }}원을 펀딩했습니다.</v-list-item-title>
+            <v-list-item-title>{{ funding.nickname }}님이 {{ funding.money | numFormat }}원을 펀딩했습니다.</v-list-item-title>
             <v-list-item-subtitle>{{ $moment(funding.fundedAt).format('YYYY.MM.DD hh:mm') }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
