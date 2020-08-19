@@ -1,17 +1,21 @@
 <template>
-  <!-- <v-container>
-    <v-row no-gutters class="recommendations-list">
-        <v-col class="mx-1" cols="3" v-for="project in projectList" :key="project.gameId">
-          <router-link :to="`/game/${project.gameId}`">
-            <v-card>
-              <v-img :src="project.thumbnail" height="200px"></v-img>
+  <v-container class="pa-0">
+    <div class="d-flex recommendations-list">
+        <v-col class="mx-1 px-0 pt-0" v-for="project in projectList" :key="project.gameId">
+          <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
+            <v-card width="200px" flat>
+              <v-img :src="project.thumbnail"  height="150px"></v-img>
+              <h4 class="px-1 mt-2">{{ project.name }}</h4>
+              <v-card-subtitle class="py-0 px-1">{{ project.genreName }}</v-card-subtitle>
+              <v-card-subtitle class="py-0 px-1">{{ project.leftDay }}일 남음</v-card-subtitle>
+              <v-card-subtitle class="py-0 px-1 primary--text">{{ fundingProgress(project.aim, project.leftPrice) }}% 달성</v-card-subtitle>
             </v-card>
           </router-link>
         </v-col>
-    </v-row>
-  </v-container> -->
+    </div>
+  </v-container>
 
-  <v-sheet>
+  <!-- <v-sheet>
     <v-slide-group class="recommendations-list" show-arrows>
         <v-slide-item class="mx-1" v-for="project in projectList" :key="project.gameId">
           <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
@@ -25,7 +29,7 @@
           </router-link>
         </v-slide-item>
     </v-slide-group>
-  </v-sheet>
+  </v-sheet> -->
 </template>
 
 <script>
@@ -51,9 +55,9 @@ export default {
 </script>
 
 <style scoped>
-  /* .recommendations-list {
+  .recommendations-list {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
-  } */
+  }
 </style>
