@@ -3,10 +3,15 @@
     
     <!-- header -->
     <div class="header d-flex align-center px-10">
-      <h1 class="white--text text-h4 text-left">
+      <h1 class="white--text text-left d-none d-sm-block">
         인디게임 크라우드 펀딩 플랫폼 <br>
         Indie and Bob에 오신 것을 환영합니다<br>
       </h1>
+      <h3 class="white--text text-left d-block d-sm-none">
+        인디게임 크라우드 펀딩 플랫폼 <br>
+        Indie and Bob에 오신 것을 <br> 
+        환영합니다
+      </h3>
     </div>
 
 
@@ -14,13 +19,13 @@
     <v-container>
       <v-row>
         <v-col cols=12 md=8 class="d-flex flex-column mb-10">
-          <h2 class="mb-3">이런 프로젝트는 어때요?</h2>
+          
+          <h2 v-if="!isLoggedIn" class="mb-3">현재 핫한 프로젝트</h2>
+          <h2 v-else class="mb-3">당신을 위한 추천 프로젝트</h2>
           <Recommendations v-if="!isLoggedIn" :projectList="highestPercentList" />
           <Recommendations v-else :projectList="genreRecommendationList" />
 
-
-          <h2 v-if="!isLoggedIn" class="mb-3 mt-10">현재 핫한 프로젝트</h2>
-          <h2 v-else class="mb-3 mt-10">당신을 위한 추천 프로젝트</h2>
+          <h2 class="mb-3 mt-10">이런 프로젝트는 어때요?</h2>
           <Recommendations v-if="!isLoggedIn" :projectList="mostFundedList" />
           <Recommendations v-else :projectList="userRecommendationList" />
         </v-col>
@@ -58,7 +63,7 @@
     </v-container>
 
     <!-- 새 프로젝트 생성 버튼 -->
-      <v-tooltip right v-if="isLoggedIn&&isDeveloper">
+      <v-tooltip right v-if="isLoggedIn && isDeveloper">
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" to="/newproject" class="mb-4 ml-4" depressed fab fixed bottom left v-bind="attrs" v-on="on">
             <v-icon>fas fa-plus</v-icon>
@@ -99,7 +104,7 @@ export default {
 
 <style scoped>
   .header {
-    height: 400px;
+    height: 350px;
     background-image: url("../assets/background_img2.jpg");
     background-position: center center;
     background-size: cover;

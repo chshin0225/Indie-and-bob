@@ -60,60 +60,16 @@ public class UserBaseRecommandController {
 	public Object recommandUserbase(HttpServletRequest request) {
 		logger.info("==========recommandUserbase==========");
 		ResponseEntity response = null;
-		String nickname = jwtService.getNickname(request);
-		int userId = service.getUserId(nickname);
 		
-		File file = new File("src/main/resources/static/recommand.txt");
-		StringBuilder sb = new StringBuilder();
-		List<UserbaseRecommand> list = service.userbaseRecommand();
-		for(UserbaseRecommand recommand : list) {
-			sb.append(recommand.getUserId()+","+recommand.getGameId()+",5\n");
-		}
-		
-		try {
-		    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		    writer.write(sb.toString());
-		    writer.close();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
 		List<GameAll> gamelist = new LinkedList<GameAll>();
-		try {
-			DataModel model = new FileDataModel(file);
-			UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
-			
-			UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
-			
-			UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
-			
-			List<RecommendedItem> recommendations = recommender.recommend(userId, 5);
-			
-			if(recommendations.size() == 0) {
-				gamelist = service.randomRecommend();
-				logger.info("size == 0");
-			}
-			else {
-				logger.info("size : " + recommendations.size());
-				for(RecommendedItem item : recommendations) {
-					logger.info("item" + item);
-					gamelist.add(gameService.selectGameById((int)item.getItemID()));
-				}
-			}
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-			result.object = gamelist;
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-		} catch (Exception e1) {
-			logger.info("error");
-			gamelist = service.randomRecommend();
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-			result.object = gamelist;
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-		}
 		
+		logger.info("error");
+		gamelist = service.randomRecommend();
+		final BasicResponse result = new BasicResponse();
+		result.status = true;
+		result.data = "success";
+		result.object = gamelist;
+		response = new ResponseEntity<>(result, HttpStatus.OK);
 		return response;
 	}
 }

@@ -9,7 +9,7 @@
 
       <!-- projects  -->
       <v-row>
-        <v-col v-for="game in games" :key="game.gameId" cols=6 md=4>
+        <v-col v-for="game in games" :key="game.gameId" cols=12 sm=6 md=4>
           <v-card tile class="card">
             <router-link :to="`/game/${game.gameId}`" class="text-decoration-none">
                 <v-list-item>

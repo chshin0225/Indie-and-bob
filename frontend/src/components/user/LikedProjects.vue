@@ -4,7 +4,7 @@
     <!-- <p>{{ likedProjectList }}</p> -->
 
     <v-row>
-      <v-col v-for="project in likedProjectList" :key="project.gameId" cols=6 md=4>
+      <v-col v-for="project in likedProjectList" :key="project.gameId" cols=12 sm=6 md=4>
         <v-card tile class="card">
           <router-link :to="`/game/${project.gameId}`" class="text-decoration-none">
               <v-list-item>
