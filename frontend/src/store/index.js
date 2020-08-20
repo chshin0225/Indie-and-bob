@@ -67,7 +67,6 @@ export default new Vuex.Store({
 
     // recommedation
     genreRecommendationList: [],
-    userRecommendationList: [],
               
     // follow
     followerList: null,
@@ -165,9 +164,6 @@ export default new Vuex.Store({
     // recommendation
     setGenreRecommendationList(state, val) {
       state.genreRecommendationList = val
-    },
-    setUserRecommendationList(state, val) {
-      state.userRecommendationList = val
     },
 
     // follow
@@ -432,22 +428,6 @@ export default new Vuex.Store({
               item.genreName = genres.slice(0, genres.length-2)
             })
             commit('setGenreRecommendationList', res.data.object)
-          })
-          .catch(err => console.error(err))
-
-        axios.get(SERVER.BASE + SERVER.USERBASEDRECOMMENDATION, getters.headersConfig)
-          .then(res => {
-            res.data.object.forEach(item => {
-              storageRef.child(item.thumbnail).getDownloadURL()
-                .then(url => item.thumbnail = url)
-                .catch(err => console.error(err))
-              let genres = ''
-              item.genreName.forEach(genre => {
-                genres += genre + ' | '
-              })
-              item.genreName = genres.slice(0, genres.length-2)
-            })
-            commit('setUserRecommendationList', res.data.object)
           })
           .catch(err => console.error(err))
       }
