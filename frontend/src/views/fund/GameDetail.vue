@@ -338,7 +338,6 @@ export default {
     fetchRewards() {
       axios.get(SERVER.BASE + SERVER.REWARDS + this.$route.params.id)
       .then(res => {
-        console.log(res.data)
         if (res.data.object.length > 0) {
           res.data.object.forEach(item => {
             item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
@@ -405,8 +404,7 @@ export default {
           isApprove: -1,
           reason: this.reasonOfRejection
         })
-          .then((res) => {
-            console.log(res);
+          .then(() => {
             router.push({ name: "NewProjectRequest" });
           })
           .catch((err) => console.error(err)); 

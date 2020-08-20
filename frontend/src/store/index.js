@@ -221,7 +221,6 @@ export default new Vuex.Store({
     // error
     setErrorDetail(state, val) {
       state.errorDetail = val
-      console.log(state.errorDetail)
     },
   },
 
@@ -254,8 +253,6 @@ export default new Vuex.Store({
       }
       if (signupData.profile !== null) {
         commit('setPicture', null)
-        // console.log(signupData.profile)
-        // console.log(signupData.profile.name)
         var extension = signupData.profile.name.split('.').reverse()[0];
         firebase.storage().ref(`user/${signupData.nickname}/${signupData.nickname}.${extension}`).put(signupData.profile)
         signupData.profile = `user/${signupData.nickname}/${signupData.nickname}.${extension}`
@@ -267,7 +264,6 @@ export default new Vuex.Store({
       signupData.genreId = genreArray
       axios.post(SERVER.BASE + SERVER.SIGNUP, signupData)
       .then(res => {
-        console.log(res)
         if (res.data.status) {
           alert("회원가입이 완료되었습니다.")
           router.push({ name: "Login" });
@@ -299,7 +295,6 @@ export default new Vuex.Store({
       axios.get(SERVER.BASE + SERVER.PWCHANGE + "?oripw=" + passwordData.oripw + "&newpw=" + passwordData.newpw)
         .then(res => {
           if (res.data.status) {
-            console.log(res)
             alert("비밀번호가 변경되었습니다.")
             context.commit('setChangedPw', true)
             router.push({ name: 'Home' })
@@ -308,7 +303,7 @@ export default new Vuex.Store({
           }
         })
         .catch(err => {
-          console.log(err.response)
+          console.error(err)
         })
     },
 
@@ -316,7 +311,6 @@ export default new Vuex.Store({
       commit('setUserInfo', null)
       axios.get(SERVER.BASE + SERVER.USERINFO + `/${username}`)
         .then(res => {
-          // console.log("getUserInfo")
           commit('setUserInfo', res.data.object)
         })
         .catch(err => console.error(err))
@@ -328,7 +322,6 @@ export default new Vuex.Store({
         firebase.storage().ref(`user/${changedData.nickname}/${changedData.nickname}.${extension}`).put(changedData.profile)
         changedData.profile = `user/${changedData.nickname}/${changedData.nickname}.${extension}`
       } else {
-        console.log(changedData.profile)
         changedData.profile = changedData.profileURL
       }
       if (changedData.genreId !== null) {
@@ -438,7 +431,6 @@ export default new Vuex.Store({
       if (getters.isLoggedIn) {
       axios.post(SERVER.BASE + SERVER.FOLLOWING, following, getters.headersConfig)
         .then(() => {
-          // console.log(res.data)
           dispatch('fetchFollowers', following.following)
           dispatch('checkFollowing', following.following)
         })
@@ -452,7 +444,6 @@ export default new Vuex.Store({
       if (getters.isLoggedIn) {
       axios.delete(SERVER.BASE + SERVER.UNFOLLOW + unfollow, getters.headersConfig)
         .then(() => {
-          // console.log(res.data)
           dispatch('fetchFollowers', unfollow)
           dispatch('checkFollowing', unfollow)
         })
@@ -465,7 +456,6 @@ export default new Vuex.Store({
     checkFollowing({ commit, getters }, following) {
       axios.get(SERVER.BASE + SERVER.ISFOLLOWING + following, getters.headersConfig)
         .then(res => {
-          // console.log(res.data.object)
           commit('setIsFollowing', res.data.object)
         })
         .catch(err => console.error(err))
@@ -488,7 +478,6 @@ export default new Vuex.Store({
     fetchProjects({ commit }) {
       axios.get(SERVER.BASE + SERVER.GAMELIST)
         .then(res => {
-          console.log(res.data.object)
           commit('setProjectList', res.data.object)
         })
         .catch(err => console.error(err))
@@ -515,8 +504,8 @@ export default new Vuex.Store({
                 })
                 .catch(() => res.data.object.thumbnail = null)
             })
-            .catch(function(error) {
-              console.log(error)
+            .catch(function(err) {
+              console.error(err)
             })
         })
         .catch(err => console.error(err))
@@ -526,7 +515,6 @@ export default new Vuex.Store({
       commit('setRewardData', null)
       axios.get(SERVER.BASE + SERVER.REWARDDETAIL + rewardId, this.headersConfig)
         .then(res => {
-          // console.log(res.data.object.reward)
           res.data.object.reward.content = res.data.object.reward.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
           commit('setRewardData', res.data.object)
         })
@@ -582,7 +570,7 @@ export default new Vuex.Store({
     editArticle(context, articleData) {
       axios.put(SERVER.BASE + SERVER.COMMUNITY, articleData)
         .then(() => router.push(`/community/${articleData.communityId}`))
-        .catch(err => console.log(err))
+        .catch(err => console.error(err))
     },
 
     deleteArticle(context, communityId) {

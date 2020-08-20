@@ -81,7 +81,6 @@ export default {
 
       if (this.followerList.length > 0) {
           this.followerList.forEach(item => {
-            console.log(item.profile)
             if (item.profile !== null) {
               storageRef.child(item.profile).getDownloadURL()
                 .then(url => item.profile = url)
@@ -96,7 +95,6 @@ export default {
       
       if (this.followingList.length > 0) {
         this.followingList.forEach(item => {
-          console.log(item.profile)
           if (item.profile !== null) {
             storageRef.child(item.profile).getDownloadURL()
               .then(url => item.profile = url)
@@ -112,7 +110,6 @@ export default {
 
     if (this.followerList.length > 0) {
         this.followerList.forEach(item => {
-          console.log(item.profile)
           if (item.profile !== null) {
             storageRef.child(item.profile).getDownloadURL()
               .then(url => item.profile = url)
@@ -123,7 +120,6 @@ export default {
 
     if (this.followingList.length > 0) {
         this.followingList.forEach(item => {
-          console.log(item.profile)
           if (item.profile !== null) {
             storageRef.child(item.profile).getDownloadURL()
               .then(url => item.profile = url)

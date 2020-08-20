@@ -292,7 +292,6 @@ export default {
         if (this.isLoggedIn) {
           axios.get(SERVER.BASE + SERVER.QNA + this.$route.params.id + `/${page}`, this.headersConfig)
             .then(res => {
-              // console.log(res.data.object)
               if (res.data.object.length > 0) {
                 res.data.object.forEach(item => {
                   item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
