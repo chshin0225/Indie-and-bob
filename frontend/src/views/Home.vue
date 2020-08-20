@@ -20,17 +20,17 @@
           <Recommendations v-if="!isLoggedIn" :projectList="mostFundedList" />
           <Recommendations v-else :projectList="userRecommendationList" />
 
-          <h2 v-if="!isLoggedIn" class="mb-3  mt-10">이런 프로젝트는 어때요?</h2>
-          <h2 v-else class="mb-3">그외 다양한 프로젝트들</h2>
+          <h2 v-if="!isLoggedIn" class="mb-3 mt-10">이런 프로젝트는 어때요?</h2>
+          <h2 v-else class="mb-3 mt-10">그외 다양한 프로젝트들</h2>
           <Recommendations v-if="!isLoggedIn" :projectList="highestPercentList" />
           <Recommendations v-else :projectList="genreRecommendationList" />
         </v-col>
 
         <v-col cols=12 md=4 class="d-flex flex-column">
-          <h2>가장 좋아요가 많은 프로젝트</h2>
+          <h2 class="ml-2">가장 좋아요가 많은 프로젝트</h2>
           <RankedList :projectList="mostLikedList" />
 
-          <h2 class="mt-10">마감임박 프로젝트</h2>
+          <h2 class="mt-10 ml-2">마감임박 프로젝트</h2>
           <RankedList :projectList="almostFinishedList" />
         </v-col>
 
