@@ -24,7 +24,6 @@
     },
     watch: {
       project() {
-        console.log(this.project)
         this.text = this.project.content
       }
     }

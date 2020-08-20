@@ -268,9 +268,7 @@ export default {
   name: 'Edit',
 
   created() {
-    console.log('1')
     this.component = this
-    console.log('2')
     this.getUser()
   },
 
@@ -369,11 +367,9 @@ export default {
     ...mapActions(['changeUserInfo']),
 
     getUser() {
-      console.log('getuser')
       axios
         .get(SERVER.BASE + SERVER.USERINFO + `/${this.$route.params.username}`)
         .then(res => {
-          console.log(res)
           this.email = res.data.object.email;
           this.password = res.data.object.password;
           this.name = res.data.object.name;
@@ -384,7 +380,6 @@ export default {
           //   this.genre.push(this.idToGenre[item])
           // })
           this.genre = res.data.object.genreName
-          console.log(this.genre)
           this.is_developer = res.data.object.developer;
           if (res.data.object.developer) {
             this.usertype = "개발자"

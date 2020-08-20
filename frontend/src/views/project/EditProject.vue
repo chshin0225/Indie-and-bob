@@ -198,7 +198,6 @@ export default {
       this.overlay = true
       
       this.genre.forEach((item) => {
-        // console.log(this.genreId)
         this.genreId.push(this.genreToId[item])
       })
       let PARAMS = {
@@ -218,8 +217,7 @@ export default {
         storageRef.on(`state_changed`, snapshot => {
             if ((snapshot.bytesTransferred/snapshot.totalBytes)*100 === 100) {
               axios.put(SERVER.BASE + SERVER.GAMEEDIT, PARAMS, this.headersConfig)
-              .then(res => {
-                console.log(res)
+              .then(() => {
                 router.push({name: 'ProjectDetail', params:{ id:this.$route.params.id }})
               })
               .catch(err => {
@@ -230,8 +228,7 @@ export default {
       } else {
         PARAMS.thumbnail = this.originalThumbnailURL
         axios.put(SERVER.BASE + SERVER.GAMEEDIT, PARAMS, this.headersConfig)
-        .then(res => {
-          console.log(res)
+        .then(() => {
           router.push({name: 'ProjectDetail', params:{ id:this.$route.params.id }})
         })
         .catch(err => {
@@ -276,7 +273,6 @@ export default {
   created() {
     axios.get(SERVER.BASE + SERVER.GAME + this.$route.params.id, this.headersConfig)
       .then(res => {
-        // console.log(res)
         this.name = res.data.object.name
         const storageRef = firebase.storage().ref()
         storageRef.child(res.data.object.content).getDownloadURL().then(url => {
@@ -298,7 +294,7 @@ export default {
           this.originalThumbnail = url
         })
       })
-    .catch(err => console.log(err))
+    .catch(err => console.error(err))
   },
 
   watch: {

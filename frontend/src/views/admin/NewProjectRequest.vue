@@ -78,7 +78,6 @@ export default {
         .then((res) => {
           if (res.data.object.length > 0) {
             this.gameNum += 10;
-            // console.log(res.data);
             res.data.object.forEach(item => {
               if (item.profile !== null) {
                 storageRef.child(item.profile).getDownloadURL().then(url => {

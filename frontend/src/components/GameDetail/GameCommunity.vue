@@ -118,7 +118,6 @@ export default {
     deleteComment(id) {
       axios.delete(SERVER.BASE + SERVER.GAMECOMMUNITY + '?gcId=' + id, this.headersConfig)
         .then(() => {
-          // console.log('delete')
           this.fetchComments()
         })
         .catch((err) => console.error(err.data));

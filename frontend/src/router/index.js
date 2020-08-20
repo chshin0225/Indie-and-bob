@@ -292,7 +292,6 @@ router.beforeEach((to, from, next) => {
   const isLoggedIn = cookies.isKey('user')
   const isAdmin = cookies.get('username') === 'admin'
   const isDeveloper = store.state.isDeveloper
-  // console.log('admin', isAdmin)
 
   // tab 제목 바꾸기
   document.title = to.meta.title

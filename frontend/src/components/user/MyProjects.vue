@@ -141,7 +141,6 @@ export default {
       const storageRef = firebase.storage().ref()
       axios.get(SERVER.BASE + SERVER.MYPROJECT + `${this.$route.params.username}/${this.projectNum}`)
         .then(res => {
-          console.log(res.data.object)
           if (res.data.object.length > 0) {
             this.projectNum += 9;
             res.data.object.forEach(item => {

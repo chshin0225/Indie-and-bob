@@ -224,12 +224,10 @@ export default {
       };
 
       axios.post(SERVER.BASE + SERVER.ALLREWARD, PARAMS, this.headersConfig)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           axios
             .get(SERVER.BASE + SERVER.REWARDS + this.id)
             .then((res) => {
-              // console.log("rewards", res.data.object); 
               if (res.data.object.length > 0) {
                 res.data.object.forEach(item => {
                   item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
@@ -253,7 +251,6 @@ export default {
     rewardDelete(reward_id) {
       axios.delete(SERVER.BASE + SERVER.ALLREWARD + reward_id, this.headersConfig)
         .then(() => {
-          // console.log(res)
           axios.get(SERVER.BASE + SERVER.REWARDS + this.id)
             .then((res) => {
               this.rewards = res.data.object;
@@ -274,7 +271,7 @@ export default {
       let answer = confirm('프로젝트를 삭제하시겠습니까?')
       if (answer) {
         axios.delete(SERVER.BASE + SERVER.GAME + this.id, this.headersConfig)
-          .then(router.push({ name: 'Home' }))
+          .then(() => router.push({ name: 'Home' }))
           .catch((err) => console.error(err))
       } 
     },
@@ -294,7 +291,6 @@ export default {
     this.getProject(this.$route.params.id)
     axios.get(SERVER.BASE + SERVER.REWARDS + this.$route.params.id)
       .then((res) => {
-        // console.log("rewards", res.data.object);
         if (res.data.object.length > 0) {
           res.data.object.forEach(item => {
             item.content = item.content.replace(/(?:\r\n|\r|\n)/g, '<br />')
